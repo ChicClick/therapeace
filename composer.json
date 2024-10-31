@@ -1,0 +1,7 @@
+{
+  "name": "therapeace",
+  "description": "web based management system",
+  "require": {
+    "php": "^8.2"
+  }
+}
