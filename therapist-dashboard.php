@@ -10,6 +10,7 @@ if (!isset($_SESSION['therapist_id'])) {
 
 // Retrieve the therapist's name from the session
 $therapistName = $_SESSION['therapist_name'];
+
 ?>
 
 <!DOCTYPE html>
@@ -32,8 +33,7 @@ $therapistName = $_SESSION['therapist_name'];
         <nav>
             <ul>
                 <p>MENU</p>
-                <li><a href="#" data-target="dashboard-section"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
-                <li><a href="#" data-target="appointments-section"><i class="fas fa-calendar-check"></i> Appointments</a></li>
+                <li class="active"><a href="#" data-target="appointments-section"><i class="fas fa-calendar-check"></i> Appointments</a></li>
                 <li><a href="#" data-target="patients-profile-section"><i class="fas fa-user"></i> Patient Profile</a></li>
                 <li><a href="#" data-target="notes-section"><i class="fas fa-file-alt"></i> Feedback Notes</a></li>
                 <li><a href="#" data-target="report-section"><i class="fas fa-chart-bar"></i> Progress Report</a></li>
@@ -61,13 +61,8 @@ $therapistName = $_SESSION['therapist_name'];
             </div>
         </div>
 
-        <!-- Dashboard Section -->
-        <div id="dashboard-section" class="content active">
-            <h4>DASHBOARD</h4>
-        </div>
-
         <!-- Appointments Section -->
-        <div id="appointments-section" class="content">
+        <div id="appointments-section" class="content active">
             <h4>APPOINTMENTS</h4>
             <div class="search-bar-content">
                 <input type="text" placeholder="Search" id="searchInput" onkeyup="filterSearch()">
@@ -194,27 +189,12 @@ $therapistName = $_SESSION['therapist_name'];
                 </tbody>
             </table>
 
-            <div class="notes-info" id="notes-info" style="display:block"> <!-- Initially hidden -->
+            <div class="notes-info" id="notes-info" style="display:none">
                 <h4>NOTES</h4>
-                <h5 id="notes-date">> August 24, 2024</h5>
+                <!-- Changed h5 to an anchor tag with id "notes-date" -->
+                <a id="notes-date" style="cursor: pointer; color: #432705; text-decoration:none"></a>
                 <div class="notes-container" id="notes-details" style="display:block">
                     <h5>Session Overview:</h5>
-                    <p>In today's session, Emily showed great enthusiasm and made noticeable progress in her articulation exercises. She was particularly engaged during the interactive activities, which helped reinforce the sounds we have been working on.</p>
-
-                    <h5>Key Progress:</h5>
-                    <ul>
-                        <li>Emily successfully produced the "s" and "r" sounds with increased clarity during structured activities.</li>
-                        <li>We introduced a new game to practice blending sounds, which she enjoyed and participated in eagerly.</li>
-                        <li>Emily set a small goal for herself to practice her speech sounds at home, particularly during reading time with her parents.</li>
-                    </ul>
-
-                    <h5>Areas for Focus:</h5>
-                    <ul>
-                        <li>It will be important to continue practicing the "s" and "r" sounds in more spontaneous speech contexts.</li>
-                        <li>We will also start incorporating more complex sound combinations to challenge Emily and further enhance her speech clarity.</li>
-                    </ul>
-                    
-                    <p>Overall, Emily made wonderful progress today, and I am excited to see her continued improvement in upcoming sessions.</p>
                 </div>
             </div>
         </div>
@@ -266,10 +246,6 @@ $therapistName = $_SESSION['therapist_name'];
 
         <div id="checklist-section" class="content">
             <h4>PRE-SCREENING RESPONSE</h4>
-            <div class="search-bar-content">
-                <input type="text" placeholder="Search">
-                <button><i class="fas fa-search"></i></button>
-            </div>
             <table id="pre-screening-table">
                 <thead>
                     <tr>
@@ -284,8 +260,92 @@ $therapistName = $_SESSION['therapist_name'];
                     <?php include 'pre-screening.php'; ?>
                 </tbody>
             </table>
+            <div class="checklist-container" style="display: none;">
+                <a href="#" id="back-link">Back</a>
+                <div class="checklist-header">
+                    <div><span>Name:</span> <span id="checklist-name" style="color: #432705;"><?php echo $guestName; ?></span></div>
+                    <div><span>Name of Child:</span> <span id="child-name" style="color: #432705;"><?php echo $childName; ?></span></div>
+                    <div><span>Age of Child:</span> <span id="child-age" style="color: #432705;"><?php echo $childAge; ?></span></div>
+                </div>
 
-        </div>  
+                <!-- Left Section -->
+                <div class="checklist-left-section">
+                    <!-- Populate questions dynamically -->
+                    <?php 
+                    
+                    // Query to fetch questions and their options grouped by category
+                    $sql = "SELECT questionID, category, questionText, options, inputType FROM prescreening_questions ORDER BY category";
+                    $result = $conn->query($sql);
+                    
+                    $questions = [];
+                    if ($result->num_rows > 0) {
+                        while ($row = $result->fetch_assoc()) {
+                            // Split options into an array
+                            $optionsArray = explode(',', $row['options']); // Assuming options are comma-separated
+                            $questions[$row['category']][] = [
+                                'questionID' => $row['questionID'], // Capture question ID for checking answers
+                                'questionText' => $row['questionText'],
+                                'options' => $optionsArray,
+                                'inputType' => $row['inputType'],
+                            ];
+                        }
+                    }
+                    
+                    foreach ($questions as $category => $question_list): ?>
+                        <div class="checkbox-group">
+                            <div class="section-title"><?php echo htmlspecialchars($category); ?></div>
+                            <?php foreach ($question_list as $item): ?>
+                                <div class="question">
+                                    <span style="font-weight: 400; margin-bottom:10px font: size 10px;"><?php echo htmlspecialchars($item['questionText']); ?></span>
+                                    <?php
+                                    // Determine the input type and render accordingly
+                                    foreach ($item['options'] as $option): 
+                                        $inputName = htmlspecialchars($item['questionText']); // Use question text as the name for unique identification
+                                        $isChecked = (isset($guestAnswers[$item['questionID']]) && $guestAnswers[$item['questionID']] == $option) ? 'checked' : '';
+                                    ?>
+                                        <label>
+                                            <?php if ($item['inputType'] === 'checkbox'): ?>
+                                                <input type="checkbox" name="options[<?php echo $inputName; ?>][]" value="<?php echo htmlspecialchars($option); ?>" <?php echo $isChecked; ?>>
+                                            <?php elseif ($item['inputType'] === 'radio'): ?>
+                                                <input type="radio" name="options[<?php echo $inputName; ?>]" value="<?php echo htmlspecialchars($option); ?>" <?php echo $isChecked; ?>>
+                                            <?php elseif ($item['inputType'] === 'number'): ?>
+                                                <input type="number" name="options[<?php echo $inputName; ?>]" value="<?php echo htmlspecialchars($guestAnswers[$item['questionID']] ?? ''); ?>" placeholder="<?php echo htmlspecialchars($option); ?>">
+                                            <?php elseif ($item['inputType'] === 'text'): ?>
+                                                <input type="textarea" name="options[<?php echo $inputName; ?>]" value="<?php echo htmlspecialchars($guestAnswers[$item['questionID']] ?? ''); ?>" placeholder="<?php echo htmlspecialchars($option); ?>">
+                                            <?php elseif ($item['inputType'] === 'textarea'): ?>
+                                                <input type="text" name="options[<?php echo $inputName; ?>]" value="<?php echo htmlspecialchars($guestAnswers[$item['questionID']] ?? ''); ?>" placeholder="<?php echo htmlspecialchars($option); ?>">
+                                             <?php elseif ($item['inputType'] === 'radio'): ?>
+                                                <input type="radio" name="options[<?php echo $inputName; ?>]" value="<?php echo htmlspecialchars($option); ?>" <?php echo $isChecked; ?>>
+                                                <?php endif; ?>
+                                            <?php echo htmlspecialchars($option); ?>
+                                        </label>
+                                    <?php endforeach; ?>
+                                </div>
+                            <?php endforeach; ?>
+                        </div>
+                    <?php endforeach; ?>
+                </div>                                  
+
+                <!-- Right Section -->
+                <div class="checklist-right-section">
+                    <!-- Static checkboxes for therapy options -->
+                    <div class="checkbox-group">
+                        <div class="section-title">Select Suitable Therapy</div>
+                        <label><input type="checkbox"> Occupational Therapy</label>
+                        <label><input type="checkbox"> Physical Therapy</label>
+                        <label><input type="checkbox"> Speech Therapy</label>
+                        <label><input type="checkbox"> Special Education</label>
+                    </div>
+
+                    <div class="comments-section">
+                        <div class="section-title">Additional Diagnosis/Comments</div>
+                        <textarea placeholder="Enter comments here..."></textarea>
+                    </div>
+
+                    <button class="save-button" onclick="saveForm()">Save</button>
+                </div>
+            </div>
+        </div>
     </div>
 
     <script src="therapist-dashboard.js" defer></script>

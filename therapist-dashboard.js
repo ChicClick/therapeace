@@ -313,3 +313,109 @@ function closePopup() {
 }
 
 // Additional functions for generating the calendar can remain as they are
+document.getElementById('backButton').addEventListener('click', function(event) {
+    event.preventDefault(); // Prevent default anchor link behavior
+
+    // Hide the time popup
+    document.getElementById('timePopup').style.display = 'none';
+    
+    // Show the date selection popup (assuming you have an element for it)
+    document.getElementById('reschedulePopup').style.display = 'block'; // Change this to your date popup's ID
+});
+
+function closeTimePopup() {
+    document.getElementById('timePopup').style.display = 'none';
+}
+document.getElementById('backButton').addEventListener('click', function(event) {
+    event.preventDefault(); // Prevent default anchor link behavior
+
+    // Hide the time popup
+    document.getElementById('timePopup').style.display = 'none';
+    
+    // Show the date selection popup (assuming you have an element for it)
+    document.getElementById('reschedulePopup').style.display = 'block'; // Change this to your date popup's ID
+});
+
+
+function fetchFeedback(date, id) {
+    const notesContainer = document.getElementById("notes-info");
+    const notesDetails = document.getElementById("notes-details");
+    const notesDate = document.getElementById("notes-date");
+
+    // Toggle visibility based on the current state and clicked row
+    if (notesContainer.style.display === "block" && notesContainer.getAttribute("data-id") === id) {
+        notesContainer.style.display = "none";
+        notesDetails.innerHTML = "<h5>Session Overview:</h5>";
+        notesContainer.removeAttribute("data-id");
+    } else {
+        // Show the notes container and populate with feedback
+        notesContainer.style.display = "block";
+        notesDate.innerText = date;
+        notesContainer.setAttribute("data-id", id);
+
+        // Fetch feedback from PHP script
+        fetch(`fetch_feedback.php?date=${date}`)
+            .then(response => response.json())
+            .then(data => {
+                notesDetails.innerHTML = "<h5>Session Overview:</h5>"; // Reset content
+                if (data.success) {
+                    notesDetails.innerHTML += `<p>${data.feedback}</p>`;
+                } else {
+                    notesDetails.innerHTML += `<p>No feedback available for this date.</p>`;
+                }
+            })
+            .catch(error => {
+                console.error("Error fetching feedback:", error);
+                notesDetails.innerHTML += `<p>Error loading feedback.</p>`;
+            });
+    }
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+    const notesContainer = document.getElementById('notes-container');
+    const notesDateLink = document.getElementById('notes-date');
+
+    // Hide notes container when the link is clicked
+    notesDateLink.addEventListener('click', function(event) {
+        event.preventDefault(); // Prevent default link behavior
+        notesContainer.style.display = 'none'; // Hide the notes container
+    });
+});
+
+
+function showChecklist(guestData) {
+    // Hide the table
+    document.getElementById('pre-screening-table').style.display = 'none';
+
+    // Show the checklist section
+    document.getElementById('checklist-section').style.display = 'block';
+    
+    // Populate the checklist with guest data
+    document.getElementById('checklist-name').innerText = guestData.guest_name;
+    document.getElementById('child-name').innerText = guestData.child_name || ""; // Use child data from guestData
+    document.getElementById('child-age').innerText = guestData.child_age || ""; // Use child data from guestData
+
+    // Show the checklist container
+    document.querySelector('.checklist-container').style.display = 'block';
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+    const checklistContainer = document.getElementById('checklist-container');
+    const prescreeningTable = document.getElementById('pre-screening-table');
+    const showChecklistLink = document.getElementById('show-checklist-link');
+    const backLink = document.getElementById('back-link');
+
+    // Show checklist when link is clicked
+    showChecklistLink.addEventListener('click', function(event) {
+        event.preventDefault(); // Prevent default link behavior
+        prescreeningTable.style.display = 'none'; // Hide pre-screening table
+        checklistContainer.style.display = 'block'; // Show checklist
+    });
+
+    // Hide checklist and show pre-screening table when back link is clicked
+    backLink.addEventListener('click', function(event) {
+        event.preventDefault(); // Prevent default link behavior
+        checklistContainer.style.display = 'none'; // Hide checklist
+        prescreeningTable.style.display = 'block'; // Show pre-screening table
+    });
+});

@@ -1,16 +1,15 @@
 <?php
 // Include the external database connection file
 include 'db_conn.php';
-include 'fetch_questions.php';
 
-// SQL query to fetch guest data
+// SQL query to fetch guest data including child information
 $sql = "
     SELECT 
         GuestID, 
         GuestName AS guest_name, 
         Email AS email, 
         DateSubmitted AS date_submitted, 
-        Status AS guest_status 
+        status AS guest_status
     FROM 
         guest
 ";
@@ -31,8 +30,8 @@ if ($result->num_rows > 0) {
         if ($status == 1) {
             $status_text = "Pending";
             $status_style = "background-color: #FDBC10; padding: 2px; border-radius: 5px;"; 
-            $action_url = "<assess_guest.php?id=" . urlencode($row['GuestID']); // URL for pending
-            $action_link = "<a href='$action_url' style='color: #2D3748; text-decoration: none;'>Asses</a>"; 
+            // Use JavaScript function instead of URL
+            $action_link = "<a href='javascript:void(0);' onclick='showChecklist(" . htmlspecialchars(json_encode($row)) . ")' style='color: #2D3748; text-decoration: none;'>Assess</a>"; 
         } elseif ($status == 2) {
             $status_text = "Completed";
             $status_style = "background-color: #4FD1C5; padding: 2px; border-radius: 5px;"; 
@@ -44,7 +43,6 @@ if ($result->num_rows > 0) {
             $status_text = "Unknown"; 
             $status_style = ""; // Default for unexpected status values
             $action_link = "N/A"; // No action available for unknown status
-            $action_url = "#"; // Placeholder URL
         }
         
         // Wrap the status text in a span
