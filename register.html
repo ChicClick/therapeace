@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TheraPeace</title>
+    <link rel="stylesheet" href="register.css">
+</head>
+
+<body>
+
+    <!-- Left section with image -->
+    <div class="image-section">
+        <img src="images/logo.png" alt="Decorative Image" class="image">
+    </div>
+
+    <!-- Right section with form -->
+    <div class="registration-form">
+        <h2>Register</h2>
+        <form id="registrationForm" action="register.php" method="POST">
+            <select aria-label="role" id="role" name="role" onchange="toggleFields()">
+                <option value="admin">Admin</option>
+                <option value="therapist">Therapist</option>
+                <option value="patient">Patient</option>
+            </select>
+
+            <!-- Common Fields -->
+            <div class="common-fields">
+                <input type="text" name="firstname" placeholder="First Name" required>
+                <input type="text" name="lastname" placeholder="Last Name" required>
+                <input type="text" name="phoneNumber" placeholder="Phone Number" required>
+                <input type="text" name="address" placeholder="Address" required>
+                <input type="date" name="birthdate" placeholder="Birthdate" required>
+                <input type="text" name="gender" placeholder="Gender" required>
+            </div>
+
+            <!-- Admin-Specific Fields -->
+            <div class="admin-fields">
+                <input type="text" name="username" placeholder="Username" required>
+                <input type="password" name="password" placeholder="Password" required>
+            </div>
+
+            <!-- Therapist-Specific Fields -->
+            <div class="therapist-fields">
+                <input type="text" name="therapist_number" placeholder="Therapist Number"
+                    required>
+                <input type="number" name="year_hired" placeholder="Year Hired" required>
+                <input type="number" name="month_hired" placeholder="Month Hired" required>
+                <input type="number" name="day_hired" placeholder="Date Hired" required>
+                <input type="password" name="password" placeholder="Password" required>
+                <input type="password" name="confirm_password" placeholder="Confirm Password" required>
+            </div>
+
+            <!-- Patient-Specific Fields -->
+            <div class="patient-fields">
+                <input type="text" name="patient_number" placeholder="Patient Number" required>
+                <input type="password" name="password" placeholder="Password" required>
+                <input type="password" name="confirm_password" placeholder="Confirm Password" required>
+            </div>
+
+            <button type="submit">Register</button>
+        </form>
+    </div>
+
+
+    <script>
+        function toggleFields() {
+            const role = document.getElementById('role').value;
+            const adminFields = document.querySelector('.admin-fields');
+            const therapistFields = document.querySelector('.therapist-fields');
+            const patientFields = document.querySelector('.patient-fields');
+
+            // Hide all specific fields
+            adminFields.style.display = 'none';
+            therapistFields.style.display = 'none';
+            patientFields.style.display = 'none';
+
+            // Remove required attribute from all fields
+            adminFields.querySelectorAll('input').forEach(input => input.removeAttribute('required'));
+            therapistFields.querySelectorAll('input').forEach(input => input.removeAttribute('required'));
+            patientFields.querySelectorAll('input').forEach(input => input.removeAttribute('required'));
+
+            // Show and add required attribute based on selected role
+            if (role === 'admin') {
+                adminFields.style.display = 'block';
+                adminFields.querySelectorAll('input').forEach(input => input.setAttribute('required', 'required'));
+            } else if (role === 'therapist') {
+                therapistFields.style.display = 'block';
+                therapistFields.querySelectorAll('input').forEach(input => input.setAttribute('required', 'required'));
+            } else if (role === 'patient') {
+                patientFields.style.display = 'block';
+                patientFields.querySelectorAll('input').forEach(input => input.setAttribute('required', 'required'));
+            }
+        }
+
+        // Initialize the form to hide all fields except the default one and manage required attributes
+        window.onload = toggleFields;
+    </script>
+</body>
+
+</html>

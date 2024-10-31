@@ -1,0 +1,86 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Arial', sans-serif;
+}
+
+body {
+    font-family: 'Poppins', sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background: radial-gradient(101.52% 100% at 4.19% 100%, rgba(236, 183, 35, 0.6) 12%, rgba(239, 209, 3, 0.45) 62.92%, rgba(255, 234, 9, 0.06) 96.5%);
+}
+
+.image-section {
+    width: 50%;
+    height: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.image-section img {
+    width: 50%; /* Example size, adjust as needed */
+    height: 50%; /* Maintain aspect ratio */
+}
+
+.registration-form {
+    width: 50%;
+    padding: 40px;
+}
+
+.registration-form h2 {
+    font-size: 24px;
+    color: #333;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.registration-form select,
+.registration-form input[type="text"],
+.registration-form input[type="password"],
+.registration-form input[type="date"],
+.registration-form input[type="number"] {
+    width: 48%;
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid burlywood;
+    border-radius: 20px;
+    background: none;
+    color: black;
+}
+
+.registration-form button {
+    font-family: 'Poppins', sans-serif;
+    width: 100%;
+    padding: 12px;
+    background: burlywood;
+    color: black;
+    border: none;
+    cursor: pointer;
+    font-size: 16px;
+    border-radius: 20px;
+}
+
+.registration-form button:hover {
+    background-color: beige; /* Darker shade on hover */
+}
+
+.registration-form p {
+    text-align: center;
+    margin-top: 20px;
+    color: #666;
+}
+
+.registration-form p a {
+    color: #1a73e8;
+    text-decoration: none;
+}
+
+/* Role-specific fields hidden by default */
+.admin-fields, .therapist-fields, .patient-fields {
+    display: none;
+}

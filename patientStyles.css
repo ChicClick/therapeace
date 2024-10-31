@@ -1,0 +1,277 @@
+@font-face {
+    font-family: 'Poppins';
+    src: url('fonts/Poppins-Regular.ttf') format('truetype');
+    font-weight: 400;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Poppins';
+    src: url('fonts/Poppins-SemiBold.ttf') format('truetype');
+    font-weight: 600; /* Semibold weight */
+}
+
+/* General styles */
+body {
+    font-family: 'Poppins', sans-serif;
+    margin: 0;
+    padding: 0;
+    background: linear-gradient(to bottom, 
+    rgba(239, 209, 3, 0.50) 20%,  
+    rgba(245, 245, 220, 1.0) 80%); 
+}
+
+.user-info {
+    display: flex;
+    align-items: center;
+}
+
+.user-icon {
+    margin-left: 10px;
+}
+
+/* Appointments Styles */
+#appointments {
+    margin-top: 10%;
+    padding: 20px;
+    color: #432705;
+    font-size: 14px;
+}
+
+#appointments h1 {
+    font-size: 30px;
+    font-family: "Architects Daughter", cursive;
+    font-weight: normal;
+    margin-left: 30px;
+}
+
+hr {
+    margin-bottom: 0;
+    height: 1px; /* Adjust the height to make it thin */
+    background-color: #432705; /* Set the color */
+    border: none;
+}
+
+
+/* Appointments Header */
+.appointments-header, .notes-header {
+    display: flex;
+    justify-content: space-between; /* Adjust to distribute space evenly */
+    margin-bottom: 5px; /* Space below the header */
+    padding: 10px 0; /* Vertical padding for headers */
+}
+
+.header-schedule, .header-therapist, .header-action {
+    flex: 1; /* Adjusts the width of the action header */
+    display: flex;
+    align-items: center; /* Center align the text */
+    padding: 10px 0; /* Horizontal padding for spacing */
+    font-weight: 600; /* Make the header bold */
+    font-size: 1.2em; /* Adjust size as needed */
+}
+
+.header-schedule {
+    justify-content: flex-start;
+    padding-left: 10px;
+}
+
+.header-therapist {
+    justify-content: center;
+}
+
+.header-action {
+    justify-content: flex-end; /* Center align the action buttons */
+    padding-right: 40px;
+}
+
+#notes .header-therapist {
+    justify-content: flex-start;
+}
+
+.appointment-table {
+    background-color: transparent; 
+    margin: 0 auto;
+    margin-bottom: 30px;
+    width: 100%; /* Ensure it takes full width */
+    border-spacing: 0; /* Removes spacing */
+}
+
+.table-row {
+    display: flex; /* Use flexbox for each row */
+    justify-content: space-between; /* Space out the content */
+    align-items: center; /* Center align the content */
+    padding: 10px 0; /* Same padding as headers for alignment */
+    border-bottom: 1px solid #B2A071; /* Bottom border for rows */
+}
+
+.row-schedule, .row-therapist, .row-reschedule {
+    flex: 1; /* All columns take equal space */
+    padding: 10px; /* Same padding as headers for alignment */
+    box-sizing: border-box; /* Ensure padding does not affect width */
+}
+
+.row-reschedule {
+    flex: 0 0 150px; /* Fixed width for RESCHEDULE column */
+    text-align: center; /* Center-align the button */
+}
+
+.reschedule {
+    color: #FFA500;
+    text-decoration: underline;
+    font-weight: 600;
+}
+
+/* Other styles */
+.status-dot {
+    display: inline-block;
+    width: 25px;
+    height: 25px;
+    background-color: #FFA500;
+    border-radius: 50%;
+    margin-right: 5px;
+}
+
+.hidden {
+    display: none;
+}
+
+
+#notes {
+    margin-top: 10%;
+    padding: 20px;
+    color: #432705;
+    font-size: 14px;
+}
+
+#notes h1 {
+    font-size: 30px;
+    font-family: "Architects Daughter", cursive;
+    font-weight: normal;
+    margin-left: 30px;
+}
+
+#generateReportButton {
+    display: inline-block; /* Keeps the button inline with other content */
+    margin: 10px 0; /* Adds space around the button */
+    color: #FF9800; /* Button text color */
+    text-decoration: none; /* Removes underline from the link */
+    font-weight: bold; /* Makes the text bold */
+    font-size: 16px; /* Adjusts font size */
+    margin-left: 30px;
+    margin-bottom: 0;
+
+}
+
+
+.progress-report-button:hover {
+    text-decoration: underline; /* Adds underline on hover for effect */
+}
+
+/* Hover effect for notes section table rows only */
+.notes-row:hover {
+    background-color: #ac9477 !important;
+    cursor: pointer !important;
+    transition: background-color 0.3s ease !important;
+}
+
+/* Notes content styling */
+#open-notes {
+    display: none; /* Initially hidden */
+    width: 100%; /* Ensure it takes full width */
+    margin: 0 auto;
+    padding: 20px;
+    background-color: transparent;
+}
+
+.notes-container {
+    max-width: 90%; 
+    margin: 0 auto;
+    background: #fbf5e2;
+    padding: 20px;
+    border-radius: 8px;
+    color: #432705;
+    margin-bottom: 30px;
+}
+
+/* Close button styling */
+#close-notes {
+    margin-top: 20px;
+}
+
+.search-sort-container {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start; /* Aligns the entire search and sort to the right */
+    width: 100%;
+    max-width: 500px; /* Adjust as needed */
+    margin-top: 20px;
+    margin-bottom: 20px;
+    margin-left: 20px;
+}
+
+/* Search Bar Container */
+.search-wrapper {
+    position: relative; /* Relative positioning for absolute child */
+}
+
+.search-bar {
+    padding: 10px 10px 10px 20px; /* Adjust padding to accommodate the icon */
+    border: 1px solid #B2A071; /* Match the border color with the table row */
+    border-radius: 20px; /* More rounded corners */
+    width: 300px; /* Adjust width as needed */
+    margin-right: 10px; /* Space between input and button */
+    font-size: 14px;
+    background-color: #fbf5e2; /* White background for the input */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+}
+
+.sort-button {
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    font-size: 0.7em;
+    color: #333;
+    margin-left: 8px;
+}
+
+.search-icon {
+    position: absolute; /* Position icon inside the input */
+    right: 30px; /* Space from the left */
+    top: 50%; /* Center vertically */
+    transform: translateY(-50%); /* Adjust for perfect centering */
+    color: #6B3E0F; /* Icon color */
+}
+
+/* Optional: Focus state for search bar input */
+.search-bar:focus {
+    outline: none; /* Remove default outline */
+    border-color: #FFA500; /* Highlight border on focus */
+    box-shadow: 0 0 5px rgba(255, 165, 0, 0.5); /* Add shadow on focus */
+}
+
+
+.hidden {
+    display: none;
+}
+
+
+/* Styles for the Back Button */
+.back-button {
+    background: none; /* Remove default button background */
+    border: none; /* Remove border */
+    font-size: 18px; /* Set button size */
+    color: #333; /* Set button color */
+    cursor: pointer; /* Change cursor to pointer */
+    margin-right: 10px; /* Space between button and text */
+    vertical-align: middle; /* Aligns vertically with the text */
+}
+
+.back-button:hover {
+    color: #007bff; /* Change color on hover */
+}
+
+.notes-container h3 {
+    display: flex; /* Use flexbox to align items */
+    align-items: center; /* Vertically center the button and text */
+}
+
