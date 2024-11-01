@@ -29,10 +29,8 @@ $additionalFields = [
 $questionMap = array_merge($questionMap, $additionalFields);
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $userID = 1; // Replace with actual user ID or session ID
-
-    // Create a new form response entry
-    $sql = "INSERT INTO form_responses (userID) VALUES ('$userID')";
+    // Create a new form response entry without userID
+    $sql = "INSERT INTO form_responses () VALUES ()"; // Note: Adjust this if additional fields are required
     
     if ($conn->query($sql) === TRUE) {
         $responseID = $conn->insert_id;
