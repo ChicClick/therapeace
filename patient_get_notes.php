@@ -13,6 +13,9 @@ if (!isset($_SESSION['patientID'])) {
 // Get the logged-in patientID from session
 $patientID = $_SESSION['patientID'];
 
+// Include the database connection file
+require_once 'db_conn.php';
+
 // Database connection
 $mysqli = new mysqli("localhost", "root", "JM0987654", "therapeacedb");
 
