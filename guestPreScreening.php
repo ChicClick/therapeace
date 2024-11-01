@@ -270,7 +270,7 @@ foreach ($questions as $question) {
                 <p>Enter your contact details to receive further instructions about the next step.</p>
                 <form id="contact-form" action="guestSendPDF.php" method="POST">
                     <label for="parent_name">Parent's Name:</label>
-                    <input type="text" name="parent_name" id="parent_name" required><br>
+                    <input type="text" name="parentName" id="parentName" required><br>
                 
                     <label for="email">Email:</label>
                     <input type="email" name="email" id="email" required><br>
