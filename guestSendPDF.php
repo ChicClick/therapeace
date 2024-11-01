@@ -194,9 +194,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $insertResponseSql = "INSERT INTO form_responses (submissionDate, guestName, email, phone) VALUES ('$submissionDate', '$guestName', '$email', '$phone')";
     if ($conn->query($insertResponseSql) === FALSE) {
         die("Error inserting response: " . $conn->error);
-    }
-}
-
+    
     } else {
         die("No response ID found in session.");
     }
