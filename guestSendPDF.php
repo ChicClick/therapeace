@@ -156,8 +156,9 @@ $customWidths = [
     45 => 58,   
 ];
 
-// Handle POST request to get email and phone
+// Handle POST request to get email, phone, and parent's name
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    $parentName = $_POST['parentName'];
     $email = $_POST['email'];
     $phone = $_POST['phone'];
 
@@ -166,16 +167,18 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $responseID = $_SESSION['responseID'];
 
         // Sanitize input
+        $parentName = mysqli_real_escape_string($conn, $parentName);
         $email = mysqli_real_escape_string($conn, $email);
         $phone = mysqli_real_escape_string($conn, $phone);
 
-        // Update form_responses table with email and phone
-        $sql = "UPDATE form_responses SET email='$email', phone='$phone' WHERE responseID='$responseID'";
+        // Update form_responses table with parentName, email, and phone
+        $sql = "UPDATE form_responses SET parentName='$parentName', email='$email', phone='$phone' WHERE responseID='$responseID'";
         $conn->query($sql); // Execute the query
     } else {
         die("No response ID found in session.");
     }
 }
+
 
 // Check if the responseID is set in session before proceeding to fetch data
 if (!isset($_SESSION['responseID'])) {
