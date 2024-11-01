@@ -274,6 +274,9 @@ foreach ($questions as $question) {
                 
                     <label for="email">Email:</label>
                     <input type="email" name="email" id="email" required><br>
+
+                    <label for="confirmEmail">Confirm Email:</label>
+                    <input type="email" name="confirmEmail" required>
                 
                     <label for="phone">Phone:</label>
                     <input type="text" name="phone" id="phone" required><br>
