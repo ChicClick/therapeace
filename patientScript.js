@@ -15,28 +15,28 @@ document.addEventListener('DOMContentLoaded', function() {
     };
 
     // Function to handle showing the correct section
-function showSection(sectionId) {
-    document.querySelectorAll('section').forEach(section => section.classList.add('hidden'));
-
-    // If switching to appointments, ensure notes section is hidden
-    if (sectionId === 'appointments') {
-        notesSection.style.display = 'none'; // Hide the notes section
-        notesTable.classList.remove('hidden'); // Show the notes table if it was hidden
+    function showSection(sectionId) {
+        document.querySelectorAll('section').forEach(section => section.classList.add('hidden'));
+    
+        // If switching to appointments, ensure notes section is hidden
+        if (sectionId === 'appointments') {
+            notesSection.style.display = 'none'; // Hide the notes section
+            notesTable.classList.remove('hidden'); // Show the notes table if it was hidden
+        }
+    
+        document.getElementById(sectionId).classList.remove('hidden');
     }
-
-    document.getElementById(sectionId).classList.remove('hidden');
-}
-
-// Event listeners for navigation links
-document.querySelector('a[href="#notes"]').addEventListener('click', function(event) {
-    event.preventDefault();
-    showSection('notes'); // Show notes section when Notes tab is clicked
-});
-
-document.querySelector('a[data-nav-link]').addEventListener('click', function(event) {
-    event.preventDefault();
-    showSection('appointments'); // Show appointments section
-});
+    
+    // Event listeners for navigation links
+    document.querySelector('a[href="#notes"]').addEventListener('click', function(event) {
+        event.preventDefault();
+        showSection('notes'); // Show notes section when Notes tab is clicked
+    });
+    
+    document.querySelector('a[data-nav-link]').addEventListener('click', function(event) {
+        event.preventDefault();
+        showSection('appointments'); // Show appointments section
+    });
 
 
     const notesSection = document.getElementById('open-notes');
@@ -74,7 +74,7 @@ document.querySelector('a[data-nav-link]').addEventListener('click', function(ev
             const therapistName = row.getAttribute('data-therapist');
 
             // Fetch the notes for the selected session
-            fetch('patient_get_notes.php', {
+           fetch('patient_get_notes.php', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/x-www-form-urlencoded'
@@ -84,18 +84,14 @@ document.querySelector('a[data-nav-link]').addEventListener('click', function(ev
                     patientID: patientID
                 })
             })
-            .then(response => response.json())
-            .then(data => {
-                if (data.success) {
-                    const sessionData = {
-                        schedule: scheduleDate, // Use the scheduleDate obtained from the clicked row
-                        therapist: data.therapist,
-                        notes: data.notes.join('') // Join notes if they are in an array
-                    };
-                    showNotes(sessionData); // Call function to display notes
-                } else {
-                    alert('Failed to load notes: ' + data.error);
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok: ' + response.statusText);
                 }
+                return response.json();
+            })
+            .then(data => {
+                // Handle the data as before
             })
             .catch(error => {
                 console.error('Error fetching notes:', error);
