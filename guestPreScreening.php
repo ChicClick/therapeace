@@ -30,10 +30,10 @@ foreach ($questions as $question) {
                 <h1>TheraPeace</h1>
             </div>
             <ul class="nav-links">
-                <li><a href="guestHomepage.html">Home</a></li>
-                <li><a href="guestHomepage.html#about" data-nav-link>About Us</a></li>
-                <li><a href="guestHomepage.html#services" data-nav-link>Services</a></li>
-                <li><a href="guestHomepage.html#rates" data-nav-link>Rates</a></li>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="index.html#about" data-nav-link>About Us</a></li>
+                <li><a href="index.html#services" data-nav-link>Services</a></li>
+                <li><a href="index.html#rates" data-nav-link>Rates</a></li>
             </ul>   
             <button class="login-btn" onclick="window.location.href='loginlanding.html';">Login</button>
         </nav>
