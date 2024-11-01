@@ -185,13 +185,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             // Guest exists, update their info
             $row = $result->fetch_assoc();
             $guestID = $row['GuestID'];
-            $updateGuestSql = "UPDATE guest SET GuestName='$guestName', Phone='$phone', DateSubmitted='$submissionDate' WHERE GuestID='$guestID'";
+            $updateGuestSql = "UPDATE guest SET GuestName='$guestName', DateSubmitted='$submissionDate' WHERE GuestID='$guestID'";
             if ($conn->query($updateGuestSql) === FALSE) {
                 die("Error updating guest: " . $conn->error);
             }
         } else {
             // Guest doesn't exist, insert new guest
-            $insertGuestSql = "INSERT INTO guest (GuestName, Email, Phone, DateSubmitted) VALUES ('$guestName', '$email', '$phone', '$submissionDate')";
+            $insertGuestSql = "INSERT INTO guest (GuestName, Email, DateSubmitted) VALUES ('$guestName', '$email', '$submissionDate')";
             if ($conn->query($insertGuestSql) === TRUE) {
                 $guestID = $conn->insert_id; // Get the new GuestID
             } else {
