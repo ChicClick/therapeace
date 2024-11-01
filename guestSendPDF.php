@@ -155,28 +155,6 @@ $customWidths = [
     45 => 58,   
 ];
 
-// Handle POST request to get email, phone, and parent's name
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $guestName = $_POST['guestName'];
-    $email = $_POST['email'];
-    $phone = $_POST['phone'];
-    $submissionDate = date('Y-m-d H:i:s'); // Current date and time
-
-    // Get the responseID from session
-    // Handle POST request to get guest details
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $guestName = $_POST['guestName'];
-    $email = $_POST['email'];
-    $confirmEmail = $_POST['confirmEmail'];
-    $phone = $_POST['phone'];
-    $submissionDate = date('Y-m-d H:i:s'); // Current date and time
-
-    // Validate email and confirmEmail
-    if ($email !== $confirmEmail) {
-        die("Email and confirm email do not match.");
-    }
-
-    // Get the responseID from session
    // Handle POST request to get guest details
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $guestName = $_POST['guestName'];
