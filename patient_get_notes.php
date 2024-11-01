@@ -27,9 +27,11 @@ if ($sessionID && $patientID) {
     $sql = "SELECT s.sessionDate, t.name AS therapistName, n.feedback, n.feedbackDate
             FROM sessionfeedbacknotes n
             JOIN sessions s ON n.sessionID = s.sessionID
-            JOIN therapist t ON s.therapistID = t.therapistID
+            JOIN therapists t ON s.therapistID = t.therapistID
             WHERE n.sessionID = ? AND n.patientID = ?";
-    $stmt = $mysqli->prepare($sql);
+    
+    // Use the $conn variable instead of $mysqli
+    $stmt = $conn->prepare($sql);
     
     if (!$stmt) {
         echo json_encode([
@@ -78,5 +80,5 @@ if ($sessionID && $patientID) {
 }
 
 // Close the database connection
-$mysqli->close();
+$conn->close();
 ?>
