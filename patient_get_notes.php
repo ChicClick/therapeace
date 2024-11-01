@@ -1,6 +1,6 @@
 <?php
 session_start(); // Start the PHP session
-include db_conn.php;
+include 'db_conn.php';
 
 // Check if the patient is logged in
 if (!isset($_SESSION['patientID'])) {
