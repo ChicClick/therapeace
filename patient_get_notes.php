@@ -1,8 +1,7 @@
 <?php
-error_reporting(E_ALL); // Report all PHP errors
-ini_set('display_errors', 1); // Display errors in the browser
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
 session_start(); // Start the PHP session
-
 
 // Check if the patient is logged in
 if (!isset($_SESSION['patientID'])) {
@@ -17,27 +16,28 @@ if (!isset($_SESSION['patientID'])) {
 $patientID = $_SESSION['patientID'];
 
 // Include the database connection file
-require_once 'db_conn.php';
-
-// Database connection
-$mysqli = new mysqli("localhost", "root", "JM0987654", "therapeacedb");
-
-// Check connection
-if ($mysqli->connect_error) {
-    die("Connection failed: " . $mysqli->connect_error);
-}
+require_once 'db_conn.php'; // Ensure this file contains the connection logic
 
 // Get sessionID from POST request
 $sessionID = isset($_POST['sessionID']) ? $_POST['sessionID'] : '';
 
 if ($sessionID && $patientID) {
     // Prepare and execute query to fetch notes based on sessionID and patientID
-    $sql = "SELECT s.sessionDate, therapistName, n.feedback, n.feedbackDate
+    $sql = "SELECT s.sessionDate, t.name AS therapistName, n.feedback, n.feedbackDate
             FROM sessionfeedbacknotes n
             JOIN sessions s ON n.sessionID = s.sessionID
             JOIN therapist t ON s.therapistID = t.therapistID
             WHERE n.sessionID = ? AND n.patientID = ?";
     $stmt = $mysqli->prepare($sql);
+    
+    if (!$stmt) {
+        echo json_encode([
+            'success' => false,
+            'error' => 'Failed to prepare the SQL statement'
+        ]);
+        exit();
+    }
+
     $stmt->bind_param("is", $sessionID, $patientID); // "is" -> i for sessionID (int), s for patientID (string)
     $stmt->execute();
     $result = $stmt->get_result();
