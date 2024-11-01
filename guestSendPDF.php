@@ -1,6 +1,5 @@
 <?php
 session_start(); // Start the session
-
 ob_start(); // Start output buffering
 
 // Include necessary libraries
@@ -158,22 +157,33 @@ $customWidths = [
 
 // Handle POST request to get email, phone, and parent's name
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $parentName = $_POST['guestName'];
+    $guestName = $_POST['guestName'];
     $email = $_POST['email'];
     $phone = $_POST['phone'];
+    $submissionDate = date('Y-m-d H:i:s'); // Current date and time
 
     // Get the responseID from session
     if (isset($_SESSION['responseID'])) {
         $responseID = $_SESSION['responseID'];
 
         // Sanitize input
-        $parentName = mysqli_real_escape_string($conn, $guestName);
+        $guestName = mysqli_real_escape_string($conn, $guestName);
         $email = mysqli_real_escape_string($conn, $email);
         $phone = mysqli_real_escape_string($conn, $phone);
 
-        // Update form_responses table with parentName, email, and phone
+        // Update form_responses table
         $sql = "UPDATE form_responses SET guestName='$guestName', email='$email', phone='$phone' WHERE responseID='$responseID'";
         $conn->query($sql); // Execute the query
+
+        // Insert into guest table if the guest doesn't already exist
+        $checkGuestSql = "SELECT * FROM guest WHERE Email='$email' LIMIT 1";
+        $result = $conn->query($checkGuestSql);
+
+        if ($result->num_rows == 0) {
+            // Guest does not exist, insert new guest
+            $insertGuestSql = "INSERT INTO guest (GuestName, Email, DateSubmitted) VALUES ('$guestName', '$email', '$submissionDate')";
+            $conn->query($insertGuestSql);
+        }
     } else {
         die("No response ID found in session.");
     }
