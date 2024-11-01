@@ -155,8 +155,9 @@ $customWidths = [
     45 => 58,   
 ];
 
-  // Handle POST request to get guest details
+ // Handle POST request to get guest details
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    // Retrieve guest details from POST data
     $guestName = $_POST['guestName'];
     $email = $_POST['email'];
     $phone = $_POST['phone'];
@@ -193,11 +194,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             }
         }
 
-        // Now update the form_responses table to associate this guest with the responseID
-        $updateResponseSql = "UPDATE form_responses SET responseID='$guestID' WHERE responseID='$responseID'";
-        if ($conn->query($updateResponseSql) === FALSE) {
-            die("Error updating form_responses: " . $conn->error);
+        // Now insert the guest information into form_responses, associating it with the responseID
+        $insertResponseSql = "INSERT INTO form_responses (responseID, GuestID, GuestName, Email, Phone) VALUES ('$responseID', '$guestID', '$guestName', '$email', '$phone')";
+        if ($conn->query($insertResponseSql) === FALSE) {
+            die("Error inserting response: " . $conn->error);
         }
+
     } else {
         die("No response ID found in session.");
     }
