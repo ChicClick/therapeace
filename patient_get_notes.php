@@ -1,5 +1,8 @@
 <?php
+error_reporting(E_ALL); // Report all PHP errors
+ini_set('display_errors', 1); // Display errors in the browser
 session_start(); // Start the PHP session
+
 
 // Check if the patient is logged in
 if (!isset($_SESSION['patientID'])) {
