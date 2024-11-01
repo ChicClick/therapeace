@@ -155,7 +155,7 @@ $customWidths = [
     45 => 58,   
 ];
 
-   // Handle POST request to get guest details
+  // Handle POST request to get guest details
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $guestName = $_POST['guestName'];
     $email = $_POST['email'];
@@ -165,26 +165,17 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     // Validate email and confirmEmail
     if ($email !== $confirmEmail) {
-        die("Email and confirm email do not match.");
+        die("Emails do not match.");
     }
 
-    // Get the responseID from session
-    if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $guestName = $_POST['guestName'];
-    $email = $_POST['email'];
-    $confirmEmail = $_POST['confirmEmail'];
-    $phone = $_POST['phone'];
-    $submissionDate = date('Y-m-d H:i:s');
+    // Sanitize inputs
+    $guestName = mysqli_real_escape_string($conn, $guestName);
+    $email = mysqli_real_escape_string($conn, $email);
+    $phone = mysqli_real_escape_string($conn, $phone);
 
-    if ($email !== $confirmEmail) {
-        die("Email and confirm email do not match.");
-    }
-
+    // Check if responseID is set
     if (isset($_SESSION['responseID'])) {
         $responseID = $_SESSION['responseID'];
-        $guestName = mysqli_real_escape_string($conn, $guestName);
-        $email = mysqli_real_escape_string($conn, $email);
-        $phone = mysqli_real_escape_string($conn, $phone);
 
         // Check if guest already exists
         $checkGuestSql = "SELECT GuestID FROM guest WHERE Email='$email' LIMIT 1";
@@ -216,6 +207,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     } else {
         die("No response ID found in session.");
     }
+} else {
+    die("Invalid request method. Only POST requests are allowed.");
 }
 
 // Check if the responseID is set in session before proceeding to fetch data
