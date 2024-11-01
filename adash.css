@@ -1,0 +1,1022 @@
+@font-face {
+    font-family: 'Poppins';
+    src: url('fonts/Poppins-Regular.ttf') format('truetype');
+    font-weight: 400;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Poppins';
+    src: url('fonts/Poppins-Medium.ttf') format('truetype');
+    font-weight: 500;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Poppins';
+    src: url('fonts/Poppins-SemiBold.ttf') format('truetype');
+    font-weight: 600;
+    font-style: normal;
+}
+@font-face {
+    font-family: 'Poppins';
+    src: url('fonts/Poppins-Extrabold.ttf') format('truetype');
+    font-weight: 800; /* Extrabold weight */
+    font-style: normal;
+}
+
+body {
+    font-family: 'Poppins', sans-serif; 
+    margin: 0;
+    padding: 0;
+    display: flex; /* Align left and right sections side by side */
+}
+
+.left-section {
+    width: 18%; 
+    background-color: #FEFDEB; 
+    padding: 10px;
+    height: 100vh; /* Ensure it takes the full height */
+    box-sizing: border-box;
+}
+
+.left-section .logo {
+    margin-left: 4%;
+    margin-top: 9px;
+    text-align: left;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center; 
+}
+
+.left-section h2 {
+    color: #432705;
+    margin-left: 5px;
+    font-size: large;
+    font-weight: bolder;
+    text-align: left;
+    margin-bottom: 20px;
+}
+
+.left-section .logo img {
+    width: 60px; 
+}
+.left-section ul li a i {
+    margin-right: 10px; /* Adjust the spacing as needed */
+    font-size: 18px; /* Adjust icon size if necessary */
+}
+.left-section ul {
+    margin-left: 15px;
+    list-style: none;
+    padding: 0;
+}
+
+.left-section li {
+    display: flex;
+    align-items: center;
+    padding: 9px; /* Adjust padding as needed */
+}
+
+
+.left-section li a {
+    cursor: pointer;
+    margin-top: auto;
+    align-items: center;
+    text-decoration: none;
+    color: #432705;
+    font-weight: 600;
+    display: block;
+    font-size: 11px;
+}
+
+/* Style for active menu item */
+.left-section ul li.active a {
+    padding: 10px;
+    width: 150px;
+    font-weight: bolder;
+    border-radius: 5px;
+    background-color: #edededc7; /* Change to your preferred color */
+    color: #FDBC10; /* Change text color */
+}
+
+/* Highlight active menu image */
+.left-section ul li.active img {
+    margin-right: 12px; /* Adjust if needed */
+    filter: brightness(0) sepia(1) hue-rotate(80deg) saturate(5) brightness(1.5);
+}
+
+.left-section p {
+    text-decoration: none;
+    color: #484440c3;
+    padding: 8px;
+    display: block;
+    font-size: 10px;
+}
+.content {
+    display: none;
+}
+.content.active {
+    display: block;
+}
+.right-section {
+    flex-grow: 1; /* Make the right section take the remaining space */
+    padding: 20px;
+    position: relative;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+}
+
+.top-bar {
+    display: flex;
+    justify-content: space-between; /* Space between search bar and profile section */
+    align-items: center;
+    padding: 6px 20px;
+    background-color: #f9f9f900;
+    border-bottom: 1px solid #ddd;
+}
+
+.search-bar {
+    font-family: 'Poppins', sans-serif; 
+    display: flex;
+    align-items: center;
+    width: 50%; 
+    background-color: #f0f0f58a;
+    font-size: 3px;
+    padding: 5px;
+    border-radius: 5px;
+}
+
+.search-bar input {
+    font-family: 'Poppins', sans-serif;
+    flex-grow: 1;
+    padding: 5px;
+    border: none;
+    background-color: #f0f0f5;
+    border-radius: 10px;
+}
+
+.search-bar input:focus {
+    outline: none;
+}
+
+.search-bar button {
+    background-color: transparent;
+    color: #dbdbe4 ;
+    border: none;
+    padding: 5px;
+    cursor: pointer;
+}
+
+.profile-section {
+    display: flex;
+    align-items: center;
+}
+
+.profile-section img {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    margin-right: 10px;
+}
+
+.profile-section p {
+    margin: 0;
+    font-size: 14px;
+    color: #432705;
+    font-weight: 400;
+}
+
+.right-section h4 {
+    font-weight: 600;
+    margin-top: 3%;
+    color: #432705;
+    font-size: 20px;
+    
+}
+
+/* Initially hide all sections */
+.right-section .content {
+    display: none;
+}
+
+/* Show the active section */
+.right-section .content.active {
+    display: block;
+}
+.add-appointment-button {
+    font-family: 'Poppins', sans-serif;
+    display: flex;
+    align-items: center;
+    background-color: #fff; /* Change to the desired background color */
+    color: #ECB723; /* Change to the desired text color */
+    border: 1px solid #ddd; /* Border color */
+    border-radius: 4px;
+    padding: 8px 16px;
+    font-size: 14px;
+    cursor: pointer;
+    margin-bottom: 15px; /* Space below the button */
+    margin-right: 15px; /* Space to the right if needed */
+    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1); /* Shadow for depth */
+}
+
+.add-appointment-button i {
+    margin-right: 5px; /* Space between the icon and text */
+}
+.search-bar-content {
+    font-family: 'Poppins', sans-serif; 
+    display: flex;
+    align-items: center;
+    width: 20%; 
+    background-color: #f0f0f5cb;
+    font-size: 3px;
+    padding: 3px;
+    border-radius: 5px;
+    margin-left: auto;
+}
+
+.search-bar-content input {
+    font-family: 'Poppins', sans-serif; 
+    font-size: 12px;
+    flex-grow: 1;
+    padding: 5px;
+    border: none;
+    background-color: transparent;
+}
+
+.search-bar-content input:focus {
+    outline:#FDBC10;
+}
+
+.search-bar-content button {
+    background-color: transparent;
+    color: #dbdbe4 ;
+    border: none;
+    padding: 5px;
+    cursor: pointer;
+}
+
+/* Profile section container */
+.patient-info {
+    padding: 20px;
+    background-color: transparent;
+    border-radius: 10px;
+}
+/* Profile header (Image and name) - Unchanged */
+.profile-header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+/* Profile picture - Unchanged */
+.profile-picture {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    margin-right: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    object-fit: cover;
+}
+
+/* Profile details - Unchanged */
+.profile-details h2 {
+    font-size: 20px;
+    font-weight: 500;
+    color: #432705;
+    margin-bottom: 0px;
+}
+
+.profile-details h3 {
+    margin-top: 0px;
+    font-weight: 400;
+    font-size: 16px;
+    color: #ff9900;
+}
+
+/* Profile tabs (About, Sessions) - Updated */
+.profile-tabs {
+    margin-top: 5px;
+    display: flex;
+    justify-content: left;
+    gap: 10px;
+    width: 60%;
+    margin: 0 auto 20px auto; /* Center the block */
+    border-bottom: 1px solid #ddddddcd;
+}
+
+.profile-tabs .tab {
+    padding: 10px 20px;
+    cursor: pointer;
+    border-bottom: 2px solid transparent;
+}
+
+.profile-tabs .tab.active {
+    border-bottom: 2px solid #ff9900;
+    font-weight: bold;
+}
+
+/* Profile information sections - Updated */
+.profile-info {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start; /* Aligns profile information content to the start */
+    width: 60%; /* Matches the width of the profile-tabs */
+    margin: 20px auto; /* Center the block horizontally with auto margins */
+    text-align: justify; /* Justifies the text inside the profile-info container */
+}
+
+.profile-info h5 {
+    font-size: 10px;
+    color: #55555593;
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
+
+.profile-info p {
+    font-size: 12px;
+    color: #333;
+    margin: 5px 0;
+}
+
+/* Container for the contact information */
+.contact-info-wrapper {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap; /* Allows wrapping of content if necessary */
+    width: 100%;
+}
+
+.contact-info-main {
+    flex: 1;
+    min-width: 0; /* Prevents shrinking below the minimum width */
+}
+
+.contact-info-additional {
+    flex: 1;
+    min-width: 0; /* Prevents shrinking below the minimum width */
+}
+
+/* Ensure the additional section does not take more than a specific width */
+.contact-info-additional {
+    max-width: 300px; /* Adjust as necessary */
+}
+
+.profile-info p strong {
+    font-size: 12px;
+    color: #432705;
+    font-weight: bold;
+}
+
+#appointments-section th,#patients-information-section th,
+#staff-section th,#services-section th{
+    text-decoration: none;
+    font-weight: 400;
+    color: #4d4a47c3;
+    font-size: 10px;
+    padding: 12px 100px; 
+    text-align: left;  
+    vertical-align: middle; 
+    border-bottom: 1px solid #ddddddcd;
+}
+
+#appointments-section td,
+#patients-information-section td,
+#staff-section td,
+#services-section td {
+    text-decoration: none;
+    font-weight: 500;
+    color: #000000;
+    font-size: 11px;
+    padding: 8px 12px; 
+    text-align: center;
+    vertical-align: middle;
+    border-bottom: 1px solid #ddddddcd;
+}
+
+/* Hover effect for entire row */
+#patients-information-section tbody tr:hover,
+#clinic-staff-table tbody tr:hover,
+#clinic-admin-table tbody tr:hover,
+#clinic-therapist-table tbody tr:hover,
+#services-section tbody tr:hover
+{
+    background-color: #ac9477dc; /* Brown background on hover */
+    transition: background-color 0.3s ease;
+}
+
+#patients-information-section tbody tr:hover td:first-child,
+#clinic-staff-table tbody tr:hover td:first-child,
+#clinic-admin-table tbody tr:hover td:first-child,
+#clinic-therapist-table tbody tr:hover td:first-child,
+#services-section tbody tr:hover td:first-child
+{
+    transition: background-color 0.3s ease;
+    border-top-left-radius: 10px;
+    border-bottom-left-radius: 10px;
+}
+
+#patients-information-section tbody tr:hover td:last-child,
+#clinic-staff-table tbody tr:hover td:last-child,
+#clinic-admin-table tbody tr:hover td:last-child,
+#clinic-therapist-table tbody tr:hover td:last-child,
+#services-section tbody tr:hover td:last-child
+{
+    transition: background-color 0.3s ease;
+    border-top-right-radius: 10px;
+    border-bottom-right-radius: 10px;
+}
+
+#patients-information-section tbody tr:hover td,
+#clinic-staff-table tbody tr:hover td,
+#clinic-admin-table tbody tr:hover td,
+#clinic-therapist-table tbody tr:hover td,
+#services-section tbody tr:hover td
+{
+    transition: background-color 0.3s ease;
+    cursor: pointer;
+    background-color: inherit;
+    color: #ffffff;
+}
+
+#appointments-section td {
+    align-items: center; 
+    gap: 20px;
+}
+
+#appointments-section td img,
+#patients-information-section td img,
+#staff-section td img,
+#services-section td img {
+    margin-right: 10px;
+    width: 30px; 
+    height: auto; 
+    border-radius: 50%; 
+    vertical-align: middle; 
+}
+#appointments-section td a {
+    margin-left: 5px;
+    color: #FDBC10; 
+    text-decoration: none; 
+}
+
+#appointments-section td a:hover {
+    text-decoration: underline; 
+}
+
+/* Modal Background */
+/* Modal and popup form styling */
+/* Modal Background */
+.modal {
+    display: none; /* Hidden by default */
+    position: fixed; 
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5); /* Black with opacity */
+    z-index: 1;
+}
+
+/* Modal Content */
+.modal-content {
+    position: absolute;
+    background-color: #fefefe;
+    padding: 20px;
+    border-radius: 10px;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 80%;
+    max-width: 400px;
+    text-align: center;
+}
+
+/* Next Button */
+.next-btn {
+    background-color: #4CAF50;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
+    position: relative;
+    bottom: -10px;
+    right: -10px;
+}
+
+/* Calendar Styles (you can adjust based on your calendar widget) */
+#calendar {
+    margin: 20px 0;
+}
+
+.close, .close-btn {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    cursor: pointer;
+}
+
+.close:hover, .close-btn:hover {
+    color: #000;
+}
+
+/* Styling for the pop-up form add appointment*/
+.popup {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 999;
+    background-color: #F6F0DC;
+    color: #432705;
+    box-shadow: 0 0 10px rgba(0,0,0,0.2);
+    width: 500px;
+    padding: 20px;
+    border-radius: 8px;
+    text-align: center;
+}
+
+.popup-content {
+    position: relative;
+}
+
+.popup-form {
+    display: none;
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5); /* Overlay effect */
+}
+
+.popup-content-form {
+    background-color: #F6F0DC;
+    margin: 5% auto;
+    padding: 20px;
+    border-radius: 15px;
+    width: 50%; /* Make the form narrower */
+    max-height: 80%; /* Limit the form height */
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    position: relative;
+    font-family: 'Poppins', sans-serif;
+    font-weight: 500;
+}
+
+.close-btn {
+    position: absolute;
+    right: 15px;
+    top: 15px;
+    font-size: 20px;
+    cursor: pointer;
+    color: #333;
+}
+
+.close-btn:hover {
+    color: #000;
+}
+
+h2 {
+    text-align: center;
+    color: #4e4e4e;
+    font-weight: normal;
+}
+
+.form-row {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap; /* Ensure flexibility for responsive design */
+}
+
+.form-group {
+    flex-basis: 48%;
+    margin-bottom: 20px;
+}
+
+label {
+    display: block;
+    font-size: 0.85rem; /* Make the label font smaller */
+    margin-bottom: 5px;
+    color: #4e4e4e;
+}
+
+input[type="text"], select {
+    width: 90%; /* Reduce the input field width */
+    padding: 8px; /* Adjust padding to make inputs shorter */
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 0.9rem;
+    background-color: #FEFDEB;
+    box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+.services-group {
+    flex-basis: 48%;
+}
+
+.services-checkbox {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.services-checkbox label {
+    flex-basis: 48%;
+    margin-bottom: 10px;
+}
+
+input[type="checkbox"] {
+    margin-right: 10px;
+}
+
+.submit-btn {
+    position: absolute; /* Positioning the button */
+    right: 20px; /* Distance from the right edge */
+    bottom: 20px; /* Distance from the bottom edge */
+    width: 150px;
+    padding: 10px 20px;
+    background-color: #FFFAEB;
+    color: #4e4e4e;
+    border: none;
+    border-radius: 25px;
+    cursor: pointer;
+    font-size: 1rem;
+    text-align: center;
+}
+
+.submit-btn i {
+    margin-left: 10px;
+}
+
+.submit-btn:hover {
+    background-color: #ffc107;
+} 
+
+.calendar-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 10px;
+    margin-top: 10px;
+}
+
+.day {
+    width: 40px; /* Set a specific width */
+    height: 40px; /* Set the same height as the width for a square */
+    padding: 0; /* Remove padding to maintain the square shape */
+    text-align: center;
+    border-radius: 4px; /* Keep border radius for slightly rounded corners */
+    cursor: pointer; /* Change cursor to pointer on hover */
+    display: flex; /* Use flexbox to center the text */
+    align-items: center; /* Center vertically */
+    justify-content: center; /* Center horizontally */
+}
+
+.day:hover{
+    color: #43270562;
+}
+
+.day.disabled {
+    color: #C8CBD9;
+    cursor: not-allowed;
+}
+
+.day.selected {
+    background-color: #FDBC10;
+    border-radius: 50%;
+    color: #432705;
+}
+.month-navigation {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 10px; /* Space below the month display */
+}
+
+.nav-link-month {
+    font-size: 24px; /* Increase size for better visibility */
+    text-decoration: none; /* Remove underline */
+    margin: 0 10px; /* Space between the links and month display */
+    cursor: pointer; /* Change cursor to pointer on hover */
+    color: #432705; /* Change color on hover */
+}
+
+.nav-link-month:hover {
+    color: #43270562; /* Change color on hover */
+}
+#proceedButton {
+    padding: 13px;
+    color: #432705;
+    background-color: #FFFAEB;
+    border: none;
+    border-radius: 20px;
+    float: right; /* Float the button to the right */
+    margin-top: 20px; /* Optional: Add some margin for spacing */
+    cursor: pointer;
+}
+#proceedButton:hover {
+    background: linear-gradient(90deg, #FDBC10 0%, #FFEA09 100%);
+    color: #432705;
+}
+#availableTimes {
+    margin: 5px;
+    padding: 5px;
+    border-radius: 8px;
+}
+
+#availableTimes h5 {
+    margin-top: 15px;
+    font-size: 15px; /* Font size for session headings */
+}
+
+#availableTimes ul {
+    list-style-type: none; /* Remove default list bullets */
+    padding: 0; /* Remove default padding */
+    display: flex; /* Use flexbox to arrange list items in a row */
+    flex-wrap: wrap; /* Allow wrapping to the next line if necessary */
+}
+
+#availableTimes li {
+    margin: 7px; /* Space between items */
+    padding: 8px 13px; /* Padding inside each box */
+    border-radius: 5px; /* Rounded corners */
+    background-color: #C4B098; /* Light background color */
+    cursor: pointer; /* Pointer cursor on hover */
+    transition: background-color 0.3s; /* Smooth transition for background color */
+    display: inline-block; /* Ensure items are inline */
+    width: calc(25% - 14px); /* Set width to 25% minus the margins to fit 4 per row */
+    text-align: center; /* Center text within the box */
+    font-weight: 600;
+    box-sizing: border-box; /* Include padding and border in element's total width */
+}
+
+#availableTimes li:hover {
+    background-color: #c4b098b5; /* Darker color on hover */
+}
+
+
+#availableTimes li:hover {
+    background-color: #c4b098b5; /* Darker color on hover */
+}
+
+#confirmTimeButton {
+    padding: 13px;
+    color: #432705;
+    background-color: #FFFAEB;
+    border: none;
+    border-radius: 20px;
+    float: right; /* Float the button to the right */
+    margin-top: 20px; /* Optional: Add some margin for spacing */
+    cursor: pointer;
+    transition: background-color 0.3s; /* Smooth transition for button color */
+}
+
+#confirmTimeButton:hover {
+    background: linear-gradient(90deg, #FDBC10 0%, #FFEA09 100%);
+    color: #432705;
+}
+
+.time-slot.selected {
+    background-color: #432705;
+    color: white;
+    font-weight: bold;
+    border-radius: 4px;
+}
+
+.dropdown-content {
+    display: none; /* Ensure it's hidden initially */
+    position: absolute;
+    background-color: #f9f9f9;
+    min-width: 160px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    z-index: 1;
+}
+
+.dropdown-content div {
+    padding: 8px;
+    cursor: pointer;
+}
+
+.dropdown-content div:hover {
+    background-color: #f1f1f1; /* Change color on hover */
+}
+
+
+
+
+/* staff */
+/* add staff*/
+.staff-header {
+    display: flex;
+    justify-content: space-between; /* Makes the button move to the right */
+    align-items: center; /* Aligns button vertically with the text */
+    margin-bottom: 20px;
+    padding-top: 20px;
+}
+
+.staff-header h4 {
+    margin: 0; /* Remove margin from h4 for better alignment */
+}
+.add-staff-button {
+    font-family: 'Poppins', sans-serif;
+    display: flex;
+    align-items: center;
+    background-color: #fff; /* Change to the desired background color */
+    color: #ECB723; /* Change to the desired text color */
+    border: 1px solid #ddd; /* Border color */
+    border-radius: 4px;
+    padding: 8px 16px;
+    font-size: 14px;
+    cursor: pointer;
+    margin-bottom: 15px; /* Space below the button */
+    margin-right: 15px; /* Space to the right if needed */
+    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1); /* Shadow for depth */
+}
+
+.add-staff-button i {
+    margin-right: 5px; /* Space between the icon and text */
+}
+/* General button styling */
+.button-container button {
+    font-family: 'Poppins', sans-serif;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    padding: 10px 20px;
+    margin: 10px 0;
+    margin-left: 20px; /* Add left margin to create space */
+    background-color: transparent; /* Matches the background */
+    border: none;
+    border-radius: 0;
+    cursor: pointer;
+    font-size: 14px;
+    color: #333; /* dark text color */
+    width: calc(100% - 20px); /* Adjust width to account for margin */
+    text-align: left;
+    transition: background-color 0.3s ease;
+}
+
+/* Button hover effect */
+.button-container button:hover {
+    background-color: #FDF7E4;
+    border-radius: 10px;
+}
+
+/* Icon inside button */
+.button-container button i {
+    margin-right: 10px;
+    font-size: 18px;
+    color: #999; /* muted icon color */
+}
+/* Active/selected button state */
+.button-container button.active {
+    background-color: #FAF8E3; /* darker background when active */
+    color: #333;
+    font-weight: 500;
+    border-radius: 10px;
+}
+
+.button-container button.active i {
+    color: #999; /* icon turns white when active */
+    border-radius: 10px;
+}
+
+/* Layout styling for button and table */
+.staff-container {
+    display: flex;
+    justify-content: flex-start; /* Aligns items to the start */
+    align-items: flex-start; /* Aligns buttons and table to the top */
+}
+
+/* Button container styling */
+.button-container {
+    width: 30%; /* Adjust button container width */
+    margin-right: 20px; /* Adds spacing between buttons and table */
+    border-radius: 10px;
+}
+
+/* Table container styling */
+.table-container {
+    width: 70%; /* Adjust table container width */
+}
+
+/* Table styling */
+.table-container.hidden {
+    display: none;
+}
+
+#staff-table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: #FAF8E3; /* light yellowish background for the table */
+}
+
+#staff-table th, #staff-table td {
+    padding: 10px;
+    text-align: left;
+    border-bottom: 1px solid #E0E0E0; /* light border */
+}
+
+#staff-table th {
+    font-weight: bold;
+    color: #999;
+    text-transform: uppercase;
+    font-size: 14px;
+}
+
+#staff-table tbody tr:hover {
+    background-color: #EEE9C4; /* hover effect on rows */
+}
+
+#staff-table tbody tr.active {
+    background-color: #D1C298; /* row with selected staff */
+}
+
+/*  SERVICE  */
+/* VIEW SERVICE Text */
+.service-info h4 {
+    font-weight: 600;
+    letter-spacing: 1px;
+    color: #000000;
+}
+
+/* Service Header (Image + Details + Edit Button) */
+.service-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between; /* To separate the edit button */
+    margin-bottom: 10px;
+}
+
+/* Service Picture */
+.service-picture {
+    width: 250px; /* Adjust image size */
+    height: auto;
+    border-radius: 20px;
+    margin-right: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    object-fit: cover;
+}
+
+/* Service Details */
+.service-details {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column; /* Ensures h2, h3, and h4 stack vertically */
+    justify-content: center; /* Centers them vertically */
+}
+
+.service-details h2 {
+    font-size: 32px;
+    font-weight: 700;
+    color: #432705; /* Brown color */
+    margin-bottom: 5px;
+    margin-top: 0px; /* Align with top */
+    line-height: 1.2; /* Adjusts the spacing between lines */
+}
+
+.service-details h3 {
+    margin: 0; /* Removes any margin to align it perfectly */
+    font-weight: 400;
+    font-size: 20px;
+    color: #d18700; /* Lighter orange */
+    line-height: 1.2; /* Adjusts the spacing between lines */
+}
+
+.service-details h4 {
+    margin-top: 8px; /* Add some space below h3 */
+    font-size: 18px;
+    color: #333; /* Change as needed */
+}
+
+
+/* Service Description */
+.service-about p {
+    font-family: 'Poppins', sans-serif;
+    font-size: 16px;
+    font-weight: light;
+    line-height: 1.6;
+    color: #432705;
+}
+
+/* Edit Service Button */
+.edit-service {
+    font-family: 'Poppins', sans-serif;
+    display: flex;
+    align-items: center;
+    background-color: #fff; /* Change to the desired background color */
+    color: #ECB723; /* Change to the desired text color */
+    border: 1px solid #ddd; /* Border color */
+    border-radius: 4px;
+    padding: 8px 16px;
+    font-size: 14px;
+    cursor: pointer;
+    margin-bottom: 15px; /* Space below the button */
+    margin-right: 15px; /* Space to the right if needed */
+    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1); /* Shadow for depth */
+}
+
+.edit-service:hover {
+    background-color: #ddd;
+}

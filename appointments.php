@@ -7,12 +7,12 @@ $sql = "
     SELECT 
         patient.patientName AS patient_name, 
         parent.parentName AS parent_name, 
-        services.serviceName AS service_name, 
+        service.serviceName AS service_name, 
         appointment.schedule 
     FROM appointment
     JOIN patient ON appointment.patientID = patient.patientID
     JOIN parent ON appointment.parentID = parent.parentID
-    JOIN services ON appointment.serviceID = services.serviceID
+    JOIN service ON appointment.serviceID = service.serviceID
 ";
 
 $result = $conn->query($sql);
