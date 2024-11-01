@@ -1,5 +1,6 @@
 <?php
 include 'patient_get_appointments.php';
+include 'patient_get_notes.php';
 ?>
 
 
