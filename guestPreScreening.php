@@ -269,8 +269,8 @@ foreach ($questions as $question) {
                 <p>Please be aware that this checklist is designed to assess potential symptoms and should be interpreted alongside a thorough medical and clinical evaluation. It is not a stand-alone diagnostic tool and should only be used in conjunction with a comprehensive assessment of your individual circumstances. Thus, the submitted answers will still be reviewed by an affiliated therapist from our clinic, and you will receive an email with your results afterwards.</p>
                 <p>Enter your contact details to receive further instructions about the next step.</p>
                 <form id="contact-form" action="guestSendPDF.php" method="POST">
-                    <label for="parent_name">Parent's Name:</label>
-                    <input type="text" name="parentName" id="parentName" required><br>
+                    <label for="guestName">Guest's Name:</label>
+                    <input type="text" name="guestName" id="guestName" required><br>
                 
                     <label for="email">Email:</label>
                     <input type="email" name="email" id="email" required><br>
@@ -280,8 +280,10 @@ foreach ($questions as $question) {
                 
                     <!-- Add hidden input for responseID -->
                     <input type="hidden" name="responseID" id="responseID" value="">
+                
                     <button type="submit">Submit and download PDF</button>
                 </form>
+
 
             </div>
         </div>
