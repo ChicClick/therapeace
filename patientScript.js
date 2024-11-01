@@ -17,7 +17,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // Function to handle showing the correct section
     function showSection(sectionId) {
         document.querySelectorAll('section').forEach(section => section.classList.add('hidden'));
-    
+
         // If switching to appointments, ensure notes section is hidden
         if (sectionId === 'appointments') {
             notesSection.style.display = 'none'; // Hide the notes section
@@ -37,7 +37,6 @@ document.addEventListener('DOMContentLoaded', function() {
         event.preventDefault();
         showSection('appointments'); // Show appointments section
     });
-
 
     const notesSection = document.getElementById('open-notes');
     const notesTable = document.getElementById('notes-table');
@@ -69,12 +68,8 @@ document.addEventListener('DOMContentLoaded', function() {
             const sessionID = row.dataset.sessionId; // Get session ID from the clicked row
             const patientID = '<?php echo $_SESSION["patientID"]; ?>'; // Get patient ID from the session
 
-            // Get the schedule date and therapist name from the clicked row
-            const scheduleDate = row.getAttribute('data-schedule'); 
-            const therapistName = row.getAttribute('data-therapist');
-
             // Fetch the notes for the selected session
-           fetch('patient_get_notes.php', {
+            fetch('patient_get_notes.php', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/x-www-form-urlencoded'
@@ -91,7 +86,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 return response.json();
             })
             .then(data => {
-                // Handle the data as before
+                showNotes(data); // Display the notes using the showNotes function
             })
             .catch(error => {
                 console.error('Error fetching notes:', error);
@@ -124,72 +119,58 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Simple summarization function
     function summarizeText(notes) {
-        // Combine all feedback notes into one text block
         let text = notes.join(". ");
-        
-        // Split into sentences
         let sentences = text.match(/[^\.!\?]+[\.!\?]+/g) || [];
         
-        // Define important keywords for scoring (customize as per therapy context)
         const keywords = ["improved", "progress", "challenges", "achieved", "struggling", "success", "goal"];
         const scores = sentences.map(sentence => {
             let score = 0;
-            
-            // Increase score based on keyword presence
             keywords.forEach(keyword => {
                 if (sentence.toLowerCase().includes(keyword)) score += 3;
             });
-            
-            // Increase score based on sentence length (prefer meaningful length)
             score += sentence.split(" ").length > 8 ? 2 : 0;
-    
             return { sentence, score };
         });
-    
-        // Sort sentences by score in descending order
+
         scores.sort((a, b) => b.score - a.score);
-        
-        // Select top sentences to form a coherent summary
         const topSentences = scores.slice(0, 3).map(item => item.sentence);
-    
         return topSentences.join(" ");
     }
 
-});
-        // Get logout modal element
-        const logoutModal = document.getElementById('logoutModal');
-        const logoutBtn = document.getElementById('logoutBtn');
-        const closeModal = document.getElementById('closeModal');
-        const confirmLogout = document.getElementById('confirmLogout');
-        const cancelLogout = document.getElementById('cancelLogout');
+    // Get logout modal element
+    const logoutModal = document.getElementById('logoutModal');
+    const logoutBtn = document.getElementById('logoutBtn');
+    const closeModal = document.getElementById('closeModal');
+    const confirmLogout = document.getElementById('confirmLogout');
+    const cancelLogout = document.getElementById('cancelLogout');
 
-        // Show the modal when logout button is clicked
-        logoutBtn.addEventListener('click', (event) => {
-            event.preventDefault(); // Prevent the default action
-            logoutModal.style.display = 'block'; // Show the modal
-        });
+    // Show the modal when logout button is clicked
+    logoutBtn.addEventListener('click', (event) => {
+        event.preventDefault(); // Prevent the default action
+        logoutModal.style.display = 'block'; // Show the modal
+    });
 
-        // Close the modal when the user clicks on <span> (x)
-        closeModal.addEventListener('click', () => {
+    // Close the modal when the user clicks on <span> (x)
+    closeModal.addEventListener('click', () => {
+        logoutModal.style.display = 'none';
+    });
+
+    // Close the modal when the user clicks outside of the modal
+    window.addEventListener('click', (event) => {
+        if (event.target === logoutModal) {
             logoutModal.style.display = 'none';
-        });
+        }
+    });
 
-        // Close the modal when the user clicks outside of the modal
-        window.addEventListener('click', (event) => {
-            if (event.target === logoutModal) {
-                logoutModal.style.display = 'none';
-            }
-        });
+    // Confirm logout
+    confirmLogout.addEventListener('click', () => {
+        window.location.href = 'logout.php'; // Redirect to logout script
+    });
 
-        // Confirm logout
-        confirmLogout.addEventListener('click', () => {
-            window.location.href = 'logout.php'; // Redirect to logout script
-        });
-
-        // Cancel logout
-        cancelLogout.addEventListener('click', () => {
-            logoutModal.style.display = 'none'; // Hide the modal
-        });
+    // Cancel logout
+    cancelLogout.addEventListener('click', () => {
+        logoutModal.style.display = 'none'; // Hide the modal
+    });
 
     // Wait for the window to load fully
     window.addEventListener('load', () => {
@@ -212,7 +193,6 @@ document.addEventListener('DOMContentLoaded', function() {
             behavior: 'smooth'
         });
     });
-    
 
     const navbar = document.querySelector('nav'); // Get the navbar
 
@@ -222,26 +202,14 @@ document.addEventListener('DOMContentLoaded', function() {
         } else {
             navbar.classList.remove('scrolled'); // Remove class when not scrolled
         }
-
-        if (window.scrollY > 300) {
-            scrollTopBtn.style.display = 'block';
-        } else {
-            scrollTopBtn.style.display = 'none';
-        }
     });
 
     function searchAppointments() {
-        // Get the value from the search input, converting it to lowercase for case-insensitive comparison
         const input = document.getElementById("appointmentsSearch").value.toLowerCase();
-        // Select all rows in the appointments table
         const rows = document.querySelectorAll(".appointment-row");
         
-        // Loop through each appointment row
         rows.forEach(row => {
-            // Get the therapist name from the data attribute, converting it to lowercase
             const therapistName = row.getAttribute("data-therapist").toLowerCase();
-            
-            // Check if the therapist name includes the input string
             if (therapistName.includes(input)) {
                 row.style.display = ""; // Show the row if it matches
             } else {
@@ -263,70 +231,38 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
     }
-    
+
     let sortOrderDateAppointments = 'asc'; // Initial sort order for appointment dates
     let sortOrderTherapistAppointments = 'asc'; // Initial sort order for therapist names
-    let sortOrderDateNotes = 'asc'; // Initial sort order for notes dates
-    let sortOrderTherapistNotes = 'asc'; // Initial sort order for notes therapist names
 
-    function sortAppointmentsByDate() {
-        const table = document.querySelector(".appointment-table");
-        const rows = Array.from(table.querySelectorAll(".appointment-row"));
-
+    // Sort appointments by date
+    document.getElementById('sortByDate').addEventListener('click', function() {
+        const appointmentsTable = document.querySelector('#appointments-table tbody');
+        const rows = Array.from(appointmentsTable.querySelectorAll('tr'));
+        
         rows.sort((a, b) => {
-            const dateA = new Date(a.querySelector(".row-schedule").innerText);
-            const dateB = new Date(b.querySelector(".row-schedule").innerText);
+            const dateA = new Date(a.querySelector('.appointment-date').textContent);
+            const dateB = new Date(b.querySelector('.appointment-date').textContent);
             return sortOrderDateAppointments === 'asc' ? dateA - dateB : dateB - dateA;
         });
+        
+        sortOrderDateAppointments = sortOrderDateAppointments === 'asc' ? 'desc' : 'asc'; // Toggle sort order
+        rows.forEach(row => appointmentsTable.appendChild(row)); // Append sorted rows
+    });
 
-        sortOrderDateAppointments = sortOrderDateAppointments === 'asc' ? 'desc' : 'asc';
-        table.innerHTML = ''; // Clear table
-        rows.forEach(row => table.appendChild(row)); // Append sorted rows
-    }
-
-    function sortAppointmentsByTherapist() {
-        const table = document.querySelector(".appointment-table");
-        const rows = Array.from(table.querySelectorAll(".appointment-row"));
-
+    // Sort appointments by therapist name
+    document.getElementById('sortByTherapist').addEventListener('click', function() {
+        const appointmentsTable = document.querySelector('#appointments-table tbody');
+        const rows = Array.from(appointmentsTable.querySelectorAll('tr'));
+        
         rows.sort((a, b) => {
-            const nameA = a.querySelector(".row-therapist").innerText.toLowerCase();
-            const nameB = b.querySelector(".row-therapist").innerText.toLowerCase();
+            const nameA = a.querySelector('.therapist-name').textContent.toLowerCase();
+            const nameB = b.querySelector('.therapist-name').textContent.toLowerCase();
             return sortOrderTherapistAppointments === 'asc' ? nameA.localeCompare(nameB) : nameB.localeCompare(nameA);
         });
+        
+        sortOrderTherapistAppointments = sortOrderTherapistAppointments === 'asc' ? 'desc' : 'asc'; // Toggle sort order
+        rows.forEach(row => appointmentsTable.appendChild(row)); // Append sorted rows
+    });
 
-        sortOrderTherapistAppointments = sortOrderTherapistAppointments === 'asc' ? 'desc' : 'asc';
-        table.innerHTML = ''; // Clear table
-        rows.forEach(row => table.appendChild(row)); // Append sorted rows
-    }
-
-    function sortNotesByDate() {
-        const table = document.querySelectorAll(".appointment-table")[1]; // Select the second table for notes
-        const rows = Array.from(table.querySelectorAll(".notes-row"));
-
-        rows.sort((a, b) => {
-            const dateA = new Date(a.querySelector(".row-schedule").innerText);
-            const dateB = new Date(b.querySelector(".row-schedule").innerText);
-            return sortOrderDateNotes === 'asc' ? dateA - dateB : dateB - dateA;
-        });
-
-        sortOrderDateNotes = sortOrderDateNotes === 'asc' ? 'desc' : 'asc';
-        table.innerHTML = ''; // Clear table
-        rows.forEach(row => table.appendChild(row)); // Append sorted rows
-    }
-
-    function sortNotesByTherapist() {
-        const table = document.querySelectorAll(".appointment-table")[1]; // Select the second table for notes
-        const rows = Array.from(table.querySelectorAll(".notes-row"));
-
-        rows.sort((a, b) => {
-            const nameA = a.querySelector(".row-therapist").innerText.toLowerCase();
-            const nameB = b.querySelector(".row-therapist").innerText.toLowerCase();
-            return sortOrderTherapistNotes === 'asc' ? nameA.localeCompare(nameB) : nameB.localeCompare(nameA);
-        });
-
-        sortOrderTherapistNotes = sortOrderTherapistNotes === 'asc' ? 'desc' : 'asc';
-        table.innerHTML = ''; // Clear table
-        rows.forEach(row => table.appendChild(row)); // Append sorted rows
-    }
-
-    
+});
