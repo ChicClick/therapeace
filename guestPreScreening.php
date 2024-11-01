@@ -282,24 +282,45 @@ foreach ($questions as $question) {
         </div>
 
         <!-- Footer -->
-        <footer>
-            <div class="footer-content">
+        <footer class="footer">
+        <footer class="footer">
+            <div class="footer-container">
                 <div class="footer-logo">
                     <img src="images/logo.png" alt="TheraPeace Logo">
-                    <p>TheraPeace</p>
+                    <h2>TheraPeace</h2>
+                    <p>Your Partner in Patient Care</p>
                 </div>
-                <div class="footer-socials">
-                    <a href="#"><i class="fa fa-facebook"></i></a>
-                    <a href="#"><i class="fa fa-instagram"></i></a>
-                    <a href="#"><i class="fa fa-envelope"></i></a>
+                <div class="footer-links">
+                    <h3>Quick Links</h3>
+                    <ul>
+                        <li><a href="#">Home</a></li>
+                        <li><a href="#about">About Us</a></li>
+                        <li><a href="#services">Services</a></li>
+                        <li><a href="#rates">Rates</a></li>
+                    </ul>
                 </div>
                 <div class="footer-contact">
-                    <p>09956522069 | 099532412581</p>
-                    <p>therabeelearningcenter@gmail.com</p>
-                    <p>Therabee Child Development Learning Center 2021. All Rights Reserved.</p>
+                    <h3>Contact Us</h3>
+                    <ul>
+                        <li><i class="fas fa-map-marker-alt"></i> Polytechnic University of the Philippines</li>
+                        <li><i class="fas fa-phone-alt"></i> +63 123 456 7890</li>
+                        <li><i class="fas fa-envelope"></i> contact@therapeace.com</li>
+                    </ul>
+                </div>
+                <div class="footer-social">
+                    <h3>Follow Us</h3>
+                    <ul class="social-icons">
+                        <li><a href="#"><i class="fab fa-facebook-f"></i></a></li>
+                        <li><a href="#"><i class="fab fa-instagram"></i></a></li>
+                        <li><a href="#"><i class="fab fa-twitter"></i></a></li>
+                        <li><a href="#"><i class="fab fa-linkedin"></i></a></li>
+                    </ul>
                 </div>
             </div>
-        </footer>
+            <div class="footer-bottom">
+                <p>&copy; 2024 TheraPeace. All Rights Reserved.</p>
+            </div>
+        </footer>  
         
         <?php if (isset($_GET['success']) && $_GET['success'] == 1): ?>
             <script>
