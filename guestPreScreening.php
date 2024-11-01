@@ -276,7 +276,7 @@ foreach ($questions as $question) {
                     
                     <!-- Add hidden input for responseID -->
                     <input type="hidden" name="responseID" id="responseID" value="">
-                    <button type="submit">Download PDF</button>
+                    <button type="submit">Submit and download PDF</button>
                 </form>
             </div>
         </div>
