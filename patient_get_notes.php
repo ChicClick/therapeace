@@ -27,7 +27,7 @@ if ($sessionID && $patientID) {
     $sql = "SELECT s.sessionDate, t.name AS therapistName, n.feedback, n.feedbackDate
             FROM sessionfeedbacknotes n
             JOIN sessions s ON n.sessionID = s.sessionID
-            JOIN therapists t ON s.therapistID = t.therapistID
+            JOIN therapist t ON s.therapistID = t.therapistID
             WHERE n.sessionID = ? AND n.patientID = ?";
     
     // Use the $conn variable instead of $mysqli
