@@ -1,5 +1,6 @@
 <?php
 session_start(); // Start the PHP session
+include db_conn.php;
 
 // Check if the patient is logged in
 if (!isset($_SESSION['patientID'])) {
@@ -12,9 +13,6 @@ if (!isset($_SESSION['patientID'])) {
 
 // Get the logged-in patientID from session
 $patientID = $_SESSION['patientID'];
-
-// Database connection
-$mysqli = new mysqli("localhost", "root", "JM0987654", "therapeacedb");
 
 // Check connection
 if ($mysqli->connect_error) {
