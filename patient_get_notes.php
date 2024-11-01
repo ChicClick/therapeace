@@ -24,7 +24,7 @@ $sessionID = isset($_POST['sessionID']) ? $_POST['sessionID'] : '';
 
 if ($sessionID && $patientID) {
     // Prepare and execute query to fetch notes based on sessionID and patientID
-    $sql = "SELECT s.sessionDate, t.name AS therapistName, n.feedback, n.feedbackDate
+    $sql = "SELECT s.sessionDate, therapistName, n.feedback, n.feedbackDate
             FROM sessionfeedbacknotes n
             JOIN sessions s ON n.sessionID = s.sessionID
             JOIN therapist t ON s.therapistID = t.therapistID
