@@ -159,14 +159,8 @@ $customWidths = [
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $guestName = $_POST['guestName'];
     $email = $_POST['email'];
-    $confirmEmail = $_POST['confirmEmail'];
     $phone = $_POST['phone'];
     $submissionDate = date('Y-m-d H:i:s'); // Current date and time
-
-    // Validate email and confirmEmail
-    if ($email !== $confirmEmail) {
-        die("Emails do not match.");
-    }
 
     // Sanitize inputs
     $guestName = mysqli_real_escape_string($conn, $guestName);
