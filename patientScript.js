@@ -158,10 +158,9 @@ document.querySelector('a[data-nav-link]').addEventListener('click', function(ev
     
         return topSentences.join(" ");
     }
-    
-});
 
-// Get logout modal element
+});
+        // Get logout modal element
         const logoutModal = document.getElementById('logoutModal');
         const logoutBtn = document.getElementById('logoutBtn');
         const closeModal = document.getElementById('closeModal');
@@ -334,4 +333,4 @@ document.querySelector('a[data-nav-link]').addEventListener('click', function(ev
         rows.forEach(row => table.appendChild(row)); // Append sorted rows
     }
 
-        
+    
