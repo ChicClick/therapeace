@@ -1,5 +1,6 @@
 <?php
 session_start(); // Start the session
+
 ob_start(); // Start output buffering
 
 // Include necessary libraries
@@ -38,6 +39,7 @@ $answerPositions = [
     9 => ['x' => 49, 'y' => 85],
     10 => ['x' => 30, 'y' => 94],
     13 => ['x' => 113, 'y' => 77],
+    16 => ['x' => 143, 'y' => 72.5],
     20 => ['x' => 80, 'y' => 141],
     21 => ['x' => 80, 'y' => 151],
     22 => ['x' => 80, 'y' => 163],
@@ -155,65 +157,19 @@ $customWidths = [
     45 => 58,   
 ];
 
-// Handle POST request to get guest details
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    // Retrieve guest details from POST data
-    $guestName = $_POST['guestName'];
-    $email = $_POST['email'];
-    $phone = $_POST['phone'];
-    $submissionDate = date('Y-m-d H:i:s'); // Current date and time
-
-    // Sanitize inputs
-    $guestName = mysqli_real_escape_string($conn, $guestName);
-    $email = mysqli_real_escape_string($conn, $email);
-    $phone = mysqli_real_escape_string($conn, $phone);
-
-    // Insert into form_responses and get the responseID
-    $insertResponseSql = "INSERT INTO form_responses (submissionDate, guestName, email, phone) 
-                          VALUES ('$submissionDate', '$guestName', '$email', '$phone')";
-    if ($conn->query($insertResponseSql) === TRUE) {
-        $responseID = $conn->insert_id; // Get the new responseID
-        $_SESSION['responseID'] = $responseID; // Store responseID in session
-    } else {
-        die("Error inserting response: " . $conn->error);
-    }
-
-    // Check if guest already exists in the guest table by email
-    $checkGuestSql = "SELECT GuestID FROM guest WHERE Email='$email' LIMIT 1";
-    $result = $conn->query($checkGuestSql);
-
-    if ($result->num_rows > 0) {
-        // Guest exists, update their info and set GuestID to responseID
-        $updateGuestSql = "UPDATE guest SET GuestName='$guestName', DateSubmitted='$submissionDate', GuestID='$responseID' 
-                           WHERE Email='$email'";
-        if ($conn->query($updateGuestSql) === FALSE) {
-            die("Error updating guest: " . $conn->error);
-        }
-    } else {
-        // Guest doesn't exist, insert a new guest with responseID as GuestID
-        $insertGuestSql = "INSERT INTO guest (GuestID, GuestName, Email, DateSubmitted) 
-                           VALUES ('$responseID', '$guestName', '$email', '$submissionDate')";
-        if ($conn->query($insertGuestSql) === FALSE) {
-            die("Error inserting guest: " . $conn->error);
-        }
-    }
-} else {
-    die("Invalid request method. Only POST requests are allowed.");
+// Check if the guestID is set in session before proceeding to fetch data
+if (!isset($_SESSION['guestID'])) {
+    die("No guest ID found in session. Current session data: " . print_r($_SESSION, true));
 }
 
-// Check if the responseID is set in session before proceeding to fetch data
-if (!isset($_SESSION['responseID'])) {
-    die("No response ID found in session.");
-}
-
-// Get the responseID from session
-$responseID = $_SESSION['responseID'];
+// Get the guestID from session
+$guestID = $_SESSION['guestID'];
 
 // Fetch form answers from the database
 $sql = "SELECT q.questionID, q.questionText, a.answerText 
         FROM form_answers a 
         JOIN prescreening_questions q ON a.questionID = q.questionID 
-        WHERE a.responseID = '$responseID'
+        WHERE a.guestID = '$guestID'
         ORDER BY q.pageNumber, q.questionID";  // Fetch questions ordered by page number
 
 $result = $conn->query($sql);
@@ -228,7 +184,7 @@ if ($result->num_rows > 0) {
         $formData[$row['questionID']][] = $row['answerText']; // Use an array to store multiple answers
     }
 } else {
-    die('No form answers found for this response.');
+    die('No form answers found for this guest.');
 }
 
 // Fetch all questions and their corresponding page numbers from the database

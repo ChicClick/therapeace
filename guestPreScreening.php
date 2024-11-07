@@ -14,7 +14,7 @@ foreach ($questions as $question) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>TheraPeace</title>
     <link rel="stylesheet" href="styles.css">
-    <link rel="stylesheet" href="preScreeningstyles.css">
+    <link rel="stylesheet" href="guestPreScreeningstyles.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Architects+Daughter&display=swap" rel="stylesheet">
@@ -30,10 +30,10 @@ foreach ($questions as $question) {
                 <h1>TheraPeace</h1>
             </div>
             <ul class="nav-links">
-                <li><a href="index.html">Home</a></li>
-                <li><a href="index.html#about" data-nav-link>About Us</a></li>
-                <li><a href="index.html#services" data-nav-link>Services</a></li>
-                <li><a href="index.html#rates" data-nav-link>Rates</a></li>
+                <li><a href="guestHomepage.html">Home</a></li>
+                <li><a href="guestHomepage.html#about" data-nav-link>About Us</a></li>
+                <li><a href="guestHomepage.html#services" data-nav-link>Services</a></li>
+                <li><a href="guestHomepage.html#rates" data-nav-link>Rates</a></li>
             </ul>   
             <button class="login-btn" onclick="window.location.href='loginlanding.html';">Login</button>
         </nav>
@@ -136,7 +136,7 @@ foreach ($questions as $question) {
 
                                 // Check if the current question should be skipped
                                 if (in_array($question['questionText'], $questionsToSkip)) {
-                                    continue; // Skip this specific question
+                                    continue;
                                 }
                                 ?>
 
@@ -173,11 +173,11 @@ foreach ($questions as $question) {
                             <?php if ($category === 'Personal Details'): ?>
                                 <div class="demographics-section" style="display: flex; justify-content: space-between; margin-bottom: 15px;">
                                     <div class="input-group">
-                                        <label for="dob">Date of Birth:</label>
+                                        <label for="dob">Date of Birth</label>
                                         <input type="date" name="dob" id="dob" class="styled-input" required>
                                     </div>
                                     <div class="input-group">
-                                        <label for="gender">Gender:</label>
+                                        <label for="gender">Gender</label>
                                         <select name="gender" id="gender" class="styled-select" required>
                                             <option value="male">Male</option>
                                             <option value="female">Female</option>
@@ -190,7 +190,7 @@ foreach ($questions as $question) {
                             <?php if ($category === 'During Pregnancy'): ?>
                                 <div class="demographics-section" style="display: flex; justify-content: space-between; margin-bottom: 15px;">
                                     <div class="input-group">
-                                        <label for="mother_age">Age of mother during pregnancy:</label>
+                                        <label for="mother_age">Age of mother during pregnancy</label>
                                         <input type="number" name="mother_age" id="mother_age" class="styled-input" required>
                                     </div>
                                     <div class="input-group">
@@ -203,7 +203,7 @@ foreach ($questions as $question) {
                             <?php if ($category === 'Delivery'): ?>
                                 <div class="demographics-section" style="display: flex; justify-content: space-between; margin-bottom: 15px;">
                                     <div class="input-group">
-                                        <label for="labor_hours">Hours of labor:</label>
+                                        <label for="labor_hours">Hours of labor</label>
                                         <input type="number" name="labor_hours" id="labor_hours" class="styled-input" required>
                                     </div>
                                 </div>
@@ -220,7 +220,27 @@ foreach ($questions as $question) {
                                         <input type="number" name="sibling_position" id="sibling_position" class="styled-input" required>
                                     </div>
                                 </div>
-                            <?php endif; ?>    
+                            <?php endif; ?>   
+
+                            <?php if ($categoryIndex === 0): ?>
+                                <!-- Email and Phone Number fields styled like the question sections -->
+                                <div class="question-section" style="display: flex; justify-content: space-between; margin-bottom: 15px;">
+                                    <div class="input-group">
+                                        <label for="email">Email</label>
+                                        <input type="email" name="email" id="email" class="styled-input" required>
+                                    </div>
+                                    <div class="input-group">
+                                        <label for="phone">Phone Number</label>
+                                        <input type="tel" name="phone" id="phone" class="styled-input" required>
+                                    </div>
+                                </div>
+                                <div class="question-section" style="display: flex;">
+                                    <div class="input-group">
+                                        <label for="guestName">Parent's Name</label>
+                                        <input type="text" name="guestName" id="guestName" class="styled-input" required>
+                                    </div>
+                                </div>
+                            <?php endif; ?>
 
                             <!-- Navigation buttons -->
                             <div class="navigation-buttons">
@@ -267,65 +287,34 @@ foreach ($questions as $question) {
                 <h2>Success!</h2>
                 <p>Your form was submitted successfully!</p>
                 <p>Please be aware that this checklist is designed to assess potential symptoms and should be interpreted alongside a thorough medical and clinical evaluation. It is not a stand-alone diagnostic tool and should only be used in conjunction with a comprehensive assessment of your individual circumstances. Thus, the submitted answers will still be reviewed by an affiliated therapist from our clinic, and you will receive an email with your results afterwards.</p>
-                <p>Enter your contact details to receive further instructions about the next step.</p>
                 <form id="contact-form" action="guestSendPDF.php" method="POST">
-                    <label for="guestName">Guest's Name:</label>
-                    <input type="text" name="guestName" id="guestName" required><br>
-                
-                    <label for="email">Email:</label>
-                    <input type="email" name="email" id="email" required><br>
-                
-                    <label for="phone">Phone:</label>
-                    <input type="text" name="phone" id="phone" required><br>
-                
+                    
                     <!-- Add hidden input for responseID -->
                     <input type="hidden" name="responseID" id="responseID" value="">
-                
-                    <button type="submit">Submit and download PDF</button>
+                    <button type="submit">Download PDF</button>
                 </form>
             </div>
         </div>
 
         <!-- Footer -->
-        <footer class="footer">
-        <footer class="footer">
-            <div class="footer-container">
+        <footer>
+            <div class="footer-content">
                 <div class="footer-logo">
                     <img src="images/logo.png" alt="TheraPeace Logo">
-                    <h2>TheraPeace</h2>
-                    <p>Your Partner in Patient Care</p>
+                    <p>TheraPeace</p>
                 </div>
-                <div class="footer-links">
-                    <h3>Quick Links</h3>
-                    <ul>
-                        <li><a href="#">Home</a></li>
-                        <li><a href="#about">About Us</a></li>
-                        <li><a href="#services">Services</a></li>
-                        <li><a href="#rates">Rates</a></li>
-                    </ul>
+                <div class="footer-socials">
+                    <a href="#"><i class="fa fa-facebook"></i></a>
+                    <a href="#"><i class="fa fa-instagram"></i></a>
+                    <a href="#"><i class="fa fa-envelope"></i></a>
                 </div>
                 <div class="footer-contact">
-                    <h3>Contact Us</h3>
-                    <ul>
-                        <li><i class="fas fa-map-marker-alt"></i> Polytechnic University of the Philippines</li>
-                        <li><i class="fas fa-phone-alt"></i> +63 123 456 7890</li>
-                        <li><i class="fas fa-envelope"></i> contact@therapeace.com</li>
-                    </ul>
-                </div>
-                <div class="footer-social">
-                    <h3>Follow Us</h3>
-                    <ul class="social-icons">
-                        <li><a href="#"><i class="fab fa-facebook-f"></i></a></li>
-                        <li><a href="#"><i class="fab fa-instagram"></i></a></li>
-                        <li><a href="#"><i class="fab fa-twitter"></i></a></li>
-                        <li><a href="#"><i class="fab fa-linkedin"></i></a></li>
-                    </ul>
+                    <p>09956522069 | 099532412581</p>
+                    <p>therabeelearningcenter@gmail.com</p>
+                    <p>Therabee Child Development Learning Center 2021. All Rights Reserved.</p>
                 </div>
             </div>
-            <div class="footer-bottom">
-                <p>&copy; 2024 TheraPeace. All Rights Reserved.</p>
-            </div>
-        </footer>  
+        </footer>
         
         <?php if (isset($_GET['success']) && $_GET['success'] == 1): ?>
             <script>

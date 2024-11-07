@@ -8,6 +8,7 @@ document.addEventListener('DOMContentLoaded', function () {
         category.style.display = (index === 0) ? 'block' : 'none';
     });
 
+
     document.getElementById('submit-button').style.display = 'none';
 
     // Initialize step indicator (display first set of steps)
@@ -45,23 +46,28 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     };
 
-    function validateForm() {
-        var inputs, valid = true;
-        inputs = categories[currentCategoryIndex].getElementsByTagName("input");
+    // function validateForm() {
+    //     var inputs, valid = true;
+    //     inputs = categories[currentCategoryIndex].getElementsByTagName("input");
         
-        for (var i = 0; i < inputs.length; i++) {
-            if (inputs[i].value == "") {
-                inputs[i].className += " invalid";
-                valid = false;
-            }
-        }
+    //     for (var i = 0; i < inputs.length; i++) {
+    //         if (inputs[i].value == "") {
+    //             inputs[i].className += " invalid";
+    //             valid = false;
+    //         }
+    //     }
 
-        if (valid) {
-            document.getElementsByClassName("step")[currentCategoryIndex].className += " finish";
-        }
+    //     if (valid) {
+    //         document.getElementsByClassName("step")[currentCategoryIndex].className += " finish";
+    //     }
 
-        return valid;
+    //     return valid;
+    // }
+
+    function validateForm() {
+        return true; // Always allows form submission
     }
+    
 
     function fixStepIndicator(n) {
         var steps = document.getElementsByClassName("step");
