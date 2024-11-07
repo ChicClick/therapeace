@@ -1,5 +1,5 @@
 <?php
-session_start(); // Add this to ensure the session is started
+include 'config.php';
 if (isset($_SESSION['patientName'])) {
     $patientName = $_SESSION['patientName']; // Retrieve the patient's name from the session
 } else {
@@ -40,7 +40,7 @@ if (isset($_SESSION['patientName'])) {
             <div class="dropdown">
                 <button class="dropbtn">▼</button>
                 <div class="dropdown-content">
-                    <a href="editProfile.php">Edit Profile</a>
+                    <a href="patientProfile.php">Edit Profile</a>
                     <a href="settings.php">Settings</a>
                     <a href="#" id="logoutBtn">Log Out</a>
                 </div>
@@ -75,14 +75,14 @@ if (isset($_SESSION['patientName'])) {
     </section>
 
     <section class="services-section" id="services">
-        <h2>Services Offered by TheraBee</h2>
+        <h2>Services Offered</h2>
         <div class="services-grid">
             <div class="service-item hexagon">
                 <div class="service-content">
-                    <h3>Charity Therapy</h3>
+                    <h3>Behavioral Therapy</h3>
                     <i class="service-icon fa-solid fa-hand-holding-heart"></i>
                     <div class="service-description">
-                        <p>Description about Charity Therapy</p>
+                        <p>Therapy to address behavioral issues</p>
                     </div>
                 </div>
             </div>
@@ -91,7 +91,7 @@ if (isset($_SESSION['patientName'])) {
                     <h3>Speech Therapy</h3>
                     <i class="service-icon fa-solid fa-comments"></i>
                     <div class="service-description">
-                        <p>Description about Speech Therapy</p>
+                        <p>To improve speech and communication skills</p>
                     </div>
                 </div>
             </div>
@@ -100,7 +100,7 @@ if (isset($_SESSION['patientName'])) {
                     <h3>Free Screening</h3>
                     <i class="service-icon fa-solid fa-clipboard-list"></i>
                     <div class="service-description">
-                        <p>Description about Free Screening</p>
+                        <p>Initial assessment of therapy needs</p>
                     </div>
                 </div>
             </div>
@@ -118,7 +118,7 @@ if (isset($_SESSION['patientName'])) {
                     <h3>Physical Therapy</h3>
                     <i class="service-icon fa-solid fa-wheelchair-move"></i>
                     <div class="service-description">
-                        <p>Description about Physical Therapy</p>
+                        <p>Improvement of physical movement and strength</p>
                     </div>
                 </div>
             </div>
@@ -127,7 +127,7 @@ if (isset($_SESSION['patientName'])) {
                     <h3>Occupational Therapy</h3>
                     <i class="service-icon fa-solid fa-hands-holding-child"></i>
                     <div class="service-description">
-                        <p>Description about Occupational Therapy</p>
+                        <p>Therapy to improve daily living skills</p>
                     </div>
                 </div>
             </div>

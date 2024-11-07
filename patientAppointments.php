@@ -11,6 +11,7 @@ include 'patient_get_appointments.php';
     <title>Patient Appointments</title>
     <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="patientStyles.css">
+    <link rel="stylesheet" href="patientReschedStyles.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Architects+Daughter&display=swap" rel="stylesheet">
@@ -36,7 +37,7 @@ include 'patient_get_appointments.php';
             <div class="dropdown">
                 <button class="dropbtn">▼</button>
                 <div class="dropdown-content">
-                    <a href="editProfile.php">Edit Profile</a>
+                    <a href="patientProfile.php">Edit Profile</a>
                     <a href="settings.php">Settings</a>
                     <a href="#" id="logoutBtn">Log Out</a>
                 </div>
@@ -51,7 +52,7 @@ include 'patient_get_appointments.php';
         <div class="search-sort-container">
             <div class="search-wrapper">
                 <i class="fas fa-search search-icon"></i>
-                <input type="text" placeholder="Search by therapist name..." id="appointmentsSearch" class="search-bar" onkeyup="searchAppointments()">
+                <input type="text" placeholder="Search..." id="appointmentsSearch" class="search-bar" onkeyup="searchAppointments()">
             </div>
         </div>
         <div class="appointments-header">
@@ -72,12 +73,17 @@ include 'patient_get_appointments.php';
         <div class="appointment-table">
             <?php if (!empty($appointments)): ?>
                 <?php foreach ($appointments as $appointment): ?>
-                    <div class="table-row appointment-row" data-therapist="<?php echo htmlspecialchars($appointment['therapistName']); ?>">
+                    <div class="table-row appointment-row" 
+                        data-appointment-id="<?php echo htmlspecialchars($appointment['appointmentID']); ?>"
+                        data-therapist-id="<?php echo htmlspecialchars($appointment['therapistID']); ?>"  
+                        data-therapist="<?php echo htmlspecialchars($appointment['therapistName']); ?>">
                         <div class="row-schedule"><?php $scheduleDate = date("F d, Y h:iA", strtotime(htmlspecialchars($appointment['schedule']))); echo $scheduleDate; ?></div>
                         <div class="row-therapist"><?php echo htmlspecialchars($appointment['therapistName']); ?></div>
                         <div class="row-reschedule">
-                            <a href="#" class="reschedule">RESCHEDULE</a>
-                        </div>
+                        <button class="reschedule-button" data-appointment-id="<?php echo htmlspecialchars($appointment['appointmentID']); ?>">Reschedule</button>
+
+
+                    </div>
                     </div>
                 <?php endforeach; ?>
             <?php else: ?>
@@ -86,22 +92,82 @@ include 'patient_get_appointments.php';
         </div>
     </section>
 
+<!-- Reschedule Popup -->
+<div id="reschedulePopup" class="popup" style="display: none;">
+                <div class="popup-content">
+                    <span class="close" onclick="closePopup()">&times;</span>
+                    <h4>Select Available Dates</h4>
+                    <div id="calendar">
+                        <div class="calendar-container">
+                        <div class="month-navigation">
+                            <a href="#" id="prevMonth" class="nav-link-month">&lt;</a> <!-- Previous month link -->
+                            <p id="currentMonth"></p> <!-- Dynamic month display -->
+                            <a href="#" id="nextMonth" class="nav-link-month">&gt;</a> <!-- Next month link -->
+                        </div>
+                            <div class="calendar-grid">
+                                <!-- Calendar will be dynamically generated here -->
+                            </div>
+                        </div>
+                    </div>
+                    <input type="hidden" id="appointmentId" name="appointmentId" value="">
+                    <input type="hidden" id="selectedDate" name="selectedDate" value="">
+                    <button id="proceedButton" onclick="openTimePopup()">Proceed</button>
+                </div>
+            </div>
+            <div id="timePopup" class="popup" style="display: none;">
+                <div class="popup-content">
+                    <span class="close" onclick="closeTimePopup()">&times;</span>
+                    <h4>Select Available Times</h4>
+                    <div id="availableTimes">
+                        <h5>Morning Sessions</h5>
+                        <ul id="morningTimes">
+                            <!-- Morning times will be dynamically added here -->
+                        </ul>
+                        <h5>Afternoon Sessions</h5>
+                        <ul id="afternoonTimes">
+                            <!-- Afternoon times will be dynamically added here -->
+                        </ul>
+                    </div>
+                    <button id="confirmTimeButton" onclick="confirmTime()">Reschedule →</button>
+                </div>
+            </div>
+        </div>
+
+        <div id="confirmationPopup" class="popup" style="display: none;">
+            <div class="popup-content">
+                <span class="close" onclick="closeConfirmationPopup()">&times;</span>
+                <h4>Confirmation</h4>
+                <p id="confirmationMessage"></p>
+            </div>
+        </div>
+
+
+
         <!-- Notes Tab -->
         <section id="notes" class="hidden">
         <h1 id="session-feedback-header">SESSION FEEDBACK NOTES</h1>
         <hr>
         <!-- Notes Search and Sort Section -->
         <div id="notes-table"> <!-- Wrapper to hide the entire section -->
-        <button id="generateReportButton">Generate Progress Report</button>
-            <div id="progressReport" style="display: none;">
-                <h3>Progress Report</h3>
-                <p id="reportContent"></p>
-            </div>
+        <button id="generateReportButton">Request Progress Report</button>
+        <button id="viewReportButton" onclick="openProgressReportPopup()" style="display: none;">View Requested Report</button>
+        <div id="confirmationMessage" style="display:none;"></div>
 
+            <!-- Modal for generating report -->
+            <div id="reportRequestModal" class="modal">
+                <div class="modal-content">
+                    <span class="close-button" onclick="closeReportRequestModal()">&times;</span>
+                    <h2>Request a Report</h2>
+                    <label for="therapistSelect">Select Therapist:</label>
+                    <select id="therapistSelect"></select>
+                    <button id="submitReportRequest">Submit Request</button>
+                </div>
+            </div>
+            
             <div class="search-sort-container">
                 <div class="search-wrapper">
                     <i class="fas fa-search search-icon"></i>
-                    <input type="text" placeholder="Search by therapist name..." id="notesSearch" class="search-bar" onkeyup="searchNotes()">
+                    <input type="text" placeholder="Search..." id="notesSearch" class="search-bar" onkeyup="searchNotes()">
                 </div>
             </div>
             <div class="notes-header">
@@ -150,6 +216,20 @@ include 'patient_get_appointments.php';
                 <div id="notes-content"></div>
             </div>
         </section>
+
+        <!-- Progress Report Popup -->
+        <div id="progressReportPopup" class="popup" style="display: none;">
+            <div class="popup-content">
+                <span class="close" onclick="closeProgressReportPopup()">&times;</span>
+                <h4>Progress Report</h4>
+                <p><strong>Therapist:</strong> Dr. Anna White</p>
+                <p><strong>Date Verified:</strong> November 2, 2024</p>
+                <p>Your progress report is now available for download</p>
+                <a href="progressReport.pdf" download class="download-button">Download PDF</a>
+            </div>
+        </div>
+
+
     
     <!-- Logout Confirmation Modal -->
     <div id="logoutModal" class="modal">
@@ -204,6 +284,7 @@ include 'patient_get_appointments.php';
         </footer> 
 
     <script src="patientScript.js"></script>
+    <script src="patientResched.js"></script>
     </div>
 </body>
 </html>

@@ -1,8 +1,10 @@
 <?php
-header('Content-Type: application/json');
+include 'config.php';
+include 'db_conn.php';
+
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
-session_start(); // Start the PHP session
+
 
 // Check if the patient is logged in
 if (!isset($_SESSION['patientID'])) {
@@ -16,8 +18,37 @@ if (!isset($_SESSION['patientID'])) {
 // Get the logged-in patientID from session
 $patientID = $_SESSION['patientID'];
 
-// Include the database connection file
-require_once 'db_conn.php'; // Ensure this file contains the connection logic
+// Check if we're fetching therapists
+if (isset($_POST['fetchTherapists'])) {
+    $sql = "SELECT DISTINCT t.therapistID, t.therapistName
+            FROM therapist t
+            JOIN sessions s ON t.therapistID = s.therapistID
+            WHERE s.patientID = ?";
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param("s", $patientID); // "s" for patientID (string)
+    
+    if (!$stmt->execute()) {
+        echo json_encode([
+            'success' => false,
+            'error' => 'Query execution failed: ' . $stmt->error
+        ]);
+        exit();
+    }
+
+    $result = $stmt->get_result();
+
+    $therapists = [];
+    while ($row = $result->fetch_assoc()) {
+        $therapists[] = $row;
+    }
+
+    echo json_encode([
+        'success' => true,
+        'therapists' => $therapists
+    ]);
+    exit();
+}
+
 
 // Get sessionID from POST request
 $sessionID = isset($_POST['sessionID']) ? $_POST['sessionID'] : '';
@@ -29,18 +60,7 @@ if ($sessionID && $patientID) {
             JOIN sessions s ON n.sessionID = s.sessionID
             JOIN therapist t ON s.therapistID = t.therapistID
             WHERE n.sessionID = ? AND n.patientID = ?";
-    
-    // Use the $conn variable instead of $mysqli
     $stmt = $conn->prepare($sql);
-    
-    if (!$stmt) {
-        echo json_encode([
-            'success' => false,
-            'error' => 'Failed to prepare the SQL statement'
-        ]);
-        exit();
-    }
-
     $stmt->bind_param("is", $sessionID, $patientID); // "is" -> i for sessionID (int), s for patientID (string)
     $stmt->execute();
     $result = $stmt->get_result();

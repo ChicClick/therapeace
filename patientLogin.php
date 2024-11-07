@@ -1,5 +1,5 @@
 <?php
-session_start();
+include 'config.php';
 ?>
 
 
@@ -38,7 +38,7 @@ session_start();
             
     <input type="text" name="patientID" placeholder="Patient ID" required>
     <input type="password" name="password" placeholder="Password" required>
-    <a href="#" class="forgot-password">Forgot Password?</a>
+    <a href="patientForgotPassword.php" class="forgot-password">Forgot Password?</a>
     <button type="submit" class="proceed-button">Proceed &rarr;</button>
     </form>
     </div>
@@ -62,6 +62,15 @@ session_start();
         console.log("Loading screen triggered"); // Add this line
         function showLoading() {
             document.getElementById("loading").style.display = "block"; // Show loader
+        }
+
+        // Check if the 'message' parameter exists in the URL
+        const urlParams = new URLSearchParams(window.location.search);
+        const message = urlParams.get('message');
+
+        if (message) {
+            // Display the message as a simple popup (alert)
+            alert(message);
         }
     </script>
     
