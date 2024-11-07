@@ -1,6 +1,6 @@
 <?php
-session_start();
-require_once 'db_conn.php'; // Assuming you have a separate file for database connection
+include 'config.php';
+include 'db_conn.php';
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     // Retrieve form data

@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TheraPeace</title>
+    <link rel="stylesheet" href="register.css">
+</head>
+<body>
+    
+    <!-- Left section with image -->
+    <div class="image-section">
+        <img src="images/logo.png" alt="TheraBee Logo">
+    </div>
+
+    <!-- Right section with form -->
+    <div class="container">
+        <div class="registration-form">
+            <a href="registerlanding.php" class="back-link">&larr; Back</a>
+            <h2>Therapist Registration</h2>
+            <form action="tRegister.php" method="POST" enctype="multipart/form-data">
+                
+                <input type="text" id="therapistID" name="therapistID" placeholder="TherapistID" required>
+                <select id="specialization" name="specialization" required>
+                    <option value="Speech Therapist">Speech Therapist</option>
+                    <option value="Occupational Therapist">Occupational Therapist</option>
+                    <option value="Physical Therapist">Physical Therapist</option>
+                    <option value="Behavioral Therapist">Behavioral Therapist</option>
+                </select>
+                <input type="text" id="therapistName" name="therapistName" placeholder="Therapist Name" required>
+                <input type="text" id="availability" name="availability" placeholder="Availability" required>
+                <input type="email" id="email" name="email" placeholder="Email" required>
+                <input type="text" id="phone" name="phone" placeholder="Phone" required>
+                <input type="text" id="address" name="address" placeholder="Address" required>
+
+                <label for="birthday">Birthday:</label>
+                <input type="date" id="birthday" name="birthday" placeholder="Birthday" required>
+                
+                <select id="gender" name="gender" required>
+                    <option value="Female">Female</option>
+                    <option value="Male">Male</option>
+                </select>
+
+                <label for="date-hired">Date Hired:</label>
+                <input type="date" id="date-hired" name="date-hired" placeholder="Date-Hired">
+
+                <input type="password" id="password_hash" name="password" placeholder="Password" required>
+
+                <button type="submit">Register</button>
+            </form>
+        </div>
+    </div>
+</body>
+</html>

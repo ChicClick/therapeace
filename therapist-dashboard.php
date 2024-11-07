@@ -1,5 +1,5 @@
 <?php
-session_start();
+include 'config.php';
 
 // Check if the therapist is logged in
 if (!isset($_SESSION['therapist_id'])) {
@@ -10,6 +10,7 @@ if (!isset($_SESSION['therapist_id'])) {
 
 // Retrieve the therapist's name from the session
 $therapistName = $_SESSION['therapist_name'];
+$therapistID = $_SESSION['therapist_id'];
 
 ?>
 
@@ -22,6 +23,7 @@ $therapistName = $_SESSION['therapist_name'];
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="styles-therapist.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/tesseract.js@4.0.2/dist/tesseract.min.js"></script>
 </head>
 <body>
     <!-- Left Section -->
@@ -40,9 +42,12 @@ $therapistName = $_SESSION['therapist_name'];
                 <li><a href="#" data-target="checklist-section"><i class="fas fa-clipboard-list"></i> Pre-Screening Response</a></li>
 
                 <p>OTHERS</p>
-                <li><a href="#"><i class="fa fa-cog"></i> Settings</a></li>
-                <li><a href="#"><i class="fa fa-users"></i> Accounts</a></li>
-                <li><a href="#"><i class="fa fa-info-circle"></i> Help</a></li>
+                    <!---
+                        <li><a href="#"><i class="fa fa-cog"></i> Settings</a></li>
+                        <li><a href="#"><i class="fa fa-users"></i> Accounts</a></li>
+                        <li><a href="#"><i class="fa fa-info-circle"></i> Help</a></li>
+                    -->
+                <li><a href="#" data-target="Edit-section"><i class="fa fa-cog"></i> Edit Profile</a></li>
                 <li><a href="loginlanding.html"><i class="fa fa-sign-out"></i> Sign Out</a></li>
             </ul>
         </nav>
@@ -57,7 +62,9 @@ $therapistName = $_SESSION['therapist_name'];
             </div>
             <div class="profile-section">
                 <img src="images/about 3.jpg" alt="Profile Picture">
-                <p class="welcome-text">Welcome back, <?php echo htmlspecialchars($therapistName); ?>!</p>
+                <p class="welcome-text">
+                    Welcome back, <?php echo htmlspecialchars($_SESSION['therapist_name'] ?? 'Therapist'); ?>!
+                </p>
             </div>
         </div>
 
@@ -116,7 +123,15 @@ $therapistName = $_SESSION['therapist_name'];
                             <!-- Afternoon times will be dynamically added here -->
                         </ul>
                     </div>
-                    <button id="confirmTimeButton">Reschedule  →</button>
+                    <button id="confirmTimeButton" >Reschedule  →</button>
+                </div>
+            </div>
+            <!-- Message Popup -->
+            <div id="messagePopup" class="popup" style="display: none;">
+                <div class="popup-content">
+                    <span class="close" id="closePopup"></span>
+                    <p id="popupMessage"></p>
+                    <button id="confirmPopup">Confirm</button>
                 </div>
             </div>
         </div>
@@ -145,10 +160,10 @@ $therapistName = $_SESSION['therapist_name'];
                 <div class="profile-header">
                     <img src="images/about 1.jpg" alt="Profile Picture" class="profile-picture">
                     <div class="profile-details">
-                        <h2 id="patient-name">Name</h2>
+                        <h2 id="patientName">Name</h2>
                         <h3 id="service">Service</h3>
                     </div>
-                    <button class="view-notes-btn">View Notes</button>
+                    <button class="view-notes-btn" style="displa:none"></button>
                 </div>
                 <div class="profile-info">
                     <h5>CONTACT INFORMATION</h5>
@@ -176,6 +191,16 @@ $therapistName = $_SESSION['therapist_name'];
                 <input type="text" placeholder="Search">
                 <button><i class="fas fa-search"></i></button>
             </div>
+
+            <!-- Add Notes Button -->
+            <button id="add-notes" class="add-notes" onclick="openModal()"><i class="fas fa-plus"></i> Add Notes
+                <script>
+                    function openModal() {
+                        document.getElementById('notesModal').style.display = 'block';
+                    }
+                </script>
+            </button>    
+
             <table>
                 <thead>
                     <tr>
@@ -191,11 +216,201 @@ $therapistName = $_SESSION['therapist_name'];
 
             <div class="notes-info" id="notes-info" style="display:none">
                 <h4>NOTES</h4>
-                <!-- Changed h5 to an anchor tag with id "notes-date" -->
                 <a id="notes-date" style="cursor: pointer; color: #432705; text-decoration:none"></a>
                 <div class="notes-container" id="notes-details" style="display:block">
                     <h5>Session Overview:</h5>
                 </div>
+            </div>
+
+            
+            <div id="notesModal" class="popup" style="display:none">
+                <span class="closeNotes" onclick="closeNotes()">&times;</span>
+                <script>
+                    function closeNotes() {
+                        document.getElementById('notesModal').style.display = 'none';
+                    }
+                </script>
+                
+                <h3>Add Session Notes</h3>
+                <form id="notesForm" class="notesForm" action="add_notes.php" method="post">
+                    <div class="form-row">
+                    <div class="form-column-left">
+                        <label for="patientSelect">Select Patient:</label>
+                        <select id="patientSelect" name="patientID" required onclick="loadPatients()" onchange="loadServices()">
+                            <option value="">Select a patient...</option> <!-- Default placeholder option -->
+                        </select>
+
+                        <label for="therapySelect">Select Service:</label>
+                        <select id="therapySelect" name="serviceID" required>
+                        </select>
+
+                        <script>
+                            function loadPatients() {
+                                const patientSelect = document.getElementById("patientSelect");
+                                
+                                // Only fetch options if they are not already loaded
+                                if (patientSelect.options.length > 1) return;
+
+                                // Create a new AJAX request
+                                fetch("notes_patient.php")
+                                    .then(response => response.text())
+                                    .then(data => {
+                                        patientSelect.innerHTML += data; // Append fetched options to the select element
+                                    })
+                                    .catch(error => console.error('Error loading patient options:', error));
+
+                            }
+
+                            function loadServices() {
+                                const therapySelect = document.getElementById("therapySelect");
+                                const patientID = document.getElementById("patientSelect").value;
+
+                                // Only fetch options if a patient is selected
+                                if (!patientID) {
+                                    therapySelect.innerHTML = ""; // Clear previous options
+                                    return;
+                                }
+
+                                fetch(`notes_service.php?patientID=${patientID}`)
+                                    .then(response => response.text())
+                                    .then(data => {
+                                        therapySelect.innerHTML = data; // Directly set fetched options to the select element
+                                    })
+                                    .catch(error => console.error('Error loading service options:', error));
+                            } 
+                        </script>
+                    </div>
+                        <div class="form-column-right">
+                            <label for="sessionDate">Session Date:</label>
+                            <input type="date" id="sessionDate" name="sessionDate" required>
+                        
+                            <label for="sessionTime">Select Session Time:</label>
+                            <select id="sessionTime" name="sessionTime">
+                                <option value="">Select Time...</option>
+                                <option value="9:00 AM">9:00 AM</option>
+                                <option value="10:00 AM">10:00 AM</option>
+                                <option value="11:00 AM">11:00 AM</option>
+                                <option value="12:00 PM">12:00 PM</option>
+                                <option value="1:00 PM">1:00 PM</option>
+                                <option value="2:00 PM">2:00 PM</option>
+                                <option value="3:00 PM">3:00 PM</option>
+                                <option value="4:00 PM">4:00 PM</option>
+                                <option value="5:00 PM">5:00 PM</option>
+                                <option value="6:00 PM">6:00 PM</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="feedback">Feedback:
+                            <a href="#" onclick="document.getElementById('feedbackImage').click();" style="text-decoration: underline; color: #432705; padding:5px; font-size:12px; border-radius:5px;">
+                                <i class="fas fa-upload" style="margin-right: 5px;"></i> Attach Image
+                            </a>
+                        </label>
+                        <div style="position: relative;">
+                            <textarea id="feedback" name="feedback" required></textarea>
+                            <div id="loadingIcon" class="loading-icon" style="display: none;"></div>
+                        </div>
+                        <input type="file" id="feedbackImage" accept="image/*" style="display: none;" onchange="extractTextFromImage()" />
+
+                        <style>
+                            .loading-icon {
+                                position: absolute;
+                                top: 40%;
+                                left: 45%;
+                                transform: translate(-50%, -50%);
+                                border: 3px solid rgba(0, 0, 0, 0.2); /* Thinner border for smaller size */
+                                border-top: 3px solid #432705; /* Thinner top border for color */
+                                border-radius: 50%;
+                                width: 20px; /* Smaller width */
+                                height: 20px; /* Smaller height */
+                                animation: spin 1s linear infinite;
+                            }
+
+                            @keyframes spin {
+                                0% { transform: rotate(0deg); }
+                                100% { transform: rotate(360deg); }
+                            }
+                        </style>
+
+                        <script>
+                            async function extractTextFromImage() {
+                                const fileInput = document.getElementById('feedbackImage');
+                                if (fileInput.files.length === 0) return;
+
+                                const file = fileInput.files[0];
+                                const reader = new FileReader();
+                                const loadingIcon = document.getElementById('loadingIcon');
+                                const feedbackTextarea = document.getElementById('feedback');
+
+                                // Show loading icon
+                                loadingIcon.style.display = 'block';
+
+                                reader.onload = async function(event) {
+                                    const imageData = event.target.result;
+
+                                    try {
+                                        // Use Tesseract.js to recognize text from the image
+                                        const result = await Tesseract.recognize(
+                                            imageData,
+                                            'eng', // Specify the language code
+                                            {
+                                                logger: (m) => console.log(m) // Optional: log progress
+                                            }
+                                        );
+
+                                        const extractedText = result.data.text.trim(); // Get and trim extracted text
+
+                                        if (extractedText) {
+                                            // Insert the recognized text into the feedback textarea if text is found
+                                            feedbackTextarea.value = extractedText;
+                                        } else {
+                                            // Display an error message if no text was found
+                                            alert("No text was found in the image. Please try a different image.");
+                                        }
+                                    } catch (error) {
+                                        console.error('Error extracting text:', error);
+                                        alert('An error occurred while processing the image');
+                                    } finally {
+                                        // Hide loading icon
+                                        loadingIcon.style.display = 'none';
+                                    }
+                                };
+
+                                // Convert the image file to a data URL so Tesseract.js can process it
+                                reader.readAsDataURL(file);
+                            }
+                        </script>
+                    </div>
+                    <button type="submit">Submit</button>
+                </form>
+
+                <div id="confirmationNotesPopup" class="popup" style="display:none;">
+                    <div class="modal-content">
+                        <span id="closePopup" class="close" onclick="closeConfirmationNotesPopup()">&times;</span>
+                        <p id="confirmationText"></p>
+                        <button onclick="closeAllModals()">OK</button>
+                    </div>
+                </div>
+                <script>
+                    // Function to show confirmation popup with a message
+                    function showConfirmationPopup(message) {
+                        document.getElementById('confirmationText').innerText = message;
+                        document.getElementById('confirmationNotesPopup').style.display = 'block';
+                        document.getElementById('notesModal').style.display = 'block';
+                    }
+
+                    // Function to close the confirmation popup
+                    function closeConfirmationNotesPopup() {
+                        document.getElementById('confirmationNotesPopup').style.display = 'none';
+                    }
+
+                    // Function to close the popup and redirect to the dashboard
+                    function closeAllModals() {
+                        closeConfirmationNotesPopup();
+                        window.location.href = 'therapist-dashboard.php'; // Redirect to therapist dashboard
+                    }
+                </script>
             </div>
         </div>
 
@@ -205,41 +420,49 @@ $therapistName = $_SESSION['therapist_name'];
                 <input type="text" placeholder="Search">
                 <button><i class="fas fa-search"></i></button>
             </div>
-            <table id="patients-table">
+            <table id="progress-table">
                 <thead>
                     <tr>
                         <th>NAME</th>
-                        <th>PARENT/GUARDIAN</th>
-                        <th>COMPLIANCE</th>
+                        <th>THERAPIST</th>
+                        <th>STATUS</th>
                     </tr>
                 </thead>
-                <tbody>
-                    <?php include 'patients.php'; ?>
+                <tbody id="progress-tbody">
+                    <?php include 'progress.php'; ?>
                 </tbody>
             </table>
             
-            <div class="progress-info" id="progress-info" style="display:block;">
+            <div class="progress-info" id="progress-info" style="display:none;">
                 <h4>PROGRESS REPORT</h4>
-                <h5><a href="#" id="back-to-patients">< Back to the Patients</a></h5>
-                <div class="notes-container">
-                    <h5>Session Overview:</h5>
-                    <p>In today's session, Emily showed great enthusiasm and made noticeable progress in her articulation exercises. She was particularly engaged during the interactive activities, which helped reinforce the sounds we have been working on.</p>
-
-                    <h5>Key Progress:</h5>
-                    <ul>
-                        <li>Emily successfully produced the "s" and "r" sounds with increased clarity during structured activities.</li>
-                        <li>We introduced a new game to practice blending sounds, which she enjoyed and participated in eagerly.</li>
-                        <li>Emily set a small goal for herself to practice her speech sounds at home, particularly during reading time with her parents.</li>
-                    </ul>
-
-                    <h5>Areas for Focus:</h5>
-                    <ul>
-                        <li>It will be important to continue practicing the "s" and "r" sounds in more spontaneous speech contexts.</li>
-                        <li>We will also start incorporating more complex sound combinations to challenge Emily and further enhance her speech clarity.</li>
-                    </ul>
-                    
-                    <p>Overall, Emily made wonderful progress today, and I am excited to see her continued improvement in upcoming sessions.</p>
+                <div class="progress-container">
+                <label for="notesTextarea" style="display: block; margin-bottom: 5px;">Save or Edit Report:</label>
+                    <textarea id="notesTextarea" rows="4" style="font-family:'Poppins'; width: 95%; padding: 10px; border-radius: 5px; border: 1px solid #ccc;"></textarea>
+                    <button class="saveprogress-button" onclick="triggerSaveProgress()" style="margin-top: 10px; background-color: #907d66; color: white; padding: 8px 16px; border: none; border-radius: 5px; cursor: pointer;">
+                        Save
+                    </button>
                 </div>
+                <script>
+                    function triggerSaveProgress() {
+                        const reportID = <?php echo json_encode($reportID); ?>; // Assuming reportID is available
+                        const summary = document.getElementById('notesTextarea').value;
+
+                        // AJAX request to update the report
+                        const xhr = new XMLHttpRequest();
+                        xhr.open("POST", "updateReport.php", true);
+                        xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+                        
+                        xhr.onreadystatechange = function() {
+                            if (xhr.readyState === 4 && xhr.status === 200) {
+                                alert("Progress report saved successfully.");
+                                // Optionally, hide the progress-info div after saving
+                                document.getElementById('progress-info').style.display = 'none';
+                            }
+                        };
+                        
+                        xhr.send("reportID=" + reportID + "&summary=" + encodeURIComponent(summary));
+                    }
+                </script>
             </div>
         </div>
 
@@ -260,94 +483,56 @@ $therapistName = $_SESSION['therapist_name'];
                     <?php include 'pre-screening.php'; ?>
                 </tbody>
             </table>
-            <div class="checklist-container" style="display: none;">
-                <a href="#" id="back-link">Back</a>
+            <div class="checklist-container" style="display: none;"> 
                 <div class="checklist-header">
-                    <div><span>Name:</span> <span id="checklist-name" style="color: #432705;"><?php echo $guestName; ?></span></div>
-                    <div><span>Name of Child:</span> <span id="child-name" style="color: #432705;"><?php echo $childName; ?></span></div>
-                    <div><span>Age of Child:</span> <span id="child-age" style="color: #432705;"><?php echo $childAge; ?></span></div>
+                    <a href="javascript:void(0);" id="back-checklist-link" onclick="backLink()">&larr; Back</a>
+                    <div><span>Name:</span> <span id="checklist-name" style="color: #432705;"></span></div>
+                    <div><span>Name of Child:</span> <span id="child-name" style="color: #432705;"></span></div>
+                    <div><span>Age of Child:</span> <span id="child-age" style="color: #432705;"></span></div>
                 </div>
-
                 <!-- Left Section -->
                 <div class="checklist-left-section">
                     <!-- Populate questions dynamically -->
-                    <?php 
-                    
-                    // Query to fetch questions and their options grouped by category
-                    $sql = "SELECT questionID, category, questionText, options, inputType FROM prescreening_questions ORDER BY category";
-                    $result = $conn->query($sql);
-                    
-                    $questions = [];
-                    if ($result->num_rows > 0) {
-                        while ($row = $result->fetch_assoc()) {
-                            // Split options into an array
-                            $optionsArray = explode(',', $row['options']); // Assuming options are comma-separated
-                            $questions[$row['category']][] = [
-                                'questionID' => $row['questionID'], // Capture question ID for checking answers
-                                'questionText' => $row['questionText'],
-                                'options' => $optionsArray,
-                                'inputType' => $row['inputType'],
-                            ];
-                        }
-                    }
-                    
-                    foreach ($questions as $category => $question_list): ?>
-                        <div class="checkbox-group">
-                            <div class="section-title"><?php echo htmlspecialchars($category); ?></div>
-                            <?php foreach ($question_list as $item): ?>
-                                <div class="question">
-                                    <span style="font-weight: 400; margin-bottom:10px font: size 10px;"><?php echo htmlspecialchars($item['questionText']); ?></span>
-                                    <?php
-                                    // Determine the input type and render accordingly
-                                    foreach ($item['options'] as $option): 
-                                        $inputName = htmlspecialchars($item['questionText']); // Use question text as the name for unique identification
-                                        $isChecked = (isset($guestAnswers[$item['questionID']]) && $guestAnswers[$item['questionID']] == $option) ? 'checked' : '';
-                                    ?>
-                                        <label>
-                                            <?php if ($item['inputType'] === 'checkbox'): ?>
-                                                <input type="checkbox" name="options[<?php echo $inputName; ?>][]" value="<?php echo htmlspecialchars($option); ?>" <?php echo $isChecked; ?>>
-                                            <?php elseif ($item['inputType'] === 'radio'): ?>
-                                                <input type="radio" name="options[<?php echo $inputName; ?>]" value="<?php echo htmlspecialchars($option); ?>" <?php echo $isChecked; ?>>
-                                            <?php elseif ($item['inputType'] === 'number'): ?>
-                                                <input type="number" name="options[<?php echo $inputName; ?>]" value="<?php echo htmlspecialchars($guestAnswers[$item['questionID']] ?? ''); ?>" placeholder="<?php echo htmlspecialchars($option); ?>">
-                                            <?php elseif ($item['inputType'] === 'text'): ?>
-                                                <input type="textarea" name="options[<?php echo $inputName; ?>]" value="<?php echo htmlspecialchars($guestAnswers[$item['questionID']] ?? ''); ?>" placeholder="<?php echo htmlspecialchars($option); ?>">
-                                            <?php elseif ($item['inputType'] === 'textarea'): ?>
-                                                <input type="text" name="options[<?php echo $inputName; ?>]" value="<?php echo htmlspecialchars($guestAnswers[$item['questionID']] ?? ''); ?>" placeholder="<?php echo htmlspecialchars($option); ?>">
-                                             <?php elseif ($item['inputType'] === 'radio'): ?>
-                                                <input type="radio" name="options[<?php echo $inputName; ?>]" value="<?php echo htmlspecialchars($option); ?>" <?php echo $isChecked; ?>>
-                                                <?php endif; ?>
-                                            <?php echo htmlspecialchars($option); ?>
-                                        </label>
-                                    <?php endforeach; ?>
-                                </div>
-                            <?php endforeach; ?>
-                        </div>
-                    <?php endforeach; ?>
-                </div>                                  
+                </div>               
 
                 <!-- Right Section -->
                 <div class="checklist-right-section">
                     <!-- Static checkboxes for therapy options -->
-                    <div class="checkbox-group">
-                        <div class="section-title">Select Suitable Therapy</div>
-                        <label><input type="checkbox"> Occupational Therapy</label>
-                        <label><input type="checkbox"> Physical Therapy</label>
-                        <label><input type="checkbox"> Speech Therapy</label>
-                        <label><input type="checkbox"> Special Education</label>
-                    </div>
+                    <form class="asses" action="save_form.php" method="post">
+                        <div class="checkbox-group">
+                            <div class="section-title">Select Suitable Therapy</div>
+                            <label><input type="checkbox" name="therapies[]" id="therapy-occupational" value="Occupational Therapy"> Occupational Therapy</label>
+                            <label><input type="checkbox" name="therapies[]" id="therapy-physical" value="Physical Therapy"> Physical Therapy</label>
+                            <label><input type="checkbox" name="therapies[]" id="therapy-speech" value="Speech Therapy"> Speech Therapy</label>
+                            <label><input type="checkbox" name="therapies[]" id="therapy-special" value="Special Education"> Special Education</label>
+                        </div>
 
-                    <div class="comments-section">
-                        <div class="section-title">Additional Diagnosis/Comments</div>
-                        <textarea placeholder="Enter comments here..."></textarea>
-                    </div>
+                        <div class="comments-section">
+                            <div class="section-title">Additional Diagnosis/Comments</div>
+                            <textarea name="comments" id="comments" placeholder="Enter comments here..."></textarea>
+                        </div>
 
-                    <button class="save-button" onclick="saveForm()">Save</button>
+                        <button type="submit" class="save-button">Save</button>
+                    </form>
                 </div>
             </div>
         </div>
+        
+        <div id="Edit-section" class="content">
+            <h4>EDIT PROFILE</h4>
+            
+            <!-- Personal Information -->
+            <div id="edit-profile-section" class="edit-container">
+                <?php
+                    include 'edit_profile.php'
+                ?>
+            </div>
+            
+        </div>
     </div>
-
+    <script>
+        var therapist_id = <?php echo json_encode($therapistID); ?>;
+    </script>
     <script src="therapist-dashboard.js" defer></script>
 </body>
 </html>
