@@ -1,19 +1,43 @@
+/* General Reset */
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    font-family: 'Arial', sans-serif;
+    font-family: 'Poppins', sans-serif;
 }
 
+/* Body Styling */
 body {
     font-family: 'Poppins', sans-serif;
+    background-color: #fefdeb;
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 100vh;
-    background: radial-gradient(101.52% 100% at 4.19% 100%, rgba(236, 183, 35, 0.6) 12%, rgba(239, 209, 3, 0.45) 62.92%, rgba(255, 234, 9, 0.06) 96.5%);
+    min-height: 100vh;
 }
 
+/* Main Container */
+.container {
+    display: flex;
+    width: 50%;
+    height: 10%;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+}
+
+.back-link {
+    position: absolute;
+    text-decoration: none; /* Removes the underline */
+    top: 20px;
+    left: 20px;
+    color: #444;
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 500;
+}
+
+/* Left Section - Image */
 .image-section {
     width: 50%;
     height: 50%;
@@ -23,13 +47,19 @@ body {
 }
 
 .image-section img {
-    width: 50%; /* Example size, adjust as needed */
-    height: 50%; /* Maintain aspect ratio */
+    max-width: 80%;
+    border-radius: 12px;
 }
 
+/* Right Section - Form */
 .registration-form {
-    width: 50%;
+    width: 100%;
+    height: 50%;
     padding: 40px;
+    background: transparent;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
 }
 
 .registration-form h2 {
@@ -39,20 +69,52 @@ body {
     text-align: center;
 }
 
-.registration-form select,
-.registration-form input[type="text"],
-.registration-form input[type="password"],
-.registration-form input[type="date"],
-.registration-form input[type="number"] {
-    width: 48%;
-    padding: 10px;
-    margin-bottom: 15px;
-    border: 1px solid burlywood;
-    border-radius: 20px;
-    background: none;
-    color: black;
+/* Form Labels */
+.registration-form label {
+    font-size: 14px;
+    color: #555555;
+    margin-bottom: 5px;
+    font-weight: bold;
 }
 
+/* Form Inputs */
+.registration-form input[type="text"],
+.registration-form input[type="email"],
+.registration-form input[type="date"],
+.registration-form input[type="datetime-local"],
+.registration-form input[type="file"],
+.registration-form input[type="password"],
+.registration-form select {
+    width: 30%;
+    padding: 10px;
+    margin-top: 8px;
+    margin-bottom: 15px;
+    border: 1px solid #dddddd;
+    border-radius: 20px;
+    background-color: #f9f9f9;
+    color: #333333;
+    font-size: 14px;
+    transition: all 0.3s ease;
+}
+
+.registration-form input[type="text"]:focus,
+.registration-form input[type="email"]:focus,
+.registration-form input[type="date"]:focus,
+.registration-form input[type="datetime-local"]:focus,
+.registration-form input[type="file"]:focus,
+.registration-form input[type="password"]:focus,
+.registration-form select:focus {
+    outline: none;
+    border-color: #a6c0fe;
+    background-color: #ffffff;
+}
+
+/* Placeholder Text Color */
+.registration-form input::placeholder {
+    color: #aaaaaa;
+}
+
+/* Submit Button */
 .registration-form button {
     font-family: 'Poppins', sans-serif;
     width: 100%;
@@ -69,18 +131,16 @@ body {
     background-color: beige; /* Darker shade on hover */
 }
 
-.registration-form p {
-    text-align: center;
-    margin-top: 20px;
-    color: #666;
-}
-
-.registration-form p a {
-    color: #1a73e8;
-    text-decoration: none;
-}
-
-/* Role-specific fields hidden by default */
-.admin-fields, .therapist-fields, .patient-fields {
-    display: none;
+/* Responsive Layout */
+@media (max-width: 768px) {
+    .container {
+        flex-direction: column;
+        width: 95%;
+    }
+    .image-section, .registration-form {
+        width: 100%;
+    }
+    .image-section {
+        padding: 30px 0;
+    }
 }

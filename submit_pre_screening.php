@@ -1,5 +1,5 @@
 <?php 
-session_start();  // Start session to store responseID
+include 'config.php';
 include 'db_conn.php';
 
 // Fetch questions from the database
@@ -29,13 +29,23 @@ $additionalFields = [
 $questionMap = array_merge($questionMap, $additionalFields);
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    // Create a new form response entry without userID
-    $sql = "INSERT INTO form_responses () VALUES ()"; // Note: Adjust this if additional fields are required
+
+    // Capture email and phone from the form
+    $email = mysqli_real_escape_string($conn, $_POST['email']);
+    $phone = mysqli_real_escape_string($conn, $_POST['phone']);
+    $guestName = mysqli_real_escape_string($conn, $_POST['guestName']);
     
-    if ($conn->query($sql) === TRUE) {
-        $responseID = $conn->insert_id;
-        $_SESSION['responseID'] = $responseID;
-        $errors = [];
+
+    // Insert into the guest table
+    $guestSql = "INSERT INTO guest (Email, Phone, GuestName) VALUES ('$email', '$phone', '$guestName')";
+    if (!$conn->query($guestSql)) {
+        die("Error inserting guest details: " . $conn->error);
+    }
+
+    // Get the last inserted guestID
+    $guestID = $conn->insert_id;
+    $_SESSION['guestID'] = $guestID;
+    $errors = [];
 
         // Calculate age if 'dob' is provided
         if (isset($_POST['dob'])) {
@@ -47,14 +57,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             // Insert date of birth into form_answers table
             $dobQuestionID = $questionMap['dob'];
             $sanitizedDob = mysqli_real_escape_string($conn, $dob);
-            $sql = "INSERT INTO form_answers (responseID, questionID, answerText) VALUES ('$responseID', '$dobQuestionID', '$sanitizedDob')";
+            $sql = "INSERT INTO form_answers (guestID, questionID, answerText) VALUES ('$guestID', '$dobQuestionID', '$sanitizedDob')";
             if (!$conn->query($sql)) {
                 $errors[] = "Error inserting date of birth: " . $conn->error;
             }
 
             // Insert age into form_answers table
             $ageQuestionID = $questionMap['age'];
-            $sql = "INSERT INTO form_answers (responseID, questionID, answerText) VALUES ('$responseID', '$ageQuestionID', '$age')";
+            $sql = "INSERT INTO form_answers (guestID, questionID, answerText) VALUES ('$guestID', '$ageQuestionID', '$age')";
             if (!$conn->query($sql)) {
                 $errors[] = "Error inserting age: " . $conn->error;
             }
@@ -75,14 +85,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             if (is_array($answer)) {
                 foreach ($answer as $value) {
                     $sanitizedValue = mysqli_real_escape_string($conn, $value);
-                    $sql = "INSERT INTO form_answers (responseID, questionID, answerText) VALUES ('$responseID', '$questionID', '$sanitizedValue')";
+                    $sql = "INSERT INTO form_answers (guestID, questionID, answerText) VALUES ('$guestID', '$questionID', '$sanitizedValue')";
                     if (!$conn->query($sql)) {
                         $errors[] = "Error inserting answer for question ID $questionID: " . $conn->error;
                     }
                 }
             } else {
                 $sanitizedAnswer = mysqli_real_escape_string($conn, $answer);
-                $sql = "INSERT INTO form_answers (responseID, questionID, answerText) VALUES ('$responseID', '$questionID', '$sanitizedAnswer')";
+                $sql = "INSERT INTO form_answers (guestID, questionID, answerText) VALUES ('$guestID', '$questionID', '$sanitizedAnswer')";
                 if (!$conn->query($sql)) {
                     $errors[] = "Error inserting answer for question ID $questionID: " . $conn->error;
                 }
@@ -101,5 +111,4 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     } else {
         echo "Error inserting form response: " . $conn->error;
     }
-}
 ?>

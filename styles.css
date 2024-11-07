@@ -18,10 +18,10 @@
 }
 
 @keyframes fadeIn {
-    0% {
+    from {
         opacity: 0;
     }
-    100% {
+    to {
         opacity: 1;
     }
 }
@@ -112,7 +112,7 @@ nav.scrolled {
     display: flex; 
     align-items: center; 
     justify-content: space-between; 
-    animation: fadeIn 1s ease-in-out; 
+    animation: fadeIn 0.5s ease-in; 
   }
   
 .hero-content {
@@ -406,7 +406,12 @@ nav.scrolled {
 /* Styles for services */
 .services-section {
     padding: 60px 20px;
-    background: radial-gradient(101.52% 100% at 4.19% 100%, rgba(236, 183, 35, 0.6) 12%, rgba(239, 209, 3, 0.45) 62.92%, rgba(255, 234, 9, 0.06) 96.5%);
+    background-image: 
+        linear-gradient(to bottom, rgba(248, 245, 233, 1), rgba(248, 245, 233, 0) 20%, rgba(248, 245, 233, 0) 80%, rgba(248, 245, 233, 1)),
+        linear-gradient(rgba(255, 246, 120, 0.6), rgba(255, 246, 120, 0.6)), /* semi-transparent overlay */
+        url('images/beehive.png');
+    background-size: cover;
+    background-position: center;
     text-align: center;
 }
 
@@ -421,7 +426,7 @@ nav.scrolled {
 .services-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); /* Auto-fit for responsive design */
-    gap: 20px;
+    gap: 3px;
     max-width: 1200px;
     margin: 0 auto;
     justify-items: center;
@@ -436,7 +441,7 @@ nav.scrolled {
 /* Hexagon shape styling */
 .service-item.hexagon {
     width: calc(70% - 20px); /* Adjust width as needed */
-    background-color: #fbf5e2; /* Default hexagon background color */
+    background: linear-gradient(90deg, #FDBC10 0%, #FFEA09 100%);
     border: none;
     clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%); /* Hexagon shape */
     transform: rotate(90deg); /* Rotate the hexagon */
@@ -486,12 +491,12 @@ nav.scrolled {
 }
 
 .service-description p {
-    margin-top: 120px;
+    margin-top: 90px;
 }
 
 /* Hover effects */
 .service-item.hexagon:hover {
-    background-color: rgb(255, 246, 120); /* Change the background color on hover */
+    background-color: rgb(255, 246, 120); 
 }
 
 /* Show the description on hover */
@@ -501,7 +506,7 @@ nav.scrolled {
 
 /* General service item styles */
 .service-item {
-    background-color: rgb(255, 246, 120);; /* Default color */
+    background-color: rgb(255, 246, 120);
     padding: 20px;
     border-radius: 15px;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
@@ -702,9 +707,3 @@ nav.scrolled {
     }
 }
 
-.wrapper {
-    display: flex;
-    flex-direction: column;
-    min-height: 100vh;
-    margin: 0;
-}
