@@ -49,6 +49,7 @@ body {
 
 .back-link {
     position: absolute;
+    text-decoration: none; /* Removes the underline */
     top: 20px;
     left: 20px;
     color: #444;
@@ -104,6 +105,14 @@ form input::placeholder {
     margin-right: 45px;
     font-size: 12px;
     color: #aaa9a9;
+    text-decoration: none;
+}
+
+.sign-up {
+    align-self: flex-end;
+    margin-right: 45px;
+    font-size: 14px;
+    color: black;
     text-decoration: none;
 }
 

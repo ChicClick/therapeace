@@ -1,5 +1,5 @@
 <?php
-session_start();
+include 'config.php';
 
 // Check if admin is logged in
 if (!isset($_SESSION['username'])) {
@@ -27,6 +27,8 @@ if (isset($_SESSION['firstname'])) {
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.10.2/fullcalendar.min.css" />
     <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 </head>
 <body>
     <!-- Left Section -->
@@ -46,9 +48,8 @@ if (isset($_SESSION['firstname'])) {
 
 
                 <p>OTHERS</p>
-                <li><a href="#"><i class="fa fa-cog"></i> Settings</a></li>
-                <li><a href="#"><i class="fa fa-users"></i> Manage Accounts</a></li>
-                <li><a href="#"><i class="fa fa-info-circle"></i> Help</a></li>
+                <li><a href="registerlanding.php" ><i class="fa fa-users"></i> Manage Accounts</a></li>
+                <li><a href="#" data-target="edit-profile-section"><i class="fa fa-cog"></i> Edit Profile</a></li>
                 <li><a href="adminlogin.php"><i class="fa fa-sign-out"></i> Sign Out</a></li>
             </ul>
         </nav>
@@ -68,11 +69,25 @@ if (isset($_SESSION['firstname'])) {
             </div>
         </div>
 
-        <!-- Dashboard Section -->
-        <div id="dashboard-section" class="content active">
-            <h4>DASHBOARD</h4>
-            
-        </div>
+                    <!-- Dashboard Section -->
+            <div id="dashboard-section" class="content active">
+                <h4>DASHBOARD</h4>
+
+                <div class="dashboard">
+                    <div class="data-section">
+                        <h3>Data</h3>
+                        <button class="view-report">Generate Report</button>
+                        <h1>Loading...</h1>
+                        <p class="growth-percentage">+ 2.1% vs last week</p>
+                        <p class="date-range">Patients from 1-12 August, 2024</p>
+                        <canvas id="patientChart"></canvas>
+                    </div>
+                    <div class="dashboard-appointment-section">
+                        <h3>Appointments</h3>
+                        <canvas id="appointmentChart"></canvas>
+                    </div>
+                </div>
+            </div>
 
         <!-- Appointments Section -->
         <div id="appointments-section" class="content">
@@ -125,91 +140,83 @@ if (isset($_SESSION['firstname'])) {
                         <button id="proceedButton">Proceed  →</button>
                     </div>
                 </div>
-                 <!-- Hidden Pop-Up Form for Adding Appointment -->
-            <div id="appointment-popup-form" class="popup-form">
-                <div class="popup-content-form">
-                    <span class="close-btn" id="close-popup">&times;</span>
-                    <h2>Add Appointment</h2>
-                    <h5>Fill Up Form</h5>
-                    <form id="appointment-form">
-                        <div class="form-row">
-                            <div class="form-group">
-                                <label for="patient-ID">PatientID:</label>
+                  <!-- Hidden Pop-Up Form for Adding Appointment -->
+                  <div id="appointment-popup-form" class="popup-form">
+                    <div class="popup-content-form">
+                        <span class="close-btn" id="close-popup">&times;</span>
+                        <h2>Add Appointment</h2>
+                        <h5>Fill Up Form</h5>
+                        <form id="appointment-form" method="POST" action="a_save_appointment.php">
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="patient-ID">PatientID:</label>
                                     <select id="patient-ID" name="patient-ID" required onchange="toggleInput(this)">
                                         <option value="">Select PatientID</option>
-                                            <?php
-                                                require 'db_conn.php';
-                                                $sql = "SELECT patientID, patientName FROM patient";
-                                                $result = $conn->query($sql);
-
-                                                if ($result->num_rows > 0) {
-                                                    while ($row = $result->fetch_assoc()) {
-                                                        echo "<option value='" . $row["patientID"] . "'>" . $row["patientID"] . "</option>";
-                                                    }
-                                                } else {
-                                                    // echo "<option value=''>No patients available</option>";
-                                                }
-                                                $conn->close();
-                                            ?>                                                                                
+                                        <?php
+                                        require 'db_conn.php';
+                                        $sql = "SELECT patientID, patientName FROM patient";
+                                        $result = $conn->query($sql);
+                                        if ($result->num_rows > 0) {
+                                            while ($row = $result->fetch_assoc()) {
+                                                echo "<option value='" . $row["patientID"] . "'>" . $row["patientID"] . "</option>";
+                                            }
+                                        }
+                                        $conn->close();
+                                        ?>                                                                                
                                     </select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="patient-name">Patient Name:</label>
+                                    <input type="text" id="patient-name" name="patient-name" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="parent-guardian">Parent/Guardian:</label>
+                                    <input type="text" id="parentID" name="parentID" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="contact-number">Contact Number:</label>
+                                    <input type="text" id="contact-number" name="contact-number" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="therapist">Therapist:</label>
+                                    <select id="therapist" name="therapist" required>
+                                        <option value="">Select a Therapist</option>
+                                    </select>
+                                </div>
                             </div>
-                            <div class="form-group">
-                                <label for="patient-name">Patient Name:</label>
-                                <input type="text" id="patient-name" name="patient-name" required>
-                            </div>
-                            <div class="form-group">
-                                <label for="parent-guardian">Parent/Guardian:</label>
-                                <input type="text" id="parent-guardian" name="parent-guardian" required>
-                            </div>
-                            <div class="form-group">
-                                <label for="contact-number">Contact Number:</label>
-                                <input type="text" id="contact-number" name="contact-number" required>
-                            </div>
-                            <div class="form-group">
-                                <label for="therapist">Therapist:</label>
-                                <select id="therapist" name="therapist" required>
-                                    <option value="">Select a Therapist</option>
-                                </select>
-                            </div>
-                        </div>
-                        
-                        <div class="form-group services-group">
-                            <label>Services:</label>
-                            <div class="services-checkbox">
-                            <?php
-                                require 'db_conn.php';
-                                $sql = "SELECT serviceID, serviceName FROM services";
-                                $result = $conn->query($sql);
 
-                                if ($result->num_rows > 0) {
-                                    // Output a checkbox for each service
-                                    while ($row = $result->fetch_assoc()) {
-                                        $serviceID = $row['serviceID'];
-                                        $serviceName = $row['serviceName'];
-                                        echo '<label><input type="checkbox" name="services[]" value="' . htmlspecialchars($serviceID) . '"> ' . htmlspecialchars($serviceName) . '</label><br>';
+                            <div class="form-group services-group">
+                                <label>Services:</label>
+                                <div class="services-checkbox">
+                                    <?php
+                                    require 'db_conn.php';
+                                    $sql = "SELECT serviceID, serviceName FROM services";
+                                    $result = $conn->query($sql);
+                                    if ($result->num_rows > 0) {
+                                        while ($row = $result->fetch_assoc()) {
+                                            echo '<label><input type="checkbox" name="services[]" value="' . htmlspecialchars($row["serviceID"]) . '"> ' . htmlspecialchars($row["serviceName"]) . '</label><br>';
+                                        }
+                                    } else {
+                                        echo "No services found.";
                                     }
-                                } else {
-                                    echo "No services found.";
-                                }
-                        
-                                $conn->close();
-                                ?>
+                                    $conn->close();
+                                    ?>
+                                </div>
                             </div>
-                        </div>
 
-                        <form id="appointment-form" method="POST" action="save_appointment.php">
-                        <input type="hidden" id="selectedDateTime" name="schedule">
-                        <input type="hidden" id="patientIDHidden" name="patientID">
-                        <input type="hidden" id="parentIDHidden" name="parentID">
-                        <input type="hidden" id="therapistIDHidden" name="therapistID">
-                        <input type="hidden" id="serviceIDHidden" name="serviceID">
-                        <button type="submit" class="submit-btn">Submit <i class="fas fa-arrow-right"></i></button>
+                            <input type="hidden" id="selectedDateTime" name="schedule">
+                            <button type="submit" class="submit-btn" onclick="handleSubmit()">Submit <i class="fas fa-arrow-right"></i></button>
                         </form>
-
-                    </form>
+                    </div>
                 </div>
-            </div>
-
+                <div id="confirmationPopup" class="popup" style="display: none;">
+                            <div class="popup-content">
+                                <span class="close" onclick="closeConfirmationPopup()">&times;</span>
+                                <h4>Confirmation</h4>
+                                <p id="confirmationMessage">Your appointment has been scheduled!</p>
+                            </div>
+                        </div></table>
+                
             <div class="search-bar-content">
                 <input type="text" placeholder="Search by patient or therapist">
                 <button><i class="fas fa-search"></i></button>
@@ -220,6 +227,7 @@ if (isset($_SESSION['firstname'])) {
                         <th>NAME</th>
                         <th>THERAPIST</th>
                         <th>SERVICES</th>
+                        <th>STATUS</th>
                         <th>SCHEDULES</th>
                     </tr>
                 </thead>
@@ -254,7 +262,7 @@ if (isset($_SESSION['firstname'])) {
                 <div class="profile-header">
                     <img src="images/about 1.jpg" alt="Profile Picture" class="profile-picture">
                     <div class="profile-details">
-                        <h2 id="patient-name">Name</h2>
+                        <h2 id="patient_name">Name</h2>
                         <h3 id="service">Service</h3>
                     </div>
                 </div>
@@ -262,7 +270,7 @@ if (isset($_SESSION['firstname'])) {
                     <h5>CONTACT INFORMATION</h5>
                     <div class="contact-info-wrapper">
                         <div class="contact-info-main">
-                            <p><strong>Parent/Guardian:</strong> <span id="parent-name"></span></p>
+                            <p><strong>Parent/Guardian:</strong> <span id="parent_name"></span></p>
                             <p><strong>Phone:</strong> <span id="phone"></span></p>
                             <p><strong>Email:</strong> <span id="email"></span></p>
                         </div>
@@ -281,9 +289,53 @@ if (isset($_SESSION['firstname'])) {
             <div class="staff-header">
             <h4>STAFFS</h4>
             <!-- Add Staff Button -->
-                <button id="add-staff-button" class="add-staff-button">
-                    <i class="fas fa-plus"></i> Add Staff
-                </button>
+
+                <button id="add-staff" class="add-staff"><i class="fas fa-plus"></i> Add Staff </button>
+
+                    <!-- Hidden Pop-Up Form for Adding Staff -->
+                <div id="add-staff-popup" class="popup-form">
+                            <div class="popup-content-form">
+                                <span class="close-btn" id="close-add-staff">&times;</span>
+                                <h2>Add Staff</h2>
+                                <form id="addstaff-form">
+                                    <div class="form-row">
+                                        <div class="form-group">
+                                            <label for="staffName">Staff Name:</label>
+                                            <input type="text" id="staffName" name="staffName" required>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="position">Position:</label>
+                                            <input type="text" id="position" name="position" placeholder="Teacher/Helper etc." required>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-row">
+                                        <div class="form-group">
+                                            <label for="phoneNumber">Contact Number:</label>
+                                            <input type="text" id="phoneNumber" name="phoneNumber" required>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="address">Home Address:</label>
+                                            <input type="text" id="address" name="address" required>
+                                        </div>
+                                        <div class="form-group">
+                                        <label for="gender">Gender:</label>
+                                            <select id="gender" name="gender" required>
+                                                <option value="" disabled selected>Select Gender</option>
+                                                <option value="Male">Male</option>
+                                                <option value="Female">Female</option>
+                                            </select>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="datehired">Date Hired:</label>
+                                            <input type="date" id="datehired" name="datehired" required>
+                                        </div>
+                                    </div>
+
+                                    <button type="submit" class="submit-btn">Submit <i class="fas fa-arrow-right"></i></button>
+                                </form>
+                            </div>
+                </div>    
             </div>
             
             <div class="staff-container">
@@ -301,10 +353,33 @@ if (isset($_SESSION['firstname'])) {
                                         <th>Date Hired</th>
                                     </tr>
                                 </thead>
-                                <tbody id="staff-table">
+                                <tbody id="staff-tbody">
                                     <?php include 'a_staff.php'; ?>
                                 </tbody>
                             </table>
+                            <div class="staff-info" id="staff-info" style="display:none">
+                                <h4>PROFILES</h4>
+                                <div class="profile-header">
+                                    <img src="images/about 1.jpg" alt="Profile Picture" class="profile-picture">
+                                    <div class="profile-details">
+                                        <h2 id="staff_name">Name</h2>
+                                        <h3 id="position">Position</h3>
+                                    </div>
+                                </div>
+                            <div class="profile-info">
+                                <h5>CONTACT INFORMATION</h5>
+                                <div class="contact-info-wrapper">
+                                    <div class="contact-info-main">
+                                        <p><strong>Phone:</strong> <span id="phone"></span></p>
+                                        <p><strong>DateHired:</strong> <span id="datehired"></span></p>
+                                    </div>
+                                </div>
+                                <h5>BASIC INFORMATION</h5>
+                                <p><strong>Gender:</strong> <span id="gender"></span></p>
+                                <p><strong>Address:</strong> <span id="address"></span></p>
+                                    
+                            </div>
+                            </div>
                         </div>
 
                         <button id="clinic-admin-btn" class="clinic-admin" onclick="setActive('clinic-admin-table')">
@@ -361,19 +436,58 @@ if (isset($_SESSION['firstname'])) {
          <!-- Services Section -->
         <div id="services-section" class="content">
             <h4>MANAGE SERVICES</h4>
-            
-            <table>
-                <thead>
-                    <tr>
-                        <th>NAME OF SERVICE</th>
-                        <th>AVAILABILITY</th>
-                        <th>DESCRIPTION</th>
-                    </tr>
-                </thead>
-                <tbody id="services-tbody">
-                    <?php include 'a_services.php'; ?>
-                </tbody>
-            </table>
+
+            <button class="add-service" id="add-service"><i class="fas fa-plus"></i> Add Service</button>
+                
+                <!-- Hidden Pop-Up Form for Adding Services -->
+                <div id="add-service-popup" class="popup-form">
+                            <div class="popup-content-form">
+                                <span class="close-btn" id="close-add-popup">&times;</span>
+                                <h2>Add Service</h2>
+                                <form id="addservice-form">
+                                    <div class="form-row">
+                                        <div class="form-group">
+                                            <label for="serviceName">Service Name:</label>
+                                            <input type="text" id="serviceName" name="serviceName" required>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="availability">Availability:</label>
+                                            <input type="text" id="availability" name="availability" placeholder="Available/Not Available" required>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-row">
+                                        <div class="form-group">
+                                            <label for="description">Description:</label>
+                                            <input type="text" id="description" name="description" required>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="about">About:</label>
+                                            <input type="text" id="about" name="about" required>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="price">Price:</label>
+                                            <input type="text" id="price" name="price" required>
+                                        </div>
+                                    </div>
+
+                                    <button type="submit" class="submit-btn">Submit <i class="fas fa-arrow-right"></i></button>
+                                </form>
+                            </div>
+                        </div>    
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>NAME OF SERVICE</th>
+                                <th>AVAILABILITY</th>
+                                <th>DESCRIPTION</th>
+                            </tr>
+                        </thead>
+                        <tbody id="services-tbody">
+                            <?php include 'a_services.php'; ?>
+                        </tbody>
+                    </table>
+
             <div class="service-info" id="service-info" style="display:none">
                 <h4>VIEW SERVICE</h4>
                     <div class="service-header">
@@ -388,13 +502,13 @@ if (isset($_SESSION['firstname'])) {
                             <!-- Hidden Pop-Up Form for Editing Services -->
                         <div id="service-popup" class="popup-form">
                             <div class="popup-content-form">
-                                <span class="close-btn" id="close-popup">&times;</span>
-                                <h2>Manage Service</h2>
-                                <form id="service-form">
+                                <span class="close-btn" id="close-edit-service-popup">&times;</span>
+                                <h2>Edit Service</h2>
+                                <form id="editservice-form">
                                     <div class="form-row">
                                         <div class="form-group">
                                             <label for="service-name">Service Name:</label>
-                                            <input type="text" id="service-name" name="service-name" required>
+                                            <input type="text" id="service-name" name="service-name" placeholder="Type service name you want to edit" required>
                                         </div>
                                         <div class="form-group">
                                             <label for="availability">Availability:</label>
@@ -421,102 +535,30 @@ if (isset($_SESSION['firstname'])) {
                                 </form>
                             </div>
                         </div>
+                                </div>
+                                    <div class="service-about">
+                                        <p id="service-about"></p>
+                                    </div>
+                                </div>
+        </div> 
+            <!-- Edit Profile Section -->
+            <div id="edit-profile-section" class="content">
+                <h4>Edit Profile</h4>
 
-                        <script>
-                            // Get the button that opens the popup
-                            const editServiceButton = document.querySelector('.edit-service');
-                            // Get the popup
-                            const popup = document.getElementById('service-popup');
-                            // Get the <span> element that closes the popup
-                            const closePopupButton = document.getElementById('close-popup');
-                            const serviceForm = document.getElementById('service-form');
-
-                            // When the user clicks the button, open the popup
-                            editServiceButton.addEventListener('click', function() {
-                                popup.style.display = 'block';
-                            });
-
-                            // When the user clicks on <span> (x), close the popup
-                            closePopupButton.addEventListener('click', function() {
-                                popup.style.display = 'none';
-                            });
-
-                            // When the user clicks anywhere outside of the popup content, close the popup
-                            window.addEventListener('click', function(event) {
-                                if (event.target === popup) {
-                                    popup.style.display = 'none';
-                                }
-                            });
-
-                            // Handle form submission
-                            serviceForm.addEventListener('submit', function(event) {
-                                event.preventDefault(); // Prevent the default form submission
-
-                                // Gather form data
-                                const formData = new FormData(serviceForm);
-
-                                // Send data to the server using AJAX
-                                fetch('a_manageservice_endpoint.php', { // Replace with your actual server endpoint
-                                    method: 'POST',
-                                    body: formData
-                                })
-                                .then(response => response.json())
-                                .then(data => {
-                                    // Handle success or failure
-                                    if (data.success) {
-                                        alert('Service updated successfully!');
-                                        popup.style.display = 'none'; // Close the popup
-                                        // Optionally, refresh or update your services list
-                                    } else {
-                                        alert('Error updating service: ' + data.message);
-                                    }
-                                })
-                                .catch(error => {
-                                    console.error('Error:', error);
-                                    alert('There was an error with the request.');
-                                });
-                            });
-                        </script>
-
-                        </div>
-                            <div class="service-about">
-                                <p id="service-about"></p>
-                            </div>
-                        </div>
-
-            <script>
-                // Select all service rows
-                const serviceRows = document.querySelectorAll('.service-row');
-
-                // Add a click event listener to each row
-                serviceRows.forEach(row => {
-                    row.addEventListener('click', function() {
-                        // Fetch data from the clicked row
-                        const serviceName = this.getAttribute('data-service-name');
-                        const serviceAvailability = this.getAttribute('data-service-availability');
-                        const serviceDescription = this.getAttribute('data-service-description');
-                        const servicePrice = this.getAttribute('data-service-price');
-                        const serviceAbout = this.getAttribute('data-service-about'); // Fetch service-about
-
-                        // Populate the service info section
-                        document.getElementById('service-name').innerText = serviceName;
-                        document.getElementById('service-description').innerText = serviceDescription;
-                        document.getElementById('service-price').innerText = servicePrice;
-                        document.getElementById('service-about').innerText = serviceAbout; // Display service-about
-
-                        // Display the service info section
-                        document.getElementById('service-info').style.display = 'block';
-
-                        // Optionally, scroll to the service info section
-                        document.getElementById('service-info').scrollIntoView({ behavior: 'smooth' });
-                    });
-                });
-            </script>
-
-        </div>       
+                <!--Personal Information  -->
+                <div id="edit-profile-section" class="edit-container">
+                    
+                </div>
+               
+            </div>
 
     </div>
 
     <script src="adash.js" defer></script>
+    <script src="a_dashgenerate_pdf.js" defer></script>
+    <script src="a_staff_info.js" defer></script>
+    <script src="a_editservice.js" defer></script>
+    <script src="a_add_delete_service.js" defer></script>
+    <script src="a_confirmappointment.js" defer></script>
 </body>
 </html>

@@ -32,9 +32,40 @@ try {
         // Execute the SQL query
         $stmt->execute();
 
-        // Output success message
-        echo "Registration successful!";
+        // Get the email address from the form
+        $email = $_POST['email'];
+
+        // Prepare the email message
+        $subject = "Registration Successful";
+        $message = "
+        <html>
+        <head>
+        <title>Registration Confirmation</title>
+        </head>
+        <body>
+        <p>Dear {$_POST['firstName']} {$_POST['lastName']},</p>
+        <p>Your registration has been successfully completed. Below are your credentials:</p>
+        <p><strong>Username (Email):</strong> {$email}</p>
+        <p><strong>Password:</strong> {$_POST['password']}</p>
+        <p>Thank you for registering!</p>
+        </body>
+        </html>
+        ";
+
+        // Set email headers for HTML format
+        $headers = "MIME-Version: 1.0" . "\r\n";
+        $headers .= "Content-Type: text/html; charset=ISO-8859-1" . "\r\n";
+        $headers .= "From: therapeacemanagement@gmail.com" . "\r\n";  // Replace with your sender email
+
+        // Send the email
+        if(mail($email, $subject, $message, $headers)) {
+            echo "Registration successful! A confirmation email has been sent.";
+        } else {
+            echo "Error sending confirmation email.";
+        }
+
         echo "<br><a href='adminlogin.php'>Proceed to Login</a>"; // Link to login page
+        exit(); // Exit to prevent further script execution
     }
 } catch (PDOException $e) {
     echo "Error: " . $e->getMessage();

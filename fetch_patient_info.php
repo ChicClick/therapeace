@@ -1,26 +1,40 @@
 <?php
-include 'db_conn.php'; // Include database connection
+include 'db_conn.php';
 
-// Get patient ID from request
-$patient_id = intval($_GET['id']); // Get the patient ID from the URL
+// Get the patient ID from the request
+$patientId = $_GET['id'];
 
-// SQL query to get specific patient details by ID
-$sql = "SELECT * FROM patient WHERE patientID = $patient_id";
-$result = $conn->query($sql);
+// SQL query to join the patient and parent tables and fetch the names and other required information
+$sql = "
+    SELECT 
+        patient.patientID, 
+        patient.patientName AS patient_name, 
+        parent.parentName AS parent_name,
+        patient.phone AS phone, 
+        patient.email AS email,
+        patient.address AS address,
+        patient.birthday AS birthday,
+        patient.gender AS gender,
+        services.serviceName AS service
+    FROM patient
+    JOIN parent ON patient.parentID = parent.parentID
+    JOIN services ON patient.serviceID = services.serviceID
+    WHERE patient.patientID = ?
+";
 
-$patient = array();
+// Prepare and bind
+$stmt = $conn->prepare($sql);
+$stmt->bind_param("s", $patientId);
+$stmt->execute();
+$result = $stmt->get_result();
 
 if ($result->num_rows > 0) {
-    // Output data of specific patient
-    $patient = $result->fetch_assoc(); // Get patient details
+    $row = $result->fetch_assoc();
+    echo json_encode($row); // Return data as JSON
 } else {
-    // Patient not found
-    $patient['error'] = 'Patient not found';
+    echo json_encode(['error' => 'Patient not found']); // Return error message
 }
 
-// Send JSON response
-echo json_encode($patient);
-
-$conn->close(); // Close the connection
+$stmt->close();
+$conn->close();
 ?>
- 

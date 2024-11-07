@@ -1,5 +1,5 @@
 <?php
-session_start();
+include 'config.php';
 ?>
 
 <!DOCTYPE html>
@@ -14,7 +14,6 @@ session_start();
 <body>
     <!-- Left Section -->
     <div class="left-section">
-    <a href="register.html" class="back-link">&larr; Back</a>
     <img src="images/logo.png" alt="TheraBee Logo" class="logo">
     <h2>Sign In as Admin</h2>
 
