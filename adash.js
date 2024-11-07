@@ -6,6 +6,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
     links.forEach(link => {
         link.addEventListener('click', (event) => {
+            if (link.getAttribute('href') === 'registerlanding.php') {
+                // Allow default behavior for the "Sign Out" link
+                return; 
+            }
+
             const targetId = link.getAttribute('data-target');
 
             // Check if the clicked link is the "Sign Out" link
@@ -88,6 +93,21 @@ function getMonthName(month) {
     return monthNames[month];
 }
 
+let bookedDates = [];  // Array to store the booked dates from the server
+
+// Fetch booked dates from the server (e.g., through an AJAX request)
+async function fetchBookedDates() {
+    try {
+        const response = await fetch('a_bookeddate.php');  // Server-side script to get booked dates
+        const data = await response.json();  // Assuming the server returns an array of date strings
+        bookedDates = data;  // Store the booked dates in the bookedDates array
+        console.log("Fetched Booked Dates: ", bookedDates); // Debug: log fetched booked dates
+        generateCalendar();  // Regenerate the calendar after fetching booked dates
+    } catch (error) {
+        console.error("Error fetching booked dates:", error);
+    }
+}
+
 // Function to generate calendar dynamically
 function generateCalendar() {
     const calendarGrid = document.querySelector('.calendar-grid');
@@ -108,9 +128,12 @@ function generateCalendar() {
         const generatedDate = new Date(dateString);
         const currentDate = new Date(); // Update current date each time
 
-        // If date is in the past or already booked, disable it
-        if (generatedDate < currentDate || (typeof bookedDates !== "undefined" && bookedDates.includes(dateString))) {
-            dayDiv.classList.add('disabled');
+        // Debug: log each generated date
+        console.log("Generated Date: ", dateString);
+
+        // Disable Sundays, past dates, and booked dates
+        if (generatedDate.getDay() === 0 || generatedDate < currentDate || bookedDates.includes(dateString)) {
+            dayDiv.classList.add('disabled'); // Add disabled class to Sundays, past dates, and booked dates
         } else {
             dayDiv.addEventListener('click', () => {
                 // Handle date selection
@@ -119,9 +142,15 @@ function generateCalendar() {
                 document.getElementById('selectedDate').value = dateString;
             });
         }
+
         calendarGrid.appendChild(dayDiv);
     }
 }
+
+// Call the fetchBookedDates function to load booked dates
+fetchBookedDates();
+
+
 
 // Event listener for month navigation
 document.getElementById('nextMonth').addEventListener('click', (e) => {
@@ -143,6 +172,7 @@ document.getElementById('prevMonth').addEventListener('click', (e) => {
     }
     generateCalendar(); // Regenerate calendar with updated month and year
 });
+
 
 // Function to open the time selection popup
 function openTimePopup() {
@@ -183,6 +213,23 @@ function generateAvailableTimes() {
         li.addEventListener('click', () => selectTime(li, time)); // Pass both the element and time
         afternoonList.appendChild(li);
     });
+}
+
+// Function to convert 24-hour time format to 12-hour AM/PM format
+function convertTo12HourFormat(time) {
+    let [hours, minutes] = time.split(':');
+    hours = parseInt(hours);
+
+    let suffix = 'AM';
+    if (hours >= 12) {
+        suffix = 'PM';
+        if (hours > 12) {
+            hours -= 12;  // Convert to 12-hour format
+        }
+    }
+
+    // Add leading zero for hours and minutes if needed
+    return `${hours}:${minutes} ${suffix}`;
 }
 
 // Function to handle time selection
@@ -232,7 +279,7 @@ document.getElementById('close-popup').addEventListener('click', function() {
 });
 
 
-// Fetching patientID Selection
+// Fetching patientID for autofill Selection
 function toggleInput(selectElement) {
     // Get the selected value from the dropdown
     const selectedValue = selectElement.value;
@@ -278,7 +325,7 @@ $(document).ready(function() {
       
 });
 
-// Fetching therapistName 
+// Fetching therapistName for autofill
 $(document).ready(function() {
     $('#therapist').on('click', function() {
         // Only fetch data if the dropdown is empty
@@ -306,25 +353,17 @@ $(document).ready(function() {
     });
 });
 
-// Event listener for form submission
-    document.getElementById('appointment-form').addEventListener('submit', function(event) {
-    document.getElementById('selectedDateTime').value = `${document.getElementById('selectedDate').value} ${document.getElementById('selectedTime').value}`;
 
-});
-
-
-
-
-// Profile Section
+// Patients Profile active row 
 document.addEventListener("DOMContentLoaded", function() {
     const patientTable = document.getElementById('patients-tbody');
     const patientInfo = document.getElementById('patient-info'); // Reference to the patient info section
     let currentPatientId = null; // Track the current patient ID
 
-    // Add click event listener to each patient row
+    // Add click event listener to the patient table
     patientTable.addEventListener('click', function(e) {
-        if (e.target.closest('tr')) { // Check if a row was clicked
-            const clickedRow = e.target.closest('tr');
+        const clickedRow = e.target.closest('tr'); // Check if a row was clicked
+        if (clickedRow) {
             const patientId = clickedRow.getAttribute('data-patient-id');
             console.log('Clicked patient ID:', patientId); // Debugging line
 
@@ -335,6 +374,7 @@ document.addEventListener("DOMContentLoaded", function() {
             } else {
                 // If a different patient is clicked, fetch and update the info
                 fetchPatientInfo(patientId);
+                currentPatientId = patientId; // Update the current patient ID
             }
         }
     });
@@ -346,43 +386,50 @@ document.addEventListener("DOMContentLoaded", function() {
         clearPatientInfo();
 
         // Fetch the clicked patient's detailed information
-        fetch(`fetch_patient_info.php?id=${patientId}`)
-        .then(response => response.json())
-        .then(patientData => {
-            console.log('Fetched patient data:', patientData); // Debugging line
-            if (patientData.error) {
-                console.error('Patient not found:', patientData.error);
-            } else {
-                // Populate the patient info section
-                document.getElementById('patient-name').textContent = patientData.name;
-                document.getElementById('service').textContent = patientData.service;
-                document.getElementById('parent-name').textContent = patientData.parent_name;
-                document.getElementById('phone').textContent = patientData.phone;
-                document.getElementById('email').textContent = patientData.email;
-                document.getElementById('address').textContent = patientData.address;
-                document.getElementById('birthday').textContent = patientData.birthday;
-                document.getElementById('gender').textContent = patientData.gender;
+        fetch(`a_fetch_patient_info.php?id=${patientId}`) // Corrected line
+            .then(response => {
+                if (!response.ok) { // Check for HTTP errors
+                    throw new Error('Network response was not ok');
+                }
+                return response.json();
+            })
+            .then(patientData => {
+                console.log('Fetched patient data:', patientData); // Debugging line
+                if (patientData.error) {
+                    console.error('Patient not found:', patientData.error);
+                    alert('Patient not found'); // Notify user
+                } else {
+                    // Populate the patient info section
+                    document.getElementById('patient_name').textContent = patientData.patient_name; // Ensure this matches your JSON keys
+                    document.getElementById('service').textContent = patientData.service; // Ensure this key exists in your PHP
+                    document.getElementById('parent_name').textContent = patientData.parent_name;
+                    document.getElementById('phone').textContent = patientData.phone;
+                    document.getElementById('email').textContent = patientData.email;
+                    document.getElementById('address').textContent = patientData.address;
+                    document.getElementById('birthday').textContent = patientData.birthday;
+                    document.getElementById('gender').textContent = patientData.gender;
 
-                // Show the patient info section
-                patientInfo.style.display = 'block';
-                currentPatientId = patientId; // Update the current patient ID
-            }
-        })
-        .catch(err => console.error('Error fetching patient details:', err));
+                    // Show the patient info section
+                    patientInfo.style.display = 'block';
+                }
+            })
+            .catch(err => console.error('Error fetching patient details:', err));
     }
 
     // Function to clear patient info
     function clearPatientInfo() {
-        document.getElementById('patient-name').textContent = '';
+        document.getElementById('patient_name').textContent = '';
         document.getElementById('service').textContent = '';
-        document.getElementById('parent-name').textContent = '';
+        document.getElementById('parent_name').textContent = '';
         document.getElementById('phone').textContent = '';
         document.getElementById('email').textContent = '';
         document.getElementById('address').textContent = '';
         document.getElementById('birthday').textContent = '';
         document.getElementById('gender').textContent = '';
-    }    
+    }
 });
+
+
 
 
 // Staff Section 
@@ -426,7 +473,6 @@ clinicTherapistBtn.addEventListener('click', () => {
     displayTableData(clinicTherapistData);
 });
 
-
 // Add staff 
 document.addEventListener('DOMContentLoaded', function () {
     const addStaffButton = document.getElementById('add-staff-button');
@@ -452,32 +498,4 @@ document.addEventListener('DOMContentLoaded', function () {
 });
 
 //Service
-// Service active row 
-document.addEventListener('DOMContentLoaded', () => {
-    // Select all service rows
-    const serviceRows = document.querySelectorAll('.service-row');
-
-    // Add a click event listener to each row
-    serviceRows.forEach(row => {
-        row.addEventListener('click', function() {
-            // Fetch data from the clicked row
-            const serviceName = this.getAttribute('data-service-name');
-            const serviceAvailability = this.getAttribute('data-service-availability');
-            const serviceDescription = this.getAttribute('data-service-description');
-            const servicePrice = this.getAttribute('data-service-price');
-            const serviceAbout = this.getAttribute('data-service-about'); // Fetch service-about
-
-            // Populate the service info section
-            document.getElementById('service-name').innerText = serviceName;
-            document.getElementById('service-description').innerText = serviceDescription;
-            document.getElementById('service-price').innerText = servicePrice;
-            document.getElementById('service-about').innerText = serviceAbout; // Display service-about
-
-            // Display the service info section
-            document.getElementById('service-info').style.display = 'block';
-
-            // Optionally, scroll to the service info section
-            document.getElementById('service-info').scrollIntoView({ behavior: 'smooth' });
-        });
-    });
-});
+//Add Service 

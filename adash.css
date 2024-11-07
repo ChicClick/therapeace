@@ -168,6 +168,50 @@ body {
     cursor: pointer;
 }
 
+/*Dashboard*/
+.dashboard {
+    font-family: 'Poppins', sans-serif;
+    display: flex;
+    gap: 50px;
+    padding: 20px;
+    background-color: #ffffff;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.data-section {
+    max-width: 300px;
+}
+
+.data-section h1 {
+    font-size: 2rem;
+    color: #333;
+}
+
+.view-report {
+    font-family: 'Poppins', sans-serif;
+    background-color: #ffd700;
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+    margin-top: 10px;
+}
+
+.view-report:hover {
+    background-color: #e0c100; /* Slightly darker yellow for hover effect */
+    transform: scale(1.05); /* Slight zoom effect */
+}
+
+.feedback-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+canvas {
+    max-width: 300px;
+}
+/*End Dashboard*/
+
 .profile-section {
     display: flex;
     align-items: center;
@@ -682,6 +726,11 @@ input[type="checkbox"] {
     cursor: not-allowed;
 }
 
+.disabled {
+    color: #C8CBD9;
+    cursor: not-allowed;
+}
+
 .day.selected {
     background-color: #FDBC10;
     border-radius: 50%;
@@ -806,6 +855,13 @@ input[type="checkbox"] {
 
 
 /* staff */
+.staff-info {
+    padding: 20px;
+    background-color: transparent;
+    border-radius: 10px;
+    width: 300%;
+}
+
 /* add staff*/
 .staff-header {
     display: flex;
@@ -933,6 +989,26 @@ input[type="checkbox"] {
     background-color: #D1C298; /* row with selected staff */
 }
 
+.add-staff {
+    font-family: 'Poppins', sans-serif;
+    display: flex;
+    align-items: center;
+    background-color: #fff; /* Change to the desired background color */
+    color: #ECB723; /* Change to the desired text color */
+    border: 1px solid #ddd; /* Border color */
+    border-radius: 4px;
+    padding: 8px 16px;
+    font-size: 14px;
+    cursor: pointer;
+    margin-bottom: 15px; /* Space below the button */
+    margin-right: 15px; /* Space to the right if needed */
+    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1); /* Shadow for depth */
+}
+
+.add-service:hover {
+    background-color: #ddd;
+}
+
 /*  SERVICE  */
 /* VIEW SERVICE Text */
 .service-info h4 {
@@ -1019,4 +1095,51 @@ input[type="checkbox"] {
 
 .edit-service:hover {
     background-color: #ddd;
+}
+
+/* add-service Button */
+.add-service {
+    font-family: 'Poppins', sans-serif;
+    display: flex;
+    align-items: center;
+    background-color: #fff; /* Change to the desired background color */
+    color: #ECB723; /* Change to the desired text color */
+    border: 1px solid #ddd; /* Border color */
+    border-radius: 4px;
+    padding: 8px 16px;
+    font-size: 14px;
+    cursor: pointer;
+    margin-bottom: 15px; /* Space below the button */
+    margin-right: 15px; /* Space to the right if needed */
+    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1); /* Shadow for depth */
+}
+
+.add-service:hover {
+    background-color: #ddd;
+}
+
+.delete-btn {
+    background-color: #e74c3c; /* Red color */
+    font-family: 'Poppins', sans-serif;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    font-size: 12px;
+    cursor: pointer;
+    border-radius: 5px;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.delete-btn:hover {
+    background-color: #c0392b; /* Darker red on hover */
+    transform: scale(1.05); /* Slightly enlarges the button */
+}
+
+.delete-btn:active {
+    background-color: #a93226; /* Even darker red when clicked */
+    transform: scale(0.95); /* Shrinks button slightly when clicked */
+}
+
+.delete-btn i {
+    margin-right: 4px; /* Adds space between icon and text */
 }

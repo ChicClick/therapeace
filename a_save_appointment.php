@@ -85,7 +85,5 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $stmt->close();
     $conn->close();
 
-    echo "Appointments saved successfully.";
-    echo "<br><a href='admindashboard.php'>Proceed</a>"; 
 }
 ?>

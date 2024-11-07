@@ -8,7 +8,8 @@ $sql = "
         patient.patientName AS patient_name, 
         parent.parentName AS parent_name,
         services.serviceName AS service_name,
-        patient.image AS image
+        patient.image AS image,
+        patient.status AS patient_status
     FROM patient
     JOIN parent ON patient.parentID = parent.parentID
     JOIN services ON patient.serviceID = services.serviceID
@@ -23,7 +24,7 @@ if ($result->num_rows > 0) {
         echo "<td><img src='images/about 4.jpg' alt='Profile Image' class='profile-img'> " . htmlspecialchars($row['patient_name'], ENT_QUOTES) . "</td>";
         echo "<td data-parent-name='" . htmlspecialchars($row['parent_name'], ENT_QUOTES) . "'>" . htmlspecialchars($row['parent_name'], ENT_QUOTES) . "</td>";
         echo "<td>" . $row['service_name'] . "</td>";
-        echo "<td></td>"; // Placeholder for completion data
+        echo "<td>" . htmlspecialchars($row['patient_status'], ENT_QUOTES) . "</td>";
         echo "</tr>";
     }
 } else {

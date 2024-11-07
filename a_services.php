@@ -29,6 +29,7 @@ if ($result->num_rows > 0) {
         echo "<td>" . htmlspecialchars($row['service_name'], ENT_QUOTES) . "</td>";
         echo "<td>" . htmlspecialchars($row['service_availability'], ENT_QUOTES) . "</td>";
         echo "<td>" . htmlspecialchars($row['service_description'], ENT_QUOTES) . "</td>";
+        echo "<td><button class='delete-btn' data-id='" . $row['serviceID'] . "'>Delete</button></td>";
         echo "</tr>";
     }
 } else {
