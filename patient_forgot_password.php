@@ -36,7 +36,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     $stmt->execute();
                     $stmt->close();
 
-                    $resetLink = "http://localhost/therapeace/patientResetPassword.php?token=" . $resetToken;
+                    $resetLink = "https://therapeace-d74d563df28a.herokuapp.com/patientResetPassword.php?token=" . $resetToken;
                     $subject = "Password Reset Request";
                     $message = "Click the link below to reset your password:\n\n" . $resetLink;
                     $headers = "From: therapeacemanagement@gmail.com";
