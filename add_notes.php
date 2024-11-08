@@ -1,5 +1,7 @@
 <?php
-include 'db_conn.php';
+include 'db_conn.php'; // Include your database connection file
+
+session_start(); // Start the session
 
 // Initialize a variable to hold confirmation status
 $confirmationMessage = "";
