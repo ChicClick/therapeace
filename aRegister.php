@@ -25,11 +25,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $stmt = $conn->prepare("INSERT INTO admin (adminID, firstname, lastname, username, phoneNumber, address, birthday, gender, password_hash) 
                             VALUES (NULL, ?, ?, ?, ?, ?, ?, ?, ?)");
 
-    // Bind form data to SQL query parameters (order matters)
-    $stmt->bind_param('sssssssss', $_POST['firstName'], $_POST['lastName'], $_POST['email'], $_POST['phone'], $_POST['address'], $_POST['birthday'], $_POST['gender'], $hashed_password);
-
     // Hash the password
     $hashed_password = password_hash($_POST['password'], PASSWORD_DEFAULT);
+
+    // Bind form data to SQL query parameters (order matters)
+    $stmt->bind_param('sssssssss', $_POST['firstName'], $_POST['lastName'], $_POST['email'], $_POST['phone'], $_POST['address'], $_POST['birthday'], $_POST['gender'], $hashed_password);
 
     // Execute the SQL query and check if it was successful
     if ($stmt->execute()) {
