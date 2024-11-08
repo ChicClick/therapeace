@@ -5,18 +5,17 @@ include 'db_conn.php';
 $guestID = isset($_GET['guestID']) ? (int)$_GET['guestID'] : 0;
 
 if ($guestID > 0) {
-    // Use guestID as responseID since they are linked
-    $responseID = $guestID;
-
-    // Step 2: Retrieve questions and answers for the checklist
+    // Step 2: Retrieve questions and answers for the checklist based on the guestID linked in form_answers
     $sql = "
         SELECT pq.questionID, pq.category, pq.questionText, pq.options, pq.inputType, fa.answerText
-        FROM prescreening_questions pq 
-        LEFT JOIN form_answers fa ON pq.questionID = fa.questionID AND fa.responseID = ?
+        FROM prescreening_questions pq
+        LEFT JOIN form_answers fa ON pq.questionID = fa.questionID
+        LEFT JOIN guest g ON fa.guestID = g.guestID
+        WHERE g.guestID = ?
         ORDER BY pq.category
     ";
     $stmt = $conn->prepare($sql);
-    $stmt->bind_param('i', $responseID);
+    $stmt->bind_param('i', $guestID);
     $stmt->execute();
     $result = $stmt->get_result();
 

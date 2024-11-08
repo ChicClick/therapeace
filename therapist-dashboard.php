@@ -1,5 +1,5 @@
 <?php
-include 'config.php';
+session_start();
 
 // Check if the therapist is logged in
 if (!isset($_SESSION['therapist_id'])) {
@@ -499,6 +499,9 @@ $therapistID = $_SESSION['therapist_id'];
                 <div class="checklist-right-section">
                     <!-- Static checkboxes for therapy options -->
                     <form class="asses" action="save_form.php" method="post">
+                        <!-- Hidden input to hold the guestId dynamically -->
+                        <input type="hidden" name="guestId" id="guestId" value="">
+
                         <div class="checkbox-group">
                             <div class="section-title">Select Suitable Therapy</div>
                             <label><input type="checkbox" name="therapies[]" id="therapy-occupational" value="Occupational Therapy"> Occupational Therapy</label>
@@ -514,6 +517,13 @@ $therapistID = $_SESSION['therapist_id'];
 
                         <button type="submit" class="save-button">Save</button>
                     </form>
+
+                    <script>
+                        // JavaScript function to set guestId in the hidden input
+                        function setGuestId(guestId) {
+                            document.getElementById('guestId').value = guestId;
+                        }
+                    </script>
                 </div>
             </div>
         </div>
@@ -531,8 +541,10 @@ $therapistID = $_SESSION['therapist_id'];
         </div>
     </div>
     <script>
-        var therapist_id = <?php echo json_encode($therapistID); ?>;
+        const therapistID = '<?php echo $_SESSION['therapist_id']; ?>';
     </script>
+
     <script src="therapist-dashboard.js" defer></script>
+    <script src="calendar.js"></script>
 </body>
 </html>

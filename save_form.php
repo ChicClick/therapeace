@@ -7,8 +7,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $therapies = isset($_POST['therapies']) ? implode(',', $_POST['therapies']) : '';
     $comments = isset($_POST['comments']) ? $_POST['comments'] : '';
 
-    // Set guestId directly to 83
-    $guestId = 1;
+    // Retrieve guestId from the form submission
+    $guestId = isset($_POST['guestId']) ? $_POST['guestId'] : 0;
 
     // Prepare and execute the SQL query
     $sql = "UPDATE guest SET matchTherapy = ?, comments = ?, status = 2 WHERE GuestID = ?";
