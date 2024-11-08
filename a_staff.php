@@ -20,6 +20,7 @@ if ($result->num_rows > 0) {
         echo "<td><img src='images/about 4.jpg' alt='Profile Image' class='profile-img'> " . htmlspecialchars($row['staff_name'], ENT_QUOTES) . "</td>";
         echo "<td>" . htmlspecialchars($row['staff_position'], ENT_QUOTES) . "</td>";
         echo "<td>" . htmlspecialchars($row['staff_datehired'], ENT_QUOTES) . "</td>";
+        echo "<td><button class='edit-staff-profile' id='edit-staff-profile'>Edit Staff</button></td>";
         echo "</tr>";
     }
 } else {

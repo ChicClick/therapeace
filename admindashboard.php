@@ -362,6 +362,7 @@ if (isset($_SESSION['firstname'])) {
                                         <th>Name</th>
                                         <th>Position</th>
                                         <th>Date Hired</th>
+                                        <th>Action</th>
                                     </tr>
                                 </thead>
                                 <tbody id="staff-tbody">
@@ -375,6 +376,50 @@ if (isset($_SESSION['firstname'])) {
                                     <div class="profile-details">
                                         <h2 id="staff_name">Name</h2>
                                         <h3 id="staff-position">Position</h3>
+                                    </div>
+                                    <!-- Hidden Pop-Up Form for Editing Staff Profile -->
+                                    <div id="staff-profile-popup" class="popup-form">
+                                        <div class="popup-content-form">
+                                            <span class="close-btn" id="close-edit-staff-profile-popup">&times;</span>
+                                            <h2>Edit Staff Profile</h2>
+                                            <form id="editstaff-profile-form">
+                                                <div class="form-row">
+                                                    <div class="form-group">
+                                                        <label for="staffName">Staff Name:</label>
+                                                        <input type="text" id="staffName" name="staffName" required>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label for="position">Position:</label>
+                                                        <input type="text" id="position" name="position" placeholder="Teacher/Helper etc." required>
+                                                    </div>
+                                                </div>
+
+                                                <div class="form-row">
+                                                    <div class="form-group">
+                                                        <label for="phoneNumber">Contact Number:</label>
+                                                        <input type="text" id="phoneNumber" name="phoneNumber" required>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label for="address">Home Address:</label>
+                                                        <input type="text" id="address" name="address" required>
+                                                    </div>
+                                                    <div class="form-group">
+                                                    <label for="gender">Gender:</label>
+                                                        <select id="gender" name="gender" required>
+                                                            <option value="" disabled selected>Select Gender</option>
+                                                            <option value="Male">Male</option>
+                                                            <option value="Female">Female</option>
+                                                        </select>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label for="datehired">Date Hired:</label>
+                                                        <input type="date" id="datehired" name="datehired" required>
+                                                    </div>
+                                                </div>
+
+                                                <button type="submit" class="submit-btn">Submit <i class="fas fa-arrow-right"></i></button>
+                                            </form>
+                                        </div>
                                     </div>
                                 </div>
                             <div class="profile-info">
@@ -573,6 +618,7 @@ if (isset($_SESSION['firstname'])) {
     <script src="a_editservice.js" defer></script>
     <script src="a_add_delete_service.js" defer></script>
     <script src="a_confirmappointment.js" defer></script>
+    <script src="a_editstaff_profile.js" defer></script>
     <script src="a_logout.js" defer></script>
 </body>
 </html>
