@@ -305,12 +305,18 @@ function closeReportRequestModal() {
     }
     
 
-    function openProgressReportPopup() {
-        document.getElementById('progressReportPopup').style.display = 'block';
+    function openProgressReportPopup(reportID) {
+        if (reportID !== null) {
+            // Open the popup and load the data for the selected report
+            document.getElementById('progress-report-popup').style.display = 'block';
+            // You can now use reportID to fetch specific report details if necessary
+        } else {
+            alert('No report available for this patient.');
+        }
     }
     
-    function closeProgressReportPopup() {
-        document.getElementById('progressReportPopup').style.display = 'none';
+    function closePopup() {
+        document.getElementById('progress-report-popup').style.display = 'none';
     }
     
 
