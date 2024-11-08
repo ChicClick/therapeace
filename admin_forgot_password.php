@@ -38,7 +38,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
                     $resetLink = "http://localhost/therapeace/adminResetPassword.php?token=" . $resetToken;
                     $subject = "Password Reset Request";
-                    $message = "Click the link below to reset your password:\n\n" . $resetLink;
+                    $message = "A request has been received to change the password for your TheraPeace account.\n\n" . $resetLink;
                     $headers = "From: therapeacemanagement@gmail.com";
 
                     if (mail($email, $subject, $message, $headers)) {
