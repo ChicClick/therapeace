@@ -250,7 +250,7 @@ function selectTime(element, selectedTime) {
 }
 
 // Event listener for the Proceed button in the reschedule (calendar) popup
-document.getElementById('proceedButton').addEventListener('click', function() {
+document.getElementById('proceedButton').addEventListener('click', () => {
     const selectedDate = document.getElementById('selectedDate').value;
     if (selectedDate) { // Ensure a date is selected
         closePopup(); // Close the reschedule popup
@@ -261,7 +261,7 @@ document.getElementById('proceedButton').addEventListener('click', function() {
 });
 
 // Event listener for the Proceed button in the time popup
-document.querySelector('#timePopup #proceedButton').addEventListener('click', function() {
+document.querySelector('#timePopup #proceedButton').addEventListener('click', () => {
     const selectedTime = document.getElementById('selectedTime').value;
 
     if (selectedTime) { // Check if a time is selected

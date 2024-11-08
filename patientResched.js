@@ -12,10 +12,10 @@ document.addEventListener('DOMContentLoaded', function () {
     const timePopup = document.getElementById('timePopup');
     const morningTimesList = document.getElementById('morningTimes');
     const afternoonTimesList = document.getElementById('afternoonTimes');
+    const closeTimePopupBtn = document.querySelector('#timePopup .close');
 
     let currentDate = new Date();
     let availableDates = []; // Array to store available dates and their time slots
-    let selectedDate = null; // Store the selected date globally
     let selectedTimeSlots = []; // Store the available time slots for the selected date
 
     // Initialize the calendar on page load
@@ -108,9 +108,9 @@ document.addEventListener('DOMContentLoaded', function () {
         console.log("Available time slots:", timeSlots);
         
         // Store the selected date and its time slots
-        selectedDate = date;
+        selectedDateInput.value = date;
         selectedTimeSlots = timeSlots;
-        
+
         console.log("Stored time slots:", selectedTimeSlots); // Add this line
     
         // Remove 'selected' class from previously selected date (if any)
@@ -127,17 +127,13 @@ document.addEventListener('DOMContentLoaded', function () {
     }
     
 
-    const closeTimePopupBtn = document.querySelector('#timePopup .close');  // Select close button inside timePopup
+  // Select close button inside timePopup
     if (closeTimePopupBtn) {
-        closeTimePopupBtn.addEventListener('click', closeTimePopup);  // Attach the closeTimePopup function to the close button
+        closeTimePopupBtn.addEventListener('click', ()=> {
+            timePopup.style.display = 'none'; // Hide the time popup
+            document.body.style.overflow = 'auto'; // Re-enable body scrolling
+        });
     }
-    
-    // Function to close the time popup
-    function closeTimePopup() {
-        timePopup.style.display = 'none'; // Hide the time popup
-        document.body.style.overflow = 'auto'; // Re-enable body scrolling
-    }
-    
 
     // This function is called when the "Proceed" button is clicked to open the time popup
     function openTimePopup() {
@@ -150,7 +146,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // Example of how you open the time popup when proceeding
     proceedButton.addEventListener('click', function () {
-        if (selectedDate && selectedTimeSlots.length > 0) {
+        if (selectedDateInput.value && selectedTimeSlots.length > 0) {
             openTimePopup(); // Show the time popup
             populateTimeSlots(); // Populate available time slots
         } else {
@@ -159,38 +155,63 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 
     function populateTimeSlots() {
-        // Clear existing time slots
+
         morningTimesList.innerHTML = '';
         afternoonTimesList.innerHTML = '';
     
-        // Split the available times into morning and afternoon
+        const currentTime = new Date();
+    
+        const selectedDateObj = new Date(selectedDateInput.value);
+
+        const isToday = selectedDateObj.toDateString() >= currentTime.toDateString(); //check fture
+
+        const nextHourTime = new Date(currentTime);
+        nextHourTime.setHours(currentTime.getHours() + 1);
+        nextHourTime.setMinutes(0);
+    
         selectedTimeSlots.forEach(time => {
             const listItem = document.createElement('li');
     
-            // Create a radio button for the time slot
             const radioButton = document.createElement('input');
             radioButton.type = 'radio';
-            radioButton.name = 'timeSlot';  // Ensure all time slots share the same name so only one can be selected
-            radioButton.value = time;  // Set the value of the radio button
-            radioButton.id = time; // Add an ID for easier reference
+            radioButton.name = 'timeSlot'; 
+            radioButton.value = time;  
+            radioButton.id = time; 
     
-            // Create a label for the radio button and the time text
-            const label = document.createElement('label');
-            label.setAttribute('for', time); // Associate label with radio button by ID
-            label.textContent = time;
+            const [hours, minutes] = time.split(':').map(num => parseInt(num));
+            const timeSlot = new Date(selectedDateObj);
+            timeSlot.setHours(hours);
+            timeSlot.setMinutes(minutes);
+            timeSlot.setSeconds(0);
+            timeSlot.setMilliseconds(0);
     
-            // Add the radio button and label to the list item
-            listItem.appendChild(radioButton);
-            listItem.appendChild(label);
+          
+            if (isToday && (timeSlot <= currentTime || timeSlot <= nextHourTime)) {
+                radioButton.disabled = true;  
+                const label = document.createElement('label');
+                label.textContent = "N/A";
+                label.setAttribute('for', time); 
+                
+                listItem.appendChild(radioButton);
+                listItem.appendChild(label);
+            } else {
+                const label = document.createElement('label');
+                label.setAttribute('for', time);
+                label.textContent = time;
     
-            // Assume times before 12:00 PM are morning sessions, else afternoon
-            if (parseInt(time.split(':')[0]) < 12) {
+                listItem.appendChild(radioButton);
+                listItem.appendChild(label);
+            }
+    
+            if (hours < 12) {
                 morningTimesList.appendChild(listItem);
             } else {
                 afternoonTimesList.appendChild(listItem);
             }
         });
     }
+    
+    
 
     // Event listeners for month navigation
     prevMonthLink.addEventListener('click', function () {
@@ -210,8 +231,8 @@ document.addEventListener('DOMContentLoaded', function () {
 
 // Function to confirm the selected time and proceed with rescheduling
 function confirmTime() {
-    const selectedTime = document.querySelector('input[name="timeSlot"]:checked');  // Get the checked radio button
-    console.log("Selected time:", selectedTime);
+    const selectedTime = document.querySelector('input[name="timeSlot"]:checked'); //time slot from list
+    const selectedDateInput = document.getElementById('selectedDate'); 
 
     if (selectedTime) {
         const time = selectedTime.value;  // Get the value (time) of the selected radio button
@@ -219,8 +240,8 @@ function confirmTime() {
         console.log("Selected appointment ID (from confirmTime):", selectedAppointmentID); // Log the appointment ID
 
         // Proceed with rescheduling logic, e.g., submitting the selected time
-        if (selectedDate && time) {
-            rescheduleAppointment(selectedDate, time);  // Assuming you have a function to handle rescheduling
+        if (selectedDateInput.value && time) {
+            rescheduleAppointment(selectedDateInput.value, time);  // Assuming you have a function to handle rescheduling
         } else {
             console.error("Please select both a time slot and a date.");
         }
@@ -232,9 +253,12 @@ function confirmTime() {
 
 function rescheduleAppointment(date, time) {
     console.log("Attempting to reschedule appointment:", selectedAppointmentID, date, time);
+    if(time.length <= 5) {
+        time = time + ":00";
+    }
 
     const selectedDatetime = `${date} ${time}`; // Combine date and time into one string
-
+    console.log(selectedDatetime);
     fetch('patientRescheduleAppointment.php', {
         method: 'POST',
         headers: {
@@ -246,11 +270,24 @@ function rescheduleAppointment(date, time) {
         })
     })
     .then(response => response.json())
-.then(data => {
+    .then(data => {
     console.log("Response data:", data);  // Log the response to see what comes back
     if (data.success) {
         alert("Appointment rescheduled successfully.");
-        closePopup();
+
+        const closeTimePopupBtn = document.querySelector('#timePopup .close');
+
+        closeTimePopupBtn.addEventListener('click', ()=> {
+            timePopup.style.display = 'none'; // Hide the time popup
+            document.body.style.overflow = 'auto'; // Re-enable body scrolling
+        });
+
+        closeTimePopupBtn.click();
+
+        setTimeout(()=> {
+            window.location.reload();
+        }, 1000);
+        
     } else {
         alert("Failed to reschedule appointment. " + (data.message || ""));
     }

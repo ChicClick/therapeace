@@ -32,55 +32,55 @@ function getMonthName(month) {
 }
 
 // Function to generate calendar dynamically
-function generateCalendar(selectedDay = null) { // Allow passing selected day
+async function generateCalendar(selectedDay = null) {
     const calendarGrid = document.querySelector('.calendar-grid');
     calendarGrid.innerHTML = ''; // Clear any previously generated calendar
 
     // Set the month display
     document.getElementById('currentMonth').innerText = `${getMonthName(selectedMonth)} ${selectedYear}`;
 
-    const daysInMonth = new Date(selectedYear, selectedMonth + 1, 0).getDate(); // Get total days in the current month
+    const daysInMonth = new Date(selectedYear, selectedMonth + 1, 0).getDate();
+    const firstDayOfMonth = new Date(selectedYear, selectedMonth, 1).getDay(); // Get the first day of the month (0 = Sunday, 6 = Saturday)
+
+    // Fill the grid with blank days until the first day of the month
+    for (let i = 0; i < firstDayOfMonth; i++) {
+        const blankDiv = document.createElement('div');
+        blankDiv.classList.add('day', 'blank'); // Style as blank day
+        calendarGrid.appendChild(blankDiv);
+    }
 
     // Get therapist ID of the logged-in therapist (assuming you have it available)
     const therapistID = getLoggedInTherapistID();
 
     // Fetch booked dates for the therapist
-    fetchBookedDatesForTherapist(therapistID)
+    await fetchBookedDatesForTherapist(therapistID)
         .then(bookedDates => {
-            // Loop through the days of the month
             for (let day = 1; day <= daysInMonth; day++) {
                 const dateString = `${selectedYear}-${String(selectedMonth + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
                 const dayDiv = document.createElement('div');
                 dayDiv.classList.add('day');
                 dayDiv.innerText = day;
 
-                // Create a date object for the generated date
                 const generatedDate = new Date(dateString);
-                const currentDate = new Date(); // Update current date each time
+                const currentDate = new Date();
 
-                // Check if the day is Sunday (getDay() === 0 means Sunday)
                 if (generatedDate.getDay() === 0) {
-                    dayDiv.classList.add('disabled'); // Disable Sundays
+                    dayDiv.classList.add('disabled');
                 }
 
-                // If date is in the past, already booked, or already an appointment for the therapist, disable it
                 if (generatedDate < currentDate || bookedDates.includes(dateString)) {
                     dayDiv.classList.add('disabled');
                 } else {
                     dayDiv.addEventListener('click', () => {
-                        // Handle date selection
                         document.querySelectorAll('.day').forEach(el => el.classList.remove('selected'));
                         dayDiv.classList.add('selected');
                         document.getElementById('selectedDate').value = dateString;
-                        console.log('Selected Date:', dateString);  // Debugging the selected date
                     });
                 }
 
-                // Pre-select the day if it matches the selected day
                 if (selectedDay === day) {
                     dayDiv.classList.add('selected');
                     document.getElementById('selectedDate').value = dateString;
-                    console.log('Selected Date (Pre-selected):', dateString);  // Debugging the selected date
                 }
 
                 calendarGrid.appendChild(dayDiv);
@@ -91,21 +91,24 @@ function generateCalendar(selectedDay = null) { // Allow passing selected day
         });
 }
 
+
 // Function to fetch booked dates for a therapist
-function fetchBookedDatesForTherapist(therapistID) {
-    return fetch(`/booked-dates.php?therapistID=${therapistID}`)
-        .then(response => response.json())
-        .then(data => data.bookedDates) // Assume the response contains a "bookedDates" array
-        .catch(error => {
-            console.error("Error fetching booked dates for therapist:", error);
-            return []; // Return an empty array in case of error
-        });
+async function fetchBookedDatesForTherapist(therapistID) {
+    try {
+        const response = await fetch(`/booked-dates.php?therapistID=${therapistID}`);
+        console.log(response);
+        const data = await response.json();
+        return data.bookedDates;
+    } catch (error) {
+        console.error("Error fetching booked dates for therapist:", error);
+        return [];
+    }
 }
 
 // Function to get logged-in therapist's ID (replace with actual logic)
 function getLoggedInTherapistID() {
     // Replace this with actual logic to get the therapist's ID from session or JWT
-    return; // Example therapist ID
+    return "T001"; // Example therapist ID
 }
 
 // Event listener for month navigation
@@ -154,29 +157,68 @@ function closeTimePopup() {
 
 // Function to generate available times for morning and afternoon sessions
 function generateAvailableTimes() {
-    const morningTimes = ['9:00 AM', '10:00 AM', '11:00 AM', '12:00 PM'];
-    const afternoonTimes = ['1:00 PM', '2:00 PM', '3:00 PM', '4:00 PM', '5:00 PM', '6:00 PM'];
-
+    const selectedTimeSlots = ['9:00 AM', '10:00 AM', '11:00 AM', '12:00 PM', '1:00 PM', '2:00 PM', '3:00 PM', '4:00 PM', '5:00 PM', '6:00 PM'];
+    
+    const selectedDate = document.querySelector("#selectedDate").value;
     const morningList = document.getElementById('morningTimes');
     const afternoonList = document.getElementById('afternoonTimes');
 
     morningList.innerHTML = ''; // Clear previous times
     afternoonList.innerHTML = '';
 
-    morningTimes.forEach(time => {
-        const li = document.createElement('li');
-        li.innerText = time;
-        li.addEventListener('click', () => selectTime(time));
-        morningList.appendChild(li);
-    });
+    const currentTime = new Date();
+    const selectedDateObj = new Date(selectedDate);
+    const isToday = selectedDateObj.toDateString() === currentTime.toDateString();
 
-    afternoonTimes.forEach(time => {
-        const li = document.createElement('li');
-        li.innerText = time;
-        li.addEventListener('click', () => selectTime(time));
-        afternoonList.appendChild(li);
+    const nextHourTime = new Date(currentTime);
+    nextHourTime.setHours(currentTime.getHours() + 1);
+    nextHourTime.setMinutes(0);
+
+    selectedTimeSlots.forEach(time => {
+        const listItem = document.createElement('li');
+
+        const radioButton = document.createElement('input');
+        radioButton.type = 'radio';
+        radioButton.name = 'timeSlot'; 
+        radioButton.value = time;  
+        radioButton.id = time; 
+
+        const [timePart, period] = time.split(' ');
+        let [hours, minutes] = timePart.split(':').map(num => parseInt(num));
+        if (period === 'PM' && hours !== 12) hours += 12;
+        if (period === 'AM' && hours === 12) hours = 0;
+
+        const timeSlot = new Date(selectedDateObj);
+        timeSlot.setHours(hours);
+        timeSlot.setMinutes(minutes);
+        timeSlot.setSeconds(0);
+        timeSlot.setMilliseconds(0);
+
+        if (isToday && (timeSlot <= currentTime || timeSlot <= nextHourTime)) {
+            radioButton.disabled = true;  
+            const label = document.createElement('label');
+            label.textContent = "N/A";
+            label.setAttribute('for', time); 
+            
+            listItem.appendChild(radioButton);
+            listItem.appendChild(label);
+        } else {
+            const label = document.createElement('label');
+            label.setAttribute('for', time);
+            label.textContent = time;
+
+            listItem.appendChild(radioButton);
+            listItem.appendChild(label);
+        }
+
+        if (hours < 12) {
+            morningList.appendChild(listItem);
+        } else {
+            afternoonList.appendChild(listItem);
+        }
     });
 }
+
 
 // Function to handle time selection
 function selectTime(selectedTimeValue) {
@@ -195,7 +237,7 @@ function selectTime(selectedTimeValue) {
 }
 
 // Event listener for the Proceed button in the reschedule popup
-document.getElementById('proceedButton').addEventListener('click', function() {
+document.getElementById('proceedButton').addEventListener('click', (e)=> {
     const selectedDate = document.getElementById('selectedDate').value;
     if (selectedDate) { // Ensure a date is selected
         closePopup(); // Close the reschedule popup
@@ -207,8 +249,16 @@ document.getElementById('proceedButton').addEventListener('click', function() {
 
 // Function to open the message popup with a specific message
 function openMessagePopup(message) {
-    document.getElementById('popupMessage').textContent = message;
-    document.getElementById('messagePopup').style.display = 'block';
+    const popUpMessage = document.getElementById('popupMessage');
+    const messagePop = document.getElementById('messagePopup');
+    const timePop = document.querySelector("#timePopup");
+    popUpMessage.textContent = message;
+    messagePop.style.display = 'block';
+
+    document.querySelector("#confirmPopup").addEventListener("click", ()=> {
+        messagePop.style.display = "none";
+        timePop.style.display = "none";
+    });
 }
 
 // Function to close the message popup
@@ -216,32 +266,37 @@ function closeMessagePopup() {
     document.getElementById('messagePopup').style.display = 'none';
 }
 
-document.getElementById('confirmTimeButton').addEventListener('click', function() {
-    const selectedDate = document.getElementById('selectedDate').value; // This is the selected date in YYYY-MM-DD format
-    const selectedTime = selectedTime; // Use the directly stored value
+document.getElementById('confirmTimeButton').addEventListener('click', async () => {
+    const selectedDate = document.getElementById('selectedDate').value;
+    const selectedTime = document.querySelector('input[name="timeSlot"]:checked');
+
+    if (selectedTime && selectedTime.value.length <= 5) {
+        selectedTime.value = selectedTime.value + ":00";
+    }
 
     if (selectedDate && selectedTime) {
-        // Convert selected time to 24-hour format
-        const formattedTime = convertTo24HourFormat(selectedTime);
-
-        // Create a new schedule combining the selected date and time
-        const newSchedule = `${selectedDate} ${formattedTime}`;
-
-        // Perform the AJAX request to update the appointment
-        fetch('/update_appointment.php', {
+        const newSchedule = `${selectedDate} ${convertTo24HourFormat(selectedTime.value)}`;
+        console.log(newSchedule);
+        await fetch('update_appointment.php', {
             method: 'POST',
             headers: {
-                'Content-Type': 'application/json',
+                'Content-Type': 'application/x-www-form-urlencoded',
             },
-            body: JSON.stringify({
-                originalAppointmentDate: originalAppointmentDate,
-                newSchedule: newSchedule,
+            body: new URLSearchParams({
+                selectedDatetime: newSchedule,
+                therapistID: getLoggedInTherapistID()  // matches the PHP script's expected name
             }),
         })
-        .then(response => response.json())
+        .then(response => {
+            return response.json()
+        })
         .then(data => {
+
             if (data.success) {
                 openMessagePopup('Your appointment has been rescheduled successfully.');
+                setTimeout(()=> {
+                    window.location.reload();
+                }, 1000);
             } else {
                 openMessagePopup('Failed to reschedule appointment. Please try again later.');
             }
@@ -255,16 +310,21 @@ document.getElementById('confirmTimeButton').addEventListener('click', function(
     }
 });
 
+
 // Function to convert time to 24-hour format
 function convertTo24HourFormat(time) {
-    const [hour, minute] = time.split(':');
-    let hour24 = parseInt(hour);
-    const isPM = time.includes('PM');
-    if (isPM && hour24 !== 12) {
-        hour24 += 12; // Convert PM hours to 24-hour format
+    let [timePart, period] = time.split(' ');
+    if (!period) period = '';
+
+    let [hour, minute, second] = timePart.split(':');
+    hour = parseInt(hour);
+    const isPM = period === 'PM';
+
+    if (isPM && hour !== 12) {
+        hour += 12;
+    } else if (!isPM && hour === 12) {
+        hour = 0;
     }
-    if (!isPM && hour24 === 12) {
-        hour24 = 0; // Handle midnight (12 AM)
-    }
-    return `${String(hour24).padStart(2, '0')}:${minute}`;
+
+    return `${String(hour).padStart(2, '0')}:${String(minute).padStart(2, '0')}:${second || '00'}`;
 }

@@ -243,15 +243,22 @@ foreach ($questions as $question) {
                             <?php endif; ?>
 
                             <!-- Navigation buttons -->
-                            <div class="navigation-buttons">
-                                <button type="button" onclick="prevCategory(<?= $categoryIndex ?>)">Previous</button>
-                                <button type="button" onclick="nextCategory(<?= $categoryIndex ?>)">Next</button>
-                            </div>
+                            
+                                <div class="navigation-buttons">
+                                    <button type="button" onclick="prevCategory(<?= $categoryIndex ?>)">Previous</button>
+                                    <?php if ($category !== 'School and Intervention History'): ?>
+                                        <button type="button" onclick="nextCategory(<?= $categoryIndex ?>)">Next</button>
+                                    <?php endif; ?>
+                                    <?php if ($category === 'School and Intervention History'): ?>
+                                        <button style="background-color: #EBEBEB" type="button" onclick="nextCategory(<?= $categoryIndex ?>)" disabled>Next</button>
+                                    <?php endif; ?>
+                                </div>
+                            
                         </div>
                         <?php $categoryIndex++; ?>
                     <?php endforeach; ?>
 
-                    <button type="submit" style="display:none" id="submit-button">Submit</button>
+                    <button type="submit" style="display:none; margin-right: auto; margin-left: auto;" id="submit-button">Submit</button>
                 </form>
             </div>
         </section>

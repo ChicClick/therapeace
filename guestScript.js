@@ -149,7 +149,8 @@ function closeModal() {
 const navbar = document.querySelector('nav');
 const scrollTopBtn = document.querySelector('.scroll-top'); 
 
-window.addEventListener('scroll', () => {
+if(scrollTopBtn) {
+    window.addEventListener('scroll', () => {
     if (window.scrollY > 50) {
         navbar.classList.add('scrolled'); 
     } else {
@@ -170,3 +171,5 @@ window.addEventListener('scroll', () => {
         });
     });
 });
+
+}

@@ -246,13 +246,14 @@ function closeReportRequestModal() {
         }
     });
 
-    scrollTopBtn.addEventListener('click', () => {
-        window.scrollTo({
-            top: 0,
-            behavior: 'smooth'
+    if (scrollTopBtn) {
+        scrollTopBtn.addEventListener('click', () => {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
         });
-    });
-    
+    }
 
     const navbar = document.querySelector('nav'); // Get the navbar
 

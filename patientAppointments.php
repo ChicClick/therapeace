@@ -83,7 +83,7 @@ include 'patientFetchReport.php';
                         <div class="row-reschedule">
                         <button class="reschedule-button" data-appointment-id="<?php echo htmlspecialchars($appointment['appointmentID']); ?>">Reschedule</button>
 
-
+ss
                     </div>
                     </div>
                 <?php endforeach; ?>
@@ -112,12 +112,12 @@ include 'patientFetchReport.php';
                     </div>
                     <input type="hidden" id="appointmentId" name="appointmentId" value="">
                     <input type="hidden" id="selectedDate" name="selectedDate" value="">
-                    <button id="proceedButton" onclick="openTimePopup()">Proceed</button>
+                    <button id="proceedButton">Proceed</button>
                 </div>
             </div>
             <div id="timePopup" class="popup" style="display: none;">
                 <div class="popup-content">
-                    <span class="close" onclick="closeTimePopup()">&times;</span>
+                    <span class="close">&times;</span>
                     <h4>Select Available Times</h4>
                     <div id="availableTimes">
                         <h5>Morning Sessions</h5>
