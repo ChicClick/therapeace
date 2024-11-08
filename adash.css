@@ -1143,3 +1143,144 @@ input[type="checkbox"] {
 .delete-btn i {
     margin-right: 4px; /* Adds space between icon and text */
 }
+
+/* Profile Picture Section */
+.form-edit {
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+.profile-picture-section {
+    position: relative;
+    text-align: center;
+    width: 15%; /* Adjust width for profile picture */
+}
+
+.edit-profile-picture {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 3px solid #e0d0a5;
+}
+
+.edit-picture-button {
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+    background-color: #f7f2d6;
+    border: none;
+    cursor: pointer;
+    color: #666;
+}
+
+.edit-picture-button i {
+    font-size: 16px;
+}
+
+/* Left Column - Profile Info Section */
+.edit-info-section {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    margin-right: 25px;
+    width: 35%; /* Adjust width to fit with right column */
+}
+
+/* Right Column - Additional Info Section */
+.additional-info-section {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    width: 30%; /* Adjust width for right column */
+}
+
+/* Form Group */
+.form-group-profile {
+    display: flex;
+    flex-direction: column;
+}
+
+.form-group-profile label {
+    font-weight: 600;
+    font-size: 14px;
+    color: #432705;
+    margin-bottom: 5px;
+}
+
+/* Input Fields */
+.edit-input-field {
+    padding: 10px;
+    border: 1px solid #e0d0a5;
+    border-radius: 5px;
+    background-color: #ffffff;
+    font-size: 14px;
+    color: #432705;
+}
+
+.input-field-service {
+    padding: 10px;
+    background-color: #ffffff;
+    font-size: 14px;
+    color: #432705;
+}
+
+/* DOB Fields */
+.dob-fields {
+    display: flex;
+    gap: 10px;
+}
+
+.dob-field, .dob-field-year {
+    width: 70px;
+    padding: 8px;
+    border: 1px solid #e0d0a5;
+    border-radius: 5px;
+    background-color: #ffffff;
+    font-size: 14px;
+    color: #432705;
+}
+
+.dob-field-year {
+    width: 90px;
+}
+
+/* Textarea Styling */
+.input-field textarea {
+    font-family: 'Popppins';
+    resize: none;
+}
+
+.save-profile {
+    padding: 13px;
+    width: 300px;
+    background: linear-gradient(90deg, #FDBC10 0%, #FFEA09 100%);
+    color: #432705;
+    border: none;
+    border-radius: 20px;
+    float: right; /* Float the button to the right */
+    margin-top: 20px; /* Optional: Add some margin for spacing */
+    cursor: pointer;
+}
+
+.save-profile:hover {
+    background-color: #ac9477dc; /* Brown background on hover */
+    transition: background-color 0.3s ease;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .form-edit {
+        flex-direction: column;
+    }
+
+    .profile-picture-section,
+    .edit-info-section,
+    .additional-info-section {
+        width: 100%; /* Stack sections vertically on small screens */
+        margin-right: 0;
+    }
+}

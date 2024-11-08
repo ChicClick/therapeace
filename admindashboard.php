@@ -1,5 +1,5 @@
 <?php
-include 'config.php';
+session_start();
 
 // Check if admin is logged in
 if (!isset($_SESSION['username'])) {
@@ -12,7 +12,7 @@ if (!isset($_SESSION['username'])) {
 if (isset($_SESSION['firstname'])) {
     $firstname = $_SESSION['firstname'];
 } else {
-    $patientName = "Guest"; // Fallback in case the name is not set
+    $firstname = "Guest"; // Fallback in case the name is not set
 }
 ?>
 
@@ -23,6 +23,7 @@ if (isset($_SESSION['firstname'])) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>TheraPeace</title>
     <link rel="stylesheet" href="adash.css">
+    
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.10.2/fullcalendar.min.css" />
@@ -547,7 +548,9 @@ if (isset($_SESSION['firstname'])) {
 
                 <!--Personal Information  -->
                 <div id="edit-profile-section" class="edit-container">
-                    
+                    <?php
+                        include 'a_edit_profile.php'
+                    ?>
                 </div>
                
             </div>
