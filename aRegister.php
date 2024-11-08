@@ -21,22 +21,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         exit();
     }
 
-    // Prepare and bind the SQL statement
+    // Prepare the SQL statement with positional placeholders
     $stmt = $conn->prepare("INSERT INTO admin (adminID, firstname, lastname, username, phoneNumber, address, birthday, gender, password_hash) 
-                            VALUES (NULL, :firstName, :lastName, :username, :phone, :address, :birthday, :gender, :password_hash)");
+                            VALUES (NULL, ?, ?, ?, ?, ?, ?, ?, ?)");
 
-    // Bind form data to SQL query parameters
-    $stmt->bindParam(':firstName', $_POST['firstName']);
-    $stmt->bindParam(':lastName', $_POST['lastName']);
-    $stmt->bindParam(':username', $_POST['email']);
-    $stmt->bindParam(':phone', $_POST['phone']);
-    $stmt->bindParam(':address', $_POST['address']);
-    $stmt->bindParam(':birthday', $_POST['birthday']);
-    $stmt->bindParam(':gender', $_POST['gender']);
+    // Bind form data to SQL query parameters (order matters)
+    $stmt->bind_param('sssssssss', $_POST['firstName'], $_POST['lastName'], $_POST['email'], $_POST['phone'], $_POST['address'], $_POST['birthday'], $_POST['gender'], $hashed_password);
 
-    // Hash the password and bind it
+    // Hash the password
     $hashed_password = password_hash($_POST['password'], PASSWORD_DEFAULT);
-    $stmt->bindParam(':password_hash', $hashed_password);
 
     // Execute the SQL query and check if it was successful
     if ($stmt->execute()) {
@@ -103,8 +96,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         // If the SQL insert fails
         echo "<script>alert('Error: Could not register user in the database.');</script>";
     }
+
+    // Close the statement
+    $stmt->close();
 }
 
 // Close the connection
-$conn = null;
+$conn->close();
 ?>
