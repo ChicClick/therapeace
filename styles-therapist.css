@@ -354,8 +354,11 @@ body {
     text-decoration: underline; 
 }
 #appointmentsTable{
-    width: 80%;
+    width: 500px;
+    height: 100px;
+    overflow: scroll;
 }
+
 /* Popup styles */
 .popup {
     position: fixed;
