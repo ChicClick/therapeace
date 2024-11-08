@@ -57,7 +57,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                         $mail->SMTPAuth = true;
                         $mail->Username = 'therapeacemanagement@gmail.com';
                         $mail->Password =  'ovzp bnem esqd nqyn'; // Use your Gmail app-specific password
-                        $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
+                        $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTSMTPS;
                         $mail->Port = 465;
 
                         // Recipients
