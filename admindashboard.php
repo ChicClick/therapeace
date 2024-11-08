@@ -23,7 +23,7 @@ if (isset($_SESSION['firstname'])) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>TheraPeace</title>
     <link rel="stylesheet" href="adash.css">
-    
+    <link rel="stylesheet" href="adminpasswordStyles.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.10.2/fullcalendar.min.css" />
@@ -375,20 +375,20 @@ if (isset($_SESSION['firstname'])) {
                                     <img src="images/about 1.jpg" alt="Profile Picture" class="profile-picture">
                                     <div class="profile-details">
                                         <h2 id="staff_name">Name</h2>
-                                        <h3 id="position">Position</h3>
+                                        <h3 id="staff-position">Position</h3>
                                     </div>
                                 </div>
                             <div class="profile-info">
                                 <h5>CONTACT INFORMATION</h5>
                                 <div class="contact-info-wrapper">
                                     <div class="contact-info-main">
-                                        <p><strong>Phone:</strong> <span id="phone"></span></p>
-                                        <p><strong>DateHired:</strong> <span id="datehired"></span></p>
+                                        <p><strong>Phone:</strong> <span id="staff-phone"></span></p>
+                                        <p><strong>DateHired:</strong> <span id="staff-datehired"></span></p>
                                     </div>
                                 </div>
                                 <h5>BASIC INFORMATION</h5>
-                                <p><strong>Gender:</strong> <span id="gender"></span></p>
-                                <p><strong>Address:</strong> <span id="address"></span></p>
+                                <p><strong>Gender:</strong> <span id="staff-gender"></span></p>
+                                <p><strong>Address:</strong> <span id="staff-address"></span></p>
                                     
                             </div>
                             </div>
