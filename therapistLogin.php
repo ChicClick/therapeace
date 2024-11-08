@@ -1,5 +1,5 @@
 <?php
-include 'config.php';
+session_start();
 ?>
 
 <!DOCTYPE html>
@@ -27,16 +27,13 @@ include 'config.php';
         
         <!-- Therapist Login Form -->
         <form action="thLogin.php" method="POST" onsubmit="showLoading()">
-            <!-- Display Error Message if exists -->
-            <?php if (!empty($_SESSION['error_message'])) : ?>
+        <?php if (!empty($_SESSION['error_message'])) : ?>
             <p class="error-message" style="color: red;"><?php echo $_SESSION['error_message']; ?></p>
-                <?php unset($_SESSION['error_message']); ?>
-            <?php endif; ?>
-            
+        <?php endif; ?>
             <input type="text" name="therapist_number" placeholder="Therapist Number" required>
             <input type="date" name="hire_date" placeholder="Hire Date" required>
             <input type="password" name="password" placeholder="Password" required>
-            <a href="#" class="forgot-password">Forgot Password?</a>
+            <a href="therapistForgotPassword.php" class="forgot-password">Forgot Password?</a>
             <button type="submit" class="proceed-button">Proceed &rarr;</button>
         </form>
     </div>
