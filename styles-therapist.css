@@ -37,7 +37,7 @@ body {
     width: 18%;
     background-color: #FEFDEB;
     padding: 10px;
-    height: 100%; /* Ensure it takes the full height */
+    height: 100vh; /* Ensure it takes the full height */
     box-sizing: border-box;
 }
 
@@ -710,12 +710,10 @@ body {
 
  .checklist-container {
     flex-wrap: nowrap; /* Prevent wrapping */
-    max-width: 1200px; /* Maximum width */
+    max-width: 1000px; /* Maximum width */
     width: 100%; /* Full width */
-    background-color: white; /* Background color */
-    border-radius: 8px; /* Rounded corners */
+    background-color: #ffffff; /* Background color */
     overflow: hidden; /* Hide overflow */
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Shadow effect */
 }
 
 .checklist-left-section, .checklist-right-section, .checklist-right-section-view {
@@ -957,7 +955,10 @@ button[type="submit"]:hover {
     background-color: #ab9984; /* Example color for hover */
     color: white; /* Text color when hovered */
 }
-
+#back-checklist-link{
+    text-decoration: none;
+    color: #432705;
+}
 /* Profile Container */
 .edit-container {
     display: flex;
@@ -1095,4 +1096,58 @@ button[type="submit"]:hover {
         width: 100%; /* Stack sections vertically on small screens */
         margin-right: 0;
     }
+}
+
+
+/* Log Out Modal styles */
+.modal-logout{
+    display: none; 
+    position: fixed; 
+    z-index: 1000; 
+    left: 0;
+    top: 0;
+    width: 100%; 
+    height: 100%;
+    overflow: auto; 
+    background-color: rgba(0, 0, 0, 0.4); /* Black w/ opacity */
+}
+
+/* Modal content */
+.modal-content-logout {
+    background-color: #FEFDEB;
+    margin: 15% auto; 
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%; 
+    max-width: 400px; 
+    text-align: center; 
+    border-radius: 10px;
+}
+
+.close-logout {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.close-logout:hover,
+.close-logout:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+#confirmLogout, #cancelLogout {
+    padding: 10px 20px;
+    margin: 10px;
+    border: none;
+    background-color: #4CAF50; /* Green */
+    color: white;
+    cursor: pointer;
+    border-radius: 10px;
+}
+
+#cancelLogout {
+    background-color: #f44336; /* Red */
 }
