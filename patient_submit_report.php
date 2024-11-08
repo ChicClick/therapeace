@@ -1,6 +1,6 @@
 <?php
 include 'config.php';
-include 'db_conn.php';
+include 'db_conn.php'; // Assumes $conn is established in db_conn.php
 
 // Check if the patient is logged in
 if (!isset($_SESSION['patientID'])) {
@@ -23,19 +23,11 @@ if (empty($therapistID)) {
     exit();
 }
 
-// Database connection
-$mysqli = new mysqli("localhost", "root", "JM0987654", "therapeacedb");
-
-// Check connection
-if ($mysqli->connect_error) {
-    die("Connection failed: " . $mysqli->connect_error);
-}
-
 // Fetch session feedback notes for the patient and selected therapist
 $sql = "SELECT feedback FROM sessionfeedbacknotes n
         JOIN sessions s ON n.sessionID = s.sessionID
         WHERE s.patientID = ? AND s.therapistID = ?";
-$stmt = $mysqli->prepare($sql);
+$stmt = $conn->prepare($sql); // Use the existing $conn
 $stmt->bind_param("ss", $patientID, $therapistID);
 $stmt->execute();
 $result = $stmt->get_result();
@@ -88,7 +80,7 @@ if (isset($responseData[0]['summary_text'])) {
 // Prepare the SQL statement to insert the report
 $insertSQL = "INSERT INTO reports (patientID, therapistID, summary, status, created_at, updated_at, pdf_path)
               VALUES (?, ?, ?, 'Pending', NOW(), NOW(), '')";
-$insertStmt = $mysqli->prepare($insertSQL);
+$insertStmt = $conn->prepare($insertSQL); // Use the existing $conn
 $insertStmt->bind_param("sss", $patientID, $therapistID, $summary);
 $insertSuccess = $insertStmt->execute();
 
@@ -100,12 +92,11 @@ if ($insertSuccess) {
 } else {
     echo json_encode([
         'success' => false,
-        'error' => 'Error submitting report: ' . $mysqli->error
+        'error' => 'Error submitting report: ' . $conn->error
     ]);
 }
 
-// Close statements and connection
+// Close statements
 $stmt->close();
 $insertStmt->close();
-$mysqli->close();
 ?>
