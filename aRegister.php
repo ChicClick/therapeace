@@ -1,6 +1,6 @@
 <?php
 // Include the database connection file
-include('db_conn.php');
+include('config.php');
 
 // Include PHPMailer
 use PHPMailer\PHPMailer\PHPMailer;
