@@ -2,11 +2,6 @@
 // Include the database connection file
 include('db_conn.php'); // Make sure the path is correct
 
-// Include PHPMailer
-require 'PHPMailer/src/Exception.php';
-require 'PHPMailer/src/PHPMailer.php';
-require 'PHPMailer/src/SMTP.php';
-
 // Check if the form is submitted
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Prepare and bind the SQL statement
@@ -16,7 +11,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Bind form data to SQL query parameters
     $stmt->bindParam(':firstName', $_POST['firstName']);
     $stmt->bindParam(':lastName', $_POST['lastName']);
-    $stmt->bindParam(':username', $_POST['email']);
+    $stmt->bindParam(':username', $_POST['email']);  // Assuming email as username
     $stmt->bindParam(':phone', $_POST['phone']);
     $stmt->bindParam(':address', $_POST['address']);
     $stmt->bindParam(':birthday', $_POST['birthday']);
@@ -49,34 +44,16 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     </html>
     ";
 
-    // Send email using PHPMailer
-    use PHPMailer\PHPMailer\PHPMailer;
-    use PHPMailer\PHPMailer\Exception;
+    // Set email headers for HTML format
+    $headers = "MIME-Version: 1.0" . "\r\n";
+    $headers .= "Content-Type: text/html; charset=ISO-8859-1" . "\r\n";
+    $headers .= "From: therapeacemanagement@gmail.com" . "\r\n";  // Replace with your sender email
 
-    $mail = new PHPMailer(true);
-    try {
-        // Server settings
-        $mail->isSMTP();
-        $mail->Host = 'smtp.gmail.com'; // SMTP server
-        $mail->SMTPAuth = true;
-        $mail->Username = 'therapeacemanagement@gmail.com'; // Your Gmail address
-        $mail->Password = 'ovzp bnem esqd nqyn'; // Your Gmail password or app password
-        $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
-        $mail->Port = 587;
-
-        // Recipients
-        $mail->setFrom('therapeacemanagement@gmail.com', 'TheraPeace Management');
-        $mail->addAddress($email);
-
-        // Content
-        $mail->isHTML(true);
-        $mail->Subject = $subject;
-        $mail->Body = $message;
-
-        $mail->send();
+    // Send the email
+    if(mail($email, $subject, $message, $headers)) {
         echo "Registration successful! A confirmation email has been sent.";
-    } catch (Exception $e) {
-        echo "Error sending confirmation email: {$mail->ErrorInfo}";
+    } else {
+        echo "Error sending confirmation email.";
     }
 
     echo "<br><a href='adminlogin.php'>Proceed to Login</a>"; // Link to login page
