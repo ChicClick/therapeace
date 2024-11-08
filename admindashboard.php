@@ -51,7 +51,7 @@ if (isset($_SESSION['firstname'])) {
                 <p>OTHERS</p>
                 <li><a href="registerlanding.php" ><i class="fa fa-users"></i> Manage Accounts</a></li>
                 <li><a href="#" data-target="edit-profile-section"><i class="fa fa-cog"></i> Edit Profile</a></li>
-                <a href="#" id="logoutBtn">Log Out</a>
+                <li><a href="#" id="logoutBtn">Log Out</a></li>
             </ul>
         </nav>
     </div>
