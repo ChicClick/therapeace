@@ -68,7 +68,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                         $mail->isHTML(true);
                         $mail->Subject = 'Password Reset Request';
                         $mail->Body = "A request has been received to change the password for your TheraPeace account.<br><br>"
-                        - "Click the link below to reset your password<br><a href='" . $resetLink . "'>Reset Password</a>";
+                        "Click the link below to reset your password<br><a href='" . $resetLink . "'>Reset Password</a>";
 
                         // Send the email
                         $mail->send();
