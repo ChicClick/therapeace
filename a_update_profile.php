@@ -1,25 +1,48 @@
 <?php
+// Start the session at the very beginning
+session_start();
+
+// Check if the admin is logged in by checking if 'username' is set in the session
+if (!isset($_SESSION['username'])) {
+    echo "Admin not logged in!";
+    exit();
+}
+
 // Include the database connection
 include('db_conn.php');
 
-// Start the session to access the admin's ID
-session_start();
-$admin_id = $_SESSION['adminID']; // Admin ID from session
+// Get the logged-in admin's username from the session
+$username = $_SESSION['username'];
+
+// Fetch the admin's ID based on the username
+$query = "SELECT adminID FROM admin WHERE username = ?";
+$stmt = $conn->prepare($query);
+$stmt->bind_param("s", $username);
+$stmt->execute();
+$result = $stmt->get_result();
+
+if ($result->num_rows > 0) {
+    $admin = $result->fetch_assoc();
+    $admin_id = $admin['adminID'];
+} else {
+    echo "Admin not found!";
+    exit();
+}
 
 // Check if the form is submitted
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    // Get the form data
-    $firstName = $_POST['firstName'];
-    $lastName = $_POST['lastName'];
-    $username = $_POST['username'];
-    $address = $_POST['address'];
-    $phoneNumber = $_POST['phoneNumber'];
-    $birthYear = $_POST['birthYear'];
-    $birthMonth = $_POST['birthMonth'];
-    $birthDay = $_POST['birthDay'];
+    // Ensure form fields are set
+    $firstName = isset($_POST['firstname']) ? trim($_POST['firstname']) : '';
+    $lastName = isset($_POST['lastname']) ? trim($_POST['lastname']) : '';
+    $username = isset($_POST['username']) ? trim($_POST['username']) : '';
+    $address = isset($_POST['address']) ? trim($_POST['address']) : '';
+    $phoneNumber = isset($_POST['phoneNumber']) ? trim($_POST['phoneNumber']) : '';
+    $birthYear = isset($_POST['birthYear']) ? trim($_POST['birthYear']) : '';
+    $birthMonth = isset($_POST['birthMonth']) ? trim($_POST['birthMonth']) : '';
+    $birthDay = isset($_POST['birthDay']) ? trim($_POST['birthDay']) : '';
 
     // Format the birth date
-    $birthDate = $birthYear . '-' . $birthMonth . '-' . $birthDay;
+    $birthDate = "$birthYear-$birthMonth-$birthDay";
 
     // Check if the username is already used by another admin (excluding the current admin)
     $emailCheckQuery = "SELECT adminID FROM admin WHERE username = ? AND adminID != ?";
@@ -28,10 +51,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $stmt->execute();
     $stmt->store_result();
 
-    // If the email already exists for another admin
     if ($stmt->num_rows > 0) {
+        // Username is already taken
         echo "This email is already in use by another admin. Please choose a different email.";
-        $stmt->close();
     } else {
         // Prepare the UPDATE query for admin profile
         $query = "UPDATE admin SET 
@@ -42,6 +64,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                     phoneNumber = ?, 
                     birthday = ? 
                   WHERE adminID = ?";
+
+        $stmt->close();
 
         // Prepare the statement
         if ($stmt = $conn->prepare($query)) {

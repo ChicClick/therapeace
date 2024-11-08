@@ -1,15 +1,20 @@
 <?php
-// Include the database connection
+// Redirect if not logged in
+if (!isset($_SESSION['username'])) {
+    header("Location: adminlogin.php");
+    exit;
+}
+
+// Include database connection
 include('db_conn.php');
 
-// Start the session to access the admin's ID
-session_start();
-$admin_id = $_SESSION['adminID']; // Admin ID from session
+// Get the logged-in admin's username
+$username = $_SESSION['username'];
 
-// Query to fetch the admin's information based on admin_id
-$query = "SELECT * FROM admin WHERE adminID = ?";
+// Query to fetch the admin's information based on username
+$query = "SELECT * FROM admin WHERE username = ?";
 $stmt = $conn->prepare($query);
-$stmt->bind_param("i", $admin_id);
+$stmt->bind_param("s", $username);
 $stmt->execute();
 $result = $stmt->get_result();
 
@@ -17,46 +22,47 @@ $result = $stmt->get_result();
 if ($result->num_rows > 0) {
     // Fetch admin details
     $admin = $result->fetch_assoc();
+    $firstname = $admin['firstname'];
 } else {
     echo "Admin not found!";
     exit();
 }
 
-// Extract birth date components (year, month, day)
+// Extract birth date components
 $birthYear = date("Y", strtotime($admin['birthday']));
 $birthMonth = date("m", strtotime($admin['birthday']));
 $birthDay = date("d", strtotime($admin['birthday']));
 
-// Close the prepared statement
+// Close statement
 $stmt->close();
 ?>
 
 <form class="form-edit" action="a_update_profile.php" method="POST">
     <!-- Profile Picture Section -->
     <div class="profile-picture-section">
-        <img src="images/about 4.jpg" alt="Profile Picture" class="profile-picture">
+        <img src="images/about 4.jpg" alt="Profile Picture" class="edit-profile-picture">
     </div>
 
     <!-- Left Column - Personal Information -->
     <div class="edit-info-section">
         <div class="form-group-profile">
             <label for="firstName">First Name</label>
-            <input type="text" id="firstName" name="firstName" class="input-field" value="<?php echo htmlspecialchars($admin['firstname']); ?>">
+            <input type="text" id="firstName" name="firstname" class="edit-input-field" value="<?php echo htmlspecialchars($admin['firstname'] ?? ''); ?>">
         </div>
 
         <div class="form-group-profile">
             <label for="lastName">Last Name</label>
-            <input type="text" id="lastName" name="lastName" class="input-field" value="<?php echo htmlspecialchars($admin['lastname']); ?>">
+            <input type="text" id="lastName" name="lastname" class="edit-input-field" value="<?php echo htmlspecialchars($admin['lastname'] ?? ''); ?>">
         </div>
 
         <div class="form-group-profile">
             <label for="username">Email</label>
-            <input type="email" id="username" name="username" class="input-field" value="<?php echo htmlspecialchars($admin['username']); ?>">
+            <input type="email" id="username" name="username" class="edit-input-field" value="<?php echo htmlspecialchars($admin['username'] ?? ''); ?>">
         </div>
 
         <div class="form-group-profile">
             <label for="address">Address</label>
-            <textarea id="address" name="address" class="input-field" rows="3" style="font-family:'Poppins';"><?php echo htmlspecialchars($admin['address']); ?></textarea>
+            <textarea id="address" name="address" class="edit-input-field" rows="3" style="font-family:'Poppins';"><?php echo htmlspecialchars($admin['address'] ?? ''); ?></textarea>
         </div>
     </div>
 
@@ -64,7 +70,7 @@ $stmt->close();
     <div class="additional-info-section">
         <div class="form-group-profile">
             <label>Gender</label>
-            <input type="text" class="input-field" value="<?php echo htmlspecialchars($admin['gender']); ?>" disabled>
+            <input type="text" class="edit-input-field" value="<?php echo htmlspecialchars($admin['gender']); ?>" disabled>
         </div>
 
         <div class="form-group-profile">
@@ -72,7 +78,17 @@ $stmt->close();
             <div class="dob-fields">
                 <select class="dob-field" name="birthMonth">
                     <option value="01" <?php echo ($birthMonth == '01') ? 'selected' : ''; ?>>January</option>
-                    <!-- Add the rest of the months here... -->
+                    <option value="02" <?php echo ($birthMonth == '02') ? 'selected' : ''; ?>>February</option>
+                    <option value="03" <?php echo ($birthMonth == '03') ? 'selected' : ''; ?>>March</option>
+                    <option value="04" <?php echo ($birthMonth == '04') ? 'selected' : ''; ?>>April</option>
+                    <option value="05" <?php echo ($birthMonth == '05') ? 'selected' : ''; ?>>May</option>
+                    <option value="06" <?php echo ($birthMonth == '06') ? 'selected' : ''; ?>>June</option>
+                    <option value="07" <?php echo ($birthMonth == '07') ? 'selected' : ''; ?>>July</option>
+                    <option value="08" <?php echo ($birthMonth == '08') ? 'selected' : ''; ?>>August</option>
+                    <option value="09" <?php echo ($birthMonth == '09') ? 'selected' : ''; ?>>September</option>
+                    <option value="10" <?php echo ($birthMonth == '10') ? 'selected' : ''; ?>>October</option>
+                    <option value="11" <?php echo ($birthMonth == '11') ? 'selected' : ''; ?>>November</option>
+                    <option value="12" <?php echo ($birthMonth == '12') ? 'selected' : ''; ?>>December</option>
                 </select>
                 <select class="dob-field" name="birthDay">
                     <?php for ($i = 1; $i <= 31; $i++) : ?>
@@ -89,9 +105,10 @@ $stmt->close();
 
         <div class="form-group-profile">
             <label for="phoneNumber">Contact No.</label>
-            <input type="tel" id="phoneNumber" name="phoneNumber" class="input-field" value="<?php echo htmlspecialchars($admin['phoneNumber']); ?>">
+            <input type="tel" id="phoneNumber" name="phoneNumber" class="edit-input-field" value="<?php echo htmlspecialchars($admin['phoneNumber']); ?>">
         </div>
 
-        <button type="submit">Update Profile</button>
+        <button class="save-profile" type="submit">Update Profile</button>
     </div>
 </form>
+
