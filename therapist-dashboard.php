@@ -48,9 +48,19 @@ $therapistID = $_SESSION['therapist_id'];
                         <li><a href="#"><i class="fa fa-info-circle"></i> Help</a></li>
                     -->
                 <li><a href="#" data-target="Edit-section"><i class="fa fa-cog"></i> Edit Profile</a></li>
-                <li><a href="loginlanding.html"><i class="fa fa-sign-out"></i> Sign Out</a></li>
+                <li><a href="#" id="logoutBtn"><i class="fa fa-sign-out"></i> Sign Out</a></li>
             </ul>
         </nav>
+    </div>
+     <!-- Logout Confirmation Modal -->
+     <div id="logoutModal" class="modal-logout" style="display:none">
+        <div class="modal-content-logout">
+            <span class="close-logout" id="closeModal">&times;</span>
+            <h2>Confirm Logout</h2>
+            <p>Are you sure you want to log out?</p>
+            <button id="confirmLogout">Yes, log me out</button>
+            <button id="cancelLogout">Cancel</button>
+        </div>
     </div>
 
     <!-- Right Section -->
