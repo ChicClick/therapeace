@@ -24,7 +24,7 @@ $status = "verified";
 $updated_at = date('Y-m-d H:i:s'); // Current datetime
 
 // Check if template exists
-$templateFile = 'progressReport3.pdf';
+$templateFile = 'progressReport1.pdf';
 if (!file_exists($templateFile)) {
     die("Error: Template PDF file not found.");
 }
