@@ -54,15 +54,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Send email using PHPMailer
     $mail = new PHPMailer(true);
 
-    try {
+   try {
         // Server settings
         $mail->isSMTP();
-        $mail->Host = 'smtp.gmail.com';
-        $mail->SMTPAuth = true;
-        $mail->Username = 'therapeacemanagement@gmail.com'; // Your Gmail address
-        $mail->Password = 'ovzp bnem esqd nqyn'; // Your Gmail app-specific password
+        $mail->Host       = 'smtp.gmail.com';
+        $mail->SMTPAuth   = true;
+        $mail->Username   = 'therapeacemanagement@gmail.com'; // Your Gmail address
+        $mail->Password   = 'ovzp bnem esqd nqyn'; // Your Gmail password or App password
         $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;
-        $mail->Port = 465;
+        $mail->Port       = 465;
 
         // Recipients
         $mail->setFrom('therapeacemanagement@gmail.com', 'TheraPeace Management');
