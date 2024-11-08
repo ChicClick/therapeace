@@ -26,7 +26,7 @@ if (isset($_GET['message'])) {
                 <?php echo $messageDisplay; ?>
                 
                 <form action="therapist_forgot_password.php" method="POST">
-                    <input type="text" name="therapistID" placeholder="Enter your Therapist ID" required>
+                    <input type="text" name="therapist_id" placeholder="Enter your Therapist ID" required>
                     <button type="submit">Submit</button>
                 </form>
 
