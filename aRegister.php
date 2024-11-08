@@ -1,9 +1,5 @@
 <?php
-// Database connection details
-$host = "localhost";  
-$username = "root";  
-$password = "";  
-$dbname = "therapeacedb";
+include 'db_conn.php'; // Ensure $conn is properly initialized
 
 try {
     // Connect to the database
