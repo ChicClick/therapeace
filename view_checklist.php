@@ -25,8 +25,8 @@ if ($guestID > 0) {
     $guestStmt->bind_result($matchTherapy, $comments);
     
     if ($guestStmt->fetch()) {
-        // Convert comma-separated matchTherapy to an array
-        $selectedTherapies = explode(',', $matchTherapy);
+        // Convert comma-separated matchTherapy to an array, check for null or empty string
+        $selectedTherapies = !empty($matchTherapy) ? explode(',', $matchTherapy) : [];
     } else {
         echo "No matching records found for guestID: " . htmlspecialchars($guestID);
     }
@@ -34,6 +34,7 @@ if ($guestID > 0) {
     $guestStmt->close();
 } else {
     echo "Invalid guest ID.";
+    exit; // Exit if guest ID is invalid
 }
 
 // Step 2: Fetch all therapy options from the `service` table
@@ -41,33 +42,36 @@ $therapyOptions = [];
 $optionsQuery = "SELECT serviceName FROM service";
 $optionsResult = $conn->query($optionsQuery);
 
-if ($optionsResult->num_rows > 0) {
+if ($optionsResult && $optionsResult->num_rows > 0) {
     while ($row = $optionsResult->fetch_assoc()) {
         $therapyOptions[] = $row['serviceName'];
     }
+} else {
+    echo "No therapy options available.";
 }
 
 $optionsResult->free(); // Free the result set
 ?>
 
-    <div class="checklist-right-section-view">
-        <div class="checkbox-group">
-            <div class="section-title">Select Suitable Therapy</div>
-            <?php foreach ($therapyOptions as $therapy): 
-                $isChecked = in_array($therapy, $selectedTherapies); ?>
-                <label>
-                    <input type="checkbox" name="therapies[]" value="<?php echo htmlspecialchars($therapy); ?>" 
-                        <?php echo $isChecked ? 'checked' : ''; ?> disabled>
-                    <?php echo htmlspecialchars($therapy); ?>
-                </label>
-            <?php endforeach; ?>
-        </div>
-
-        <div class="comments-section">
-            <div class="section-title">Additional Diagnosis/Comments</div>
-            <textarea name="comments" id="comments" placeholder="Enter comments here..." disabled><?php echo htmlspecialchars($comments); ?></textarea>
-        </div>
+<div class="checklist-right-section-view">
+    <div class="checkbox-group">
+        <div class="section-title">Select Suitable Therapy</div>
+        <?php foreach ($therapyOptions as $therapy): 
+            $isChecked = in_array($therapy, $selectedTherapies); ?>
+            <label>
+                <input type="checkbox" name="therapies[]" value="<?php echo htmlspecialchars($therapy); ?>" 
+                    <?php echo $isChecked ? 'checked' : ''; ?> disabled>
+                <?php echo htmlspecialchars($therapy); ?>
+            </label>
+        <?php endforeach; ?>
     </div>
+
+    <div class="comments-section">
+        <div class="section-title">Additional Diagnosis/Comments</div>
+        <textarea name="comments" id="comments" placeholder="Enter comments here..." disabled><?php echo htmlspecialchars($comments); ?></textarea>
+    </div>
+</div>
+
 <?php
 $conn->close(); // Close the database connection
 ?>
