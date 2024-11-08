@@ -27,8 +27,8 @@ if ($result->num_rows > 0) {
         echo "<td>" . htmlspecialchars($row['guest_name']) . "</td>";
         echo "<td>" . htmlspecialchars($row['email']) . "</td>";
         
-        // Format date_submitted to a more readable format
-        $formatted_date = date("F j, Y", strtotime($row['date_submitted']));
+        // Format date_submitted to a more readable format with time
+        $formatted_date = date("F j, Y, g:i A", strtotime($row['date_submitted']));
         echo "<td>" . htmlspecialchars($formatted_date) . "</td>";
         
         $status = $row['guest_status'];
