@@ -21,17 +21,17 @@ $sql = "
 
 // Prepare statement
 $stmt = $conn->prepare($sql);
-$stmt->bind_param("s", $therapist_id); // "i" stands for integer parameter
+$stmt->bind_param("s", $therapist_id);
 $stmt->execute();
 $result = $stmt->get_result();
 
 if ($result->num_rows > 0) {
     while ($row = $result->fetch_assoc()) {
         // Add each scheduled date to an array for use in JavaScript
-        $scheduledDates[] = $row['schedule']; // Push the schedule to the array
+        $scheduledDates[] = $row['schedule'];
 
         echo "<tr>";
-        echo "<td><input type='hidden' class='appointment-id' value='" . htmlspecialchars($row['appointmentID']) . "'>" . htmlspecialchars($row['appointmentID']) . "</td>";
+        echo "<td><span class='appointment-id' style='display:none;'>" . htmlspecialchars($row['appointmentID']) . "</span></td>";
         echo "<td><img src='images/about 4.jpg' alt='Profile Image'> " . htmlspecialchars($row['patient_name']) . "</td>";
         echo "<td>" . htmlspecialchars($row['parent_name']) . "</td>";
         echo "<td>" . htmlspecialchars($row['service_name']) . "</td>";
