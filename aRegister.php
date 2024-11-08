@@ -1,4 +1,8 @@
 <?php
+// Enable error reporting for debugging
+ini_set('display_errors', 1);
+error_reporting(E_ALL);
+
 // Include the database connection file
 include('db_conn.php');
 
@@ -83,12 +87,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $mail->SMTPDebug = 2;  // Enable SMTP debug output
 
             // Send the email
-            $mail->send();
-            echo "<script>alert('Registration successful! A confirmation email has been sent.');</script>";
-
-            // Redirect to login page after successful registration
-            header("Location: adminlogin.php");
-            exit();
+            if ($mail->send()) {
+                echo "<script>alert('Registration successful! A confirmation email has been sent.');</script>";
+                // Redirect to login page after successful registration
+                header("Location: adminlogin.php");
+                exit();
+            } else {
+                echo "<script>alert('Error sending confirmation email: {$mail->ErrorInfo}');</script>";
+            }
         } catch (Exception $e) {
             // If PHPMailer fails to send email
             echo "<script>alert('Error sending confirmation email: {$mail->ErrorInfo}');</script>";
