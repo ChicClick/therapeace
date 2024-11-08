@@ -128,11 +128,15 @@ function generateCalendar() {
         const generatedDate = new Date(dateString);
         const currentDate = new Date(); // Update current date each time
 
+        const isFullyBooked = bookedDates.includes(dateString);
+
         // Debug: log each generated date
-        console.log("Generated Date: ", dateString);
+        console.log("Generated Date: ", dateString, (isFullyBooked ? " - Yesss!!!" : " - Nooooo"));
+
+        
 
         // Disable Sundays, past dates, and booked dates
-        if (generatedDate.getDay() === 0 || generatedDate < currentDate || bookedDates.includes(dateString)) {
+        if (generatedDate.getDay() === 0 || generatedDate < currentDate || isFullyBooked) {
             dayDiv.classList.add('disabled'); // Add disabled class to Sundays, past dates, and booked dates
         } else {
             dayDiv.addEventListener('click', () => {
@@ -496,6 +500,10 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     });
 });
+
+function handleSubmit() {
+    /* TODO something */
+}
 
 //Service
 //Add Service 

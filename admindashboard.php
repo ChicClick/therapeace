@@ -23,7 +23,7 @@ if (isset($_SESSION['firstname'])) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>TheraPeace</title>
     <link rel="stylesheet" href="adash.css">
-    <link rel="stylesheet" href="adminpasswordStyles.css">
+    
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.10.2/fullcalendar.min.css" />
@@ -51,7 +51,7 @@ if (isset($_SESSION['firstname'])) {
                 <p>OTHERS</p>
                 <li><a href="registerlanding.php" ><i class="fa fa-users"></i> Manage Accounts</a></li>
                 <li><a href="#" data-target="edit-profile-section"><i class="fa fa-cog"></i> Edit Profile</a></li>
-                <li><a href="#" id="logoutBtn">Log Out</a></li>
+                <li><a href="#" id="logoutBtn"><i class="fa fa-sign-out"></i>Log Out</a></li>
             </ul>
         </nav>
     </div>
