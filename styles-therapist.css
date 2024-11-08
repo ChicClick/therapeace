@@ -353,7 +353,9 @@ body {
 #appointments-section td a:hover {
     text-decoration: underline; 
 }
-
+#appointmentsTable{
+    width: 80%;
+}
 /* Popup styles */
 .popup {
     position: fixed;
