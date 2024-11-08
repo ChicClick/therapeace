@@ -1,5 +1,12 @@
 <?php
 include 'db_conn.php';
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\Exception;
+
+
+require '/PHPMailer/src/Exception.php';
+require '/PHPMailer/src/PHPMailer.php';
+require '/PHPMailer/src/SMTP.php';
 
 if (isset($_GET['guest_id'])) {
     $guest_id = (int)$_GET['guest_id'];
@@ -18,26 +25,26 @@ if (isset($_GET['guest_id'])) {
         $matchTherapy = htmlspecialchars($guest['matchTherapy']); // Therapy type they are matched with
 
         // Set interview date to 1 week from today and time to 8:00 AM
-        $interview_date = new DateTime(); // Current time (just the date)
-        $interview_date->modify('+1 week'); // Add 1 week
-        $interview_date->setTime(8, 0); // Explicitly set the time to 08:00 AM
+        $interview_date = new DateTime();
+        $interview_date->modify('+1 week');
+        $interview_date->setTime(8, 0);
 
-        // Store the interview date in the format MySQL expects (YYYY-MM-DD)
+        // Store the interview date in MySQL format (YYYY-MM-DD)
         $formatted_date = $interview_date->format('Y-m-d');
-        $interview_time = $interview_date->format('H:i:s'); // 08:00:00
+        $interview_time = $interview_date->format('H:i:s');
         $interview_datetime = $formatted_date . ' ' . $interview_time;
 
-        // Update the schedule column in the guest table with the interview datetime
+        // Update the schedule column in the guest table
         $update_sql = "UPDATE guest SET schedule = ? WHERE GuestID = ?";
         $update_stmt = $conn->prepare($update_sql);
         $update_stmt->bind_param("si", $interview_datetime, $guest_id);
         $update_stmt->execute();
 
-        // Format the interview date for display in human-readable format
-        $human_readable_date = $interview_date->format('l, F j, Y'); // Example: "Thursday, November 14, 2024"
-        $interview_time_display = $interview_date->format('h:i A'); // Example: "08:00 AM"
+        // Format the interview date for display
+        $human_readable_date = $interview_date->format('l, F j, Y');
+        $interview_time_display = $interview_date->format('h:i A');
         
-        // Compose the email with the specific therapy type included
+        // Compose the email
         $message = "Hello $guest_name,<br><br>"
                  . "We are pleased to inform you that you have qualified for our therapy program.<br><br>"
                  . "Based on your assessment, we recommend the following therapy: <b>$matchTherapy</b>.<br><br>"
@@ -49,21 +56,37 @@ if (isset($_GET['guest_id'])) {
                  . "Kindly reply to this email for confirmation.<br><br>"
                  . "Best regards,<br>TheraBee Child Development and Learning Center";
 
-        $subject = "TheraBee Center Assesment Results";
-        $headers = "From: therapeacemanagement@gmail.com" . "\r\n" .
-                   "Content-Type: text/html; charset=UTF-8"; // Set headers for HTML content
+        // Use PHPMailer to send the email
+        $mail = new PHPMailer(true);
 
-        // Send the email
-        if (mail($guest_email, $subject, $message, $headers)) {
-            // Success: show an alert and redirect
+        try {
+            // Server settings
+            $mail->isSMTP();
+            $mail->Host       = 'smtp.gmail.com';
+            $mail->SMTPAuth   = true;
+            $mail->Username   = 'therapeacemanagement@gmail.com'; // Your Gmail address
+            $mail->Password   = 'ovzp bnem esqd nqyn'; // Your Gmail password or App password
+            $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
+            $mail->Port       = 587;
+
+            // Recipients
+            $mail->setFrom('therapeacemanagement@gmail.com', 'TheraBee Center');
+            $mail->addAddress($guest_email, $guest_name);
+
+            // Content
+            $mail->isHTML(true);
+            $mail->Subject = 'TheraBee Center Assessment Results';
+            $mail->Body    = $message;
+
+            // Send the email
+            $mail->send();
             echo "<script>
                 alert('Results sent successfully to $guest_email.');
                 window.location.href = 'therapist-dashboard.php';
             </script>";
-        } else {
-            // Failure: show an error alert
+        } catch (Exception $e) {
             echo "<script>
-                alert('Failed to send results.');
+                alert('Failed to send results. Mailer Error: {$mail->ErrorInfo}');
                 window.location.href = 'therapist-dashboard.php';
             </script>";
         }
