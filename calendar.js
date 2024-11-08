@@ -330,3 +330,38 @@ function convertTo24HourFormat(time) {
 
     return `${String(hour).padStart(2, '0')}:${String(minute).padStart(2, '0')}:${second || '00'}`;
 }
+
+<style>
+    input[type="radio"] {
+    -webkit-appearance: none; /* Remove default radio appearance */
+    -moz-appearance: none;
+    appearance: none;
+    width: 18px;
+    height: 18px;
+    border: 2px solid #ccc; /* Border color */
+    border-radius: 50%; /* Make it round */
+    position: relative;
+    cursor: pointer;
+    outline: none;
+}
+
+input[type="radio"]:checked {
+    border-color: #4CAF50; /* Green color when selected */
+}
+
+input[type="radio"]:checked::after {
+    content: "";
+    position: absolute;
+    top: 4px;
+    left: 4px;
+    width: 8px;
+    height: 8px;
+    background-color: #4CAF50; /* Green inner circle when selected */
+    border-radius: 50%;
+}
+
+input[type="radio"]:disabled {
+    cursor: not-allowed;
+    opacity: 0.6; /* Add opacity for disabled state */
+}
+</style>
