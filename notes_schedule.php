@@ -6,7 +6,7 @@ $patientID = isset($_GET['patientID']) ? $_GET['patientID'] : null;
 if ($patientID) {
     $query = "SELECT schedule FROM appointment WHERE patientID = ?";
     $stmt = $conn->prepare($query);
-    $stmt->bind_param("i", $patientID);
+    $stmt->bind_param("s", $patientID);
     $stmt->execute();
     $result = $stmt->get_result();
 
