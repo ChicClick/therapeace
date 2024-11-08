@@ -10,16 +10,16 @@ error_reporting(E_ALL);
 $messageDisplay = ''; // Initialize a variable for the message to be shown on the front end
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $patientId = $_POST['patientID'] ?? '';
+    $therapistId = $_POST['therapist_id'] ?? '';
 
     if (empty($patientId)) {
         $messageDisplay = 'Patient ID is required.';
     } else {
-        $query = "SELECT email FROM patient WHERE patientID = ?";
+        $query = "SELECT email FROM therapist WHERE therapistID = ?";
         $stmt = $conn->prepare($query);
 
         if ($stmt) {
-            $stmt->bind_param("s", $patientId);
+            $stmt->bind_param("s", $therapistId);
             $stmt->execute();
             $stmt->bind_result($email);
             $stmt->fetch();
@@ -28,7 +28,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             if ($email) {
                 $resetToken = bin2hex(random_bytes(16));
                 $expiry = date('Y-m-d H:i:s', strtotime('+1 hour'));
-                $updateQuery = "UPDATE patient SET reset_token = ?, reset_token_expiry = ? WHERE patientID = ?";
+                $updateQuery = "UPDATE therapist SET reset_token = ?, reset_token_expiry = ? WHERE therapistID = ?";
                 $stmt = $conn->prepare($updateQuery);
 
                 if ($stmt) {
