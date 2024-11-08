@@ -9,11 +9,11 @@ if (isset($_GET['token'])) {
     $token = $_GET['token'];
 
     // Check if the token is valid and hasn't expired
-    $query = "SELECT patientID, reset_token_expiry FROM patient WHERE reset_token = ?";
+    $query = "SELECT therapistID, reset_token_expiry FROM therapist WHERE reset_token = ?";
     $stmt = $conn->prepare($query);
     $stmt->bind_param("s", $token);
     $stmt->execute();
-    $stmt->bind_result($patientId, $expiry);
+    $stmt->bind_result($therapistId, $expiry);
     $stmt->fetch();
     $stmt->close();
 
@@ -39,7 +39,7 @@ if (isset($_GET['token'])) {
                 } else {
                     // Update the password in the database
                     $hashedPassword = password_hash($newPassword, PASSWORD_DEFAULT);
-                    $updateQuery = "UPDATE patient SET password_hash = ?, reset_token = NULL, reset_token_expiry = NULL WHERE patientID = ?";
+                    $updateQuery = "UPDATE therapist SET password_hash = ?, reset_token = NULL, reset_token_expiry = NULL WHERE patientID = ?";
                     $stmt = $conn->prepare($updateQuery);
                     $stmt->bind_param("ss", $hashedPassword, $patientId);
                     $stmt->execute();
