@@ -2,6 +2,7 @@
   "name": "chicclick/therapeace",
   "description": "web based management system",
   "require": {
-    "php": "^8.2"
+    "php": "^8.2",
+    "aws/aws-sdk-php": "^3.325"
   }
 }
