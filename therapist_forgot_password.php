@@ -12,7 +12,7 @@ $messageDisplay = ''; // Initialize a variable for the message to be shown on th
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $therapistId = $_POST['therapist_id'] ?? '';
 
-    if (empty($patientId)) {
+    if (empty($therapistId)) {
         $messageDisplay = 'Therapist ID is required.';
     } else {
         $query = "SELECT email FROM therapist WHERE therapistID = ?";
