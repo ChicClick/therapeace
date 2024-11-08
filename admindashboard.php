@@ -51,9 +51,20 @@ if (isset($_SESSION['firstname'])) {
                 <p>OTHERS</p>
                 <li><a href="registerlanding.php" ><i class="fa fa-users"></i> Manage Accounts</a></li>
                 <li><a href="#" data-target="edit-profile-section"><i class="fa fa-cog"></i> Edit Profile</a></li>
-                <li><a href="adminlogin.php"><i class="fa fa-sign-out"></i> Sign Out</a></li>
+                a href="#" id="logoutBtn">Log Out</a>
             </ul>
         </nav>
+    </div>
+
+        <!-- Logout Confirmation Modal -->
+    <div id="logoutModal" class="modal">
+        <div class="modal-content-logout">
+            <span class="close" id="closeModal">&times;</span>
+            <h2>Confirm Logout</h2>
+            <p>Are you sure you want to log out?</p>
+            <button id="confirmLogout">Yes, log me out</button>
+            <button id="cancelLogout">Cancel</button>
+        </div>
     </div>
 
     <!-- Right Section -->
@@ -563,5 +574,6 @@ if (isset($_SESSION['firstname'])) {
     <script src="a_editservice.js" defer></script>
     <script src="a_add_delete_service.js" defer></script>
     <script src="a_confirmappointment.js" defer></script>
+    <script src="a_logout.js" defer></script>
 </body>
 </html>
