@@ -490,3 +490,73 @@ button[type="submit"]:hover {
     flex-wrap: wrap;  /* Allow the fields to wrap to the next line when needed */
     gap: 20px;  /* Adjust spacing between the fields */
 }
+
+
+.progress-report-modal-content {
+    position: absolute;
+    top: 50%; /* Position it 50% from the top */
+    left: 50%; /* Position it 50% from the left */
+    transform: translate(-50%, -50%); /* Offset by half its width and height to truly center it */
+    padding: 20px;
+    background-color: #F6F0DC;
+    border-radius: 8px;
+    max-width: 500px;
+    width: 100%; /* Ensure it takes up 100% of its parent width (up to 600px) */
+    box-sizing: border-box; /* Include padding in the width calculation */
+    color:#432705;
+    align-items: center;
+}
+
+.close-btn {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    font-size: 24px;
+    color: #000;
+    cursor: pointer;
+}
+
+.close-btn:hover {
+    color: #FDBC10; /* Changes the color when hovered, optional */
+}
+
+/* Style the paragraph that holds the Report PDF link */
+.modal p {
+    font-size: 16px;
+    line-height: 1.5;
+    margin: 10px 0;
+}
+
+/* Style the strong tag to make it bold and add some spacing */
+.modal strong {
+    font-weight: bold;
+    color: #333;  /* Dark color for better contrast */
+    margin-right: 5px;  /* Space between the label and the link */
+}
+
+/* Style the link to make it look like a button */
+.modal a {
+    display: inline-block;  /* Make the link behave like a block element */
+    padding: 10px 20px;  /* Add padding to make it button-like */
+    background-color: #fdd835;  /* Set a blue background for the button */
+    color: #fef9e4;  /* White text color */
+    text-align: center;  /* Center the text inside the button */
+    text-decoration: none;  /* Remove underline */
+    border-radius: 5px;  /* Rounded corners */
+    font-weight: bold;  /* Make the text bold */
+    cursor: pointer;  /* Pointer cursor on hover */
+    transition: background-color 0.3s ease, transform 0.2s ease;  /* Smooth hover transition */
+}
+
+/* Add hover effect to the "button" */
+.modal a:hover {
+    background-color: #FDBC10;  /* Darker blue when hovered */
+    transform: scale(1.01);  /* Slightly enlarge the button on hover */
+}
+
+/* Add focus effect (optional) */
+.modal a:focus {
+    outline: none;  /* Remove the default focus outline */
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.75);  /* Blue glow effect when focused */
+}
+

@@ -1,5 +1,6 @@
 <?php
 include 'patient_get_appointments.php';
+include 'patientFetchReport.php';
 ?>
 
 
@@ -150,7 +151,10 @@ include 'patient_get_appointments.php';
         <!-- Notes Search and Sort Section -->
         <div id="notes-table"> <!-- Wrapper to hide the entire section -->
         <button id="generateReportButton">Request Progress Report</button>
-        <button id="viewReportButton" onclick="openProgressReportPopup()" style="display: none;">View Requested Report</button>
+        <button id="viewReportButton" onclick="openProgressReportPopup(<?= isset($report) ? $report['reportID'] : 'null' ?>)">   
+             View Progress Report
+        </button>
+
         <div id="confirmationMessage" style="display:none;"></div>
 
             <!-- Modal for generating report -->
@@ -218,16 +222,28 @@ include 'patient_get_appointments.php';
         </section>
 
         <!-- Progress Report Popup -->
-        <div id="progressReportPopup" class="popup" style="display: none;">
-            <div class="popup-content">
-                <span class="close" onclick="closeProgressReportPopup()">&times;</span>
-                <h4>Progress Report</h4>
-                <p><strong>Therapist:</strong> Dr. Anna White</p>
-                <p><strong>Date Verified:</strong> November 2, 2024</p>
-                <p>Your progress report is now available for download</p>
-                <a href="progressReport.pdf" download class="download-button">Download PDF</a>
+        <div id="progress-report-popup" class="modal">
+            <div class="progress-report-modal-content">
+                <!-- Close Button -->
+                <span class="close-btn" onclick="closePopup()">&times;</span>
+                <h2>Progress Report</h2>
+
+                <?php if ($report): ?>
+                    <p><strong>Report ID:</strong> <?= htmlspecialchars($report['reportID']) ?></p>
+                    <p><strong>Therapist:</strong> <?= htmlspecialchars($report['therapistName']) ?></p>
+                    <p><strong>Status:</strong> <?= htmlspecialchars($report['status']) ?></p>
+                    <p><strong>Created At:</strong> <?= htmlspecialchars($report['created_at']) ?></p>
+                    <?php if ($isReportAvailable): ?>
+                        <p><a href="<?= htmlspecialchars($report['pdf_path']) ?>" target="_blank">View Report</a></p>
+                    <?php else: ?>
+                        <p><strong>Report PDF:</strong> Not available yet.</p>
+                    <?php endif; ?>
+                <?php else: ?>
+                    <p>No report available for this patient.</p>
+                <?php endif; ?>
             </div>
-        </div>
+</div>
+
 
 
     
