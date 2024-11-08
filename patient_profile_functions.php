@@ -65,7 +65,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
 
     // Update patient profile, including the image path if uploaded
-    updatePatientProfile($patientID, $updatedName, $updatedEmail, $updatedPhone, $updatedAddress, $updatedParentName, $profileImagePath);
+    updatePatientProfile($patientID, $updatedName, $updatedEmail, $updatedPhone, $updatedAddress, $updatedParentName, $updatedRelationship, $profileImagePath);
+
 
     header("Location: patientProfile.php?success=1");
     exit();
