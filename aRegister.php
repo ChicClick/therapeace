@@ -75,14 +75,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         // Send the email
         $mail->send();
-        echo "Registration successful! A confirmation email has been sent.";
+
+        // Redirect to login page
+        header("Location: adminlogin.php");
+        exit(); // Ensure no further code is executed
     } catch (Exception $e) {
         echo "Error sending confirmation email: {$mail->ErrorInfo}";
     }
-
-    // Output the link to proceed to login
-    echo "<br><a href='adminlogin.php'>Proceed to Login</a>";
-    exit(); // Exit to prevent further script execution
 }
 
 // Close the connection
