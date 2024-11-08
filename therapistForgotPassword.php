@@ -20,13 +20,13 @@ if (isset($_GET['message'])) {
         <div class="background-overlay">
             <div class="forgot-password-box">
                 <h2>Forgot Your Password?</h2>
-                <p>Enter your Patient ID below, and we'll send you a password reset link.</p>
+                <p>Enter your Therapist ID below, and we'll send you a password reset link.</p>
 
                 <!-- Display the message -->
                 <?php echo $messageDisplay; ?>
                 
                 <form action="patient_forgot_password.php" method="POST">
-                    <input type="text" name="patientID" placeholder="Enter your Patient ID" required>
+                    <input type="text" name="therapistID" placeholder="Enter your Therapist ID" required>
                     <button type="submit">Submit</button>
                 </form>
 
