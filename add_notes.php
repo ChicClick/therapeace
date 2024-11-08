@@ -1,5 +1,4 @@
 <?php
-include 'config.php';
 include 'db_conn.php';
 
 // Initialize a variable to hold confirmation status

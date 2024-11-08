@@ -75,7 +75,7 @@ if (isset($_SESSION['firstname'])) {
             </div>
             <div class="profile-section">
                 <img src="images/about 3.jpg" alt="Profile Picture">
-                <span class="welcome-text">Welcome back, Admin <?php echo htmlspecialchars($firstname); ?>!</span>
+                <span class="welcome-text">Welcome back, Admin!</span>
 
             </div>
         </div>
