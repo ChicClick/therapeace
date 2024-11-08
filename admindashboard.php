@@ -1,5 +1,5 @@
 <?php
-include 'config.php';
+session_start();
 
 // Check if admin is logged in
 if (!isset($_SESSION['username'])) {
@@ -51,12 +51,11 @@ if (isset($_SESSION['firstname'])) {
                 <p>OTHERS</p>
                 <li><a href="registerlanding.php" ><i class="fa fa-users"></i> Manage Accounts</a></li>
                 <li><a href="#" data-target="edit-profile-section"><i class="fa fa-cog"></i> Edit Profile</a></li>
-                <li><a href="#" id="logoutBtn"><i class="fa fa-sign-out"></i> Sign Out</a></li>
+                <li><a href="#" id="logoutBtn">Log Out</a></li>
             </ul>
         </nav>
     </div>
-
-        <!-- Logout Confirmation Modal -->
+    <!-- Logout Confirmation Modal -->
     <div id="logoutModal" class="modal">
         <div class="modal-content-logout">
             <span class="close" id="closeModal">&times;</span>

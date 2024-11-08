@@ -1,5 +1,5 @@
 <?php
-include 'config.php';
+session_start();
 ?>
 
 <!DOCTYPE html>
@@ -35,7 +35,7 @@ include 'config.php';
     <form action="a_login.php" method="POST" onsubmit="showLoading()">
     <input type="text" name="username" placeholder="Username" required>
     <input type="password" name="password" placeholder="Password" required>
-    <a href="#" class="forgot-password">Forgot Password?</a>
+    <a href="adminForgotPassword.php" class="forgot-password">Forgot Password?</a>
     <a href="adminRegister.html" class="sign-up">Sign Up</a>
     <button type="submit" class="proceed-button">Proceed &rarr;</button>
     </form>
