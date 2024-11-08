@@ -2,11 +2,11 @@ let selectedMonth = new Date().getMonth(); // Start from the current month (0-11
 let selectedYear = new Date().getFullYear(); // Start from the current year
 let selectedTime = null; // To hold the selected time
 let originalAppointmentDate = null; // To hold the original appointment date
-
+let globalId = "";
 // Function to open popup when "Reschedule" is clicked
-function openPopup(appointmentDate) {
+function openPopup(appointmentDate, appointmentID) {
     document.getElementById('reschedulePopup').style.display = 'block';
-
+    globalId = appointmentID;
     // Parse the appointment date
     const dateParts = appointmentDate.split(' ');
     const [year, month, day] = dateParts[0].split('-').map(Number);
@@ -137,8 +137,10 @@ document.addEventListener('DOMContentLoaded', function() {
     document.querySelectorAll('.reschedule-link').forEach(link => {
         link.addEventListener('click', function(e) {
             e.preventDefault();
-            const appointmentDate = this.dataset.id; // Get the appointment date
-            openPopup(appointmentDate); // Pass it to openPopup
+            const appointmentDate = this.dataset.id;
+            const appointmentID = this.closest('tr').querySelector('.appointment-id').value;
+
+            openPopup(appointmentDate, appointmentID);
         });
     });
 });
@@ -277,14 +279,14 @@ document.getElementById('confirmTimeButton').addEventListener('click', async () 
     if (selectedDate && selectedTime) {
         const newSchedule = `${selectedDate} ${convertTo24HourFormat(selectedTime.value)}`;
         console.log(newSchedule);
-        await fetch('update_appointment.php', {
+        await fetch('patientRescheduleAppointment.php', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/x-www-form-urlencoded',
             },
             body: new URLSearchParams({
                 selectedDatetime: newSchedule,
-                therapistID: getLoggedInTherapistID()  // matches the PHP script's expected name
+                appointmentID: globalId  // matches the PHP script's expected name
             }),
         })
         .then(response => {

@@ -11,7 +11,8 @@ $sql = "
         patient.patientName AS patient_name, 
         parent.parentName AS parent_name, 
         services.serviceName AS service_name, 
-        appointment.schedule 
+        appointment.schedule,
+        appointment.appointmentID
     FROM appointment
     JOIN patient ON appointment.patientID = patient.patientID
     JOIN parent ON appointment.parentID = parent.parentID
@@ -30,6 +31,7 @@ if ($result->num_rows > 0) {
         $scheduledDates[] = $row['schedule']; // Push the schedule to the array
 
         echo "<tr>";
+        echo "<td><input type='hidden' class='appointment-id' value='" . htmlspecialchars($row['appointmentID']) . "'>" . htmlspecialchars($row['appointmentID']) . "</td>";
         echo "<td><img src='images/about 4.jpg' alt='Profile Image'> " . htmlspecialchars($row['patient_name']) . "</td>";
         echo "<td>" . htmlspecialchars($row['parent_name']) . "</td>";
         echo "<td>" . htmlspecialchars($row['service_name']) . "</td>";
