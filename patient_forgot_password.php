@@ -45,7 +45,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     $stmt->close();
 
                     // Create the reset link
-                    $resetLink = "http://localhost/therapeace/patientResetPassword.php?token=" . $resetToken;
+                    $resetLink = "https://therapeace-d74d563df28a.herokuapp.com/patientResetPassword.php?token=" . $resetToken;
 
                     // Create a PHPMailer instance
                     $mail = new PHPMailer(true);
