@@ -10,22 +10,23 @@ $mail = new PHPMailer(true);
 try {
     // Server settings
     $mail->isSMTP();
-    $mail->Host       = 'smtp.gmail.com';
-    $mail->SMTPAuth   = true;
-$mail->Username = $_ENV['GMAIL_USER'] ?? getenv('GMAIL_USER');
-$mail->Password = $_ENV['GMAIL_PASS'] ?? getenv('GMAIL_PASS');
+    $mail->Host = 'smtp.gmail.com';
+    $mail->SMTPAuth = true;
+    $mail->Username = getenv('GMAIL_USER') ?: $_ENV['GMAIL_USER']; // Try getenv() or $_ENV
+    $mail->Password = getenv('GMAIL_PASS') ?: $_ENV['GMAIL_PASS'];
     $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
-    $mail->Port       = 587;
+    $mail->Port = 587;
 
     // Recipients
     $mail->setFrom('therapeacemanagement@gmail.com', 'TheraPeace');
-    $mail->addAddress($email);
+    $mail->addAddress($email); // $email should be defined elsewhere in your code
 
     // Content
     $mail->isHTML(true);
     $mail->Subject = 'Password Reset Request';
-    $mail->Body    = "Click the link below to reset your password:<br><a href='" . $resetLink . "'>" . $resetLink . "</a>";
-    
+    $mail->Body = "Click the link below to reset your password:<br><a href=\"$resetLink\">$resetLink</a>";
+
+    // Send the email
     $mail->send();
     $messageDisplay = 'An email with password reset instructions has been sent.';
 } catch (Exception $e) {
