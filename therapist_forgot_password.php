@@ -13,7 +13,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $therapistId = $_POST['therapist_id'] ?? '';
 
     if (empty($patientId)) {
-        $messageDisplay = 'Patient ID is required.';
+        $messageDisplay = 'Therapist ID is required.';
     } else {
         $query = "SELECT email FROM therapist WHERE therapistID = ?";
         $stmt = $conn->prepare($query);
