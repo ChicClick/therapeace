@@ -353,6 +353,14 @@ body {
 #appointments-section td a:hover {
     text-decoration: underline; 
 }
+#appointmentsTable{
+    width: 500px;
+    height: 100px;
+    overflow: scroll;
+}
+.appointment-id {
+    width:20px;
+}
 
 /* Popup styles */
 .popup {

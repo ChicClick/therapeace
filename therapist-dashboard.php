@@ -88,6 +88,7 @@ $therapistID = $_SESSION['therapist_id'];
             <table id="appointmentsTable">
                 <thead>
                     <tr>
+                        <th>APPOINTMENTID</th>
                         <th>NAME</th>
                         <th>PARENT/GUARDIAN</th>
                         <th>SERVICES</th>
