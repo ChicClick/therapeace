@@ -1,5 +1,5 @@
 <?php
-session_start();
+include 'db_conn.php';
 
 // Check if admin is logged in
 if (!isset($_SESSION['username'])) {
