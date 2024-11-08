@@ -60,9 +60,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $mail->Host = 'smtp.gmail.com'; // SMTP server
         $mail->SMTPAuth = true;
         $mail->Username = 'therapeacemanagement@gmail.com'; // Your Gmail address
-        $mail->Password = 'your-gmail-password'; // Your Gmail password or app password
+        $mail->Password = 'ovzp bnem esqd nqyn'; // Your Gmail password or app password
         $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
-        $mail->Port = 587;
+        $mail->Port = 465;
 
         // Recipients
         $mail->setFrom('therapeacemanagement@gmail.com', 'TheraPeace Management');
