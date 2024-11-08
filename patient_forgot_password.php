@@ -24,7 +24,7 @@ try {
     // Content
     $mail->isHTML(true);
     $mail->Subject = 'Password Reset Request';
-    $mail->Body = "Click the link below to reset your password:<br><a href=https://therapeace-d74d563df28a.herokuapp.com/patientResetassword.php</a>";
+    $mail->Body = "Click the link below to reset your password:<br><a href=https://therapeace-d74d563df28a.herokuapp.com/patientResetPassword.php</a>";
 
     // Send the email
     $mail->send();
