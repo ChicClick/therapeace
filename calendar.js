@@ -68,7 +68,7 @@ async function generateCalendar(selectedDay = null) {
                     dayDiv.classList.add('disabled');
                 }
 
-                if (generatedDate < currentDate || bookedDates.includes(dateString)) {
+                if (generatedDate < currentDate) {
                     dayDiv.classList.add('disabled');
                 } else {
                     dayDiv.addEventListener('click', () => {
