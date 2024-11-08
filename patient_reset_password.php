@@ -2,6 +2,14 @@
 include 'config.php'; // Database connection settings
 include 'db_conn.php'; // Database connection script
 
+// Include PHPMailer files
+require 'PHPMailer/src/Exception.php';
+require 'PHPMailer/src/PHPMailer.php';
+require 'PHPMailer/src/SMTP.php';
+
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\Exception;
+
 $messageDisplay = ''; // Initialize a variable to hold the message for redirection
 
 // Check if there's a token in the URL
@@ -9,11 +17,11 @@ if (isset($_GET['token'])) {
     $token = $_GET['token'];
 
     // Check if the token is valid and hasn't expired
-    $query = "SELECT patientID, reset_token_expiry FROM patient WHERE reset_token = ?";
+    $query = "SELECT patientID, reset_token_expiry, email FROM patient WHERE reset_token = ?";
     $stmt = $conn->prepare($query);
     $stmt->bind_param("s", $token);
     $stmt->execute();
-    $stmt->bind_result($patientId, $expiry);
+    $stmt->bind_result($patientId, $expiry, $email);
     $stmt->fetch();
     $stmt->close();
 
@@ -44,6 +52,35 @@ if (isset($_GET['token'])) {
                     $stmt->bind_param("ss", $hashedPassword, $patientId);
                     $stmt->execute();
                     $stmt->close();
+
+                    // Send confirmation email using PHPMailer
+                    $mail = new PHPMailer(true);
+                    try {
+                        // Server settings
+                        $mail->isSMTP();
+                        $mail->Host = 'smtp.gmail.com';
+                        $mail->SMTPAuth = true;
+                        $mail->Username = 'therapeacemanagement@gmail.com';
+                        $mail->Password = 'ovzp bnem esqd nqyn'; // Use your Gmail app-specific password
+                        $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
+                        $mail->Port = 465;
+
+                        // Recipients
+                        $mail->setFrom('therapeacemanagement@gmail.com', 'TheraPeace');
+                        $mail->addAddress($email); // The patient's email
+
+                        // Content
+                        $mail->isHTML(true);
+                        $mail->Subject = 'Password Reset Confirmation';
+                        $mail->Body = "Your password has been successfully reset. You can now log in using your new password.";
+
+                        // Send the email
+                        $mail->send();
+                    } catch (Exception $e) {
+                        $messageDisplay = 'Password reset successful, but failed to send confirmation email. Mailer Error: ' . $mail->ErrorInfo;
+                        header("Location: patientResetPassword.php?message=" . urlencode($messageDisplay));
+                        exit();
+                    }
 
                     // Password reset successful
                     $_SESSION['message'] = 'Your password has been reset successfully. Please log in with your new password.';
