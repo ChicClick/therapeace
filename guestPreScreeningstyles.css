@@ -520,6 +520,17 @@ button[type="button"]:hover {
     background-color: #fdb441;
 }
 
+.navigation-buttons {
+    display: flex;
+    justify-content: space-between; /* Space between the buttons */
+    width: 100%; /* Ensure the container takes full width */
+}
+
+.navigation-buttons button {
+    /* Optionally add padding, margins, or other styles to your buttons */
+    padding: 10px 20px;
+}
+
 
 
 /* Container for demographics section */
