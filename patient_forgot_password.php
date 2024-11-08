@@ -12,10 +12,10 @@ try {
     $mail->isSMTP();
     $mail->Host = 'smtp.gmail.com';
     $mail->SMTPAuth = true;
-    $mail->Username = getenv('GMAIL_USER') ?: $_ENV['GMAIL_USER']; // Try getenv() or $_ENV
+    $mail->Username = getenv('GMAIL_USER') ?: $_ENV['GMAIL_USER']; 
     $mail->Password = getenv('GMAIL_PASS') ?: $_ENV['GMAIL_PASS'];
     $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
-    $mail->Port = 587;
+    $mail->Port = 465;
 
     // Recipients
     $mail->setFrom('therapeacemanagement@gmail.com', 'TheraPeace');
