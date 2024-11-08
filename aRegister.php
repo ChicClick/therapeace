@@ -1,6 +1,6 @@
 <?php
 // Database connection details
-$host = "localhost:3307";  
+$host = "localhost";  
 $username = "root";  
 $password = "";  
 $dbname = "therapeacedb";
