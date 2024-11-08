@@ -66,8 +66,8 @@ if (isset($_GET['guest_id'])) {
             $mail->SMTPAuth   = true;
             $mail->Username   = 'therapeacemanagement@gmail.com'; // Your Gmail address
             $mail->Password   = 'ovzp bnem esqd nqyn'; // Your Gmail password or App password
-            $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
-            $mail->Port       = 587;
+            $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;
+            $mail->Port       = 465;
 
             // Recipients
             $mail->setFrom('therapeacemanagement@gmail.com', 'TheraBee Center');
