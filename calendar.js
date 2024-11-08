@@ -95,7 +95,7 @@ async function generateCalendar(selectedDay = null) {
 // Function to fetch booked dates for a therapist
 async function fetchBookedDatesForTherapist(therapistID) {
     try {
-        const response = await fetch(`/booked-dates.php?therapistID=${therapistID}`);
+        const response = await fetch(`booked-dates.php?therapistID=${therapistID}`);
         console.log(response);
         const data = await response.json();
         return data.bookedDates;
