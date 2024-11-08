@@ -32,7 +32,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 $stmt = $conn->prepare($updateQuery);
 
                 if ($stmt) {
-                    $stmt->bind_param("sss", $resetToken, $expiry, $patientId);
+                    $stmt->bind_param("sss", $resetToken, $expiry, $therapistId);
                     $stmt->execute();
                     $stmt->close();
 
@@ -50,10 +50,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     $messageDisplay = 'Failed to prepare statement for updating reset token.';
                 }
             } else {
-                $messageDisplay = 'No patient found with that ID.';
+                $messageDisplay = 'No therapist found with that ID.';
             }
         } else {
-            $messageDisplay = 'Failed to prepare statement for patient lookup.';
+            $messageDisplay = 'Failed to prepare statement for therapist lookup.';
         }
     }
 
