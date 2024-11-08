@@ -43,7 +43,7 @@ if ($guestID > 0) {
 
 // Step 2: Fetch all therapy options from the `service` table
 $therapyOptions = [];
-$optionsQuery = "SELECT serviceName FROM service";
+$optionsQuery = "SELECT serviceName FROM services";
 $optionsResult = $conn->query($optionsQuery);
 
 if ($optionsResult && $optionsResult->num_rows > 0) {
