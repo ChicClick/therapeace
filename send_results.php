@@ -46,15 +46,16 @@ if (isset($_GET['guest_id'])) {
         
         // Compose the email
         $message = "Hello $guest_name,<br><br>"
-                 . "We are pleased to inform you that you have qualified for our therapy program.<br><br>"
-                 . "Based on your assessment, we recommend the following therapy: <b>$matchTherapy</b>.<br><br>"
-                 . "If you wish to proceed, we are inviting you to an in-person interview. Here are the details:<br><br>"
-                 . "Date: <b>$human_readable_date</b><br>"
-                 . "Time: <b>$interview_time_display</b><br>"
-                 . "Location: <b>Unit 2-M EC Valle Commercial Complex Quezon Ave Angono, Rizal, Angono, Philippines</b><br><br>"
-                 . "Please let us know if you have questions. We look forward to supporting you in this journey.<br><br>"
-                 . "Kindly reply to this email for confirmation.<br><br>"
-                 . "Best regards,<br>TheraBee Child Development and Learning Center";
+           . "We are pleased to inform you that you have qualified for our therapy program at TheraBee!<br><br>"
+           . "Based on your assessment, we believe you would benefit from the following therapy: <b>$matchTherapy</b>.<br><br>"
+           . "To help us get to know you better and discuss the next steps, we invite you to an in-person interview. Below are the details:<br><br>"
+           . "Date: <b>$human_readable_date</b><br>"
+           . "Time: <b>$interview_time_display</b><br>"
+           . "Location: <b>Unit 2-M, EC Valle Commercial Complex, Quezon Ave, Angono, Rizal, Philippines</b><br><br>"
+           . "Please feel free to reach out if you have any questions. We’re excited to support you on this journey and are here to help every step of the way.<br><br>"
+           . "Kindly reply to this email to confirm your attendance.<br><br>"
+           . "Warm regards,<br>"
+           . "The TheraBee Child Development and Learning Center Team";
 
         // Use PHPMailer to send the email
         $mail = new PHPMailer(true);
