@@ -1,7 +1,12 @@
 <?php
+// Enable error reporting for debugging
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
+
 include 'db_conn.php';
 
-// Get guestID from URL
+// Get guestID from URL and sanitize it
 $guestID = isset($_GET['guestID']) ? (int)$_GET['guestID'] : 0;
 $selectedTherapies = [];
 $comments = '';
@@ -10,23 +15,23 @@ $comments = '';
 if ($guestID > 0) {
     $guestQuery = "SELECT matchTherapy, comments FROM guest WHERE guestID = ?";
     $guestStmt = $conn->prepare($guestQuery);
-    
+
     if ($guestStmt === false) {
         die("MySQL prepare error: " . $conn->error);
     }
 
     $guestStmt->bind_param("i", $guestID);
     $guestStmt->execute();
-    
+
     if ($guestStmt->error) {
         die("MySQL execute error: " . $guestStmt->error);
     }
 
     $guestStmt->bind_result($matchTherapy, $comments);
-    
+
     if ($guestStmt->fetch()) {
-        // Convert comma-separated matchTherapy to an array, check for null or empty string
-        $selectedTherapies = !empty($matchTherapy) ? explode(',', $matchTherapy) : [];
+        // Convert comma-separated matchTherapy to an array
+        $selectedTherapies = explode(',', $matchTherapy);
     } else {
         echo "No matching records found for guestID: " . htmlspecialchars($guestID);
     }
@@ -34,7 +39,6 @@ if ($guestID > 0) {
     $guestStmt->close();
 } else {
     echo "Invalid guest ID.";
-    exit; // Exit if guest ID is invalid
 }
 
 // Step 2: Fetch all therapy options from the `service` table
@@ -47,7 +51,7 @@ if ($optionsResult && $optionsResult->num_rows > 0) {
         $therapyOptions[] = $row['serviceName'];
     }
 } else {
-    echo "No therapy options available.";
+    echo "No therapy options found or query failed: " . $conn->error;
 }
 
 $optionsResult->free(); // Free the result set
@@ -71,7 +75,6 @@ $optionsResult->free(); // Free the result set
         <textarea name="comments" id="comments" placeholder="Enter comments here..." disabled><?php echo htmlspecialchars($comments); ?></textarea>
     </div>
 </div>
-
 <?php
 $conn->close(); // Close the database connection
 ?>
