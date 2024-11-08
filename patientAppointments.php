@@ -83,7 +83,6 @@ include 'patientFetchReport.php';
                         <div class="row-reschedule">
                         <button class="reschedule-button" data-appointment-id="<?php echo htmlspecialchars($appointment['appointmentID']); ?>">Reschedule</button>
 
-ss
                     </div>
                     </div>
                 <?php endforeach; ?>
