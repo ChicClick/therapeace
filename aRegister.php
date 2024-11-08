@@ -1,6 +1,6 @@
 <?php
 // Include the database connection file
-include('db_conn.php'); // Ensure the path is correct
+include('db_conn.php');
 
 // Include PHPMailer
 use PHPMailer\PHPMailer\PHPMailer;
@@ -10,7 +10,6 @@ require 'PHPMailer/src/Exception.php';
 require 'PHPMailer/src/PHPMailer.php';
 require 'PHPMailer/src/SMTP.php';
 
-// Check if the form is submitted
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Prepare and bind the SQL statement
     $stmt = $conn->prepare("INSERT INTO admin (adminID, firstname, lastname, username, phoneNumber, address, birthday, gender, password_hash) 
@@ -35,7 +34,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Get the email address from the form
     $email = $_POST['email'];
 
-    // Prepare the email message
+    // Prepare the email message (this is your original message)
     $subject = "Registration Successful";
     $message = "
     <html>
@@ -67,20 +66,22 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         // Recipients
         $mail->setFrom('therapeacemanagement@gmail.com', 'TheraPeace Management');
-        $mail->addAddress($email);
+        $mail->addAddress($email); // Add the user's email
 
         // Content
         $mail->isHTML(true);
         $mail->Subject = $subject;
         $mail->Body = $message;
 
+        // Send the email
         $mail->send();
         echo "Registration successful! A confirmation email has been sent.";
     } catch (Exception $e) {
         echo "Error sending confirmation email: {$mail->ErrorInfo}";
     }
 
-    echo "<br><a href='adminlogin.php'>Proceed to Login</a>"; // Link to login page
+    // Output the link to proceed to login
+    echo "<br><a href='adminlogin.php'>Proceed to Login</a>";
     exit(); // Exit to prevent further script execution
 }
 
