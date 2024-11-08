@@ -2,25 +2,25 @@
 include 'config.php';
 include 'db_conn.php';
 
-// SQL query to fetch the most recent created_at field from the reports table for the specified patient
-$sql = "SELECT r.created_at 
+// SQL query to fetch the required fields from the reports table along with therapist name
+$sql = "SELECT r.reportID, r.patientID, r.therapistID, t.therapistName, r.status, r.created_at, r.pdf_path 
         FROM reports r
-        WHERE r.patientID = ? 
-        ORDER BY r.created_at DESC 
-        LIMIT 1";
+        JOIN therapist t ON r.therapistID = t.therapistID
+        WHERE r.patientID = ?";
 $stmt = $conn->prepare($sql);
 $stmt->bind_param("s", $patientID);
 $stmt->execute();
 $result = $stmt->get_result();
 
-// Fetch the most recent created_at field
+// Fetch the report details from the database as before
 if ($result->num_rows > 0) {
-    $row = $result->fetch_assoc();
-    $createdAt = $row['created_at'];
-    echo "Most Recent Created At: " . $createdAt;
+    $report = $result->fetch_assoc();
 } else {
-    echo "No reports found.";
+    $report = null;
 }
+
+// Now you can check if the report's status is pending and whether the pdf_path is empty
+$isReportAvailable = ($report['status'] != 'pending' && !empty($report['pdf_path']));
 
 $conn->close();
 ?>
