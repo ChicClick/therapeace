@@ -38,11 +38,11 @@ document.addEventListener("DOMContentLoaded", function() {
                     alert('Staff not found'); // Notify user
                 } else {
                     document.getElementById('staff_name').textContent = staffData.staff_name;
-                    document.getElementById('position').textContent = staffData.position;
-                    document.getElementById('phone').textContent = staffData.phone;
-                    document.getElementById('datehired').textContent = staffData.datehired;
-                    document.getElementById('gender').textContent = staffData.gender;
-                    document.getElementById('address').textContent = staffData.address;
+                    document.getElementById('staff-position').textContent = staffData.position;
+                    document.getElementById('staff-phone').textContent = staffData.phone;
+                    document.getElementById('staff-datehired').textContent = staffData.datehired;
+                    document.getElementById('staff-gender').textContent = staffData.gender;
+                    document.getElementById('staff-address').textContent = staffData.address;
 
                     staffInfo.style.display = 'block';
                 }
