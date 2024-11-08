@@ -10,7 +10,7 @@ if (isset($_SESSION['patientID'])) {
 }
 
 // Fetch patient details, including the profile image
-$sql = "SELECT patientName, image, phone, email, address, parentID FROM patient WHERE patientID = ?";
+$sql = "SELECT patientName, image, phone, email, address, parentID, relationship FROM patient WHERE patientID = ?";
 $stmt = $conn->prepare($sql);
 $stmt->bind_param("s", $patientID);
 $stmt->execute();
@@ -25,6 +25,7 @@ $phone = $patientData['phone'];
 $email = $patientData['email'];
 $address = $patientData['address'];
 $parentID = $patientData['parentID'];
+$patientRelationship = $patientData['relationship'];
 
 // Fetch parent name if available
 if ($parentID) {
@@ -45,47 +46,43 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $updatedAddress = $_POST['address'];
     $updatedName = $_POST['patientName'];
     $updatedParentName = $_POST['parentName'];
+    $updatedRelationship = $_POST['relationship'];
+
 
     if (isset($_FILES['profileImage']) && $_FILES['profileImage']['error'] == UPLOAD_ERR_OK) {
-        $targetDir = "uploads/";
-        $imageFileType = strtolower(pathinfo($_FILES['profileImage']['name'], PATHINFO_EXTENSION));
-        $targetFile = $targetDir . "profile_" . $patientID . "." . $imageFileType;
+    $targetDir = "uploads/";
+    $imageFileType = strtolower(pathinfo($_FILES['profileImage']['name'], PATHINFO_EXTENSION));
+    $targetFile = $targetDir . "profile_" . $patientID . "." . $imageFileType;
 
-        // Debugging: Check if the file is being uploaded correctly
-        echo "File uploaded to: " . $targetFile . "<br>";
-
-        // Move the uploaded file to the target directory
-        if (move_uploaded_file($_FILES['profileImage']['tmp_name'], $targetFile)) {
-            // Only update the profile image path if the upload was successful
-            echo "File uploaded successfully!<br>"; // Debugging
-            $profileImagePath = $targetFile;
-        } else {
-            die("Error uploading profile image.");
-        }
+    if (move_uploaded_file($_FILES['profileImage']['tmp_name'], $targetFile)) {
+        $profileImagePath = $targetFile; // Set the new image path
     } else {
-        // If no image uploaded, leave $profileImagePath as null
-        echo "No image uploaded, keeping current image.<br>"; // Debugging
-        $profileImagePath = $profileImage; // Keep the old image if no new one uploaded
+        die("Error uploading profile image.");
     }
+} else {
+    $profileImagePath = $profileImage; // Keep the old image if no new image uploaded
+}
+
 
     // Update patient profile, including the image path if uploaded
-    updatePatientProfile($patientID, $updatedName, $updatedEmail, $updatedPhone, $updatedAddress, $updatedParentName, $profileImagePath);
+    updatePatientProfile($patientID, $updatedName, $updatedEmail, $updatedPhone, $updatedAddress, $updatedParentName, $updatedRelationship, $profileImagePath);
+
 
     header("Location: patientProfile.php?success=1");
     exit();
 }
 
 // Function to update patient profile and parent name
-function updatePatientProfile($patientID, $name, $email, $phone, $address, $parentName, $profileImagePath = null) {
+function updatePatientProfile($patientID, $name, $email, $phone, $address, $parentName, $relationship, $profileImagePath = null) {
     global $conn;
 
     $conn->begin_transaction();
 
     try {
         // Update SQL with conditional image path
-        $sql = "UPDATE patient SET patientName = ?, email = ?, phone = ?, address = ?";
-        $params = [$name, $email, $phone, $address];
-        $types = "ssss";
+        $sql = "UPDATE patient SET patientName = ?, email = ?, phone = ?, address = ?, relationship = ?";
+        $params = [$name, $email, $phone, $address, $relationship];
+        $types = "sssss"; // Update types to include the relationship
 
         if ($profileImagePath) {
             $sql .= ", image = ?";
@@ -131,6 +128,7 @@ function updatePatientProfile($patientID, $name, $email, $phone, $address, $pare
         die('Error: ' . $e->getMessage());
     }
 }
+
 
 // Assuming $patientSchedule is already defined
 $scheduleDate = $patientSchedule;

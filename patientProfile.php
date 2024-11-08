@@ -53,7 +53,6 @@ include 'patient_profile_functions.php';
             <div class="profile-container">
                 <div class="profile-header">
                     <div class="profile-info">
-                    <img src="<?php echo htmlspecialchars($profileImage); ?>" alt="Profile Picture" class="profile-pic">
                         <h2><?php echo htmlspecialchars($patientName); ?></h2>
                     </div>
                     <button id="edit-button" class="edit-button" onclick="toggleEditProfile()">Edit Profile</button>
@@ -104,9 +103,6 @@ include 'patient_profile_functions.php';
             <div class="profile-container">
                 <h3>BASIC INFORMATION</h3>
                 <form action="patient_profile_functions.php" method="POST">
-
-                    <label for="profileImage">Profile Picture:</label>
-                    <input type="file" name="profileImage" id="profileImage" accept="image/*">
 
                     <div class="input-group">
                     <div class="input-field">
