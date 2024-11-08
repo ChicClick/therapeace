@@ -358,6 +358,9 @@ body {
     height: 100px;
     overflow: scroll;
 }
+.appointment-id {
+    width:20px;
+}
 
 /* Popup styles */
 .popup {
