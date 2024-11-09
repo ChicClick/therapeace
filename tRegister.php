@@ -60,6 +60,7 @@ try {
                 Your registration was successful. Here are your registration details:<br><br>
                 <strong>Therapist ID:</strong> {$therapistID}<br>
                 <strong>Date Hired:</strong> {$_POST['date-hired']}<br><br>
+                 <b>Password:</b> {$_POST['password']}<br><br>
                 Please log in to set your password.<br><br>
                 Best regards,<br>TheraPeace Team
             ";
