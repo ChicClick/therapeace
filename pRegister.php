@@ -35,7 +35,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         // Bind form data to SQL query parameters
         $stmt->bind_param(
-            "sssssssssb", 
+            "sssssssssb",  // 12 parameters: s for strings, b for binary
             $_POST['patientName'], 
             $_POST['phone'], 
             $_POST['email'], 
