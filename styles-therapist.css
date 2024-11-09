@@ -356,10 +356,8 @@ body {
     margin-bottom: 20px; /* Space out sections to prevent overlap */
 }
 
-#appointmentsTable, #notesTable, #patientsTable{
-    width: 100%;
-    height:500px;
-    overflow:scroll;/* Make the table take full width of its container */
+#appointmentsTable{
+    width: 100%; /* Make the table take full width of its container */
 }
 
 /* Adjust header padding for appointments table */
