@@ -69,7 +69,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 $mail->Host = 'smtp.gmail.com';
                 $mail->SMTPAuth = true;
                 $mail->Username = 'therapeacemanagement@gmail.com';
-                $mail->Password = 'your-app-specific-password'; // Replace with app-specific password
+                $mail->Password = 'ovzp bnem esqd nqyn'; // Replace with app-specific password
                 $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;
                 $mail->Port = 465;
 
