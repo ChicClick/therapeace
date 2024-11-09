@@ -1,5 +1,12 @@
 <?php
 include 'db_conn.php';
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\Exception;
+
+require 'PHPMailer/src/Exception.php';
+require 'PHPMailer/src/PHPMailer.php';
+require 'PHPMailer/src/SMTP.php';
+
 try {
     // Connect to the database
     $conn = new PDO("mysql:host=$host;dbname=$dbname", $username, $password);
@@ -39,23 +46,40 @@ try {
         // Execute the SQL query
         $stmt->execute();
 
-        // Send email with credentials
-        $to = $_POST['email'];
-        $subject = "Your Registration Details";
-        $message = "Dear " . $_POST['patientName'] . ",\n\nThank you for registering.\n\nHere are your credentials:\n\n";
-        $message .= "Username: " . $_POST['patientID'] . "\n";
-        $message .= "Password: " . $_POST['password'] . " (Please remember to change your password after your first login)\n\n";
-        $message .= "Best regards,\nTheraPeace Team";
+        // Send email using PHPMailer
+        $mail = new PHPMailer(true);
 
-        // Headers
-        $headers = "From: no-reply@therapeace.com\r\n";
-        $headers .= "Content-Type: text/plain; charset=UTF-8";
+        try {
+            // Server settings
+            $mail->isSMTP();
+            $mail->Host = 'smtp.gmail.com';
+            $mail->SMTPAuth = true;
+            $mail->Username = 'therapeacemanagement@gmail.com'; // Your Gmail address
+            $mail->Password = 'ovzp bnem esqd nqyn'; // Your Gmail app-specific password
+            $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;
+            $mail->Port = 465;
 
-        // Send the email
-        if (mail($to, $subject, $message, $headers)) {
+            // Recipients
+            $mail->setFrom('therapeacemanagement@gmail.com', 'TheraPeace Team');
+            $mail->addAddress($_POST['email']);
+
+            // Content
+            $mail->isHTML(true);
+            $mail->Subject = "Your Registration Details";
+            $mail->Body = "
+                Dear {$_POST['patientName']},<br><br>
+                Thank you for registering with TheraPeace.<br><br>
+                Here are your credentials:<br>
+                <b>Username (Patient ID):</b> {$_POST['patientID']}<br>
+                <b>Password:</b> {$_POST['password']}<br><br>
+                Please remember to change your password after your first login.<br><br>
+                Best regards,<br>TheraPeace Team
+            ";
+
+            $mail->send();
             echo "Patient registration successful! A confirmation email has been sent.";
-        } else {
-            echo "Patient registration successful! However, the email could not be sent.";
+        } catch (Exception $e) {
+            echo "Patient registration successful! However, the email could not be sent: {$mail->ErrorInfo}";
         }
 
         echo "<br><a href='registerlanding.php'>Back to Registration Landing</a>"; // Link back to landing page
