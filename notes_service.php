@@ -8,7 +8,7 @@ if ($patientID) {
     // Query to fetch services linked to the selected patient's appointments
     $query = "
         SELECT DISTINCT s.serviceID, s.serviceName 
-        FROM services s
+        FROM service s
         INNER JOIN appointment a ON s.serviceID = a.serviceID
         WHERE a.patientID = ?
     ";
