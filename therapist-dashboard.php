@@ -85,7 +85,7 @@ $therapistID = $_SESSION['therapist_id'];
                 <input type="text" placeholder="Search" id="searchInput" onkeyup="filterSearch()">
                 <button><i class="fas fa-search"></i></button>
             </div>
-            <table id="appointmentsTable">
+            <table id="appointmentsTable" style="width:1000px; gap:5px;">
                 <thead>
                     <tr>
                         <th>APPOINTMENTID</th>
