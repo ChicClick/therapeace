@@ -16,6 +16,13 @@ require 'PHPMailer/src/SMTP.php';
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     try {
+        // Generate a unique patientID
+        // You can customize this logic depending on your needs
+        $result = $conn->query("SELECT MAX(patientID) AS maxID FROM patient");
+        $row = $result->fetch_assoc();
+        $lastID = $row['maxID'];
+        $patientID = "P" . str_pad(substr($lastID, 1) + 1, 3, '0', STR_PAD_LEFT); // Generates the ID as 'P001', 'P002', etc.
+
         // Prepare SQL statement for patient data insertion
         $stmt = $conn->prepare("INSERT INTO patient (patientID, patientName, phone, email, address, birthday, gender, parentID, relationship, serviceID, status, image, password_hash) 
                                 VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
@@ -32,9 +39,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         // Hash the password
         $hashed_password = password_hash($_POST['password'], PASSWORD_DEFAULT);
 
-        // Bind form data to SQL query parameters (note the 12 placeholders)
+        // Bind form data to SQL query parameters (note the 13 placeholders)
         $stmt->bind_param(
-            "ssssssssssss", 
+            "sssssssssssss", 
+            $patientID, 
             $_POST['patientName'], 
             $_POST['phone'], 
             $_POST['email'], 
@@ -61,7 +69,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 $mail->Host = 'smtp.gmail.com';
                 $mail->SMTPAuth = true;
                 $mail->Username = 'therapeacemanagement@gmail.com';
-                $mail->Password = 'ovzp bnem esqd nqyn'; // Replace with app-specific password
+                $mail->Password = 'your-app-specific-password'; // Replace with app-specific password
                 $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;
                 $mail->Port = 465;
 
