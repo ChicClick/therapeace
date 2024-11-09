@@ -294,6 +294,13 @@ $therapistID = $_SESSION['therapist_id'];
                         <div class="form-column-right">
                             <label for="sessionDate">Session Date:</label>
                             <input type="date" id="sessionDate" name="sessionDate" required>
+                            <script>
+                                // Get today's date in the format YYYY-MM-DD
+                                const today = new Date().toISOString().split('T')[0];
+                                // Set the max attribute of the date input to today's date
+                                document.getElementById('sessionDate').setAttribute('max', today);
+                            </script>
+                            
                         
                             <label for="sessionTime">Select Session Time:</label>
                             <select id="sessionTime" name="sessionTime">
