@@ -35,7 +35,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     // Proceed only if patientID exists and belongs to the logged-in therapist
     if ($resultCheckPatient->num_rows > 0) {
         // Fetch the serviceName based on the serviceID
-        $serviceQuery = "SELECT serviceName FROM service WHERE serviceID = ?";
+        $serviceQuery = "SELECT serviceName FROM services WHERE serviceID = ?";
         $stmtService = $conn->prepare($serviceQuery);
         $stmtService->bind_param("i", $serviceID);
         $stmtService->execute();
