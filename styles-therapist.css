@@ -254,7 +254,7 @@ body {
     border-spacing: 0;
     margin: 0;
     padding: 0;
-    overflow-x: auto; /* Add horizontal scrolling if content overflows */
+    overflow-y: auto; /* Add horizontal scrolling if content overflows */
 }
 
 /* Table headers */
@@ -355,7 +355,7 @@ body {
 /* Appointments Table Styling */
 #appointments-section {
     width: 100px; /* Fixed width for the appointments section */
-    overflow-x: auto; /* Add horizontal scrolling if content overflows */
+    overflow-y: auto; /* Add horizontal scrolling if content overflows */
     margin-bottom: 20px; /* Space out sections to prevent overlap */
 }
 
