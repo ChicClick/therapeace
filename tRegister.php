@@ -57,10 +57,12 @@ try {
             $mail->Body = "
                 Dear {$_POST['therapistName']},<br><br>
                 Thank you for joining us as a therapist at TheraPeace.<br><br>
-                Your registration was successful. Please log in to set your password.<br><br>
+                Your registration was successful. Here are your registration details:<br><br>
+                <strong>Therapist ID:</strong> {$therapistID}<br>
+                <strong>Date Hired:</strong> {$_POST['date-hired']}<br><br>
+                Please log in to set your password.<br><br>
                 Best regards,<br>TheraPeace Team
             ";
-
             $mail->send();
             echo " A confirmation email has been sent.";
         } catch (Exception $e) {
