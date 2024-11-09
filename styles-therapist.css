@@ -243,6 +243,7 @@ body {
 }
 
 /* Apply border collapse to table */
+
 #appointments-section,
 #patients-profile-section,
 #notes-section,
@@ -270,7 +271,7 @@ body {
     border-bottom: 1px solid #ddddddcd;
     margin: 0;
 }
-#checklist-section th{
+#checklist-section th {
     padding: 12px 85px;
 }
 
@@ -294,17 +295,15 @@ body {
 /* Hover effect for entire row */
 #patients-profile-section tbody tr:hover,
 #notes-section tbody tr:hover,
-#report-section tbody tr:hover
-{
+#report-section tbody tr:hover {
     background-color: #ac9477dc; /* Brown background on hover */
     transition: background-color 0.3s ease;
 }
 
-/* Ensure rounded corners on first and last cells in each row */
+/* Rounded corners on first and last cells in each row */
 #patients-profile-section tbody tr:hover td:first-child,
 #notes-section tbody tr:hover td:first-child,
-#report-section tbody tr:hover td:first-child
-{
+#report-section tbody tr:hover td:first-child {
     transition: background-color 0.3s ease;
     border-top-left-radius: 10px;
     border-bottom-left-radius: 10px;
@@ -312,8 +311,7 @@ body {
 
 #patients-profile-section tbody tr:hover td:last-child,
 #notes-section tbody tr:hover td:last-child,
-#report-section tbody tr:hover td:last-child
-{
+#report-section tbody tr:hover td:last-child {
     transition: background-color 0.3s ease;
     border-top-right-radius: 10px;
     border-bottom-right-radius: 10px;
@@ -322,8 +320,7 @@ body {
 /* Ensure cells within hovered rows do not have extra background color */
 #patients-profile-section tbody tr:hover td,
 #notes-section tbody tr:hover td,
-#report-section tbody tr:hover td 
-{
+#report-section tbody tr:hover td {
     transition: background-color 0.3s ease;
     cursor: pointer;
     background-color: inherit;
@@ -342,7 +339,6 @@ body {
     vertical-align: middle;
 }
 
-
 /* Link styling in table cells */
 #appointments-section td a {
     margin-left: 5px;
@@ -353,15 +349,27 @@ body {
 #appointments-section td a:hover {
     text-decoration: underline; 
 }
-#appointmentsTable{
-    width: 500px;
-    height: 100px;
-    overflow: scroll;
-}
-.appointment-id {
-    width:20px;
+
+/* Appointments Table Styling */
+#appointments-section {
+    width: 950px; /* Fixed width for the appointments section */
+    overflow-x: auto; /* Add horizontal scrolling if content overflows */
+    margin-bottom: 20px; /* Space out sections to prevent overlap */
 }
 
+#appointmentsTable {
+    width: 100%; /* Make the table take full width of its container */
+}
+
+/* Adjust header padding for appointments table */
+#appointments-section th {
+    padding: 12px 50px; /* Adjust padding for the appointments table headers */
+}
+
+/* Adjust table cell padding for appointments table */
+#appointments-section td {
+    padding: 8px; /* Tight padding for cells */
+}
 /* Popup styles */
 .popup {
     position: fixed;
