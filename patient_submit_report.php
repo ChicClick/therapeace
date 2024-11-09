@@ -23,6 +23,33 @@ if (empty($therapistID)) {
     exit();
 }
 
+// Check if there is a recent report request within the last week
+$checkSQL = "SELECT created_at FROM reports 
+             WHERE patientID = ? AND therapistID = ? 
+             ORDER BY created_at DESC 
+             LIMIT 1";
+$checkStmt = $conn->prepare($checkSQL);
+$checkStmt->bind_param("ss", $patientID, $therapistID);
+$checkStmt->execute();
+$checkResult = $checkStmt->get_result();
+
+$testingMode = false; // Set to true for testing, false for production
+
+if ($checkResult->num_rows > 0) {
+    $lastReport = $checkResult->fetch_assoc();
+    $lastReportTime = strtotime($lastReport['created_at']);
+    $oneWeekInSeconds = 7 * 24 * 60 * 60; // 7 days in seconds
+    $currentTime = time();
+
+    if (!$testingMode && ($currentTime - $lastReportTime) < $oneWeekInSeconds) {
+        echo json_encode([
+            'success' => false,
+            'error' => 'A report request was already submitted for this therapist within the past week. Please wait for it to be verified.'
+        ]);
+        exit();
+    }
+}
+
 // Fetch session feedback notes for the patient and selected therapist
 $sql = "SELECT feedback FROM sessionfeedbacknotes n
         JOIN sessions s ON n.sessionID = s.sessionID
@@ -99,4 +126,5 @@ if ($insertSuccess) {
 // Close statements
 $stmt->close();
 $insertStmt->close();
+$checkStmt->close();
 ?>
