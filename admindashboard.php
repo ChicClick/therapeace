@@ -229,10 +229,10 @@ if (isset($_SESSION['firstname'])) {
                         </div></table>
                 
             <div class="search-bar-content">
-                <input type="text" placeholder="Search by patient or therapist">
+                <input type="text" placeholder="Search by patient or therapist" onkeyup="filterSearch()">
                 <button><i class="fas fa-search"></i></button>
             </div>
-            <table>
+            <table id="appointmentsTable">
                 <thead>
                     <tr>
                         <th>NAME</th>
