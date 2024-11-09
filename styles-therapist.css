@@ -290,9 +290,9 @@ body {
     margin: 0; /* Ensure no margin inside cells */
     border-bottom: 1px solid #ddddddcd;
 }
-#patients-profile-section tbody,
-#notes-section tbody,
-#report-section tbody
+#patients-profile-section table,
+#notes-section table,
+#report-section table
 {
     transition: background-color 0.3s ease;
     cursor: pointer;
