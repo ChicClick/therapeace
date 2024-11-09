@@ -352,7 +352,7 @@ body {
 
 /* Appointments Table Styling */
 #appointments-section {
-    width: 1200px; /* Fixed width for the appointments section */
+    width: 1100px; /* Fixed width for the appointments section */
     margin-bottom: 20px; /* Space out sections to prevent overlap */
 }
 
