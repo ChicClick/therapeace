@@ -3,7 +3,9 @@ ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
+// Include the database connection file
 include 'db_conn.php';
+
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
 
@@ -11,9 +13,9 @@ require 'PHPMailer/src/Exception.php';
 require 'PHPMailer/src/PHPMailer.php';
 require 'PHPMailer/src/SMTP.php';
 
-    // Check if form is submitted
-    if ($_SERVER["REQUEST_METHOD"] == "POST") {
-        // Prepare the SQL statement
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    try {
+        // Prepare the SQL statement for inserting patient data
         $stmt = $conn->prepare("INSERT INTO patient (patientID, patientName, phone, email, address, birthday, gender, parentID, relationship, serviceID, status, image, password_hash) 
                                 VALUES (:patientID, :patientName, :phone, :email, :address, :birthday, :gender, :parentID, :relationship, :serviceID, :status, :image, :password_hash)");
 
@@ -44,25 +46,24 @@ require 'PHPMailer/src/SMTP.php';
 
         // Execute the SQL query
         $stmt->execute();
+        echo "Patient registration successful!";
 
         // Send email using PHPMailer
         $mail = new PHPMailer(true);
 
         try {
-            // Server settings
+            // Server settings for PHPMailer
             $mail->isSMTP();
             $mail->Host = 'smtp.gmail.com';
             $mail->SMTPAuth = true;
-            $mail->Username = 'therapeacemanagement@gmail.com'; // Your Gmail address
-            $mail->Password = 'ovzp bnem esqd nqyn'; // Your Gmail app-specific password
+            $mail->Username = 'therapeacemanagement@gmail.com';
+            $mail->Password = 'your_app_specific_password'; // Use your app-specific password here
             $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;
             $mail->Port = 465;
 
-            // Recipients
+            // Email recipients and content
             $mail->setFrom('therapeacemanagement@gmail.com', 'TheraPeace Team');
             $mail->addAddress($_POST['email']);
-
-            // Content
             $mail->isHTML(true);
             $mail->Subject = "Your Registration Details";
             $mail->Body = "
@@ -76,15 +77,16 @@ require 'PHPMailer/src/SMTP.php';
             ";
 
             $mail->send();
-            echo "Patient registration successful! A confirmation email has been sent.";
+            echo " A confirmation email has been sent.";
         } catch (Exception $e) {
-            echo "Patient registration successful! However, the email could not be sent: {$mail->ErrorInfo}";
+            echo " However, the email could not be sent: {$mail->ErrorInfo}";
         }
 
         echo "<br><a href='registerlanding.php'>Back to Registration Landing</a>"; // Link back to landing page
+
+    } catch (PDOException $e) {
+        echo "Error: " . $e->getMessage();
     }
-} catch (PDOException $e) {
-    echo "Error: " . $e->getMessage();
 }
 
 // Close the connection
