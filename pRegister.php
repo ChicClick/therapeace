@@ -1,5 +1,5 @@
 <?php
-// Enable error reporting for debugging purposes
+// Enable error reporting for debugging
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
@@ -14,16 +14,11 @@ require 'PHPMailer/src/Exception.php';
 require 'PHPMailer/src/PHPMailer.php';
 require 'PHPMailer/src/SMTP.php';
 
-// Rest of your code follows...
-
-
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     try {
-        // Prepare the SQL statement for inserting patient data
+        // Prepare SQL statement for patient data insertion
         $stmt = $conn->prepare("INSERT INTO patient (patientID, patientName, phone, email, address, birthday, gender, parentID, relationship, serviceID, status, image, password_hash) 
                                 VALUES (NULL, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
-
-        // Check if the prepare statement was successful
         if (!$stmt) {
             die("Error in SQL preparation: " . $conn->error);
         }
@@ -39,7 +34,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         // Bind form data to SQL query parameters
         $stmt->bind_param(
-            "sssssssssb",  // 12 parameters: s for strings, b for binary
+            "sssssssssb", 
             $_POST['patientName'], 
             $_POST['phone'], 
             $_POST['email'], 
@@ -66,7 +61,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 $mail->Host = 'smtp.gmail.com';
                 $mail->SMTPAuth = true;
                 $mail->Username = 'therapeacemanagement@gmail.com';
-                $mail->Password = 'your_app_specific_password'; // Replace with your app-specific password
+                $mail->Password = 'ovzp bnem esqd nqyn'; // Replace with app-specific password
                 $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;
                 $mail->Port = 465;
 
@@ -79,8 +74,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     Dear {$_POST['patientName']},<br><br>
                     Thank you for registering with TheraPeace.<br><br>
                     Here are your credentials:<br>
-                    <b>Username (Patient ID):</b> {$_POST['patientID']}<br>
-                    <b>Password:</b> {$_POST['password']}<br><br>
+                    <b>Username (Email):</b> {$_POST['email']}<br>
                     Please remember to change your password after your first login.<br><br>
                     Best regards,<br>TheraPeace Team
                 ";
