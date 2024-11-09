@@ -3,6 +3,7 @@
   "description": "web based management system",
   "require": {
     "php": "^8.2",
-    "aws/aws-sdk-php": "^3.325"
+    "aws/aws-sdk-php": "^3.325",
+    "cloudinary/cloudinary_php": "^2.14"
   }
 }
