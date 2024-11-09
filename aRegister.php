@@ -38,19 +38,16 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Prepare the email message
     $subject = "Registration Successful";
     $message = "
-    <html>
-    <head>
-    <title>Registration Confirmation</title>
-    </head>
-    <body>
-    <p>Dear {$_POST['firstName']} {$_POST['lastName']},</p>
-    <p>Your registration has been successfully completed. Below are your credentials:</p>
-    <p><strong>Username (Email):</strong> {$email}</p>
-    <p><strong>Password:</strong> {$_POST['password']}</p>
-    <p>Thank you for registering!</p>
-    </body>
-    </html>
+    Dear {$_POST['firstName']} {$_POST['lastName']},
+    
+    Your registration has been successfully completed. Below are your credentials:
+    
+    Username (Email): {$email}
+    Password: {$_POST['password']}
+    
+    Thank you for registering!
     ";
+
 
     // Send email using PHPMailer
     $mail = new PHPMailer(true);
