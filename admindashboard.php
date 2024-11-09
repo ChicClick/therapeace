@@ -466,7 +466,7 @@ if (isset($_SESSION['firstname'])) {
                                 <thead>
                                     <tr>
                                         <th>Name</th>
-                                        <th>Position</th>
+                                        <th>Specialization</th>
                                         <th>Date Hired</th>
                                     </tr>
                                 </thead>
