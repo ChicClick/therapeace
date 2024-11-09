@@ -82,10 +82,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     Dear {$_POST['patientName']},<br><br>
                     Thank you for registering with TheraPeace.<br><br>
                     Here are your credentials:<br>
-                    <b>Username (Email):</b> {$_POST['email']}<br>
+                    <b>Patient ID:</b> {$patientID}<br>
+                    <b>Password:</b> {$_POST['password']}<br><br>
                     Please remember to change your password after your first login.<br><br>
                     Best regards,<br>TheraPeace Team
                 ";
+
 
                 $mail->send();
                 echo " A confirmation email has been sent.";
