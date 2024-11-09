@@ -363,7 +363,7 @@ body {
 
 /* Adjust header padding for appointments table */
 #appointments-section th {
-    padding: 15px 65px; /* Adjust padding for the appointments table headers */
+    padding: 15px 70px; /* Adjust padding for the appointments table headers */
 }
 
 /* Adjust table cell padding for appointments table */
