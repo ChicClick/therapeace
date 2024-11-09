@@ -14,18 +14,13 @@ require 'PHPMailer/src/Exception.php';
 require 'PHPMailer/src/PHPMailer.php';
 require 'PHPMailer/src/SMTP.php';
 
-try {
-    // Connect to the database
-    $conn = new PDO("mysql:host=localhost:3307;dbname=therapeacedb", "root", "");
-    $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-
+    if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Generate a unique therapistID
     $result = $conn->query("SELECT MAX(therapistID) AS maxID FROM therapist");
     $row = $result->fetch(PDO::FETCH_ASSOC);
     $lastID = $row['maxID'];
     $therapistID = "T" . str_pad(substr($lastID, 1) + 1, 3, '0', STR_PAD_LEFT); // Generates the ID as 'T001', 'T002', etc.
 
-    if ($_SERVER["REQUEST_METHOD"] == "POST") {
         // Prepare and bind the SQL statement
         $stmt = $conn->prepare("INSERT INTO therapist (therapistID, specialization, therapistName, availability, email, phone, address, birthday, gender, datehired, password_hash) 
                                 VALUES (:therapistID, :specialization, :therapistName, :availability, :email, :phone, :address, :birthday, :gender, :datehired, :password_hash)");
