@@ -352,7 +352,7 @@ body {
 
 /* Appointments Table Styling */
 #appointments-section {
-    width: 950px; /* Fixed width for the appointments section */
+    width: 1000px; /* Fixed width for the appointments section */
     overflow-x: auto; /* Add horizontal scrolling if content overflows */
     margin-bottom: 20px; /* Space out sections to prevent overlap */
 }
@@ -363,7 +363,7 @@ body {
 
 /* Adjust header padding for appointments table */
 #appointments-section th {
-    padding: 12px 50px; /* Adjust padding for the appointments table headers */
+    padding: 15px 50px; /* Adjust padding for the appointments table headers */
 }
 
 /* Adjust table cell padding for appointments table */
