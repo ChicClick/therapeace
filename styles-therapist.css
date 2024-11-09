@@ -352,22 +352,23 @@ body {
 
 /* Appointments Table Styling */
 #appointments-section {
-    width: 1100px; /* Fixed width for the appointments section */
+    width: 950px; /* Fixed width for the appointments section */
+    overflow-x: auto; /* Add horizontal scrolling if content overflows */
     margin-bottom: 20px; /* Space out sections to prevent overlap */
 }
 
-#appointmentsTable{
+#appointmentsTable {
     width: 100%; /* Make the table take full width of its container */
 }
 
 /* Adjust header padding for appointments table */
 #appointments-section th {
-    padding: 15px 50px; /* Adjust padding for the appointments table headers */
+    padding: 12px 50px; /* Adjust padding for the appointments table headers */
 }
 
 /* Adjust table cell padding for appointments table */
 #appointments-section td {
-    padding: 10px; /* Tight padding for cells */
+    padding: 8px; /* Tight padding for cells */
 }
 /* Popup styles */
 .popup {
@@ -1166,3 +1167,22 @@ button[type="submit"]:hover {
 #cancelLogout {
     background-color: #f44336; /* Red */
 }
+
+input[type="radio"] {
+    cursor: pointer;
+    visibility: hidden; /* Make the radio button invisible */
+    position: absolute; /* Remove the button from the layout flow */
+}
+
+input[type="radio"]:checked + label {
+    cursor: pointer;
+    /* Optional: Modify the label style when the radio button is checked */
+    font-weight: bold; /* Example: make label bold when selected */
+}
+
+input[type="radio"]:checked + label::after {
+    cursor: pointer;
+    content: ""; /* Optional: Append text to label when checked */
+}
+
+
