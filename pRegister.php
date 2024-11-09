@@ -32,9 +32,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         // Hash the password
         $hashed_password = password_hash($_POST['password'], PASSWORD_DEFAULT);
 
-        // Bind form data to SQL query parameters
+        // Bind form data to SQL query parameters (note the 12 placeholders)
         $stmt->bind_param(
-            "sssssssssb", 
+            "ssssssssssss", 
             $_POST['patientName'], 
             $_POST['phone'], 
             $_POST['email'], 
