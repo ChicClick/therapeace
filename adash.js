@@ -64,6 +64,8 @@ function filterSearch() {
         
         // Show or hide the row based on the search input
         rows[i].style.display = found ? '' : 'none';
+    }
+}
 
 // Global variables to track the currently selected month and year
 let selectedMonth = new Date().getMonth(); // Start from the current month (0-11)
