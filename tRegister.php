@@ -14,12 +14,13 @@ require 'PHPMailer/src/Exception.php';
 require 'PHPMailer/src/PHPMailer.php';
 require 'PHPMailer/src/SMTP.php';
 
+try {
     if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    // Generate a unique therapistID
-    $result = $conn->query("SELECT MAX(therapistID) AS maxID FROM therapist");
-    $row = $result->fetch(PDO::FETCH_ASSOC);
-    $lastID = $row['maxID'];
-    $therapistID = "T" . str_pad(substr($lastID, 1) + 1, 3, '0', STR_PAD_LEFT); // Generates the ID as 'T001', 'T002', etc.
+        // Generate a unique therapistID
+        $result = $conn->query("SELECT MAX(therapistID) AS maxID FROM therapist");
+        $row = $result->fetch(PDO::FETCH_ASSOC);
+        $lastID = $row['maxID'];
+        $therapistID = "T" . str_pad(substr($lastID, 1) + 1, 3, '0', STR_PAD_LEFT); // Generates the ID as 'T001', 'T002', etc.
 
         // Prepare and bind the SQL statement
         $stmt = $conn->prepare("INSERT INTO therapist (therapistID, specialization, therapistName, availability, email, phone, address, birthday, gender, datehired, password_hash) 
@@ -54,7 +55,7 @@ require 'PHPMailer/src/SMTP.php';
             $mail->Host = 'smtp.gmail.com';
             $mail->SMTPAuth = true;
             $mail->Username = 'therapeacemanagement@gmail.com';
-            $mail->Password = 'ovzp bnem esqd nqyn'; // Replace with app-specific password
+            $mail->Password = 'your-app-password'; // Replace with app-specific password
             $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;
             $mail->Port = 465;
 
@@ -66,10 +67,7 @@ require 'PHPMailer/src/SMTP.php';
             $mail->Body = "
                 Dear {$_POST['therapistName']},<br><br>
                 Thank you for joining us as a therapist at TheraPeace.<br><br>
-                Here are your credentials:<br>
-                <b>Therapist ID:</b> {$therapistID}<br>
-                <b>Email:</b> {$_POST['email']}<br>
-                <b>Password:</b> {$_POST['password']} (Please remember to change your password after your first login)<br><br>
+                Your registration was successful. Please log in to set your password.<br><br>
                 Best regards,<br>TheraPeace Team
             ";
 
