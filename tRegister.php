@@ -18,29 +18,19 @@ try {
     if ($_SERVER["REQUEST_METHOD"] == "POST") {
         // Generate a unique therapistID
         $result = $conn->query("SELECT MAX(therapistID) AS maxID FROM therapist");
-        $row = $result->fetch(PDO::FETCH_ASSOC);
+        $row = $result->fetch_assoc();
         $lastID = $row['maxID'];
         $therapistID = "T" . str_pad(substr($lastID, 1) + 1, 3, '0', STR_PAD_LEFT); // Generates the ID as 'T001', 'T002', etc.
 
         // Prepare and bind the SQL statement
         $stmt = $conn->prepare("INSERT INTO therapist (therapistID, specialization, therapistName, availability, email, phone, address, birthday, gender, datehired, password_hash) 
-                                VALUES (:therapistID, :specialization, :therapistName, :availability, :email, :phone, :address, :birthday, :gender, :datehired, :password_hash)");
+                                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
 
         // Bind form data to SQL query parameters
-        $stmt->bindParam(':therapistID', $therapistID);
-        $stmt->bindParam(':specialization', $_POST['specialization']);
-        $stmt->bindParam(':therapistName', $_POST['therapistName']);
-        $stmt->bindParam(':availability', $_POST['availability']);
-        $stmt->bindParam(':email', $_POST['email']);
-        $stmt->bindParam(':phone', $_POST['phone']);
-        $stmt->bindParam(':address', $_POST['address']);
-        $stmt->bindParam(':birthday', $_POST['birthday']);
-        $stmt->bindParam(':gender', $_POST['gender']);
-        $stmt->bindParam(':datehired', $_POST['date-hired']);
+        $stmt->bind_param("sssssssssss", $therapistID, $_POST['specialization'], $_POST['therapistName'], $_POST['availability'], $_POST['email'], $_POST['phone'], $_POST['address'], $_POST['birthday'], $_POST['gender'], $_POST['date-hired'], $hashed_password);
 
-        // Hash the password and bind it
+        // Hash the password
         $hashed_password = password_hash($_POST['password'], PASSWORD_DEFAULT);
-        $stmt->bindParam(':password_hash', $hashed_password);
 
         // Execute the SQL query
         $stmt->execute();
@@ -79,10 +69,10 @@ try {
 
         echo "<br><a href='registerlanding.php'>Back to Registration Landing</a>"; // Link back to landing page
     }
-} catch (PDOException $e) {
+} catch (Exception $e) {
     echo "Error: " . $e->getMessage();
 }
 
 // Close the connection
-$conn = null;
+$conn->close();
 ?>
