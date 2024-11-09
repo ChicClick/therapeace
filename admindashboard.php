@@ -417,7 +417,7 @@ if (isset($_SESSION['firstname'])) {
                                                     </div>
                                                 </div>
 
-                                                <button type="submit" class="submit-btn">Submit <i class="fas fa-arrow-right"></i></button>
+                                                <button type="submit" class="edit-profile-submit-btn">Submit <i class="fas fa-arrow-right"></i></button>
                                             </form>
                                         </div>
                                     </div>
