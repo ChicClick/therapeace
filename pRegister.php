@@ -1,4 +1,5 @@
 <?php
+// Enable error reporting for debugging purposes
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
@@ -12,6 +13,9 @@ use PHPMailer\PHPMailer\Exception;
 require 'PHPMailer/src/Exception.php';
 require 'PHPMailer/src/PHPMailer.php';
 require 'PHPMailer/src/SMTP.php';
+
+// Rest of your code follows...
+
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     try {
