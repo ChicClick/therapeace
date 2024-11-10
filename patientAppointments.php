@@ -93,53 +93,7 @@ include 'patientFetchReport.php';
     </section>
 
 <!-- Reschedule Popup -->
-<div id="reschedulePopup" class="popup" style="display: none;">
-                <div class="popup-content">
-                    <span class="close" onclick="closePopup()">&times;</span>
-                    <h4>Select Available Dates</h4>
-                    <div id="calendar">
-                        <div class="calendar-container">
-                        <div class="month-navigation">
-                            <a href="#" id="prevMonth" class="nav-link-month">&lt;</a> <!-- Previous month link -->
-                            <p id="currentMonth"></p> <!-- Dynamic month display -->
-                            <a href="#" id="nextMonth" class="nav-link-month">&gt;</a> <!-- Next month link -->
-                        </div>
-                            <div class="calendar-grid">
-                                <!-- Calendar will be dynamically generated here -->
-                            </div>
-                        </div>
-                    </div>
-                    <input type="hidden" id="appointmentId" name="appointmentId" value="">
-                    <input type="hidden" id="selectedDate" name="selectedDate" value="">
-                    <button id="proceedButton">Proceed</button>
-                </div>
-            </div>
-            <div id="timePopup" class="popup" style="display: none;">
-                <div class="popup-content">
-                    <span class="close">&times;</span>
-                    <h4>Select Available Times</h4>
-                    <div id="availableTimes">
-                        <h5>Morning Sessions</h5>
-                        <ul id="morningTimes">
-                            <!-- Morning times will be dynamically added here -->
-                        </ul>
-                        <h5>Afternoon Sessions</h5>
-                        <ul id="afternoonTimes">
-                            <!-- Afternoon times will be dynamically added here -->
-                        </ul>
-                    </div>
-                    <button id="confirmTimeButton" onclick="confirmTime()">Reschedule →</button>
-                </div>
-            </div>
-        </div>
-
-        <div id="confirmationPopup" class="popup" style="display: none;">
-            <div class="popup-content">
-                <span class="close" onclick="closeConfirmationPopup()">&times;</span>
-                <h4>Confirmation</h4>
-                <p id="confirmationMessage"></p>
-            </div>
-        </div>
+        <div id="generic-calendar"></div>
 
 
 
@@ -314,9 +268,10 @@ include 'patientFetchReport.php';
                 <p>&copy; 2024 TheraPeace. All Rights Reserved.</p>
             </div>
         </footer> 
-
+    
+    <script src="generic-calendar.js" defer></script>
     <script src="patientScript.js"></script>
-    <script src="patientResched.js"></script>
+    <script src="patientResched.js" defer></script>
     </div>
 </body>
 </html>

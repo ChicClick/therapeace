@@ -62,7 +62,7 @@ $therapistID = $_SESSION['therapist_id'];
             <button id="cancelLogout">Cancel</button>
         </div>
     </div>
-
+    <div #calendarContainer></div>
     <!-- Right Section -->
     <div class="right-section">
         <div class="top-bar">
@@ -100,51 +100,8 @@ $therapistID = $_SESSION['therapist_id'];
                 </tbody>
             </table>
             <!-- Reschedule Popup -->
-            <div id="reschedulePopup" class="popup" style="display: none;">
-                <div class="popup-content">
-                    <span class="close" onclick="closePopup()">&times;</span>
-                    <h4>Select Available Dates</h4>
-                    <div id="calendar">
-                        <div class="calendar-container">
-                        <div class="month-navigation">
-                            <a href="#" id="prevMonth" class="nav-link-month">&lt;</a> <!-- Previous month link -->
-                            <p id="currentMonth"></p> <!-- Dynamic month display -->
-                            <a href="#" id="nextMonth" class="nav-link-month">&gt;</a> <!-- Next month link -->
-                        </div>
-                            <div class="calendar-grid">
-                                <!-- Calendar will be dynamically generated here -->
-                            </div>
-                        </div>
-                    </div>
-                    <input type="hidden" id="selectedDate" name="selectedDate" value="">
-                    <button id="proceedButton">Proceed  →</button>
-                </div>
-            </div>
-            <div id="timePopup" class="popup" style="display: none;">
-                <div class="popup-content">
-                    <span class="close" onclick="closeTimePopup()">&times;</span>
-                    <h4>Select Available Times</h4>
-                    <div id="availableTimes">
-                        <h5>Morning Sessions</h5>
-                        <ul id="morningTimes">
-                            <!-- Morning times will be dynamically added here -->
-                        </ul>
-                        <h5>Afternoon Sessions</h5>
-                        <ul id="afternoonTimes">
-                            <!-- Afternoon times will be dynamically added here -->
-                        </ul>
-                    </div>
-                    <button id="confirmTimeButton" >Reschedule  →</button>
-                </div>
-            </div>
-            <!-- Message Popup -->
-            <div id="messagePopup" class="popup" style="display: none;">
-                <div class="popup-content">
-                    <span class="close" id="closePopup"></span>
-                    <p id="popupMessage"></p>
-                    <button id="confirmPopup">Confirm</button>
-                </div>
-            </div>
+            <div id="generic-calendar"></div>
+
         </div>
 
         <div id="patients-profile-section" class="content">
@@ -562,7 +519,9 @@ $therapistID = $_SESSION['therapist_id'];
         const therapistID = '<?php echo $_SESSION['therapist_id']; ?>';
     </script>
 
+    <script src="generic-calendar.js" defer></script>
     <script src="therapist-dashboard.js" defer></script>
-    <script src="calendar.js"></script>
+    <script src="calendar.js" defer></script>
+    
 </body>
 </html>

@@ -1,0 +1,199 @@
+.popup {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 999;
+    background-color: #F6F0DC;
+    color: #432705;
+    box-shadow: 0 0 10px rgba(0,0,0,0.2);
+    width: 500px;
+    padding: 20px;
+    border-radius: 8px;
+    text-align: center;
+}
+
+.popup-content {
+    position: relative;
+}
+.popup-content h4 {
+    align-self: center;
+}
+
+.close {
+    position: absolute;
+    top: -2px;
+    right: -3px;
+    cursor: pointer;
+}
+
+.calendar-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 10px;
+    margin-top: 10px;
+}
+
+.day {
+    width: 40px; /* Set a specific width */
+    height: 40px; /* Set the same height as the width for a square */
+    padding: 0; /* Remove padding to maintain the square shape */
+    text-align: center;
+    border-radius: 4px; /* Keep border radius for slightly rounded corners */
+    cursor: pointer; /* Change cursor to pointer on hover */
+    display: flex; /* Use flexbox to center the text */
+    align-items: center; /* Center vertically */
+    justify-content: center; /* Center horizontally */
+}
+
+.day:hover{
+    color: #43270562;
+}
+
+.day.disabled {
+    color: #C8CBD9;
+    cursor: not-allowed;
+}
+.disabled {
+    color: #C8CBD9;
+    cursor: not-allowed;
+}
+.day.selected {
+    background-color: #FDBC10;
+    border-radius: 50%;
+    color: #432705;
+}
+.month-navigation {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 10px; /* Space below the month display */
+}
+
+.nav-link-month {
+    font-size: 24px; /* Increase size for better visibility */
+    text-decoration: none; /* Remove underline */
+    margin: 0 10px; /* Space between the links and month display */
+    cursor: pointer; /* Change cursor to pointer on hover */
+    color: #432705; /* Change color on hover */
+}
+
+.nav-link-month:hover {
+    color: #43270562; /* Change color on hover */
+}
+#proceedButton {
+    padding: 13px;
+    color: #432705;
+    background-color: #FFFAEB;
+    border: none;
+    border-radius: 20px;
+    float: right; /* Float the button to the right */
+    margin-top: 20px; /* Optional: Add some margin for spacing */
+    cursor: pointer;
+}
+#proceedButton:hover {
+    background: linear-gradient(90deg, #FDBC10 0%, #FFEA09 100%);
+    color: #432705;
+}
+#availableTimes {
+    margin: 5px;
+    padding: 5px;
+    border-radius: 8px;
+}
+
+#availableTimes h5 {
+    margin-top: 15px;
+    font-size: 15px; /* Font size for session headings */
+}
+
+#availableTimes ul {
+    list-style-type: none; /* Remove default list bullets */
+    padding: 0; /* Remove default padding */
+    display: flex; /* Use flexbox to arrange list items in a row */
+    flex-wrap: wrap; /* Allow wrapping to the next line if necessary */
+}
+
+#availableTimes li {
+    margin: 7px; /* Space between items */
+    padding: 8px 13px; /* Padding inside each box */
+    border-radius: 5px; /* Rounded corners */
+    background-color: #C4B098; /* Light background color */
+    cursor: pointer; /* Pointer cursor on hover */
+    transition: background-color 0.3s; /* Smooth transition for background color */
+    display: inline-block; /* Ensure items are inline */
+    width: calc(25% - 14px); /* Set width to 25% minus the margins to fit 4 per row */
+    text-align: center; /* Center text within the box */
+    font-weight: 600;
+    box-sizing: border-box; /* Include padding and border in element's total width */
+}
+
+#availableTimes li:hover {
+    background-color: #ab9984; /* Darker color on hover */
+}
+
+/* Style for selected time */
+#morningTimes li.selected, #afternoonTimes li.selected {
+    background-color:#432705; /* Change to your desired selected color */
+    color: white; /* Change text color to white */
+}
+.back-arrow {
+    background-color: transparent; /* Transparent background */
+    border: none; /* No border */
+    color: #432705; /* Text color */
+    font-size: 14px; /* Font size */
+    cursor: pointer; /* Pointer cursor */
+    margin-bottom: 10px; /* Space below the link */
+    transition: color 0.3s; /* Smooth transition for color */
+    text-decoration: none; /* Remove underline */
+    float: left;
+    margin-right: 0;
+}
+
+.back-arrow:hover {
+    color: #c4b098; /* Change color on hover */
+}
+
+
+#confirmTimeButton {
+    padding: 13px;
+    background: linear-gradient(90deg, #FDBC10 0%, #FFEA09 100%);
+    color: #432705;
+    border: none;
+    border-radius: 20px;
+    float: right; /* Float the button to the right */
+    margin-top: 20px; /* Optional: Add some margin for spacing */
+    cursor: pointer;
+    transition: background-color 0.3s; /* Smooth transition for button color */
+}
+
+#confirmTimeButton:hover {
+    color: #432705;
+    background-color: #FFFAEB;
+}
+
+#confirmPopup {
+    padding: 13px;
+    background: linear-gradient(90deg, #FDBC10 0%, #FFEA09 100%);
+    color: #432705;
+    border: none;
+    border-radius: 20px;
+    float: center; /* Float the button to the right */
+    margin-top: 20px; /* Optional: Add some margin for spacing */
+    cursor: pointer;
+    transition: background-color 0.3s; /* Smooth transition for button color */
+}
+
+
+#confirmPopup:hover {
+    color: #432705;
+    background-color: #FFFAEB;
+}
+
+input[type="radio"] {
+    display: none;
+}
+
+input[type="radio"]:checked + label {
+    background-color: #432705;; /* Color when selected */
+    color: white; /* Text color when selected */
+}

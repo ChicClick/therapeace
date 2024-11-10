@@ -1,60 +1,4 @@
 /* Styling for the pop-up form to add appointment */
-.popup {
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    z-index: 999;
-    background-color: #F6F0DC;
-    color: #432705;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
-    width: 500px;
-    padding: 20px;
-    border-radius: 8px;
-    text-align: center;
-}
-
-.popup-content {
-    position: relative;
-}
-
-.popup-form {
-    display: none;
-    position: fixed;
-    z-index: 1;
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.5); /* Overlay effect */
-}
-
-.popup-content-form {
-    background-color: #F6F0DC;
-    margin: 5% auto;
-    padding: 20px;
-    border-radius: 15px;
-    width: 50%; /* Make the form narrower */
-    max-height: 80%; /* Limit the form height */
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-    position: relative;
-    font-family: 'Poppins', sans-serif;
-    font-weight: 500;
-}
-
-.close-btn {
-    position: absolute;
-    right: 15px;
-    top: 15px;
-    font-size: 20px;
-    cursor: pointer;
-    color: #333;
-}
-
-.close-btn:hover {
-    color: #000;
-}
-
 h2 {
     text-align: center;
     color: #4e4e4e;
@@ -131,20 +75,6 @@ input[type="checkbox"] {
     background-color: #ffc107;
 }
 
-/* Calendar Styles */
-.calendar-grid {
-    display: grid;
-    grid-template-columns: repeat(7, 1fr);
-    gap: 10px;
-    margin-top: 10px;
-}
-
-.month-navigation {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin-bottom: 10px; /* Space below the month display */
-}
 
 .nav-link-month {
     font-size: 24px; /* Increase size for better visibility */
@@ -158,63 +88,6 @@ input[type="checkbox"] {
     color: #43270562; /* Change color on hover */
 }
 
-#proceedButton, #confirmTimeButton {
-    padding: 13px;
-    color: #432705;
-    background-color: #FFFAEB;
-    border: none;
-    border-radius: 20px;
-    float: right; /* Float the button to the right */
-    margin-top: 20px; /* Optional: Add some margin for spacing */
-    cursor: pointer;
-    transition: background-color 0.3s; /* Smooth transition for button color */
-}
-
-#proceedButton:hover, #confirmTimeButton:hover {
-    background: linear-gradient(90deg, #FDBC10 0%, #FFEA09 100%);
-    color: #432705;
-}
-
-#availableTimes {
-    margin: 5px;
-    padding: 5px;
-    border-radius: 8px;
-}
-
-#availableTimes h5 {
-    margin-top: 15px;
-    font-size: 15px; /* Font size for session headings */
-}
-
-#availableTimes ul {
-    list-style-type: none; /* Remove default list bullets */
-    padding: 0; /* Remove default padding */
-    display: flex; /* Use flexbox to arrange list items in a row */
-    flex-wrap: wrap; /* Allow wrapping to the next line if necessary */
-}
-
-#availableTimes li {
-    margin: 7px; /* Space between items */
-    padding: 8px 13px; /* Padding inside each box */
-    border-radius: 5px; /* Rounded corners */
-    background-color: #C4B098; /* Light background color */
-    cursor: pointer; /* Pointer cursor on hover */
-    transition: background-color 0.3s; /* Smooth transition for background color */
-    display: inline-block; /* Ensure items are inline */
-    width: calc(25% - 14px); /* Set width to 25% minus the margins to fit 4 per row */
-    text-align: center; /* Center text within the box */
-    font-weight: 600;
-    box-sizing: border-box; /* Include padding and border in element's total width */
-}
-
-#availableTimes li:hover {
-    background-color: #c4b098b5; /* Darker color on hover */
-}
-
-#availableTimes .selected-time {
-    background-color: #432705;
-    border-radius: 10%;
-}
 
 .dropdown-content {
     display: none; /* Ensure it's hidden initially */
@@ -234,111 +107,6 @@ input[type="checkbox"] {
     background-color: #f1f1f1; /* Change color on hover */
 }
 
-.popup-content {
-    font-size: 16px; 
-    font-weight: none; 
-    color: #432705;
-    margin-top: 10px; 
-}
-
-.selected {
-    background-color: #4CAF50; /* Green background for selected date */
-    color: white;
-}
-
-
-#reschedulePopup {
-    display: none;
-    /* Other styling */
-}
-
-/* To show the popup */
-#reschedulePopup.show {
-    display: block;
-}
-
-
-#calendar {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 10px;
-}
-
-.date {
-    padding: 10px;
-    background-color: #f0f0f0;
-    cursor: pointer;
-}
-
-.unavailable {
-    background-color: #e0e0e0;
-    color: #999;
-    cursor: not-allowed;
-}
-
-
-#calendar {
-    display: flex;
-    justify-content: center;
-    margin: 20px;
-}
-
-.calendar-container {
-    width: 300px;
-    display: flex;
-    flex-direction: column;
-}
-
-.month-navigation {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 10px;
-}
-
-.calendar-grid {
-    display: grid;
-    grid-template-columns: repeat(7, 1fr);
-    gap: 5px;
-}
-
-.date, .empty {
-    padding: 10px;
-    text-align: center;
-    cursor: pointer;
-}
-
-.date.available {
-    background-color: transparent;
-}
-
-.date.unavailable {
-    background-color: #e0e0e0;
-    color: #999;
-    cursor: not-allowed;
-}
-
-
-.date:hover {
-    background-color: #f5a623;
-}
-
-.empty {
-    background-color: transparent;
-}
-
-.date.selected {
-    background-color: #ffcd28; /* Blue color */
-    color: #3b3523; /* White text */
-    border-radius: 10%;
-}
-
-
-/* Hide the radio button itself */
-input[type="radio"] {
-    display: none;
-}
-
 /* Style the label (which now acts like a button) */
 li label {
     display: block;
@@ -349,17 +117,6 @@ li label {
     margin-bottom: 5px;
     font-size: 14px;
     transition: background-color 0.3s ease, color 0.3s ease;
-}
-
-/* Style the label when the radio button is selected */
-input[type="radio"]:checked + label {
-    background-color: #432705;; /* Color when selected */
-    color: white; /* Text color when selected */
-}
-
-/* Optional: Add hover effect for better interaction */
-li label:hover {
-    background-color: #c4b098b5;; /* Slightly darker on hover */
 }
 
 .reschedule-button {
