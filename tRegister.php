@@ -23,11 +23,11 @@ try {
         $therapistID = "T" . str_pad(substr($lastID, 1) + 1, 3, '0', STR_PAD_LEFT); // Generates the ID as 'T001', 'T002', etc.
 
         // Prepare and bind the SQL statement
-        $stmt = $conn->prepare("INSERT INTO therapist (therapistID, specialization, therapistName, availability, email, phone, address, birthday, gender, datehired, password_hash) 
-                                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+        $stmt = $conn->prepare("INSERT INTO therapist (therapistID, specialization, therapistName, availability, email, phone, address, birthday, gender, datehired, password_hash, days_available, times_available) 
+                                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
 
         // Bind form data to SQL query parameters
-        $stmt->bind_param("sssssssssss", $therapistID, $_POST['specialization'], $_POST['therapistName'], $_POST['availability'], $_POST['email'], $_POST['phone'], $_POST['address'], $_POST['birthday'], $_POST['gender'], $_POST['date-hired'], $hashed_password);
+        $stmt->bind_param("sssssssssssss", $therapistID, $_POST['specialization'], $_POST['therapistName'], $_POST['availability'], $_POST['email'], $_POST['phone'], $_POST['address'], $_POST['birthday'], $_POST['gender'], $_POST['datehired'], $hashed_password, $_POST['days_available'], $_POST['times_available']);
 
         // Hash the password
         $hashed_password = password_hash($_POST['password'], PASSWORD_DEFAULT);

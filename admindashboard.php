@@ -216,7 +216,10 @@ if (isset($_SESSION['firstname'])) {
                             </div>
 
                             <input type="hidden" id="selectedDateTime" name="schedule">
-                            <button type="submit" class="submit-btn" onclick="handleSubmit()">Submit <i class="fas fa-arrow-right"></i></button>
+                            <div class="btn-container">
+                                <button type="submit" class="submit-btn" onclick="handleSubmit()">Submit <i class="fas fa-arrow-right"></i></button>
+                            </div>
+                            
                         </form>
                     </div>
                 </div>
@@ -302,17 +305,18 @@ if (isset($_SESSION['firstname'])) {
             <!-- Add Staff Button -->
 
                 <button id="add-staff" class="add-staff"><i class="fas fa-plus"></i> Add Staff </button>
+                
 
                     <!-- Hidden Pop-Up Form for Adding Staff -->
                 <div id="add-staff-popup" class="popup-form">
                             <div class="popup-content-form">
                                 <span class="close-btn" id="close-add-staff">&times;</span>
-                                <h2>Add Staff</h2>
+                                <h2 id="add-staff-popup-title">Add Staff</h2>
                                 <form id="addstaff-form">
                                     <div class="form-row">
                                         <div class="form-group">
                                             <label for="staffName">Staff Name:</label>
-                                            <input type="text" id="staffName" name="staffName" required>
+                                            <input type="text" id="staffName" name="staffName" placeholder="e.g. John Doe" required>
                                         </div>
                                         <div class="form-group">
                                             <label for="position">Position:</label>
@@ -323,11 +327,11 @@ if (isset($_SESSION['firstname'])) {
                                     <div class="form-row">
                                         <div class="form-group">
                                             <label for="phoneNumber">Contact Number:</label>
-                                            <input type="text" id="phoneNumber" name="phoneNumber" required>
+                                            <input type="text" id="phoneNumber" name="phoneNumber" placeholder="09xxxxxxxxx" required>
                                         </div>
                                         <div class="form-group">
                                             <label for="address">Home Address:</label>
-                                            <input type="text" id="address" name="address" required>
+                                            <input type="text" id="address" name="address" placeholder="e.g. 123 Elm St., Brgy 1" required>
                                         </div>
                                         <div class="form-group">
                                         <label for="gender">Gender:</label>
@@ -343,7 +347,128 @@ if (isset($_SESSION['firstname'])) {
                                         </div>
                                     </div>
 
-                                    <button type="submit" class="submit-btn">Submit <i class="fas fa-arrow-right"></i></button>
+                                    <div class="btn-container">
+                                        <button type="submit" class="submit-btn">Submit <i class="fas fa-arrow-right"></i></button>
+                                    </div>
+                                   
+                                </form>
+                            </div>
+                </div>
+
+                <div id="add-therapist-popup" class="popup-form">
+                            <div class="popup-content-form">
+                                <span class="close-btn" id="close-add-therapist">&times;</span>
+                                <h2 id="add-staff-popup-title">Add Therapist</h2>
+                                <form id="addtherapist-form">
+                                    <div class="form-row">
+                                        <div class="form-group">
+                                            <label for="therapistID">Therapist ID:</label>
+                                            <input type="text" id="therapistID" name="therapisID" placeholder="e.g. T0001" required>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="password">Password:</label>
+                                            <input type="password" id="password" name="password" required>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="therapistName">Name:</label>
+                                            <input type="text" id="therapistName" name="therapistName" placeholder="e.g. Dr. Strange" required>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="specialization">Specialization:</label>
+                                            <select id="specialization" name="specialization" required>
+                                                <option value="Speech Therapist">Speech Therapist</option>
+                                                <option value="Occupational Therapist">Occupational Therapist</option>
+                                                <option value="Physical Therapist">Physical Therapist</option>
+                                                <option value="Behavioral Therapist">Behavioral Therapist</option>
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-row">
+                                        <div class="form-group">
+                                            <label for="email">Email:</label>
+                                            <input type="text" id="email" name="email" placeholder="e.g. admin@email.com" required>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="phone">Contact Number:</label>
+                                            <input type="text" id="phone" name="phone" placeholder="09xxxxxxxxx" required>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="address">Home Address:</label>
+                                            <input type="text" id="address" name="address" placeholder="e.g. 123 Elm St., Brgy 1" required>
+                                        </div>
+                                        <div class="form-group">
+                                        <label for="gender">Gender:</label>
+                                            <select id="gender" name="gender" required>
+                                                <option value="" disabled selected>Select Gender</option>
+                                                <option value="Male">Male</option>
+                                                <option value="Female">Female</option>
+                                            </select>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="datehired">Date Hired:</label>
+                                            <input type="date" id="datehired" name="datehired" required>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="birthday">Birth Date:</label>
+                                            <input type="date" id="birthday" name="birthday" required>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-row">
+                                        <div class="form-group">
+                                            <label for="day-availability">Day Availability</label>
+                                            <select id="day-availability" name="days_available" required onchange="toggleCustomDay()">
+                                                <option value="[1,2,3,4,5,6]" selected>Full-Time</option>
+                                                <option id="custom-day" value="[]">Custom</option>
+                                            </select>
+                                        </div>
+                                        <div class="form-group">
+                                            <div id="custom-day-options" style="display: none; margin-top: 10px;">
+                                                <label>Select Custom Hours:</label>
+                                                <div class="day-list-checkbox">
+                                                    <div class="day-list"><input type="checkbox" value="1" onchange="updateCustomDay()"> <label>M</label></div>
+                                                    <div class="day-list"><input type="checkbox" value="2" onchange="updateCustomDay()"> <label>T</label></div>
+                                                    <div class="day-list"><input type="checkbox" value="3" onchange="updateCustomDay()"> <label>W</label></div>
+                                                    <div class="day-list"><input type="checkbox" value="4" onchange="updateCustomDay()"> <label>TH</label></div>
+                                                    <div class="day-list"><input type="checkbox" value="5" onchange="updateCustomDay()"> <label>F</label></div>
+                                                    <div class="day-list"><input type="checkbox" value="6" onchange="updateCustomDay()"> <label>SA</label></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-row">
+                                        <div class="form-group">
+                                            <label for="time-availability">Time Availability</label>
+                                            <select id="time-availability" name="times_available" required onchange="toggleCustomTime()">
+                                                <option value="[9,10,11,13,14,15,16,17]" selected>Full-Time</option>
+                                                <option value="[9,10,11]">Morning Shift</option>
+                                                <option value="[13,14,15,16,17]">Afternoon</option>
+                                                <option id="custom-time" value="[]">Custom</option>
+                                            </select>
+                                        </div>
+                                        <div class="form-group">
+                                            <div id="custom-time-options" style="display: none; margin-top: 10px;">
+                                                <label>Select Custom Hours:</label>
+                                                <div class="time-list-checkbox">
+                                                    <div class="time-list"><input type="checkbox" value="9" onchange="updateCustomTime()"> <label>9 AM</label></div>
+                                                    <div class="time-list"><input type="checkbox" value="10" onchange="updateCustomTime()"> <label>10 AM</label></div>
+                                                    <div class="time-list"><input type="checkbox" value="11" onchange="updateCustomTime()"> <label>11 AM</label></div>
+                                                    <div class="time-list"><input type="checkbox" value="13" onchange="updateCustomTime()"> <label>1 PM</label></div>
+                                                    <div class="time-list"><input type="checkbox" value="14" onchange="updateCustomTime()"> <label>2 PM</label></div>
+                                                    <div class="time-list"><input type="checkbox" value="15" onchange="updateCustomTime()"> <label>3 PM</label></div>
+                                                    <div class="time-list"><input type="checkbox" value="16" onchange="updateCustomTime()"> <label>4 PM</label></div>
+                                                    <div class="time-list"><input type="checkbox" value="17" onchange="updateCustomTime()"> <label>5 PM</label></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="btn-container">
+                                        <button type="submit" class="submit-btn">Submit <i class="fas fa-arrow-right"></i></button>
+                                    </div>
+                                   
                                 </form>
                             </div>
                 </div>    
@@ -526,8 +651,10 @@ if (isset($_SESSION['firstname'])) {
                                             <input type="text" id="price" name="price" required>
                                         </div>
                                     </div>
-
-                                    <button type="submit" class="submit-btn">Submit <i class="fas fa-arrow-right"></i></button>
+                                    <div class="btn-container">
+                                        <button type="submit" class="submit-btn">Submit <i class="fas fa-arrow-right"></i></button> 
+                                    </div>
+                                    
                                 </form>
                             </div>
                         </div>    
@@ -586,8 +713,9 @@ if (isset($_SESSION['firstname'])) {
                                             <input type="text" id="price" name="price" required>
                                         </div>
                                     </div>
-
-                                    <button type="submit" class="submit-btn">Submit <i class="fas fa-arrow-right"></i></button>
+                                    <div class="btn-container">
+                                        <button type="submit" class="submit-btn">Submit <i class="fas fa-arrow-right"></i></button>
+                                    </div>
                                 </form>
                             </div>
                         </div>
@@ -613,6 +741,7 @@ if (isset($_SESSION['firstname'])) {
     </div>
 
     <script src="adash.js" defer></script>
+    <script src="admindashboard.js" defer></script>
     <script src="a_dashgenerate_pdf.js" defer></script>
     <script src="a_staff_info.js" defer></script>
     <script src="a_editservice.js" defer></script>

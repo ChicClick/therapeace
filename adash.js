@@ -477,33 +477,6 @@ clinicTherapistBtn.addEventListener('click', () => {
     displayTableData(clinicTherapistData);
 });
 
-// Add staff 
-document.addEventListener('DOMContentLoaded', function () {
-    const addStaffButton = document.getElementById('add-staff-button');
-    const addStaffPopup = document.getElementById('staff-popup'); // Update the ID here
-    const closePopupButton = document.getElementById('close-popup');
-
-    // Show the popup when the button is clicked
-    addStaffButton.addEventListener('click', function () {
-        addStaffPopup.style.display = 'block';
-    });
-
-    // Hide the popup when the close button is clicked
-    closePopupButton.addEventListener('click', function () {
-        addStaffPopup.style.display = 'none';
-    });
-
-    // Hide the popup when clicking outside of the popup content
-    window.addEventListener('click', function (event) {
-        if (event.target === addStaffPopup) {
-            addStaffPopup.style.display = 'none';
-        }
-    });
-});
-
-function handleSubmit() {
-    /* TODO something */
-}
 
 //Service
 //Add Service 
