@@ -303,8 +303,12 @@ if (isset($_SESSION['firstname'])) {
             <div class="staff-header">
             <h4>STAFFS</h4>
             <!-- Add Staff Button -->
-
-                <button id="add-staff" class="add-staff"><i class="fas fa-plus"></i> Add Staff </button>
+                <button id="add-staff" class="add-staff">&nbsp;&nbsp;&nbsp;&nbsp;<i class="fas fa-plus"></i> Add &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    <div class="dropdown-menu .show">
+                        <div class="dropdown-item" onclick="staff()">Staff</div>
+                        <div class="dropdown-item" onclick="therapist()">Therapist</div>
+                    </div>
+            </button>
                 
 
                     <!-- Hidden Pop-Up Form for Adding Staff -->

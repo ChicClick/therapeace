@@ -77,14 +77,29 @@ document.addEventListener('DOMContentLoaded', () => {
     const closeAddStaff = document.getElementById('close-add-staff');
     const closeAddTherapist = document.getElementById('close-add-therapist');
 
-    
+    staff = () => {
+        const dropdownMenu = document.querySelector(".dropdown-menu");
+        
+        type = "staff";
+        addTherapistPopup.style.display = "none";
+        addStaffPopup.style.display = "block";
+        addStaffButton.removeChild(dropdownMenu);
+    }
+
+    therapist = () => {
+        const dropdownMenu = document.querySelector(".dropdown-menu");
+
+        type = "therapist";
+        addTherapistPopup.style.display = "block";
+        addStaffPopup.style.display = "none";
+        addStaffButton.removeChild(dropdownMenu);
+    }
 
     addStaffButton.addEventListener('click', (e) => {
         
         const existingDropdown = addStaffButton.querySelector('.dropdown-menu');
         if (existingDropdown) {
             existingDropdown.classList.toggle('show');
-            return;
         }
         
         const dropdownMenu = document.createElement('div');
