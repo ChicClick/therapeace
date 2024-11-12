@@ -75,8 +75,9 @@ let selectedYear = new Date().getFullYear(); // Start from the current year
 document.getElementById('add-appointment-button').addEventListener('click', openPopup);
 
 function openPopup() {
-    const calendar = new GenericCalendar("2024-11-11", "", "T001");
-    calendar.create();
+    document.getElementById('appointment-popup-form').style.display = 'block';
+    // const calendar = new GenericCalendar("2024-11-11", "", "T001");
+    // calendar.create();
 }
 
 
@@ -91,15 +92,6 @@ document.getElementById('close-popup').addEventListener('click', function() {
 });
 
 
-// Fetching patientID for autofill Selection
-function toggleInput(selectElement) {
-    // Get the selected value from the dropdown
-    const selectedValue = selectElement.value;
-
-    // Update the input field's value with the selected Patient ID
-    document.getElementById('selected-patient-id').value = selectedValue;
-}
-
 $(document).ready(function() {
     $('#patient-ID').change(function() {
         var patientId = $(this).val();
@@ -108,16 +100,15 @@ $(document).ready(function() {
         // Check if a patient ID is selected
         if (patientId) {
             $.ajax({
-                url: 'a_fetch_patientID.php', // Endpoint to fetch patient details
-                type: 'POST',
-                data: { patient: patientId },
+                url: `a_fetch_patient_info.php?id=${patientId}`, // Endpoint to fetch patient details
+                type: 'GET',
                 success: function(response) {
                     try {
                         var patient = JSON.parse(response); // Parse the JSON response
-
+                        console.log(patient);
                         // Update the fields with patient data
-                        $('#patient-name').val(patient.patientName);
-                        $('#parentID').val(patient.parentID);
+                        $('#patient-name').val(patient.patient_name);
+                        $('#parentID').val(patient.parent_name);
                         $('#contact-number').val(patient.phone);
                     } catch (error) {
                         console.error("JSON parsing error:", error);
@@ -136,6 +127,41 @@ $(document).ready(function() {
     });
       
 });
+
+$(document).ready(function() {
+    $('#serviceID').change(function() {
+        const specialization = new Map([
+            ["Speech Therapy", "Speech Therapist"],
+            ["Occupational Therapy", "Occupational Therapist"],
+            ["Physical Therapy", "Physical Therapist"],
+            ["Behavioral Therapy", "Behavioral Therapist"]
+        ]);
+
+        var serviceName = specialization.get($(this).val());
+ 
+        if (serviceName) {
+            $.ajax({
+                url: `a_fetch_therapist_service_filter.php?serviceName=${serviceName}`,
+                type: 'GET',
+                success: function(response) {
+                    try {
+                        // var therapists = JSON.parse(response); 
+                        // console.log(therapists);
+                        console.log(response);
+                    } catch (error) {
+                        console.error("JSON parsing error:", error);
+                    }
+                },
+                error: function(jqXHR, textStatus, errorThrown) {
+                    console.error("Error fetching therapist data: " + textStatus, errorThrown);
+                }
+            });
+        } else {
+            console.error("Error fetching therapist list");
+        }
+    });
+});
+
 
 // Fetching therapistName for autofill
 $(document).ready(function() {

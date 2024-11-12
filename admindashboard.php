@@ -121,7 +121,7 @@ if (isset($_SESSION['firstname'])) {
                             <div class="form-row">
                                 <div class="form-group">
                                     <label for="patient-ID">PatientID:</label>
-                                    <select id="patient-ID" name="patient-ID" required onchange="toggleInput(this)">
+                                    <select id="patient-ID" name="patient-ID" required>
                                         <option value="">Select PatientID</option>
                                         <?php
                                         require 'db_conn.php';
@@ -129,7 +129,7 @@ if (isset($_SESSION['firstname'])) {
                                         $result = $conn->query($sql);
                                         if ($result->num_rows > 0) {
                                             while ($row = $result->fetch_assoc()) {
-                                                echo "<option value='" . $row["patientID"] . "'>" . $row["patientID"] . "</option>";
+                                                echo "<option value='" . $row["patientID"] . "'>" . $row["patientID"] . " - " . $row["patientName"] . "</option>";
                                             }
                                         }
                                         $conn->close();
@@ -140,6 +140,9 @@ if (isset($_SESSION['firstname'])) {
                                     <label for="patient-name">Patient Name:</label>
                                     <input type="text" id="patient-name" name="patient-name" required>
                                 </div>
+                            </div>
+
+                            <div class="form-row">
                                 <div class="form-group">
                                     <label for="parent-guardian">Parent/Guardian:</label>
                                     <input type="text" id="parentID" name="parentID" required>
@@ -148,6 +151,31 @@ if (isset($_SESSION['firstname'])) {
                                     <label for="contact-number">Contact Number:</label>
                                     <input type="text" id="contact-number" name="contact-number" required>
                                 </div>
+                            </div>
+                            
+                            <div class="form-row">
+                                <div class="form-group services-group">
+                                    <div class="form-group">
+                                        <label for="serviceID">Services:</label>
+                                        <select id="serviceID" name="serviceID" required>
+                                            <option value="">Select Service</option>
+                                            <?php
+                                            require 'db_conn.php';
+                                            $sql = "SELECT serviceName FROM services";
+                                            $result = $conn->query($sql);
+                                            if ($result->num_rows > 0) {
+                                                while ($row = $result->fetch_assoc()) {
+                                                    echo "<option value='" . $row["serviceName"] . "'>"  . $row["serviceName"] . "</option>";
+                                                }
+                                            }
+                                            $conn->close();
+                                            ?>                                                                                
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                         
+                            <div class="form-row">
                                 <div class="form-group">
                                     <label for="therapist">Therapist:</label>
                                     <select id="therapist" name="therapist" required>
@@ -156,24 +184,6 @@ if (isset($_SESSION['firstname'])) {
                                 </div>
                             </div>
 
-                            <div class="form-group services-group">
-                                <label>Services:</label>
-                                <div class="services-checkbox">
-                                    <?php
-                                    require 'db_conn.php';
-                                    $sql = "SELECT serviceID, serviceName FROM services";
-                                    $result = $conn->query($sql);
-                                    if ($result->num_rows > 0) {
-                                        while ($row = $result->fetch_assoc()) {
-                                            echo '<label><input type="checkbox" name="services[]" value="' . htmlspecialchars($row["serviceID"]) . '"> ' . htmlspecialchars($row["serviceName"]) . '</label><br>';
-                                        }
-                                    } else {
-                                        echo "No services found.";
-                                    }
-                                    $conn->close();
-                                    ?>
-                                </div>
-                            </div>
 
                             <input type="hidden" id="selectedDateTime" name="schedule">
                             <div class="btn-container">
@@ -182,15 +192,7 @@ if (isset($_SESSION['firstname'])) {
                             
                         </form>
                     </div>
-                </div>
-                <div id="confirmationPopup" class="popup" style="display: none;">
-                            <div class="popup-content">
-                                <span class="close" onclick="closeConfirmationPopup()">&times;</span>
-                                <h4>Confirmation</h4>
-                                <p id="confirmationMessage">Your appointment has been scheduled!</p>
-                            </div>
-                        </div></table>
-                
+                </div>        
             <div class="search-bar-content">
                 <input type="text" placeholder="Search by patient or therapist">
                 <button><i class="fas fa-search"></i></button>
@@ -340,13 +342,21 @@ if (isset($_SESSION['firstname'])) {
                                         <div class="form-group">
                                             <label for="specialization">Specialization:</label>
                                             <select id="specialization" name="specialization" required>
-                                                <option value="Speech Therapist">Speech Therapist</option>
-                                                <option value="Occupational Therapist">Occupational Therapist</option>
-                                                <option value="Physical Therapist">Physical Therapist</option>
-                                                <option value="Behavioral Therapist">Behavioral Therapist</option>
+                                            <option value="">Select Service</option>
+                                                <?php
+                                                require 'db_conn.php';
+                                                $sql = "SELECT serviceName FROM services";
+                                                $result = $conn->query($sql);
+                                                if ($result->num_rows > 0) {
+                                                    while ($row = $result->fetch_assoc()) {
+                                                        echo "<option value='" . $row["serviceName"] . "'>"  . $row["serviceName"] . "</option>";
+                                                    }
+                                                }
+                                                $conn->close();
+                                                ?>                
                                             </select>
                                         </div>
-                                    </div>
+                                    </div>          
 
                                     <div class="form-row">
                                         <div class="form-group">
