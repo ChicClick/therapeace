@@ -110,47 +110,7 @@ if (isset($_SESSION['firstname'])) {
                 </button>
 
                 <!-- Calendar Modal -->
-                <div id="reschedulePopup" class="popup" style="display: none;">
-                    <div class="popup-content">
-                        <span class="close" onclick="closePopup()">&times;</span>
-                        <h4>Select Available Dates</h4>
-                        <div id="calendar">
-                            <div class="calendar-container">
-                            <div class="month-navigation">
-                                <a href="#" id="prevMonth" class="nav-link-month">&lt;</a> <!-- Previous month link -->
-                                <p id="currentMonth"></p> <!-- Dynamic month display -->
-                                <a href="#" id="nextMonth" class="nav-link-month">&gt;</a> <!-- Next month link -->
-                            </div>
-                                <div class="calendar-grid">
-                                    <!-- Calendar will be dynamically generated here -->
-                                </div>
-                            </div>
-                        </div>
-                        <input type="hidden" id="selectedDate" name="selectedDate" value="">
-                        <button id="proceedButton">Proceed  →</button>
-                    </div>
-                </div>
-                <div id="timePopup" class="popup" style="display: none;">
-                    <div class="popup-content">
-                        <span class="close" onclick="closeTimePopup()">&times;</span>
-                        <h4>Select Available Times</h4>
-                        <div id="availableTimes">
-                            <h5>Morning Sessions</h5>
-                            <ul id="morningTimes">
-                                <!-- Morning times will be dynamically added here -->
-                            </ul>
-                            <h5>Afternoon Sessions</h5>
-                            <ul id="afternoonTimes">
-                                <!-- Afternoon times will be dynamically added here -->
-                            </ul>
-                        </div>
-
-                            <!-- Hidden field to store selected time -->
-                            <input type="hidden" id="selectedTime" name="selectedTime" value="">
-
-                        <button id="proceedButton">Proceed  →</button>
-                    </div>
-                </div>
+                <div id="generic-calendar"></div>
                   <!-- Hidden Pop-Up Form for Adding Appointment -->
                   <div id="appointment-popup-form" class="popup-form">
                     <div class="popup-content-form">
@@ -753,5 +713,6 @@ if (isset($_SESSION['firstname'])) {
     <script src="a_confirmappointment.js" defer></script>
     <script src="a_editstaff_profile.js" defer></script>
     <script src="a_logout.js" defer></script>
+    <script src="generic-calendar.js" defer></script>
 </body>
 </html>
