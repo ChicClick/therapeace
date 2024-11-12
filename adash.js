@@ -1,4 +1,3 @@
-// left section 
 document.addEventListener('DOMContentLoaded', () => {
     const links = document.querySelectorAll('.left-section nav a');
     const sections = document.querySelectorAll('.right-section .content');
@@ -145,9 +144,10 @@ $(document).ready(function() {
                 type: 'GET',
                 success: function(response) {
                     try {
-                        // var therapists = JSON.parse(response); 
-                        // console.log(therapists);
-                        console.log(response);
+                        var therapists = JSON.parse(response); 
+                        let widget = new WidgetEngine(therapists);
+                        widget.instantiate();
+                        widget.createTitle("Therapist Match");
                     } catch (error) {
                         console.error("JSON parsing error:", error);
                     }

@@ -17,7 +17,9 @@ $sql = "
         therapist.phone AS phone, 
         therapist.datehired AS datehired,
         therapist.gender AS gender,
-        therapist.address AS address
+        therapist.address AS address,
+        therapist.days_available,
+        therapist.times_available
     FROM therapist
     WHERE therapist.specialization = ?
 ";
@@ -33,8 +35,11 @@ $stmt->execute();
 $result = $stmt->get_result();
 
 if ($result->num_rows > 0) {
-    $row = $result->fetch_assoc();
-    echo json_encode($row);
+    $rows = [];
+    while ($row = $result->fetch_assoc()) {
+        $rows[] = $row; 
+    }
+    echo json_encode($rows); 
 } else {
     echo json_encode(['error' => 'Staff not found']);
 }

@@ -109,6 +109,8 @@ if (isset($_SESSION['firstname'])) {
                     <i class="fas fa-plus"></i> Add Appointment
                 </button>
 
+                <div id="generic-widget"></div>
+
                 <!-- Calendar Modal -->
                 <div id="generic-calendar"></div>
                   <!-- Hidden Pop-Up Form for Adding Appointment -->
@@ -713,7 +715,8 @@ if (isset($_SESSION['firstname'])) {
             </div>
 
     </div>
-
+    
+    <script src="generic-widget.js" defer></script>
     <script src="adash.js" defer></script>
     <script src="admindashboard.js" defer></script>
     <script src="a_dashgenerate_pdf.js" defer></script>
@@ -724,5 +727,6 @@ if (isset($_SESSION['firstname'])) {
     <script src="a_editstaff_profile.js" defer></script>
     <script src="a_logout.js" defer></script>
     <script src="generic-calendar.js" defer></script>
+
 </body>
 </html>
