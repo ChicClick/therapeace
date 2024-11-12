@@ -292,12 +292,21 @@
     }
 
     generateCalendar = () => {
+        const days = ["S", "M", "T", "W", "TH", "F", "SA"];
         const calendarGrid = this.calendarDiv.querySelector(".calendar-grid"); 
         calendarGrid.innerHTML = '';
-    
+        
+        for(const day of days) {
+            const dayDiv = document.createElement('div');
+            dayDiv.classList.add("day");
+            dayDiv.textContent = day;
+            calendarGrid.appendChild(dayDiv);
+        }
+
         this.calendarDiv.querySelector('#currentMonth').innerText = `${this.getMonthName(this.dateObj.selectedMonth)} ${this.dateObj.selectedYear}`;
         const firstDayOfMonth = new Date(this.dateObj.selectedYear, this.dateObj.selectedMonth, 1).getDay(); // Get the first day of the month (0 = Sunday, 6 = Saturday)
- 
+        
+
         for (let i = 0; i < firstDayOfMonth; i++) {
 
             const blankDiv = document.createElement('div');
@@ -312,13 +321,15 @@
         try {
             const response = await fetch(`booked-dates.php?therapist_id=${this.therapistID}`);
             const data = await response.json();
-
-            if (data.bookedDates) {
+            
+            if (data.bookedDates && data.blockedDates && data.blockedTimes) {
                 this.blockedSelectedTimeSlots = [];
 
                 for(const bookedDates of data.bookedDates) {
                     this.blockedSelectedTimeSlots.push(bookedDates);
                 }
+
+                console.log(JSON.parse(data.blockedDates));
 
                 for (let day = 1; day <= this.dateObj.daysInMonth; day++) {
                     const dateString = `${this.dateObj.selectedYear}-${String(this.dateObj.selectedMonth + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
@@ -330,6 +341,10 @@
                     const currentDate = new Date();
     
                     if (generatedDate.getDay() === 0) {
+                        dayDiv.classList.add('disabled');
+                    }
+
+                    if(!data.blockedDates.includes(generatedDate.getDay())) {
                         dayDiv.classList.add('disabled');
                     }
     
