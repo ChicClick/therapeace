@@ -23,6 +23,22 @@ function updateCustomTime() {
     customOption.value = JSON.stringify(selectedTimes);
 }
 
+function updateCommunication() {
+    var selectedMethods = [];
+    document.querySelectorAll("input[name='communication[]']:checked").forEach(function(checkbox) {
+        selectedMethods.push(checkbox.value);
+    });
+    console.log("Selected Communication Methods:", selectedMethods);
+}
+
+function updateFlexibility() {
+    var selectedFlexibilities = [];
+    document.querySelectorAll("input[name='flexibility[]']:checked").forEach(function(checkbox) {
+        selectedFlexibilities.push(checkbox.value);
+    });
+    console.log("Selected Communication Methods:", selectedFlexibilities);
+}
+
 function toggleCustomDay() {
     const select = document.getElementById('day-availability');
     const customDayOptions = document.getElementById('custom-day-options');

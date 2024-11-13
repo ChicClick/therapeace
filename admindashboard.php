@@ -68,6 +68,7 @@ if (isset($_SESSION['firstname'])) {
 
     <!-- Right Section -->
     <div class="right-section">
+    <div id="generic-message-popup"></div> 
         <div class="top-bar">
             <div class="search-bar">
                 <input type="text" placeholder="Search">
@@ -79,7 +80,6 @@ if (isset($_SESSION['firstname'])) {
 
             </div>
         </div>
-
                     <!-- Dashboard Section -->
             <div id="dashboard-section" class="content active">
                 <h4>DASHBOARD</h4>
@@ -109,10 +109,9 @@ if (isset($_SESSION['firstname'])) {
                     <i class="fas fa-plus"></i> Add Appointment
                 </button>
 
-                <div id="generic-widget"></div>
-
                 <!-- Calendar Modal -->
                 <div id="generic-calendar"></div>
+
                   <!-- Hidden Pop-Up Form for Adding Appointment -->
                   <div id="appointment-popup-form" class="popup-form">
                     <div class="popup-content-form">
@@ -177,22 +176,27 @@ if (isset($_SESSION['firstname'])) {
                                 </div>
                             </div>
                          
-                            <div class="form-row">
+                            <!-- <div class="form-row">
                                 <div class="form-group">
                                     <label for="therapist">Therapist:</label>
                                     <select id="therapist" name="therapist" required>
                                         <option value="">Select a Therapist</option>
                                     </select>
                                 </div>
-                            </div>
+                            </div> -->
 
+                            <div class="form-row">
+                                <div class="form-group">
+                                    
+                                </div>
+                            </div>
 
                             <input type="hidden" id="selectedDateTime" name="schedule">
                             <div class="btn-container">
                                 <button type="submit" class="submit-btn" onclick="handleSubmit()">Submit <i class="fas fa-arrow-right"></i></button>
                             </div>
-                            
                         </form>
+                        <div id="generic-widget"></div>
                     </div>
                 </div>        
             <div class="search-bar-content">
@@ -273,8 +277,7 @@ if (isset($_SESSION['firstname'])) {
                         <div class="dropdown-item" onclick="therapist()">Therapist</div>
                     </div>
             </button>
-                
-
+                           
                     <!-- Hidden Pop-Up Form for Adding Staff -->
                 <div id="add-staff-popup" class="popup-form">
                             <div class="popup-content-form">
@@ -401,7 +404,7 @@ if (isset($_SESSION['firstname'])) {
                                         </div>
                                         <div class="form-group">
                                             <div id="custom-day-options" style="display: none; margin-top: 10px;">
-                                                <label>Select Custom Hours:</label>
+                                                <label>Select Custom Days:</label>
                                                 <div class="day-list-checkbox">
                                                     <div class="day-list"><input type="checkbox" value="1" onchange="updateCustomDay()"> <label>M</label></div>
                                                     <div class="day-list"><input type="checkbox" value="2" onchange="updateCustomDay()"> <label>T</label></div>
@@ -441,6 +444,48 @@ if (isset($_SESSION['firstname'])) {
                                         </div>
                                     </div>
 
+                                    <div class="form-row">
+                                        <div class="form-group">
+                                        <label for="communication">Communication Methods:</label>
+                                            <div class="communication-checkboxes">
+                                                <?php
+                                                require 'db_conn.php';
+                                                $sql = "SELECT * FROM communication";
+                                                $result = $conn->query($sql);
+                                                if ($result->num_rows > 0) {
+                                                    while ($row = $result->fetch_assoc()) {
+                                                        // Create a checkbox for each communication method from the database
+                                                        echo "<div class='checkbox-item'>";
+                                                        echo "<input type='checkbox' name='communication[]' value='" . $row["id"] . "' id='comm_" . $row["id"] . "' onchange='updateCommunication()'>"; 
+                                                        echo "<label data-title='" .$row["description"]."' for='comm_" . $row["id"] . "'>" . $row["name"] . "</label>";
+                                                        echo "</div>";
+                                                    }
+                                                }
+                                                $conn->close();
+                                                ?>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                        <label for="communication">Flexibility:</label>
+                                            <div class="communication-checkboxes">
+                                                <?php
+                                                require 'db_conn.php';
+                                                $sql = "SELECT * FROM flexibility";
+                                                $result = $conn->query($sql);
+                                                if ($result->num_rows > 0) {
+                                                    while ($row = $result->fetch_assoc()) {
+                                                        echo "<div class='checkbox-item'>";
+                                                        echo "<input type='checkbox' name='flexibility[]' value='" . $row["id"] . "' id='comm_" . $row["id"] . "' onchange='updateFlexibility()'>"; 
+                                                        echo "<label data-title='" .$row["description"]."' for='comm_" . $row["id"] . "'>" . $row["name"] . "</label>";
+                                                        echo "</div>";
+                                                    }
+                                                }
+                                                $conn->close();
+                                                ?>
+                                            </div>
+                                        </div>
+                                    </div>
+
                                     <div class="btn-container">
                                         <button type="submit" class="submit-btn">Submit <i class="fas fa-arrow-right"></i></button>
                                     </div>
@@ -449,6 +494,7 @@ if (isset($_SESSION['firstname'])) {
                             </div>
                 </div>    
             </div>
+  
             
             <div class="staff-container">
                     <div class="button-container">
@@ -727,6 +773,7 @@ if (isset($_SESSION['firstname'])) {
     <script src="a_editstaff_profile.js" defer></script>
     <script src="a_logout.js" defer></script>
     <script src="generic-calendar.js" defer></script>
+    <script src="generic-message-popup.js" defer></script>
 
 </body>
 </html>

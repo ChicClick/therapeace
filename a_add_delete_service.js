@@ -180,22 +180,51 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     document.getElementById('addtherapist-form').addEventListener('submit', function(event) {
-        event.preventDefault(); // Prevent the default form submission
+        event.preventDefault();
 
+        const specializationMap = new Map([
+            ["Speech Therapy", "Speech Therapist"],
+            ["Occupational Therapy", "Occupational Therapist"],
+            ["Physical Therapy", "Physical Therapist"],
+            ["Behavioral Therapy", "Behavioral Therapist"]
+        ]);
+    
         const formData = new FormData(this);
-        
+        const specializationKey = 'specialization';
+    
+        if (formData.has(specializationKey)) {
+            const specializationValue = formData.get(specializationKey);
+            if (specializationMap.has(specializationValue)) {
+                formData.set(specializationKey, specializationMap.get(specializationValue));
+            }
+        }
+
+        const submitButton = this.querySelector('button[type="submit"]');
+        submitButton.disabled = true;
+        submitButton.textContent = 'Loading...';
+    
+        Array.from(this.elements).forEach(element => element.disabled = true);
+    
         fetch('tRegister.php', {
             method: 'POST',
             body: formData
         })
         .then(response => response.text())
         .then(data => {
-            alert(data); // Display response message (success or error)
-            addTherapistPopup.style.display = 'none'; // Close the popup after submission
-            this.reset(); // Reset the form fields
+            let message = new MessagePopupEngine("Success!", data);
+            message.instantiate();
+            addTherapistPopup.style.display = 'none';
+            this.reset();
         })
         .catch(error => {
             console.error('Error:', error);
+        })
+        .finally(() => {
+            // Re-enable form elements and reset button text
+            submitButton.disabled = false;
+            submitButton.textContent = 'Submit';
+            Array.from(this.elements).forEach(element => element.disabled = false);
         });
     });
+    
 });

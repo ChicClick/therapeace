@@ -1,0 +1,28 @@
+.generic-message-popup {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 99999;
+    background-color: #F6F0DC;
+    color: #432705;
+    box-shadow: 0 0 10px rgba(0,0,0,0.2);
+    width: 500px;
+    padding: 20px;
+    border-radius: 8px;
+    text-align: center;
+}
+
+#okButton {
+    padding: 13px;
+    color: #432705;
+    background-color: #FFFAEB;
+    border: none;
+    border-radius: 20px;
+    margin-top: 20px; /* Optional: Add some margin for spacing */
+    cursor: pointer;
+}
+#okButton:hover {
+    background: linear-gradient(90deg, #FDBC10 0%, #FFEA09 100%);
+    color: #432705;
+}
