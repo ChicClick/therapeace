@@ -175,6 +175,98 @@ if (isset($_SESSION['firstname'])) {
                                     </div>
                                 </div>
                             </div>
+
+                            <div class="form-row">
+                                        <div class="form-group">
+                                            <label for="day-availability">Day Availability</label>
+                                            <select id="day-appointment-availability" name="days_available" required onchange="toggleAppointmentCustomDay()">
+                                                <option value="[1,2,3,4,5,6]" selected>Full-Time</option>
+                                                <option id="custom-appointment-day" value="[]">Custom</option>
+                                            </select>
+                                        </div>
+                                        <div class="form-group">
+                                            <div id="custom-appointment-day-options" style="display: none; margin-top: 10px;">
+                                                <label>Select Custom Days:</label>
+                                                <div class="day-list-checkbox">
+                                                    <div class="day-list"><input type="checkbox" value="1" onchange="updateAppointmentCustomDay()"> <label>M</label></div>
+                                                    <div class="day-list"><input type="checkbox" value="2" onchange="updateAppointmentCustomDay()"> <label>T</label></div>
+                                                    <div class="day-list"><input type="checkbox" value="3" onchange="updateAppointmentCustomDay()"> <label>W</label></div>
+                                                    <div class="day-list"><input type="checkbox" value="4" onchange="updateAppointmentCustomDay()"> <label>TH</label></div>
+                                                    <div class="day-list"><input type="checkbox" value="5" onchange="updateAppointmentCustomDay()"> <label>F</label></div>
+                                                    <div class="day-list"><input type="checkbox" value="6" onchange="updateAppointmentCustomDay()"> <label>SA</label></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-row">
+                                        <div class="form-group">
+                                            <label for="time-availability">Time Availability</label>
+                                            <select id="time-appointment-availability" name="times_available" required onchange="toggleCustomAppointmentTime()">
+                                                <option value="[9,10,11,13,14,15,16,17]" selected>Full-Time</option>
+                                                <option value="[9,10,11]">Morning Shift</option>
+                                                <option value="[13,14,15,16,17]">Afternoon</option>
+                                                <option id="custom-appointment-time" value="[]">Custom</option>
+                                            </select>
+                                        </div>
+                                        <div class="form-group">
+                                            <div id="custom-appointment-time-options" style="display: none; margin-top: 10px;">
+                                                <label>Select Custom Hours:</label>
+                                                <div class="time-list-checkbox">
+                                                    <div class="time-list"><input type="checkbox" value="9" onchange="updateAppointCustomTime()"> <label>9 AM</label></div>
+                                                    <div class="time-list"><input type="checkbox" value="10" onchange="updateAppointCustomTime()"> <label>10 AM</label></div>
+                                                    <div class="time-list"><input type="checkbox" value="11" onchange="updateAppointCustomTime()"> <label>11 AM</label></div>
+                                                    <div class="time-list"><input type="checkbox" value="13" onchange="updateAppointCustomTime()"> <label>1 PM</label></div>
+                                                    <div class="time-list"><input type="checkbox" value="14" onchange="updateAppointCustomTime()"> <label>2 PM</label></div>
+                                                    <div class="time-list"><input type="checkbox" value="15" onchange="updateAppointCustomTime()"> <label>3 PM</label></div>
+                                                    <div class="time-list"><input type="checkbox" value="16" onchange="updateAppointCustomTime()"> <label>4 PM</label></div>
+                                                    <div class="time-list"><input type="checkbox" value="17" onchange="updateAppointCustomTime()"> <label>5 PM</label></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-row">
+                                        <div class="form-group">
+                                        <label for="communication">Communication Methods:</label>
+                                            <div class="communication-checkboxes">
+                                                <?php
+                                                require 'db_conn.php';
+                                                $sql = "SELECT * FROM communication";
+                                                $result = $conn->query($sql);
+                                                if ($result->num_rows > 0) {
+                                                    while ($row = $result->fetch_assoc()) {
+                                                        // Create a checkbox for each communication method from the database
+                                                        echo "<div class='checkbox-item'>";
+                                                        echo "<input type='checkbox' name='communication[]' value='" . $row["id"] . "' id='comm_" . $row["id"] . "' onchange='updateCommunication()'>"; 
+                                                        echo "<label data-title='" .$row["description"]."' for='comm_" . $row["id"] . "'>" . $row["name"] . "</label>";
+                                                        echo "</div>";
+                                                    }
+                                                }
+                                                $conn->close();
+                                                ?>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                        <label for="communication">Flexibility:</label>
+                                            <div class="communication-checkboxes">
+                                                <?php
+                                                require 'db_conn.php';
+                                                $sql = "SELECT * FROM flexibility";
+                                                $result = $conn->query($sql);
+                                                if ($result->num_rows > 0) {
+                                                    while ($row = $result->fetch_assoc()) {
+                                                        echo "<div class='checkbox-item'>";
+                                                        echo "<input type='checkbox' name='flexibility[]' value='" . $row["id"] . "' id='comm_" . $row["id"] . "' onchange='updateFlexibility()'>"; 
+                                                        echo "<label data-title='" .$row["description"]."' for='comm_" . $row["id"] . "'>" . $row["name"] . "</label>";
+                                                        echo "</div>";
+                                                    }
+                                                }
+                                                $conn->close();
+                                                ?>
+                                            </div>
+                                        </div>
+                                    </div>
                          
                             <!-- <div class="form-row">
                                 <div class="form-group">
