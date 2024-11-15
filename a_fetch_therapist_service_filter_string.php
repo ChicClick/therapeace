@@ -1,14 +1,15 @@
 <?php
 require 'db_conn.php';
 
-$specialization = $_GET['specialization'];
+$name = $_GET['name'];
 
-if (!is_string($specialization)) {
-    echo json_encode(['error' => 'Invalid specialization parameter']);
+if (!is_string($name)) {
+    echo json_encode(['error' => 'Invalid name parameter']);
     exit();
 }
 
-// SQL query to fetch therapist information based on specialization
+$searchName = "%" . strtolower($name) . "%";
+
 $sql = "
     SELECT 
         therapist.therapistID, 
@@ -23,7 +24,7 @@ $sql = "
         therapist.communication,
         therapist.flexibility
     FROM therapist
-    WHERE therapist.specialization = ?
+    WHERE LOWER(therapist.therapistName) LIKE ?
 ";
 
 $stmt = $conn->prepare($sql);
@@ -32,7 +33,7 @@ if (!$stmt) {
     exit();
 }
 
-$stmt->bind_param("s", $specialization);
+$stmt->bind_param("s", $searchName);
 $stmt->execute();
 $result = $stmt->get_result();
 

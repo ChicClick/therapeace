@@ -100,7 +100,7 @@ $therapistID = $_SESSION['therapist_id'];
                 </tbody>
             </table>
             <!-- Reschedule Popup -->
-            <div id="generic-calendar"></div>
+            <generic-calendar></generic-calendar>
 
         </div>
 

@@ -26,6 +26,7 @@ try {
         $stmt = $conn->prepare("INSERT INTO therapist (therapistID, specialization, therapistName, availability, email, phone, address, birthday, gender, datehired, password_hash, days_available, times_available, communication, flexibility) 
                                 VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
 
+        
         // Bind form data to SQL query parameters
         $stmt->bind_param(
             "sssssssssssssss",

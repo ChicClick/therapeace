@@ -93,9 +93,7 @@ include 'patientFetchReport.php';
     </section>
 
 <!-- Reschedule Popup -->
-        <div id="generic-calendar"></div>
-
-
+        <generic-calendar></generic-calendar>
 
         <!-- Notes Tab -->
         <section id="notes" class="hidden">

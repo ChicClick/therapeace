@@ -29,12 +29,26 @@ const timeMapper = new Map([
     [22, "10:00 PM"]
 ]);
 
+const communicationMapper = new Map([
+    [1, "Picture Communication"],
+    [2, "Flash Cards/Symbols"],
+    [3, "Ipad/Tablets"],
+    [4, "Sign Language/ Body Language"],
+    [5, "Communication Books"],
+]);
+
+const flexibilityMapper = new Map([
+    [1, "Sensory Flexibility"],
+    [2, "Adjusting Communication Mode/Tools"],
+    [3, "Emotional Sensitivity"]
+])
+
 class WidgetEngine {
     dataset = null;
 
     title = "Default Widget Title";
     cssLink = document.head.querySelector('link[href="generic-therapist-widget.css"]');
-    genericWidget = document.querySelector("#generic-widget");
+    genericWidget = document.querySelector("generic-widget");
 
     titleDiv = null;
     containerDiv = null;
@@ -67,6 +81,7 @@ class WidgetEngine {
             this.genericWidget.appendChild(titleW);
             this.genericWidget.appendChild(container);
 
+
             this.titleDiv = document.querySelector("#widget-title");
             this.containerDiv = document.querySelector("#widget-container");
             return;
@@ -82,6 +97,13 @@ class WidgetEngine {
 
         this.titleDiv.appendChild(h4Title);
 
+        if(!this.dataset || this.dataset.length == 0) {
+            this.containerDiv.innerHTML = `
+                <p> No Data </p>
+            `
+            return;
+        }
+
         for(const data of this.dataset) {
             this.createCards(new Therapist(data));
         }
@@ -90,14 +112,13 @@ class WidgetEngine {
     createCards(data) {
         const card = document.createElement("div");
         card.classList.add("widget-card");
-        console.log(data);
         let daysAvailable = data.days;
         let timesAvailable = data.times;
         
-        console.log(daysAvailable);
         let daysDisplay = this.daysDisplay(data.days);
         let timesDisplay = this.timesDisplay(data.times);
-
+        let communicationDisplay = this.communicationDisplay(data.communication);
+        let flexibilityDisplay = this.flexibilityDisplay(data.flexibility);
 
         if(!daysDisplay) {
              daysDisplay = daysAvailable.map(day => dayMapper.get(day)).join(", ");
@@ -108,19 +129,39 @@ class WidgetEngine {
         }
        
         card.innerHTML = `
-        <div class="widget-circle-pic">
-            <img src="images/about 4.jpg">
-        </div>
-        <!-- Content container -->
-        <div class="widget-card-content">
-            <div class="widget-name">${data.name}</div>
-            <div class="widget-specialization">${data.specialization}</div>
-            <div class="widget-availability">
-                <span>Days: ${daysDisplay}</span>
-                <span>Times: ${timesDisplay}</span>
+        <label class="widget-card-label">
+            <input type="radio" name="widget-card-select" class="widget-radio">
+            <div class="widget-card">
+                <div class="widget-circle-pic">
+                    <img src="images/about 4.jpg">
+                </div>
+                <!-- Content container -->
+                <div class="widget-card-content">
+                    <div class="widget-name">${data.name}</div>
+                    <div class="widget-specialization">${data.specialization}</div>
+                    <div class="widget-availability">
+                        <span>Days: ${daysDisplay}</span>
+                        <span>Times: ${timesDisplay}</span>
+                        <span>Communication: ${communicationDisplay}</span>
+                        <span>Flexibility: ${flexibilityDisplay}</span>
+                    </div>
+                </div>
             </div>
-        </div>
-        `;
+        </label>
+    `;
+
+    const radioInput = card.querySelector(".widget-radio");
+    radioInput.addEventListener("change", () => {
+        if (radioInput.checked) {
+            const h4Title = document.createElement("h4");
+
+            h4Title.textContent = this.title + `(${data.name})`;
+            
+            this.titleDiv.innerHTML = "";
+            this.titleDiv.appendChild(h4Title);
+        }
+    });
+    
     
         this.containerDiv.appendChild(card);
     }
@@ -159,13 +200,32 @@ class WidgetEngine {
     
         return null;
     }
+
+    communicationDisplay(communication = []) {
+        if (!communication || communication.length === 0) {
+            return "Not specified";
+        }
+
+        return communication.map(id => communicationMapper.get(id)).join(", ");
+    }
+    
+    flexibilityDisplay(flexibility = []) {
+        if (!flexibility || flexibility.length === 0) {
+            return "Not specified";
+        }
+
+        return flexibility.map(id => flexibilityMapper.get(id)).join(", ");
+    }
+    
 }
 
 class Therapist {
     name = "";
     specialization = "";
     days = null;
-    times = null
+    times = null;
+    flexibility = null;
+    communication = null;
 
     constructor(
         data
@@ -175,6 +235,10 @@ class Therapist {
             this.specialization = data.specialization;
             this.days = JSON.parse(data.days_available);
             this.times = JSON.parse(data.times_available);
+            this.flexibility = JSON.parse(data.flexibility);
+            this.communication = JSON.parse(data.communication);
         }
     }
 }
+
+customElements.define("generic-widget", WidgetEngine);

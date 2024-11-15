@@ -561,6 +561,19 @@ canvas {
     color: #000;
 }
 
+#appointment-popup-form {
+    left: 50%!important;
+    transform: translate(-50%, 0);
+    gap: 10px;
+    margin-left: 10px;
+    padding-left: 5vw;
+}
+
+generic-widget {
+    margin-right: 8%!important;
+    margin-bottom: 8%;
+    position: relative;
+}
 /* Styling for the pop-up form add appointment*/
 .popup {
     position: fixed;
@@ -571,7 +584,7 @@ canvas {
     background-color: #F6F0DC;
     color: #432705;
     box-shadow: 0 0 10px rgba(0,0,0,0.2);
-    width: 500px;
+    width: 100%;
     padding: 20px;
     border-radius: 8px;
     text-align: center;
@@ -598,7 +611,7 @@ canvas {
     padding: 20px;
     border-radius: 15px;
     width: 50%; /* Make the form narrower */
-    max-height: 80%; /* Limit the form height */
+    max-height: 80vh; /* Limit the form height */
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
     position: relative;
     font-family: 'Poppins', sans-serif;
@@ -711,14 +724,11 @@ input[type="date"] {
     margin-top: 5px;
 }
 
-.time-list label{
-    margin-top: 8px;
-}
 
 .time-list {
     display: flex; 
     align-items: center; 
-    margin-top: 8px;
+    /* margin-top: 8px; */
 }
 
 .day-list-checkbox {
@@ -727,10 +737,6 @@ input[type="date"] {
     flex-wrap: wrap; 
     gap: 10px; 
     margin-top: 5px;
-}
-
-.day-list label{
-    margin-top: 8px;
 }
 
 .day-list {

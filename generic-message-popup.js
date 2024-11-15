@@ -1,4 +1,4 @@
-class MessagePopupEngine {
+class MessagePopupEngine extends HTMLElement {
     message = "";
 
     title = "Default Widget Title";
@@ -6,14 +6,15 @@ class MessagePopupEngine {
     titleDiv = null;
     containerDiv = null;
 
-    genericMessagePopup = document.querySelector("#generic-message-popup");
+    genericMessagePopup = document.querySelector("generic-message-popup");
     cssLink = document.head.querySelector('link[href="generic-message-popup.css"]');
     
 
     constructor(
         title, 
         message
-    ){
+    ){  
+        super();
         this.title = title;
         this.message = message;
     }
@@ -69,8 +70,11 @@ class MessagePopupEngine {
         buttonOk.textContent = "OK";
         buttonOk.addEventListener("click", ()=> {
             this.genericMessagePopup.innerHTML = "";
+            this.genericMessagePopup.classList.remove("generic-message-popup");
         });
 
         this.genericMessagePopup.appendChild(buttonOk);
     }
 }
+
+customElements.define("generic-message-popup", MessagePopupEngine);

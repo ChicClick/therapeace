@@ -1,52 +1,3 @@
-class TherapistFilter {
-    days_available = null;
-    times_available = null;
-    communication = null;
-    flexibility = null;
-    specialization = null;
-
-    constructor(data) {
-        if (data) {
-            this.days_available = data.days_available;
-            this.times_available = data.times_available;
-            this.communication = data.communication;
-            this.flexibility = data.flexibility;
-            this.specialization = data.specialization;
-        }
-    }
-
-    fetch() {
-        if (!this.specialization) {
-            new MessagePopupEngine("Error", "Please Select Specialization");
-            return;
-        }
-
-        let url = 'a_fetch_therapist_service_filter.php';
-
-        const params = [];
-
-        if (this.specialization) params.push(`specialization=${encodeURIComponent(this.specialization)}`);
-        if (this.flexibility) params.push(`flexibility=${encodeURIComponent(this.flexibility)}`);
-        if (this.communication) params.push(`communication=${encodeURIComponent(this.communication)}`);
-        if (this.days_available) params.push(`days_available=${encodeURIComponent(this.days_available)}`);
-        if (this.times_available) params.push(`times_available=${encodeURIComponent(this.times_available)}`);
-
-        if (params.length > 0) {
-            url += '?' + params.join('&');
-        }
-
-        fetch(url)
-            .then(response => response.json())
-            .then(data => {
-                console.log(data);
-            })
-            .catch(error => {
-                new MessagePopupEngine("Error", error);
-            });
-    }
-}
-
-
 let globalTherapistFilter = new TherapistFilter();
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -127,7 +78,7 @@ let selectedYear = new Date().getFullYear(); // Start from the current year
 document.getElementById('add-appointment-button').addEventListener('click', openPopup);
 
 function openPopup() {
-    document.getElementById('appointment-popup-form').style.display = 'block';
+    document.getElementById('appointment-popup-form').style.display = 'flex';
     // const calendar = new GenericCalendar("2024-11-11", "", "T001");
     // calendar.create();
 }
@@ -148,7 +99,7 @@ $(document).ready(function() {
     $('#patient-ID').change(function() {
         var patientId = $(this).val();
         console.log("Patient ID selected: " + patientId); // Debugging step
-        console.log(objectFilter);
+
         // Check if a patient ID is selected
         if (patientId) {
             $.ajax({
@@ -179,42 +130,6 @@ $(document).ready(function() {
     });
       
 });
-
-$(document).ready(function() {
-    $('#serviceID').change(function() {
-        const specializationMap = new Map([
-            ["Speech Therapy", "Speech Therapist"],
-            ["Occupational Therapy", "Occupational Therapist"],
-            ["Physical Therapy", "Physical Therapist"],
-            ["Behavioral Therapy", "Behavioral Therapist"]
-        ]);
-
-        let specialization = specializationMap.get($(this).val());
-        
-        if (specialization) {
-            $.ajax({
-                url: `a_fetch_therapist_service_filter.php?specialization=${specialization}`,
-                type: 'GET',
-                success: function(response) {
-                    try {
-                        var therapists = JSON.parse(response); 
-                        let widget = new WidgetEngine(therapists);
-                        widget.instantiate();
-                        widget.createTitle("Therapist Match");
-                    } catch (error) {
-                        console.error("JSON parsing error:", error);
-                    }
-                },
-                error: function(jqXHR, textStatus, errorThrown) {
-                    console.error("Error fetching therapist data: " + textStatus, errorThrown);
-                }
-            });
-        } else {
-            console.error("Error fetching therapist list");
-        }
-    });
-});
-
 
 // Fetching therapistName for autofill
 $(document).ready(function() {

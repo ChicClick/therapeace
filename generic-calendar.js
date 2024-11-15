@@ -1,13 +1,17 @@
 
- class CalendarEngineComponent {
+ class CalendarEngineComponent extends HTMLElement {
 
     selectedTimeSlots = ['9:00 AM', '10:00 AM', '11:00 AM', '12:00 PM', '1:00 PM', '2:00 PM', '3:00 PM', '4:00 PM', '5:00 PM', '6:00 PM'];
     blockedSelectedTimeSlots = [];
-    genericCalendar = document.querySelector("#generic-calendar");
+    genericCalendar = document.querySelector("generic-calendar");
     calendarDiv = null;
     timeDiv = null;
     messageDiv = null;
     cssLink = document.head.querySelector('link[href="generic-calendar.css"]');
+
+    constructor(){
+        super();
+    }
 
     instantiate() {
         if(!this.cssLink) {
@@ -529,3 +533,5 @@
         return monthNames[month];
     }
 }
+
+customElements.define("generic-calendar", GenericCalendar);

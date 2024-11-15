@@ -68,7 +68,7 @@ if (isset($_SESSION['firstname'])) {
 
     <!-- Right Section -->
     <div class="right-section">
-    <div id="generic-message-popup"></div> 
+    <generic-message-popup></generic-message-popup> 
         <div class="top-bar">
             <div class="search-bar">
                 <input type="text" placeholder="Search">
@@ -110,7 +110,7 @@ if (isset($_SESSION['firstname'])) {
                 </button>
 
                 <!-- Calendar Modal -->
-                <div id="generic-calendar"></div>
+                <generic-calendar></generic-calendar>
 
                   <!-- Hidden Pop-Up Form for Adding Appointment -->
                   <div id="appointment-popup-form" class="popup-form">
@@ -155,7 +155,6 @@ if (isset($_SESSION['firstname'])) {
                             </div>
                             
                             <div class="form-row">
-                                <div class="form-group services-group">
                                     <div class="form-group">
                                         <label for="serviceID">Services:</label>
                                         <select id="serviceID" name="serviceID" required>
@@ -173,12 +172,15 @@ if (isset($_SESSION['firstname'])) {
                                             ?>                                                                                
                                         </select>
                                     </div>
-                                </div>
+                                    <div class="form-group">
+                                        <label for="searchByName">Search by Name:</label>
+                                        <input type="text" id="searchByName" name="searchByName" required>
+                                    </div>
                             </div>
 
                             <div class="form-row">
                                         <div class="form-group">
-                                            <label for="day-availability">Day Availability</label>
+                                            <label for="days_available">Day Availability</label>
                                             <select id="day-appointment-availability" name="days_available" required onchange="toggleAppointmentCustomDay()">
                                                 <option value="[1,2,3,4,5,6]" selected>Full-Time</option>
                                                 <option id="custom-appointment-day" value="[]">Custom</option>
@@ -228,7 +230,7 @@ if (isset($_SESSION['firstname'])) {
 
                                     <div class="form-row">
                                         <div class="form-group">
-                                        <label for="communication">Communication Methods:</label>
+                                        <label for="appointmentCommunication">Communication Methods:</label>
                                             <div class="communication-checkboxes">
                                                 <?php
                                                 require 'db_conn.php';
@@ -236,9 +238,8 @@ if (isset($_SESSION['firstname'])) {
                                                 $result = $conn->query($sql);
                                                 if ($result->num_rows > 0) {
                                                     while ($row = $result->fetch_assoc()) {
-                                                        // Create a checkbox for each communication method from the database
                                                         echo "<div class='checkbox-item'>";
-                                                        echo "<input type='checkbox' name='communication[]' value='" . $row["id"] . "' id='comm_" . $row["id"] . "' onchange='updateCommunication()'>"; 
+                                                        echo "<input type='checkbox' name='appointmentCommunication[]' value='" . $row["id"] . "' id='comm_" . $row["id"] . "' onchange='updateAppointmentCommunication()'>"; 
                                                         echo "<label data-title='" .$row["description"]."' for='comm_" . $row["id"] . "'>" . $row["name"] . "</label>";
                                                         echo "</div>";
                                                     }
@@ -248,8 +249,8 @@ if (isset($_SESSION['firstname'])) {
                                             </div>
                                         </div>
                                         <div class="form-group">
-                                        <label for="communication">Flexibility:</label>
-                                            <div class="communication-checkboxes">
+                                        <label for="appointmentFlexibility">Flexibility:</label>
+                                            <div class="flexibility-checkboxes">
                                                 <?php
                                                 require 'db_conn.php';
                                                 $sql = "SELECT * FROM flexibility";
@@ -257,7 +258,7 @@ if (isset($_SESSION['firstname'])) {
                                                 if ($result->num_rows > 0) {
                                                     while ($row = $result->fetch_assoc()) {
                                                         echo "<div class='checkbox-item'>";
-                                                        echo "<input type='checkbox' name='flexibility[]' value='" . $row["id"] . "' id='comm_" . $row["id"] . "' onchange='updateFlexibility()'>"; 
+                                                        echo "<input type='checkbox' name='appointmentFlexibility[]' value='" . $row["id"] . "' id='comm_" . $row["id"] . "' onchange='updateAppointmentFlexibility()'>"; 
                                                         echo "<label data-title='" .$row["description"]."' for='comm_" . $row["id"] . "'>" . $row["name"] . "</label>";
                                                         echo "</div>";
                                                     }
@@ -288,8 +289,9 @@ if (isset($_SESSION['firstname'])) {
                                 <button type="submit" class="submit-btn" onclick="handleSubmit()">Submit <i class="fas fa-arrow-right"></i></button>
                             </div>
                         </form>
-                        <div id="generic-widget"></div>
+                        
                     </div>
+                    <generic-widget></generic-widget>
                 </div>        
             <div class="search-bar-content">
                 <input type="text" placeholder="Search by patient or therapist">
@@ -558,7 +560,7 @@ if (isset($_SESSION['firstname'])) {
                                             </div>
                                         </div>
                                         <div class="form-group">
-                                        <label for="communication">Flexibility:</label>
+                                        <label for="flexibility">Flexibility:</label>
                                             <div class="communication-checkboxes">
                                                 <?php
                                                 require 'db_conn.php';
@@ -577,6 +579,8 @@ if (isset($_SESSION['firstname'])) {
                                             </div>
                                         </div>
                                     </div>
+                                    <input type="hidden" id="communication" name="communication" value="[]">
+                                    <input type="hidden" id="flexibility" name="flexibility" value="[]">
 
                                     <div class="btn-container">
                                         <button type="submit" class="submit-btn">Submit <i class="fas fa-arrow-right"></i></button>
@@ -854,6 +858,8 @@ if (isset($_SESSION['firstname'])) {
 
     </div>
     
+    <script src="generic-message-popup.js" defer></script>
+    <script src="adash_therapist_filter.js" defer></script>
     <script src="generic-widget.js" defer></script>
     <script src="adash.js" defer></script>
     <script src="admindashboard.js" defer></script>
@@ -865,7 +871,7 @@ if (isset($_SESSION['firstname'])) {
     <script src="a_editstaff_profile.js" defer></script>
     <script src="a_logout.js" defer></script>
     <script src="generic-calendar.js" defer></script>
-    <script src="generic-message-popup.js" defer></script>
+
 
 </body>
 </html>
