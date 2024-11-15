@@ -8,7 +8,8 @@ $patientId = $_GET['id'];
 $sql = "
     SELECT 
         patient.patientID, 
-        patient.patientName AS patient_name, 
+        patient.patientName AS patient_name,
+        patient.parentID as parentID, 
         parent.parentName AS parent_name,
         patient.phone AS phone, 
         patient.email AS email,

@@ -1,3 +1,11 @@
+generic-widget {
+    margin-right: 8%!important;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    max-height: 80vh;
+}
+
 .popup-widget {
     position:relative;
     top:8%;
@@ -33,7 +41,7 @@
 }
 
 #widget-container::-webkit-scrollbar-thumb {
-    background-color: #FDBC10;
+    background-color: #f8cc53;
     border-radius: 4px; 
     border: 2px solid #f1f1f1; 
 }
@@ -44,12 +52,15 @@
 
 #widget-container {
     padding: 8px;
+    padding-right: 12px;
     display: flex;
     flex-direction: column;
     gap: 10px;
-    max-height: 70%;
+    max-height: 100%;
     overflow-x: hidden;
-    overflow-y: scroll;
+    overflow-y: auto;
+    background-color: #dad4c4;
+    flex-grow: 1;
 }
 
 .widget-radio {
@@ -69,7 +80,7 @@
     text-decoration: none;
     color: #432705;
     font-weight: 600;
-    font-size: 13px;
+    font-size: 12px;
     margin-bottom: 12px; /* Add some space between cards */
     overflow: hidden; /* Prevent overflow if the content is too large */
 }

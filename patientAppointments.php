@@ -94,6 +94,7 @@ include 'patientFetchReport.php';
 
 <!-- Reschedule Popup -->
         <generic-calendar></generic-calendar>
+        <generic-message-popup></generic-message-popup>
 
         <!-- Notes Tab -->
         <section id="notes" class="hidden">
@@ -267,7 +268,8 @@ include 'patientFetchReport.php';
             </div>
         </footer> 
     
-    <script src="generic-calendar.js" defer></script>
+        <script src="./generic-components/generic-message-popup.js" defer></script>
+    <script src="./generic-components/generic-calendar.js" defer></script>
     <script src="patientScript.js"></script>
     <script src="patientResched.js" defer></script>
     </div>

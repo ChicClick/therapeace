@@ -101,6 +101,7 @@ $therapistID = $_SESSION['therapist_id'];
             </table>
             <!-- Reschedule Popup -->
             <generic-calendar></generic-calendar>
+            <generic-message-popup></generic-message-popup>
 
         </div>
 
@@ -519,7 +520,8 @@ $therapistID = $_SESSION['therapist_id'];
         const therapistID = '<?php echo $_SESSION['therapist_id']; ?>';
     </script>
 
-    <script src="generic-calendar.js" defer></script>
+    <script src="./generic-components/generic-calendar.js" defer></script>
+    <script src="./generic-components/generic-message-popup.js" defer></script>
     <script src="therapist-dashboard.js" defer></script>
     <script src="calendar.js" defer></script>
     

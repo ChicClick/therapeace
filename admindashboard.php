@@ -118,10 +118,10 @@ if (isset($_SESSION['firstname'])) {
                         <span class="close-btn" id="close-popup">&times;</span>
                         <h2>Add Appointment</h2>
                         <h5>Fill Up Form</h5>
-                        <form id="appointment-form" method="POST" action="a_save_appointment.php">
+                        <form id="appointment-form">
                             <div class="form-row">
                                 <div class="form-group">
-                                    <label for="patient-ID">PatientID:</label>
+                                    <label class="required" for="patient-ID">PatientID:</label>
                                     <select id="patient-ID" name="patient-ID" required>
                                         <option value="">Select PatientID</option>
                                         <?php
@@ -138,50 +138,75 @@ if (isset($_SESSION['firstname'])) {
                                     </select>
                                 </div>
                                 <div class="form-group">
-                                    <label for="patient-name">Patient Name:</label>
+                                    <label class="required" for="patient-name">Patient Name:</label>
                                     <input type="text" id="patient-name" name="patient-name" required>
                                 </div>
                             </div>
 
                             <div class="form-row">
                                 <div class="form-group">
-                                    <label for="parent-guardian">Parent/Guardian:</label>
+                                    <label class="required" for="parent-guardian">Parent/Guardian:</label>
                                     <input type="text" id="parentID" name="parentID" required>
                                 </div>
                                 <div class="form-group">
-                                    <label for="contact-number">Contact Number:</label>
+                                    <label class="required" for="contact-number">Contact Number:</label>
                                     <input type="text" id="contact-number" name="contact-number" required>
                                 </div>
                             </div>
                             
                             <div class="form-row">
-                                    <div class="form-group">
-                                        <label for="serviceID">Services:</label>
-                                        <select id="serviceID" name="serviceID" required>
-                                            <option value="">Select Service</option>
-                                            <?php
-                                            require 'db_conn.php';
-                                            $sql = "SELECT serviceName FROM services";
-                                            $result = $conn->query($sql);
-                                            if ($result->num_rows > 0) {
-                                                while ($row = $result->fetch_assoc()) {
-                                                    echo "<option value='" . $row["serviceName"] . "'>"  . $row["serviceName"] . "</option>";
+                                        <div class="form-group">
+                                        <label class="required" for="serviceID">Services:</label>
+                                            <select id="serviceID" name="serviceID" required>
+                                                <option value="">Select Service</option>
+                                                <?php
+                                                require 'db_conn.php';
+                                                $sql = "SELECT serviceID, serviceName FROM services";
+                                                $result = $conn->query($sql);
+                                                if ($result->num_rows > 0) {
+                                                    while ($row = $result->fetch_assoc()) {
+                                                        echo "<option value='" . $row["serviceID"] . "'>"  . $row["serviceName"] . "</option>";
+                                                    }
                                                 }
-                                            }
-                                            $conn->close();
-                                            ?>                                                                                
+                                                $conn->close();
+                                                ?>                                                                                
                                         </select>
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="searchByName">Search by Name:</label>
-                                        <input type="text" id="searchByName" name="searchByName" required>
-                                    </div>
+                                        </div>
+                                  
                             </div>
-
+                            <hr />
+                            <h5>Filters</h5>
+                            
                             <div class="form-row">
+                            <div class="form-group">
+                                        <label for="searchByName">Search by Name:</label>
+                                        <input type="text" id="searchByName" name="searchByName">
+                                    </div>
+                                        <div class="form-group">
+                                            <label for="specializationAppointment">Specialization:</label>
+                                                <div id="specialization-checkboxes">
+                                                    <?php
+                                                    require 'db_conn.php';
+                                                    $sql = "SELECT serviceID, serviceName FROM services";
+                                                    $result = $conn->query($sql);
+                                                    if ($result->num_rows > 0) {
+                                                        while ($row = $result->fetch_assoc()) {
+                                                            // Generate a checkbox for each service
+                                                            echo "<div class='checkbox-item'>
+                                                                    <input type='checkbox' id='" . $row["serviceName"] . "' name='specializationAppointment[]' value='" . $row["serviceID"] . "' onchange='updateSpecializationAppointment()'>
+                                                                    <label for='app_'" . $row["serviceName"] . "'>" . $row["serviceName"] . "</label>
+                                                                </div>";
+                                                        }
+                                                    } else {
+                                                        echo "<p>No services available.</p>";
+                                                    }
+                                                    $conn->close();
+                                                    ?>                
+                                            </div>
+                                        </div>
                                         <div class="form-group">
                                             <label for="days_available">Day Availability</label>
-                                            <select id="day-appointment-availability" name="days_available" required onchange="toggleAppointmentCustomDay()">
+                                            <select id="day-appointment-availability" name="days_available" onchange="toggleAppointmentCustomDay()">
                                                 <option value="[1,2,3,4,5,6]" selected>Full-Time</option>
                                                 <option id="custom-appointment-day" value="[]">Custom</option>
                                             </select>
@@ -204,7 +229,7 @@ if (isset($_SESSION['firstname'])) {
                                     <div class="form-row">
                                         <div class="form-group">
                                             <label for="time-availability">Time Availability</label>
-                                            <select id="time-appointment-availability" name="times_available" required onchange="toggleCustomAppointmentTime()">
+                                            <select id="time-appointment-availability" name="times_available" onchange="toggleCustomAppointmentTime()">
                                                 <option value="[9,10,11,13,14,15,16,17]" selected>Full-Time</option>
                                                 <option value="[9,10,11]">Morning Shift</option>
                                                 <option value="[13,14,15,16,17]">Afternoon</option>
@@ -239,8 +264,8 @@ if (isset($_SESSION['firstname'])) {
                                                 if ($result->num_rows > 0) {
                                                     while ($row = $result->fetch_assoc()) {
                                                         echo "<div class='checkbox-item'>";
-                                                        echo "<input type='checkbox' name='appointmentCommunication[]' value='" . $row["id"] . "' id='comm_" . $row["id"] . "' onchange='updateAppointmentCommunication()'>"; 
-                                                        echo "<label data-title='" .$row["description"]."' for='comm_" . $row["id"] . "'>" . $row["name"] . "</label>";
+                                                        echo "<input type='checkbox' name='appointmentCommunication[]' value='" . $row["id"] . "' id='app_comm_" . $row["id"] . "' onchange='updateAppointmentCommunication()'>"; 
+                                                        echo "<label data-title='" .$row["description"]."' for='app_comm_" . $row["id"] . "'>" . $row["name"] . "</label>";
                                                         echo "</div>";
                                                     }
                                                 }
@@ -258,8 +283,8 @@ if (isset($_SESSION['firstname'])) {
                                                 if ($result->num_rows > 0) {
                                                     while ($row = $result->fetch_assoc()) {
                                                         echo "<div class='checkbox-item'>";
-                                                        echo "<input type='checkbox' name='appointmentFlexibility[]' value='" . $row["id"] . "' id='comm_" . $row["id"] . "' onchange='updateAppointmentFlexibility()'>"; 
-                                                        echo "<label data-title='" .$row["description"]."' for='comm_" . $row["id"] . "'>" . $row["name"] . "</label>";
+                                                        echo "<input type='checkbox' name='appointmentFlexibility[]' value='" . $row["id"] . "' id='app_flex_" . $row["id"] . "' onchange='updateAppointmentFlexibility()'>"; 
+                                                        echo "<label data-title='" .$row["description"]."' for='app_flex_" . $row["id"] . "'>" . $row["name"] . "</label>";
                                                         echo "</div>";
                                                     }
                                                 }
@@ -268,16 +293,6 @@ if (isset($_SESSION['firstname'])) {
                                             </div>
                                         </div>
                                     </div>
-                         
-                            <!-- <div class="form-row">
-                                <div class="form-group">
-                                    <label for="therapist">Therapist:</label>
-                                    <select id="therapist" name="therapist" required>
-                                        <option value="">Select a Therapist</option>
-                                    </select>
-                                </div>
-                            </div> -->
-
                             <div class="form-row">
                                 <div class="form-group">
                                     
@@ -286,7 +301,8 @@ if (isset($_SESSION['firstname'])) {
 
                             <input type="hidden" id="selectedDateTime" name="schedule">
                             <div class="btn-container">
-                                <button type="submit" class="submit-btn" onclick="handleSubmit()">Submit <i class="fas fa-arrow-right"></i></button>
+                                <button type="button" class="reset-btn" onclick="resetFilters()">Filters <i class="fas fa-eraser"></i></button>
+                                <button type="button" class="submit-btn" onclick="submitAppointmentForm()">Submit <i class="fas fa-arrow-right"></i></button>
                             </div>
                         </form>
                         
@@ -374,7 +390,7 @@ if (isset($_SESSION['firstname'])) {
                            
                     <!-- Hidden Pop-Up Form for Adding Staff -->
                 <div id="add-staff-popup" class="popup-form">
-                            <div class="popup-content-form">
+                            <div class="popup-content-form popup-margin">
                                 <span class="close-btn" id="close-add-staff">&times;</span>
                                 <h2 id="add-staff-popup-title">Add Staff</h2>
                                 <form id="addstaff-form">
@@ -439,21 +455,26 @@ if (isset($_SESSION['firstname'])) {
                                             <input type="text" id="therapistName" name="therapistName" placeholder="e.g. Dr. Strange" required>
                                         </div>
                                         <div class="form-group">
-                                            <label for="specialization">Specialization:</label>
-                                            <select id="specialization" name="specialization" required>
-                                            <option value="">Select Service</option>
+                                        <label for="specialization">Specialization:</label>
+                                            <div id="specialization-checkboxes">
                                                 <?php
                                                 require 'db_conn.php';
-                                                $sql = "SELECT serviceName FROM services";
+                                                $sql = "SELECT serviceID, serviceName FROM services";
                                                 $result = $conn->query($sql);
                                                 if ($result->num_rows > 0) {
                                                     while ($row = $result->fetch_assoc()) {
-                                                        echo "<option value='" . $row["serviceName"] . "'>"  . $row["serviceName"] . "</option>";
+                                                        // Generate a checkbox for each service
+                                                        echo "<div class='checkbox-item'>
+                                                                <input type='checkbox' id='" . $row["serviceName"] . "' name='specialization[]' value='" . $row["serviceID"] . "' onchange='updateSpecialization()'>
+                                                                <label for='" . $row["serviceName"] . "'>" . $row["serviceName"] . "</label>
+                                                            </div>";
                                                     }
+                                                } else {
+                                                    echo "<p>No services available.</p>";
                                                 }
                                                 $conn->close();
                                                 ?>                
-                                            </select>
+                                            </div>
                                         </div>
                                     </div>          
 
@@ -569,8 +590,8 @@ if (isset($_SESSION['firstname'])) {
                                                 if ($result->num_rows > 0) {
                                                     while ($row = $result->fetch_assoc()) {
                                                         echo "<div class='checkbox-item'>";
-                                                        echo "<input type='checkbox' name='flexibility[]' value='" . $row["id"] . "' id='comm_" . $row["id"] . "' onchange='updateFlexibility()'>"; 
-                                                        echo "<label data-title='" .$row["description"]."' for='comm_" . $row["id"] . "'>" . $row["name"] . "</label>";
+                                                        echo "<input type='checkbox' name='flexibility[]' value='" . $row["id"] . "' id='flex_" . $row["id"] . "' onchange='updateFlexibility()'>"; 
+                                                        echo "<label data-title='" .$row["description"]."' for='flex_" . $row["id"] . "'>" . $row["name"] . "</label>";
                                                         echo "</div>";
                                                     }
                                                 }
@@ -581,6 +602,7 @@ if (isset($_SESSION['firstname'])) {
                                     </div>
                                     <input type="hidden" id="communication" name="communication" value="[]">
                                     <input type="hidden" id="flexibility" name="flexibility" value="[]">
+                                    <input type="hidden" id="specialization" name="specialization" value="[]">
 
                                     <div class="btn-container">
                                         <button type="submit" class="submit-btn">Submit <i class="fas fa-arrow-right"></i></button>
@@ -622,7 +644,7 @@ if (isset($_SESSION['firstname'])) {
                                     </div>
                                     <!-- Hidden Pop-Up Form for Editing Staff Profile -->
                                     <div id="staff-profile-popup" class="popup-form">
-                                        <div class="popup-content-form">
+                                        <div class="popup-content-form popup-margin">
                                             <span class="close-btn" id="close-edit-staff-profile-popup">&times;</span>
                                             <h2>Edit Staff Profile</h2>
                                             <form id="editstaff-profile-form">
@@ -740,7 +762,7 @@ if (isset($_SESSION['firstname'])) {
                 
                 <!-- Hidden Pop-Up Form for Adding Services -->
                 <div id="add-service-popup" class="popup-form">
-                            <div class="popup-content-form">
+                            <div class="popup-content-form popup-margin">
                                 <span class="close-btn" id="close-add-popup">&times;</span>
                                 <h2>Add Service</h2>
                                 <form id="addservice-form">
@@ -802,7 +824,7 @@ if (isset($_SESSION['firstname'])) {
                         <button class="edit-service" id="edit-service">Edit Service</button>
                             <!-- Hidden Pop-Up Form for Editing Services -->
                         <div id="service-popup" class="popup-form">
-                            <div class="popup-content-form">
+                            <div class="popup-content-form popup-margin">
                                 <span class="close-btn" id="close-edit-service-popup">&times;</span>
                                 <h2>Edit Service</h2>
                                 <form id="editservice-form">
@@ -858,9 +880,9 @@ if (isset($_SESSION['firstname'])) {
 
     </div>
     
-    <script src="generic-message-popup.js" defer></script>
+    <script src="./generic-components/generic-message-popup.js" defer></script>
     <script src="adash_therapist_filter.js" defer></script>
-    <script src="generic-widget.js" defer></script>
+    <script src="./generic-components/generic-widget.js" defer></script>
     <script src="adash.js" defer></script>
     <script src="admindashboard.js" defer></script>
     <script src="a_dashgenerate_pdf.js" defer></script>
@@ -870,8 +892,8 @@ if (isset($_SESSION['firstname'])) {
     <script src="a_confirmappointment.js" defer></script>
     <script src="a_editstaff_profile.js" defer></script>
     <script src="a_logout.js" defer></script>
-    <script src="generic-calendar.js" defer></script>
-
+    <script src="./generic-components/generic-calendar.js" defer></script>
+    <script src="./generic-components/generic-table.js" defer></script>
 
 </body>
 </html>

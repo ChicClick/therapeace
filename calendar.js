@@ -5,7 +5,10 @@ document.addEventListener('DOMContentLoaded', function() {
             e.preventDefault();
             const appointmentDate = this.dataset.id;
             const appointmentID = this.closest('tr').querySelector('.appointment-id').value;
-            const calendar = new GenericCalendar(appointmentDate, appointmentID, therapistID);
+
+            const calendarAppointment = new CalendarAppointment(appointmentID, "", "","",therapistID,"","")
+
+            const calendar = new GenericCalendar(appointmentDate, calendarAppointment);
             calendar.create();
         });
     });

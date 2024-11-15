@@ -7,7 +7,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Show the popup form when the Add Service button is clicked
     addServiceButton.addEventListener('click', () => {
-        addServicePopup.style.display = 'block';
+        addServicePopup.style.display = 'flex';
     });
 
     // Hide the popup form when the close button is clicked
@@ -82,7 +82,7 @@ document.addEventListener('DOMContentLoaded', () => {
         
         type = "staff";
         addTherapistPopup.style.display = "none";
-        addStaffPopup.style.display = "block";
+        addStaffPopup.style.display = "flex";
         addStaffButton.removeChild(dropdownMenu);
     }
 
@@ -90,7 +90,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const dropdownMenu = document.querySelector(".dropdown-menu");
 
         type = "therapist";
-        addTherapistPopup.style.display = "block";
+        addTherapistPopup.style.display = "flex";
         addStaffPopup.style.display = "none";
         addStaffButton.removeChild(dropdownMenu);
     }
@@ -112,7 +112,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
             type = "staff";
             addTherapistPopup.style.display = "none";
-            addStaffPopup.style.display = "block";
+            addStaffPopup.style.display = "flex";
             addStaffButton.removeChild(dropdownMenu);
         });
     
@@ -122,7 +122,8 @@ document.addEventListener('DOMContentLoaded', () => {
         therapistOption.addEventListener('click', () => {
 
             type = "therapist";
-            addTherapistPopup.style.display = "block";
+            addTherapistPopup.style.display = "flex";
+            addTherapistPopup.style.left = "50%";
             addStaffPopup.style.display = "none";
             addStaffButton.removeChild(dropdownMenu);
         });
@@ -181,24 +182,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
     document.getElementById('addtherapist-form').addEventListener('submit', function(event) {
         event.preventDefault();
-
-        const specializationMap = new Map([
-            ["Speech Therapy", "Speech Therapist"],
-            ["Occupational Therapy", "Occupational Therapist"],
-            ["Physical Therapy", "Physical Therapist"],
-            ["Behavioral Therapy", "Behavioral Therapist"]
-        ]);
-    
         const formData = new FormData(this);
-        const specializationKey = 'specialization';
-    
-        if (formData.has(specializationKey)) {
-            const specializationValue = formData.get(specializationKey);
-            if (specializationMap.has(specializationValue)) {
-                formData.set(specializationKey, specializationMap.get(specializationValue));
-            }
-        }
-
+        
         const submitButton = this.querySelector('button[type="submit"]');
         submitButton.disabled = true;
         submitButton.textContent = 'Loading...';
@@ -220,7 +205,7 @@ document.addEventListener('DOMContentLoaded', () => {
             console.error('Error:', error);
         })
         .finally(() => {
-            // Re-enable form elements and reset button text
+            // re-enabl
             submitButton.disabled = false;
             submitButton.textContent = 'Submit';
             Array.from(this.elements).forEach(element => element.disabled = false);

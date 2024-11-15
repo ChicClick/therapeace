@@ -9,7 +9,9 @@ document.addEventListener('DOMContentLoaded', function () {
             const parentElement = this.closest('[data-therapist-id]');
             const therapistId = parentElement ? parentElement.dataset.therapistId : null;
 
-            const calendar = new GenericCalendar(appointmentDate, this.dataset.appointmentId, therapistId);
+            const calendarAppointment = new CalendarAppointment(this.dataset.appointmentId, "", "","",therapistId,"","")
+
+            const calendar = new GenericCalendar(appointmentDate, calendarAppointment);
             calendar.create();
         });
     });

@@ -1,4 +1,12 @@
+/*
+    Usage, include this js file in the script of HTML or PHP template
+    <script src="generic-widget.js"></script>
+    create the element on the same template <generic-widget></generic-widget>
+    on your js file that has listeners to open the widget. Just declare new WidgetEngine().instatiate() pass the params needed see
+    other implementations
 
+    FAQ: Do change WidgetEngine class for future use of polymorphism like the calendar.
+*/
 const dayMapper = new Map([
     [0, "Sunday"],
     [1, "Monday"],
@@ -43,12 +51,20 @@ const flexibilityMapper = new Map([
     [3, "Emotional Sensitivity"]
 ])
 
-class WidgetEngine {
+const specializationMap = new Map([
+    [1, "Speech"],
+    [2, "Occupational"],
+    [3, "Physical"],
+    [4, "Behavioral"]
+]);
+
+class WidgetEngine extends HTMLElement{
     dataset = null;
 
     title = "Default Widget Title";
-    cssLink = document.head.querySelector('link[href="generic-therapist-widget.css"]');
+    cssLink = document.head.querySelector('link[href="./generic-components/generic-therapist-widget.css"]');
     genericWidget = document.querySelector("generic-widget");
+    selectedId = "";
 
     titleDiv = null;
     containerDiv = null;
@@ -56,6 +72,7 @@ class WidgetEngine {
     constructor(
         dataset = []
     ){
+        super();
         this.dataset = dataset;
     }
 
@@ -63,7 +80,7 @@ class WidgetEngine {
         if(!this.cssLink) {
             const cssLink = document.createElement("link");
             cssLink.rel = "stylesheet";
-            cssLink.href = "generic-widget.css";
+            cssLink.href = "./generic-components/generic-widget.css";
         
             document.head.appendChild(cssLink);  
         }
@@ -89,7 +106,7 @@ class WidgetEngine {
     }
 
     createTitle(title) {
-        this.title = title;
+        this.title = title + ` ${this.dataset.length}`;
 
         const h4Title = document.createElement("h4");
 
@@ -119,6 +136,7 @@ class WidgetEngine {
         let timesDisplay = this.timesDisplay(data.times);
         let communicationDisplay = this.communicationDisplay(data.communication);
         let flexibilityDisplay = this.flexibilityDisplay(data.flexibility);
+        let specialization = this.specializationDisplay(data.specialization);
 
         if(!daysDisplay) {
              daysDisplay = daysAvailable.map(day => dayMapper.get(day)).join(", ");
@@ -130,7 +148,7 @@ class WidgetEngine {
        
         card.innerHTML = `
         <label class="widget-card-label">
-            <input type="radio" name="widget-card-select" class="widget-radio">
+            <input type="radio" value="${data.id}" name="widget-card-select" class="widget-radio">
             <div class="widget-card">
                 <div class="widget-circle-pic">
                     <img src="images/about 4.jpg">
@@ -138,7 +156,7 @@ class WidgetEngine {
                 <!-- Content container -->
                 <div class="widget-card-content">
                     <div class="widget-name">${data.name}</div>
-                    <div class="widget-specialization">${data.specialization}</div>
+                    <div class="widget-specialization">${specialization} Therapist</div>
                     <div class="widget-availability">
                         <span>Days: ${daysDisplay}</span>
                         <span>Times: ${timesDisplay}</span>
@@ -155,10 +173,12 @@ class WidgetEngine {
         if (radioInput.checked) {
             const h4Title = document.createElement("h4");
 
-            h4Title.textContent = this.title + `(${data.name})`;
+            h4Title.textContent = this.title + ` - (${data.name})`;
             
             this.titleDiv.innerHTML = "";
             this.titleDiv.appendChild(h4Title);
+
+            this.selectedId = data.id;
         }
     });
     
@@ -216,10 +236,19 @@ class WidgetEngine {
 
         return flexibility.map(id => flexibilityMapper.get(id)).join(", ");
     }
+
+    specializationDisplay(specialization = []) {
+        if (!specialization || specialization.length === 0) {
+            return "No Specialization to show";
+        }
+
+        return specialization.map(id => specializationMap.get(id)).join(", ");
+    }
     
 }
 
 class Therapist {
+    id = "";
     name = "";
     specialization = "";
     days = null;
@@ -231,8 +260,9 @@ class Therapist {
         data
     ){
         if(data) {
+            this.id = data.therapistID
             this.name = data.therapist_name;
-            this.specialization = data.specialization;
+            this.specialization = JSON.parse(data.specialization);
             this.days = JSON.parse(data.days_available);
             this.times = JSON.parse(data.times_available);
             this.flexibility = JSON.parse(data.flexibility);

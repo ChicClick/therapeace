@@ -6,6 +6,7 @@
 */
 
 class TherapistFilter {
+    widget = null;
     days_available = null;
     times_available = null;
     communication = null;
@@ -25,7 +26,7 @@ class TherapistFilter {
     }
 
     setSpecialization(specialization) {
-        this.specialization = specialization;
+        this.specialization = JSON.parse(specialization);
     }
 
     setDaysAvailable(days) {
@@ -49,12 +50,8 @@ class TherapistFilter {
     }
 
     async fetch() {
-        if (!this.specialization) {
-            new MessagePopupEngine("Error", "Please Select Specialization").instantiate();
-            return;
-        }
-    
-        let url = `a_fetch_therapist_service_filter.php?specialization=${this.specialization}`;
+
+        let url = `a_fetch_therapist_service_filter.php`;
 
         try {
             await fetch(url)
@@ -74,11 +71,15 @@ class TherapistFilter {
     displayData(data) {
         let widget = new WidgetEngine(data);
         widget.instantiate();
-        widget.createTitle("Therapist Match");
+        widget.createTitle("Therapists Available: ");
+        this.widget = widget;
+    }
+
+    getWidgetTherapistId() {
+        return this.widget.selectedId;
     }
 
     async searchByName(name) {
-        console.log(name)
         if(!name) {
             return;
         }
@@ -89,7 +90,6 @@ class TherapistFilter {
                 .then(response => response.json())
                 .then(data => {
                     if(!data.error) {
-                        new MessagePopupEngine("Test Generic", "Test").instantiate();
                         this.displayData(data);
                     } else {
                         new MessagePopupEngine("Info", "No Therapist Found").instantiate();
@@ -105,16 +105,18 @@ class TherapistFilter {
     }
 
     filter() {
-        if (!this.specialization) {
-            new MessagePopupEngine("Error", "Please Select Specialization").instantiate();
-            return;
-        }
-
         if (!this.name || this.name === "") {
             this.name = null;
         }
     
         let filteredData = this.data;
+
+        if(this.specialization && this.specialization.length > 0) {
+            filteredData = filteredData.filter(therapist => {
+                const specialization = therapist.specialization ? JSON.parse(therapist.specialization) : [];
+                return this.specialization.some(day => specialization.includes(day));
+            });
+        }
 
         if (this.days_available && this.days_available.length > 0) {
             filteredData = filteredData.filter(therapist => {
@@ -177,12 +179,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
     therapist.setTimesAvailable(selectTimeAppointmentAvailability.value);
     therapist.setDaysAvailable(selectDayAppointmentAvailability.value);
-
-    resetTherapist = () => {
-        let widget = new WidgetEngine([]);
-        widget.instantiate();
-        widget.createTitle("Therapist Match");
-    }
+    therapist.fetch();
 
     toggleCustomTime = () => {
         const select = document.getElementById('time-availability');
@@ -194,27 +191,22 @@ document.addEventListener("DOMContentLoaded", function() {
             customTimeOptions.style.display = 'none';
         }
     }
+
+    updateCustomTime = () => {
+        const checkboxes = document.querySelectorAll('#custom-time-options input[type="checkbox"]');
+        const customOption = document.getElementById('custom-time');
+        const selectedTime = [];
     
-    updateCommunication = () => {
-        let selectedMethods = [];
-        document.querySelectorAll("input[name='communication[]']:checked").forEach(function(checkbox) {
-            selectedMethods.push(parseInt(checkbox.value));
+        checkboxes.forEach(checkbox => {
+            if (checkbox.checked) {
+                selectedTime.push(parseInt(checkbox.value));
+            }
         });
-        console.log("Selected Communication Methods:", selectedMethods);
-        // Assuming you are using a hidden input field to store the selected values
-        document.getElementById("communication").value = JSON.stringify(selectedMethods);
-    }
     
-    updateFlexibility = () => {
-        let selectedFlexibilities = [];
-        document.querySelectorAll("input[name='flexibility[]']:checked").forEach(function(checkbox) {
-            selectedFlexibilities.push(parseInt(checkbox.value));
-        });
-        console.log("Selected Flexibilities:", selectedFlexibilities);
-        // Assuming you are using a hidden input field to store the selected values
-        document.getElementById("flexibility").value = JSON.stringify(selectedFlexibilities);
+        customOption.value = JSON.stringify(selectedTime);
     }
-    
+
+        
     toggleCustomDay = () => {
         const select = document.getElementById('day-availability');
         const customDayOptions = document.getElementById('custom-day-options');
@@ -240,6 +232,36 @@ document.addEventListener("DOMContentLoaded", function() {
         customOption.value = JSON.stringify(selectedDays);
     }
     
+    updateCommunication = () => {
+        let selectedMethods = [];
+        document.querySelectorAll("input[name='communication[]']:checked").forEach(function(checkbox) {
+            selectedMethods.push(parseInt(checkbox.value));
+        });
+        console.log("Selected Communication Methods:", selectedMethods);
+        document.getElementById("communication").value = JSON.stringify(selectedMethods);
+    }
+    
+    updateFlexibility = () => {
+        let selectedFlexibilities = [];
+        document.querySelectorAll("input[name='flexibility[]']:checked").forEach(function(checkbox) {
+            selectedFlexibilities.push(parseInt(checkbox.value));
+        });
+        console.log("Selected Flexibilities:", selectedFlexibilities);
+        // Assuming you are using a hidden input field to store the selected values
+        document.getElementById("flexibility").value = JSON.stringify(selectedFlexibilities);
+    }
+
+    updateSpecialization = () => {
+        let selectedSpecialization = [];
+
+        document.querySelectorAll("input[name='specialization[]']:checked").forEach(function (checkbox) {
+            selectedSpecialization.push(parseInt(checkbox.value));
+        });
+    
+        console.log("Selected Specialization:", selectedSpecialization);
+        document.getElementById("specialization").value = JSON.stringify(selectedSpecialization);
+    }
+
     logMe = () => {
         const form = document.querySelector("#addstaff-form");
         const formData = new FormData(form);
@@ -305,22 +327,6 @@ document.addEventListener("DOMContentLoaded", function() {
         therapist.filter();
     }
 
-    updateAppointmentCustomDay = () => {
-        const checkboxes = document.querySelectorAll('#custom-appointment-day-options input[type="checkbox"]');
-        const customOption = document.getElementById('custom-appointment-day');
-        const selectedDays = [];
-    
-        checkboxes.forEach(checkbox => {
-            if (checkbox.checked) {
-                selectedDays.push(parseInt(checkbox.value));
-            }
-        });
-    
-        customOption.value = JSON.stringify(selectedDays);
-        therapist.setDaysAvailable(customOption.value);
-        therapist.filter();
-    }
-    
     updateAppointmentCommunication = () => {
         let selectedMethods = [];
         document.querySelectorAll("input[name='appointmentCommunication[]']:checked").forEach(checkbox => {
@@ -335,7 +341,6 @@ document.addEventListener("DOMContentLoaded", function() {
         therapist.filter();
     }
     
-
     updateAppointmentFlexibility = () => {
         let selectedFlexibilities = [];
         document.querySelectorAll("input[name='appointmentFlexibility[]']:checked").forEach(function(checkbox) {
@@ -343,7 +348,18 @@ document.addEventListener("DOMContentLoaded", function() {
         });
 
         therapist.setFlexibility(JSON.stringify(selectedFlexibilities));
-        console.log("Selected Communication Methods:", selectedFlexibilities);
+        console.log("Selected Flexibilities Methods:", selectedFlexibilities);
+        therapist.filter();
+    }
+
+    updateSpecializationAppointment = () => {
+        let selectedSpecializationAppointment = [];
+        document.querySelectorAll("input[name='specializationAppointment[]']:checked").forEach(function(checkbox) {
+            selectedSpecializationAppointment.push(parseInt(checkbox.value));
+        });
+
+        therapist.setSpecialization(JSON.stringify(selectedSpecializationAppointment));
+        console.log("Selected Specialization:", selectedSpecializationAppointment);
         therapist.filter();
     }
 
@@ -362,33 +378,64 @@ document.addEventListener("DOMContentLoaded", function() {
             therapist.searchByName(inputValue);
         }, 1000);
     });
-    
 
-    document.querySelector("#serviceID").addEventListener("change", function(){
-
-        document.querySelector("#searchByName").value = "";
-        therapist.setName(null);
-
-        const specializationMap = new Map([
-            ["Speech Therapy", "Speech Therapist"],
-            ["Occupational Therapy", "Occupational Therapist"],
-            ["Physical Therapy", "Physical Therapist"],
-            ["Behavioral Therapy", "Behavioral Therapist"]
-        ]);
-
-        let specialization = specializationMap.get($(this).val());
+    resetFilters = () => {
+        const customTimeAppointmentOptions = document.getElementById('custom-appointment-time-options');
+        const customTimeAppointmentValue = document.getElementById('custom-appointment-time');
+        customTimeAppointmentValue.value = '[]';
+        customTimeAppointmentOptions.style.display = 'none';
         
-        console.log(specialization);
+        const customDayAppointmentOptions = document.getElementById('custom-appointment-day-options');
+        const customDayAppointmentValue = document.getElementById('custom-appointment-day');
+        customDayAppointmentValue.value = '[]';
+        customDayAppointmentOptions.style.display = 'none';
+        
+        const communicationCheckboxes = document.querySelectorAll("input[name='appointmentCommunication[]']");
+        communicationCheckboxes.forEach(checkbox => {
+            checkbox.checked = false;
+        });
+        
+        const flexibilityCheckboxes = document.querySelectorAll("input[name='appointmentFlexibility[]']");
+        flexibilityCheckboxes.forEach(checkbox => {
+            checkbox.checked = false;
+        });
+        
+        const specializationCheckboxes = document.querySelectorAll("input[name='specializationAppointment[]']");
+        specializationCheckboxes.forEach(checkbox => {
+            checkbox.checked = false;
+        });
+        
+        const searchByNameInput = document.querySelector("#searchByName");
+        searchByNameInput.value = '';
+        
+        therapist.clear();
+        therapist.fetch();
 
-        if (specialization && specialization != undefined && specialization != null) {
-            therapist.setSpecialization(specialization);
-            therapist.fetch();
-            console.log(therapist);
-        } else {
-            therapist.clear();
-            resetTherapist();
+        therapist.filter();
+    };
+
+    submitAppointmentForm = () => {
+        const patientID = document.getElementById("patient-ID").value;
+        const patientName = document.getElementById("patient-name").value;
+        const parentID = document.getElementById("parentID").value;
+        const contactNumber = document.getElementById("contact-number").value;
+        const serviceID = document.getElementById("serviceID").value;
+        const therapistID = therapist.getWidgetTherapistId();
+
+        // Validate fields
+        if (!patientID || !patientName || !parentID || !contactNumber || !serviceID) {
+            new MessagePopupEngine("Information", "All fields are required!").instantiate();
+            return; // Prevent form submission if any required field is empty
         }
-    });
 
-    resetTherapist();
+        if (!therapistID) {
+            new MessagePopupEngine("Information", "Please pick a therapist").instantiate();
+            return;
+        }
+        
+        calendarAppointment = new CalendarAppointment(null,"ongoing",patientID,parentID,therapistID,serviceID);
+
+        calendar = new GenericCalendar(null, calendarAppointment);
+        calendar.create();
+    }
 });

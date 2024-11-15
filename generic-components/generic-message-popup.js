@@ -7,7 +7,7 @@ class MessagePopupEngine extends HTMLElement {
     containerDiv = null;
 
     genericMessagePopup = document.querySelector("generic-message-popup");
-    cssLink = document.head.querySelector('link[href="generic-message-popup.css"]');
+    cssLink = document.head.querySelector('link[href="./generic-components/generic-message-popup.css"]');
     
 
     constructor(
@@ -23,7 +23,7 @@ class MessagePopupEngine extends HTMLElement {
         if(!this.cssLink) {
             const cssLink = document.createElement("link");
             cssLink.rel = "stylesheet";
-            cssLink.href = "generic-message-popup.css";
+            cssLink.href = "./generic-components/generic-message-popup.css";
         
             document.head.appendChild(cssLink);  
         }

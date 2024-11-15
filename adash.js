@@ -111,8 +111,13 @@ $(document).ready(function() {
                         console.log(patient);
                         // Update the fields with patient data
                         $('#patient-name').val(patient.patient_name);
-                        $('#parentID').val(patient.parent_name);
+                        $('#parentID').val(patient.parentID);
+                        $('#parentID').attr('data-title', patient.parent_name);
+                        $('#parentID').prop('readonly', true);
+                        $('#patient-name').prop('readonly', true);
                         $('#contact-number').val(patient.phone);
+                        $('#contact-number').prop('readonly', true);
+                        $('#parentID').attr('title', $('#parentID').attr('data-title'));
                     } catch (error) {
                         console.error("JSON parsing error:", error);
                     }

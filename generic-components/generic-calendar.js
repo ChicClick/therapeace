@@ -1,13 +1,21 @@
 
+/*
+    Usage, include this js file in the script of HTML or PHP template
+    <script src="./generic-components/generic-calendar.js" defer></script>
+    create the element on the same template <generic-calendar></generic-calendar>
+    on your js file that has listeners to open the calendar. Just declare new GenericCalendar() pass the params needed see
+    other implementations
+*/
+
  class CalendarEngineComponent extends HTMLElement {
 
     selectedTimeSlots = ['9:00 AM', '10:00 AM', '11:00 AM', '12:00 PM', '1:00 PM', '2:00 PM', '3:00 PM', '4:00 PM', '5:00 PM', '6:00 PM'];
     blockedSelectedTimeSlots = [];
+    blockedTimeSlots = [];
     genericCalendar = document.querySelector("generic-calendar");
     calendarDiv = null;
     timeDiv = null;
-    messageDiv = null;
-    cssLink = document.head.querySelector('link[href="generic-calendar.css"]');
+    cssLink = document.head.querySelector('link[href="./generic-components/generic-calendar.css"]');
 
     constructor(){
         super();
@@ -17,12 +25,12 @@
         if(!this.cssLink) {
             const cssLink = document.createElement("link");
             cssLink.rel = "stylesheet";
-            cssLink.href = "generic-calendar.css";
+            cssLink.href = "./generic-components/generic-calendar.css";
         
             document.head.appendChild(cssLink);  
         }
 
-        if (this.calendarDiv && this.timeDiv && this.messageDiv) {
+        if (this.calendarDiv && this.timeDiv) {
             return
         }
 
@@ -32,17 +40,12 @@
         const time = document.createElement("div");
         time.id = "time-div";
 
-        const message = document.createElement("div");
-        message.id = "message-div";
-
         if(this.genericCalendar) {
             this.genericCalendar.appendChild(calendar);
             this.genericCalendar.appendChild(time);
-            this.genericCalendar.appendChild(message);
 
             this.calendarDiv = document.querySelector("#calendar-div");
             this.timeDiv = document.querySelector("#time-div");
-            this.messageDiv = document.querySelector("#message-div");
             return;
         }
 
@@ -55,194 +58,105 @@
         divContainer.classList.add("popup");
         divContainer.style.display = "block";
     
-        const divContent = document.createElement("div");
-        divContent.classList.add("popup-content");
+        // Use innerHTML for the container's structure
+        divContainer.innerHTML = `
+            <div class="popup-content">
+                <span class="close">&times;</span>
+                <h4>Select Available Dates</h4>
+                <div id="calendar">
+                    <div id="calendar-loading">Loading</div>
+                    <div class="calendar-container">
+                        <div class="month-navigation">
+                            <a href="#" id="prevMonth" class="nav-link-month">&lt;</a>
+                            <p id="currentMonth"></p>
+                            <a href="#" id="nextMonth" class="nav-link-month">&gt;</a>
+                        </div>
+                        <div class="calendar-grid"></div>
+                    </div>
+                </div>
+                <button id="proceedButton" type="button">Proceed →</button>
+            </div>
+        `;
     
-        const spanClose = document.createElement("span");
-        spanClose.classList.add("close");
-        spanClose.innerHTML = "&times;";
-        spanClose.addEventListener("click", () => {
+        divContainer.querySelector(".close").addEventListener("click", () => {
             this.calendarDiv.innerHTML = "";
         });
     
-        const h4Title = document.createElement("h4");
-        h4Title.textContent = "Select Available Dates";
-    
-        const divCalendar = document.createElement("div");
-        divCalendar.id = "calendar";
-
-        const divCalendarLoading = document.createElement("div");
-        divCalendarLoading.id = "calendar-loading";
-        divCalendarLoading.textContent = "Loading";
-    
-        const divCalendarContainer = document.createElement("div");
-        divCalendarContainer.classList.add("calendar-container");
-    
-        const divMonthNavigation = document.createElement("div");
-        divMonthNavigation.classList.add("month-navigation");
-    
-        const linkPrevMonth = document.createElement("a");
-        linkPrevMonth.href = "#";
-        linkPrevMonth.id = "prevMonth";
-        linkPrevMonth.classList.add("nav-link-month");
-        linkPrevMonth.innerHTML = "&lt;";
-        linkPrevMonth.addEventListener("click", (e) => {
+        divContainer.querySelector("#prevMonth").addEventListener("click", (e) => {
             e.preventDefault();
-                this.dateObj.selectedMonth--;
-                if (this.dateObj.selectedMonth < 0) {
-                    this.dateObj.selectedMonth = 11;
-                    this.dateObj.selectedYear--;
-                }
+            this.dateObj.selectedMonth--;
+            if (this.dateObj.selectedMonth < 0) {
+                this.dateObj.selectedMonth = 11;
+                this.dateObj.selectedYear--;
+            }
             this.reload();
-        })
+        });
     
-        const pCurrentMonth = document.createElement("p");
-        pCurrentMonth.id = "currentMonth";
-    
-        const linkNextMonth = document.createElement("a");
-        linkNextMonth.href = "#";
-        linkNextMonth.id = "nextMonth";
-        linkNextMonth.classList.add("nav-link-month");
-        linkNextMonth.innerHTML = "&gt;";
-        linkNextMonth.addEventListener("click", (e) => {
+        divContainer.querySelector("#nextMonth").addEventListener("click", (e) => {
             e.preventDefault();
             this.dateObj.selectedMonth++;
-                if (this.dateObj.selectedMonth > 11) {
-                    this.dateObj.selectedMonth = 0;
-                    this.dateObj.selectedYear++;
-                }
+            if (this.dateObj.selectedMonth > 11) {
+                this.dateObj.selectedMonth = 0;
+                this.dateObj.selectedYear++;
+            }
             this.reload();
-        })
+        });
     
-        divMonthNavigation.appendChild(linkPrevMonth);
-        divMonthNavigation.appendChild(pCurrentMonth);
-        divMonthNavigation.appendChild(linkNextMonth);
-    
-        const divCalendarGrid = document.createElement("div");
-        divCalendarGrid.classList.add("calendar-grid");
-    
-        divCalendarContainer.appendChild(divMonthNavigation);
-        divCalendarContainer.appendChild(divCalendarGrid);
-        
-        divCalendar.appendChild(divCalendarLoading);
-        divCalendar.appendChild(divCalendarContainer);
-
-        const buttonProceed = document.createElement("button");
-        buttonProceed.id = "proceedButton";
-        buttonProceed.type = "button";
-        buttonProceed.textContent = "Proceed →";
-        buttonProceed.addEventListener("click", ()=> {
-            if (this.dateObj.selectedDate) { 
-                spanClose.click();
+        divContainer.querySelector("#proceedButton").addEventListener("click", () => {
+            if (this.dateObj.selectedDate) {
+                divContainer.querySelector(".close").click();
                 this.createTimeContainer();
                 this.generateAvailableTimes();
             } else {
-                alert('Please select a date first.'); // Alert if no date is selected
+                alert('Please select a date first.');
             }
-        })
-        
-        divContent.appendChild(spanClose);
-        divContent.appendChild(h4Title);
-        divContent.appendChild(divCalendar);
-        divContent.appendChild(buttonProceed);
-    
-        divContainer.appendChild(divContent);
+        });
     
         this.calendarDiv.appendChild(divContainer);
-    }
+    };
+    
 
     createTimeContainer = () => {
         const divContainer = document.createElement("div");
         divContainer.id = "timePopup";
         divContainer.classList.add("popup");
         divContainer.style.display = "block";
-    
-        const divContent = document.createElement("div");
-        divContent.classList.add("popup-content");
-    
-        const spanClose = document.createElement("span");
-        spanClose.classList.add("close");
-        spanClose.innerHTML = "&times;";
-        spanClose.addEventListener("click", () => {
+
+        divContainer.innerHTML = `
+            <div class="popup-content">
+                <span class="close">&times;</span>
+                <h4>Select Available Times</h4>
+                <div id="availableTimes">
+                    <h5>Morning Sessions</h5>
+                    <ul id="morningTimes"></ul>
+                    <h5>Afternoon Sessions</h5>
+                    <ul id="afternoonTimes"></ul>
+                </div>
+                <button id="backButton">Back</button>
+                <button id="confirmTimeButton">${this.calendarAppointment.appointmentID ? "Reschedule →" : "Schedule →"}</button>
+            </div>
+        `;
+
+        divContainer.querySelector(".close").addEventListener("click", () => {
             this.timeDiv.innerHTML = "";
         });
-    
-        const h4Title = document.createElement("h4");
-        h4Title.textContent = "Select Available Times";
-    
-        const divAvailableTimes = document.createElement("div");
-        divAvailableTimes.id = "availableTimes";
         
-        const h5Morning = document.createElement("h5");
-        h5Morning.textContent = "Morning Sessions";
-        const ulMorning = document.createElement("ul");
-        ulMorning.id = "morningTimes"; // This is where morning times will be added dynamically
-        divAvailableTimes.appendChild(h5Morning);
-        divAvailableTimes.appendChild(ulMorning);
+        divContainer.querySelector("#backButton").addEventListener("click", () => {
+            this.timeDiv = null;
+            this.create();
+        });
         
-        const h5Afternoon = document.createElement("h5");
-        h5Afternoon.textContent = "Afternoon Sessions";
-        const ulAfternoon = document.createElement("ul");
-        ulAfternoon.id = "afternoonTimes"; // This is where afternoon times will be added dynamically
-        divAvailableTimes.appendChild(h5Afternoon);
-        divAvailableTimes.appendChild(ulAfternoon);
-    
-        const confirmButton = document.createElement("button");
-        confirmButton.id = "confirmTimeButton";
-        confirmButton.textContent = "Reschedule →";
-        confirmButton.addEventListener("click", () =>{
+        divContainer.querySelector("#confirmTimeButton").addEventListener("click", () => {
             this.confirmTime();
         });
     
-        divContent.appendChild(spanClose);
-        divContent.appendChild(h4Title);
-        divContent.appendChild(divAvailableTimes);
-        divContent.appendChild(confirmButton);
-    
-        divContainer.appendChild(divContent);
-    
         this.timeDiv.appendChild(divContainer);
-    }
-
-    createMessagePopup() {
-        const divContainer = document.createElement("div");
-        divContainer.id = "messagePopup";
-        divContainer.classList.add("popup");
-        divContainer.style.display = "block";
-        
-        const divContent = document.createElement("div");
-        divContent.classList.add("popup-content");
-        
-        const closeBtn = document.createElement("span");
-        closeBtn.classList.add("close");
-        closeBtn.id = "closePopup";
-        closeBtn.addEventListener("click", () => {
-            this.messageDiv.style.display = "none";
-        });
-        
-        const messageParagraph = document.createElement("p");
-        messageParagraph.id = "popupMessage";
-        
-        const confirmBtn = document.createElement("button");
-        confirmBtn.id = "confirmPopup";
-        confirmBtn.textContent = "Confirm";
-        confirmBtn.addEventListener("click", () => {
-            this.messageDiv.style.display = "none";
-        });
-        
-        divContent.appendChild(closeBtn);
-        divContent.appendChild(messageParagraph);
-        divContent.appendChild(confirmBtn);
-        
-        divContainer.appendChild(divContent);
-
-        this.messageDiv.appendChild(divContainer);
     }
  }
  
  class GenericCalendar extends CalendarEngineComponent {
-    appointmentID = "";
-    therapistID = ""
+
+    calendarAppointment = new CalendarAppointment();
     appointmentDay = 0;
     selectedMonth = new Date().getMonth();
     selectedYear = new Date().getFullYear();
@@ -251,12 +165,11 @@
 
     constructor(
         appointmentDate = null,
-        appointmentID = null,
-        therapistID = null
+        calendarAppointment
     ) {
         super();
-        this.appointmentID = appointmentID;
-        this.therapistID = therapistID;
+        this.calendarAppointment = calendarAppointment;
+
         if (appointmentDate) {
             const [year, month, day] = appointmentDate.split(' ')[0].split('-').map(Number);
             this.appointmentDay = day;
@@ -274,7 +187,7 @@
     async create() {
         this.instantiate();
 
-        if (this.calendarDiv && this.timeDiv && this.messageDiv) {
+        if (this.calendarDiv && this.timeDiv) {
             this.calendarDiv.innerHTML = "";
             this.timeDiv.innerHTML = "";
 
@@ -323,18 +236,18 @@
 
      async fetchBookedDatesForTherapist(calendarGrid) {
         try {
-            const response = await fetch(`booked-dates.php?therapist_id=${this.therapistID}`);
+            const response = await fetch(`booked-dates.php?therapist_id=${this.calendarAppointment.therapistID}`);
             const data = await response.json();
-            
-            if (data.bookedDates && data.blockedDates && data.blockedTimes) {
+            console.log(data);
+            if (data) {
                 this.blockedSelectedTimeSlots = [];
+                this.generateTimeSlots(JSON.parse(data.blockedTimes));
 
                 for(const bookedDates of data.bookedDates) {
                     this.blockedSelectedTimeSlots.push(bookedDates);
                 }
 
-                console.log(JSON.parse(data.blockedDates));
-
+                console.log(this.blockedSelectedTimeSlots);
                 for (let day = 1; day <= this.dateObj.daysInMonth; day++) {
                     const dateString = `${this.dateObj.selectedYear}-${String(this.dateObj.selectedMonth + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
                     const dayDiv = document.createElement('div');
@@ -377,9 +290,21 @@
         }
     }
 
+    generateTimeSlots(startHours) {
+        for (const time of startHours) {
+            if (typeof time !== "number" || isNaN(time)) {
+                console.error(`Invalid hour: ${time}`);
+                continue; // Skip invalid entries
+            }
+            let period = time < 12 ? "AM" : "PM";
+            let displayHour = time % 12 === 0 ? 12 : time % 12; // Convert to 12-hour format
+            this.blockedTimeSlots.push(`${displayHour}:00 ${period}`);
+        }
+    }
+    
+
     generateAvailableTimes() {
         const booked = []
-
         this.blockedSelectedTimeSlots.filter(bookedDates =>  bookedDates.split(" ")[0] == this.dateObj.selectedDate)
         .forEach(filteredBookedDates => {
             booked.push(this.convertTo12HourFormat(filteredBookedDates));
@@ -423,7 +348,7 @@
             timeSlot.setMilliseconds(0);
     
             if ((isToday && (timeSlot <= currentTime || timeSlot <= nextHourTime))||
-                booked.includes(time)
+                booked.includes(time) || this.blockedTimeSlots.includes(time)
             ) {
                 radioButton.disabled = true;
                 const label = document.createElement('label');
@@ -441,8 +366,6 @@
                 listItem.appendChild(label);
             }
 
-            
-    
             if (hours < 12) {
                 morningList.appendChild(listItem);
             } else {
@@ -455,36 +378,78 @@
     if (this.dateObj.selectedDate && this.dateObj.selectedTime) {
             const newSchedule = `${this.dateObj.selectedDate} ${this.dateObj.selectedTime}`;
 
-            await fetch('patientRescheduleAppointment.php', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/x-www-form-urlencoded',
-                },
-                body: new URLSearchParams({
-                    selectedDatetime: newSchedule,
-                    appointmentID: this.appointmentID
-                }),
-            })
-            .then(response => {
-                return response.json()
-            })
-            .then(data => {
+            if(this.calendarAppointment.appointmentID) {
+                await fetch('patientRescheduleAppointment.php', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded',
+                    },
+                    body: new URLSearchParams({
+                        selectedDatetime: newSchedule,
+                        appointmentID: this.calendarAppointment.appointmentID
+                    }),
+                })
+                .then(response => {
+                    return response.json()
+                })
+                .then(data => {
+    
+                    if (data.success) {
+                        new MessagePopupEngine("Success", "Your Appointment has been rescheduled successfully!").instantiate();
+                        setTimeout(()=> {
+                            window.location.reload();
+                        }, 1000);
+                    } else {
+                        new MessagePopupEngine("Error", "Failed to reschedule appointment. Please try again later.").instantiate();
+                    }
+                })
+                .catch(error => {
+                    console.error('Error updating appointment:', error);
+                    new MessagePopupEngine("Error", "An error occurred. Please try again.").instantiate();
+                });
+            }
+            
+            if(!this.calendarAppointment.appointmentID) {
+                this.calendarAppointment.schedule = newSchedule;
 
-                if (data.success) {
-                    this.openMessagePopup('Your appointment has been rescheduled successfully.');
-                    setTimeout(()=> {
-                        window.location.reload();
-                    }, 1000);
-                } else {
-                    this.openMessagePopup('Failed to reschedule appointment. Please try again later.');
+                const params = new URLSearchParams();
+                console.log(this.calendarAppointment);
+                
+                for (const key in this.calendarAppointment) {
+                    if (this.calendarAppointment.hasOwnProperty(key)) {
+                        params.append(key, this.calendarAppointment[key]);
+                    }
                 }
-            })
-            .catch(error => {
-                console.error('Error updating appointment:', error);
-                this.openMessagePopup('An error occurred. Please try again.');
-            });
+
+                await fetch('a_save_appointment.php', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded',
+                    },
+                    body: params.toString()
+                })
+                .then(response => {
+                    return response.json()
+                })
+                .then(data => {
+    
+                    if (data.success) {
+                        new MessagePopupEngine("Success", "Your Appointment has been scheduled successfully!").instantiate();
+                        setTimeout(()=> {
+                            window.location.reload();
+                        }, 1000);
+                    } else {
+                        new MessagePopupEngine("Error", "Failed to reschedule appointment. Please try again later.").instantiate();
+                    }
+                })
+                .catch(error => {
+                    console.error('Error updating appointment:', error);
+                    new MessagePopupEngine("Error", "An error occurred. Please try again.").instantiate();
+                });
+            }
+
         } else {
-            this.openMessagePopup('Please select both a date and a time.');
+            new MessagePopupEngine("Information", "Please select both a date and a time").instantiate();
         }
     }
 
@@ -518,13 +483,6 @@
         return `${String(hour).padStart(2, '0')}:${String(minute).padStart(2, '0')}:${second || '00'}`;
     }
 
-    openMessagePopup(message) {
-        this.createMessagePopup();
-        this.messageDiv.style.block;
-        document.querySelector("#messagePopup").style.display = "block";
-        document.querySelector("#popupMessage").textContent = message;
-    }
-
     getMonthName(month) {
         const monthNames = [
             "January", "February", "March", "April", "May", "June",
@@ -532,6 +490,35 @@
         ];
         return monthNames[month];
     }
+}
+
+class CalendarAppointment {
+    appointmentID;
+    status;
+    patientID;
+    parentID;
+    therapistID;
+    serviceID;
+    schedule;
+
+    constructor(
+        appointmentID = null,
+        status = "ongoing",
+        patientID = null,
+        parentID = null,
+        therapistID = null,
+        serviceID = null,
+        schedule = null,
+    ){
+        this.appointmentID = appointmentID,
+        this.status = status,
+        this.patientID = patientID;
+        this.parentID = parentID;
+        this.therapistID = therapistID;
+        this.serviceID = serviceID;
+        this.schedule = schedule
+    }
+
 }
 
 customElements.define("generic-calendar", GenericCalendar);

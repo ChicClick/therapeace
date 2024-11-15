@@ -1,13 +1,6 @@
 <?php
 require 'db_conn.php';
 
-$specialization = $_GET['specialization'];
-
-if (!is_string($specialization)) {
-    echo json_encode(['error' => 'Invalid specialization parameter']);
-    exit();
-}
-
 // SQL query to fetch therapist information based on specialization
 $sql = "
     SELECT 
@@ -23,7 +16,6 @@ $sql = "
         therapist.communication,
         therapist.flexibility
     FROM therapist
-    WHERE therapist.specialization = ?
 ";
 
 $stmt = $conn->prepare($sql);
@@ -32,7 +24,6 @@ if (!$stmt) {
     exit();
 }
 
-$stmt->bind_param("s", $specialization);
 $stmt->execute();
 $result = $stmt->get_result();
 
