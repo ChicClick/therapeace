@@ -36,7 +36,369 @@ document.addEventListener('DOMContentLoaded', () => {
             link.parentElement.classList.add('active');
         });
     });
+
+    /*-- NOTES SECTION --------------- ******************* --------- THIS IS A MARKER DO NOT REMOVE --*/
+     openModal = () => {
+        const modalContent = `
+        <form id="notesForm" class="notesForm" action="add_notes.php" method="post">
+                <div class="form-row">
+                <div class="form-column-left">
+                    <label for="patientSelect">Select Patient:</label>
+                    <select id="patientSelect" name="patientID" required onclick="loadPatients()" onchange="loadServices()">
+                        <option value="">Select a patient...</option> <!-- Default placeholder option -->
+                    </select>
+
+                    <label for="therapySelect">Select Service:</label>
+                    <select id="therapySelect" name="serviceID" required>
+                    </select>
+                </div>
+                    <div class="form-column-right">
+                        <label for="sessionDate">Session Date:</label>
+                        <input type="date" id="sessionDate" name="sessionDate" required>
+
+                        <label for="sessionTime">Select Session Time:</label>
+                        <select id="sessionTime" name="sessionTime">
+                            <option value="">Select Time...</option>
+                            <option value="9:00 AM">9:00 AM</option>
+                            <option value="10:00 AM">10:00 AM</option>
+                            <option value="11:00 AM">11:00 AM</option>
+                            <option value="12:00 PM">12:00 PM</option>
+                            <option value="1:00 PM">1:00 PM</option>
+                            <option value="2:00 PM">2:00 PM</option>
+                            <option value="3:00 PM">3:00 PM</option>
+                            <option value="4:00 PM">4:00 PM</option>
+                            <option value="5:00 PM">5:00 PM</option>
+                            <option value="6:00 PM">6:00 PM</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="feedback">Feedback:
+                        <a href="#" onclick="document.getElementById('feedbackImage').click();" style="text-decoration: underline; color: #432705; padding:5px; font-size:12px; border-radius:5px;">
+                            <i class="fas fa-upload" style="margin-right: 5px;"></i> Attach Image
+                        </a>
+                    </label>
+                    <div style="position: relative;">
+                        <textarea id="feedback" name="feedback" required></textarea>
+                        <div id="loadingIcon" class="loading-icon" style="display: none;"></div>
+                    </div>
+                    <input type="file" id="feedbackImage" accept="image/*" style="display: none;" onchange="extractTextFromImage()" />
+
+                    <style>
+                        .loading-icon {
+                            position: absolute;
+                            top: 40%;
+                            left: 45%;
+                            transform: translate(-50%, -50%);
+                            border: 3px solid rgba(0, 0, 0, 0.2); /* Thinner border for smaller size */
+                            border-top: 3px solid #432705; /* Thinner top border for color */
+                            border-radius: 50%;
+                            width: 20px; /* Smaller width */
+                            height: 20px; /* Smaller height */
+                            animation: spin 1s linear infinite;
+                        }
+
+                        @keyframes spin {
+                            0% { transform: rotate(0deg); }
+                            100% { transform: rotate(360deg); }
+                        }
+                    </style>
+                </div>
+                <button type="submit">Submit</button>
+            </form>
+        `;
+
+        const sidebar = new SideViewBarEngine("ADD SESSION NOTES", modalContent);
+        sidebar.render();
+    }
+
+     extractTextFromImage = async () => {
+        const fileInput = document.getElementById('feedbackImage');
+        if (fileInput.files.length === 0) return;
+
+        const file = fileInput.files[0];
+        const reader = new FileReader();
+        const loadingIcon = document.getElementById('loadingIcon');
+        const feedbackTextarea = document.getElementById('feedback');
+
+        // Show loading icon
+        loadingIcon.style.display = 'block';
+
+        reader.onload = async function(event) {
+            const imageData = event.target.result;
+
+            try {
+                const result = await Tesseract.recognize(
+                    imageData,
+                    'eng', // Specify the language code
+                    {
+                        logger: (m) => console.log(m) // Optional: log progress
+                    }
+                );
+
+                const extractedText = result.data.text.trim(); // Get and trim extracted text
+
+                if (extractedText) {
+                    // Insert the recognized text into the feedback textarea if text is found
+                    feedbackTextarea.value = extractedText;
+                } else {
+                    // Display an error message if no text was found
+                    alert("No text was found in the image. Please try a different image.");
+                }
+            } catch (error) {
+                console.error('Error extracting text:', error);
+                alert('An error occurred while processing the image');
+            } finally {
+                // Hide loading icon
+                loadingIcon.style.display = 'none';
+            }
+        };
+
+        reader.readAsDataURL(file);
+    }
+
+    loadPatients = async () => {
+        const patientSelect = document.getElementById("patientSelect");
+
+        const today = new Date().toISOString().split('T')[0];
+        document.getElementById('sessionDate').setAttribute('max', today);
+    
+        // Check if options are already loaded (beyond the default placeholder)
+        if (patientSelect.options.length > 1) return;
+
+        patientSelect.options[0].remove();
+
+        console.log(patientSelect);
+    
+        try {
+            const response = await fetch("notes_patient.php");
+            const data = await response.json();
+    
+            data.forEach(patient => {
+                const option = document.createElement("option");
+                option.value = patient.patientID;
+                option.textContent = patient.patientName;
+                patientSelect.appendChild(option);
+            });
+
+            await this.loadServices();
+        } catch (error) {
+            console.error('Error loading patient options:', error);
+        }
+    };
+    
+
+    loadServices = () => {
+        const therapySelect = document.getElementById("therapySelect");
+        const patientID = document.getElementById("patientSelect").value;
+
+        // Only fetch options if a patient is selected
+        if (!patientID) {
+            therapySelect.innerHTML = ""; // Clear previous options
+            return;
+        }
+
+        fetch(`notes_service.php?patientID=${patientID}`)
+            .then(response => response.text())
+            .then(data => {
+                therapySelect.innerHTML = data; // Directly set fetched options to the select element
+            })
+            .catch(error => console.error('Error loading service options:', error));
+    }
+
+    /*-- PROGRESS REPORT MARKER DO NOT REMOVE**--
+        ----------------------------------------------------
+        ----------------------------------------------------
+    */
+    
+
+    /*****INIT FUNCTIONS DO NOT REMOVE ************************************* */
+    fetchAccordionNotes();
+    checkMessage();
 });
+
+const checkMessage = () => {
+
+    const params = new URLSearchParams(window.location.search);
+
+    if (params.has('message')) {
+        const message = params.get('message'); // Get the message value
+
+        const sanitizedMessage = message.replace(/</g, "&lt;").replace(/>/g, "&gt;");
+        
+        new MessagePopupEngine('INFORMATION', sanitizedMessage).instantiate();
+
+        params.delete('message');
+
+        const newUrl = params.toString() ? `${window.location.pathname}?${params.toString()}` : window.location.pathname;
+
+        window.history.replaceState({}, '', newUrl);
+    }
+};
+
+
+/** NOTES CALL BACK FUNCTION START */
+    fetchAccordionNotes = () => {
+        const accordionContainer = document.querySelector("#notes-accordion");
+
+        if(!accordionContainer) {
+            throw new Error("Please make an empty div with notes-accordion id");
+        }
+
+        accordionContainer.innerHTML = "";
+
+        fetch(`notes.php`)
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            return response.json(); // Parse as JSON
+        })
+        .then(data => {
+            if (!Array.isArray(data)) {
+                throw new Error("The fetched data is not an array.");
+            }
+        
+            const test = [
+                // Group 1: John Doe (Speech Therapy)
+                {
+                    "patientID": "P001",
+                    "patient_name": "John Doe",
+                    "service_name": "Speech Therapy",
+                    "feedback_date": "September 10, 2024",
+                    "feedback_raw_date": "2024-09-10",
+                    "unique_id": "673cf7828f345"
+                },
+                {
+                    "patientID": "P001",
+                    "patient_name": "John Doe",
+                    "service_name": "Speech Therapy",
+                    "feedback_date": "October 20, 2024",
+                    "feedback_raw_date": "2024-10-20",
+                    "unique_id": "673cf7828f353"
+                },
+                {
+                    "patientID": "P001",
+                    "patient_name": "John Doe",
+                    "service_name": "Speech Therapy",
+                    "feedback_date": "October 29, 2024",
+                    "feedback_raw_date": "2024-10-29",
+                    "unique_id": "673cf7828f358"
+                },
+                {
+                    "patientID": "P001",
+                    "patient_name": "John Doe",
+                    "service_name": "Speech Therapy",
+                    "feedback_date": "November 18, 2024",
+                    "feedback_raw_date": "2024-11-18",
+                    "unique_id": "673cf7828f35b"
+                },
+            
+                // Group 2: Jane Smith (Behavioral Therapy)
+                {
+                    "patientID": "P002",
+                    "patient_name": "Jane Smith",
+                    "service_name": "Behavioral Therapy",
+                    "feedback_date": "March 12, 2024",
+                    "feedback_raw_date": "2024-03-12",
+                    "unique_id": "673cf7828f401"
+                },
+                {
+                    "patientID": "P002",
+                    "patient_name": "Jane Smith",
+                    "service_name": "Behavioral Therapy",
+                    "feedback_date": "May 25, 2024",
+                    "feedback_raw_date": "2024-05-25",
+                    "unique_id": "673cf7828f412"
+                },
+                {
+                    "patientID": "P002",
+                    "patient_name": "Jane Smith",
+                    "service_name": "Behavioral Therapy",
+                    "feedback_date": "August 10, 2024",
+                    "feedback_raw_date": "2024-08-10",
+                    "unique_id": "673cf7828f423"
+                },
+            
+                // Group 3: Bob Williams (Occupational Therapy)
+                {
+                    "patientID": "P003",
+                    "patient_name": "Bob Williams",
+                    "service_name": "Occupational Therapy",
+                    "feedback_date": "January 15, 2024",
+                    "feedback_raw_date": "2024-01-15",
+                    "unique_id": "673cf7828f434"
+                },
+                {
+                    "patientID": "P003",
+                    "patient_name": "Bob Williams",
+                    "service_name": "Occupational Therapy",
+                    "feedback_date": "February 22, 2024",
+                    "feedback_raw_date": "2024-02-22",
+                    "unique_id": "673cf7828f445"
+                },
+                {
+                    "patientID": "P003",
+                    "patient_name": "Bob Williams",
+                    "service_name": "Occupational Therapy",
+                    "feedback_date": "June 5, 2024",
+                    "feedback_raw_date": "2024-06-05",
+                    "unique_id": "673cf7828f456"
+                },
+            
+                // Group 4: Alice Cooper (Physical Therapy)
+                {
+                    "patientID": "P004",
+                    "patient_name": "Alice Cooper",
+                    "service_name": "Physical Therapy",
+                    "feedback_date": "April 3, 2024",
+                    "feedback_raw_date": "2024-04-03",
+                    "unique_id": "673cf7828f467"
+                },
+                {
+                    "patientID": "P004",
+                    "patient_name": "Alice Cooper",
+                    "service_name": "Physical Therapy",
+                    "feedback_date": "July 19, 2024",
+                    "feedback_raw_date": "2024-07-19",
+                    "unique_id": "673cf7828f478"
+                },
+                {
+                    "patientID": "P004",
+                    "patient_name": "Alice Cooper",
+                    "service_name": "Physical Therapy",
+                    "feedback_date": "October 8, 2024",
+                    "feedback_raw_date": "2024-10-08",
+                    "unique_id": "673cf7828f489"
+                }
+            ];
+            
+        
+        // group nyio muna patient tapos key nya dapat yung name then loop nyo tapos pasa nyo yung value
+        const groupedByPatientName = test.reduce((map, item) => {
+            if (!map[item.patient_name]) {
+                map[item.patient_name] = [];
+            }
+            map[item.patient_name].push(item);
+            return map;
+        }, {});
+
+        Object.entries(groupedByPatientName).forEach(([key, value]) => {
+            const accordionTitle = `${key} (${value[0]["service_name"]})`
+
+            const accordion = new AccordionEngine(accordionTitle, "", value).render();
+            accordionContainer.appendChild(accordion);
+        });
+    })
+    .catch(error => {
+        console.error("Error fetching or processing data:", error);
+    });
+    
+    }
+
+/** NOTES CALL BACK FUNCTION END */
+
 
 function filterSearch() {
     // Get the search input value
@@ -63,82 +425,6 @@ function filterSearch() {
         rows[i].style.display = found ? '' : 'none';
     }
 }
-
-document.querySelector('.view-notes-btn').addEventListener('click', function() {
-    // Redirect to the feedback notes section
-    window.location.href = '#notes-section'; // Redirect to the notes section
-});
-
-
-
-document.addEventListener("DOMContentLoaded", function() {
-    const patientTable = document.getElementById('patients-tbody');
-    const patientInfo = document.getElementById('patient-info'); // Reference to the patient info section
-    let currentPatientId = null; // Track the current patient ID
-
-    // Add click event listener to the patient table
-    patientTable.addEventListener('click', function(e) {
-        const clickedRow = e.target.closest('tr'); // Check if a row was clicked
-        if (clickedRow) {
-            const patientId = clickedRow.getAttribute('data-patient-id');
-            console.log('Clicked patient ID:', patientId); // Debugging line
-
-            if (currentPatientId === patientId) {
-                // If the same patient is clicked again, hide the info
-                patientInfo.style.display = 'none';
-                currentPatientId = null; // Reset the current patient ID
-            } else {
-                // If a different patient is clicked, fetch and update the info
-                fetchPatientInfo(patientId);
-                currentPatientId = patientId; // Update the current patient ID
-            }
-        }
-    });
-
-    // Function to fetch and display patient info
-    function fetchPatientInfo(patientId) {
-        // Clear the current patient info
-        patientInfo.style.display = 'none'; // Hide the info while updating
-        clearPatientInfo();
-
-        // Fetch the clicked patient's detailed information
-        fetch(`fetch_patient_info.php?id=${patientId}`)
-            .then(response => response.json())
-            .then(patientData => {
-                console.log('Fetched patient data:', patientData); // Debugging line
-                if (patientData.error) {
-                    console.error('Patient not found:', patientData.error);
-                } else {
-                    // Populate the patient info section
-                    document.getElementById('patientName').textContent = patientData.patient_name; // Ensure this matches your JSON keys
-                    document.getElementById('service').textContent = patientData.service; // Ensure this key exists in your PHP
-                    document.getElementById('parent-name').textContent = patientData.parent_name;
-                    document.getElementById('phone').textContent = patientData.phone;
-                    document.getElementById('email').textContent = patientData.email;
-                    document.getElementById('address').textContent = patientData.address;
-                    document.getElementById('birthday').textContent = patientData.birthday;
-                    document.getElementById('gender').textContent = patientData.gender;
-
-                    // Show the patient info section
-                    patientInfo.style.display = 'block';
-                }
-            })
-            .catch(err => console.error('Error fetching patient details:', err));
-    }
-
-    // Function to clear patient info
-    function clearPatientInfo() {
-        document.getElementById('patientName').textContent = '';
-        document.getElementById('service').textContent = '';
-        document.getElementById('parent-name').textContent = '';
-        document.getElementById('phone').textContent = '';
-        document.getElementById('email').textContent = '';
-        document.getElementById('address').textContent = '';
-        document.getElementById('birthday').textContent = '';
-        document.getElementById('gender').textContent = '';
-    }
-});
-
 
 function fetchFeedback(date, id) {
     const notesContainer = document.getElementById("notes-info");
@@ -224,7 +510,7 @@ function fetchGuestData(guestID) {
 function fetchChecklist(guestID) {
     const checklistSection = document.querySelector('.checklist-left-section');
     checklistSection.innerHTML = 'Loading checklist...';
-
+    console.log("checklist");
     fetch(`fetch_checklist.php?guestID=${guestID}`)
         .then(response => {
             if (!response.ok) {
@@ -345,7 +631,8 @@ const cancelLogout = document.getElementById('cancelLogout');
 // Show the modal when logout button is clicked
 logoutBtn.addEventListener('click', (event) => {
     event.preventDefault(); // Prevent the default action
-    logoutModal.style.display = 'block'; // Show the modal
+    
+    logoutModal.style.display = "block"
 });
 
 // Close the modal when the user clicks on <span> (x)

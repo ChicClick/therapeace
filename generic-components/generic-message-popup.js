@@ -52,7 +52,7 @@ class MessagePopupEngine extends HTMLElement {
     }
 
     createTitle() {
-        const h4Title = document.createElement("h4");
+        const h4Title = document.createElement("h5");
 
         h4Title.textContent = this.title;
 
@@ -77,4 +77,19 @@ class MessagePopupEngine extends HTMLElement {
     }
 }
 
+class MessagePopupNotes extends MessagePopupEngine {
+
+    constructor(title, message) {
+        super(title, message);
+        this.genericMessagePopup = document.querySelector("notes-popup");
+    }
+
+    instantiate() {
+        super.instantiate();
+        this.titleDiv.classList.add("notes-title");
+        this.containerDiv.classList.add("notes-container");
+    }
+}
+
 customElements.define("generic-message-popup", MessagePopupEngine);
+customElements.define("notes-popup", MessagePopupNotes);

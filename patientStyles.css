@@ -30,6 +30,10 @@ body {
     margin-left: 10px;
 }
 
+#content {
+    z-index: 1;
+}
+
 /* Appointments Styles */
 #appointments {
     margin-top: 10%;
@@ -52,14 +56,6 @@ hr {
     border: none;
 }
 
-
-/* Appointments Header */
-.appointments-header, .notes-header {
-    display: flex;
-    justify-content: space-between; /* Adjust to distribute space evenly */
-    margin-bottom: 5px; /* Space below the header */
-    padding: 10px 0; /* Vertical padding for headers */
-}
 
 .header-schedule, .header-therapist, .header-action {
     flex: 1; /* Adjusts the width of the action header */
@@ -88,32 +84,6 @@ hr {
     justify-content: flex-start;
 }
 
-.appointment-table {
-    background-color: transparent; 
-    margin: 0 auto;
-    margin-bottom: 30px;
-    width: 100%; /* Ensure it takes full width */
-    border-spacing: 0; /* Removes spacing */
-}
-
-.table-row {
-    display: flex; /* Use flexbox for each row */
-    justify-content: space-between; /* Space out the content */
-    align-items: center; /* Center align the content */
-    padding: 10px 0; /* Same padding as headers for alignment */
-    border-bottom: 1px solid #B2A071; /* Bottom border for rows */
-}
-
-.row-schedule, .row-therapist, .row-reschedule {
-    flex: 1; /* All columns take equal space */
-    padding: 10px; /* Same padding as headers for alignment */
-    box-sizing: border-box; /* Ensure padding does not affect width */
-}
-
-.row-reschedule {
-    flex: 0 0 150px; /* Fixed width for RESCHEDULE column */
-    text-align: center; /* Center-align the button */
-}
 
 .reschedule {
     color: #FFA500;
@@ -191,15 +161,6 @@ hr {
     background-color: transparent;
 }
 
-.notes-container {
-    max-width: 90%; 
-    margin: 0 auto;
-    background: #fbf5e2;
-    padding: 20px;
-    border-radius: 8px;
-    color: #432705;
-    margin-bottom: 30px;
-}
 
 /* Close button styling */
 #close-notes {
@@ -263,27 +224,10 @@ hr {
 }
 
 
-/* Styles for the Back Button */
-.back-button {
-    background: none; /* Remove default button background */
-    border: none; /* Remove border */
-    font-size: 18px; /* Set button size */
-    color: #333; /* Set button color */
-    cursor: pointer; /* Change cursor to pointer */
-    margin-right: 10px; /* Space between button and text */
-    vertical-align: middle; /* Aligns vertically with the text */
-}
-
-.back-button:hover {
-    color: #007bff; /* Change color on hover */
-}
-
 .notes-container h3 {
     display: flex; /* Use flexbox to align items */
     align-items: center; /* Vertically center the button and text */
 }
-
-
 
 .download-button {
     background-color: #4CAF50; /* Green */

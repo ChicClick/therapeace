@@ -118,17 +118,3 @@ li label {
     font-size: 14px;
     transition: background-color 0.3s ease, color 0.3s ease;
 }
-
-.reschedule-button {
-    color: #FFA500;              /* Orange color */
-    text-decoration: none;  /* Underline text */
-    font-weight: 600;            /* Bold text (slightly lighter than bold) */
-    border: none;                /* Remove border */
-    background-color: transparent; /* Transparent background */
-    cursor: pointer;            /* Change cursor to pointer on hover */
-}
-
-.reschedule-button:hover {
-    color: #ff8c00;              /* Darker orange on hover */
-    text-decoration: underline;     /* Remove underline on hover */
-}

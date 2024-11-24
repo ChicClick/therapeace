@@ -1,0 +1,4 @@
+vendor/
+.env
+z_test.php
+a_test.php

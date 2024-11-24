@@ -87,9 +87,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $conn->close(); // Close the database connection
 
     // Output the confirmation message and redirect to the therapist dashboard using JavaScript
-    echo "<script>
-        alert('$confirmationMessage');
-        window.location.href = 'therapist-dashboard.php';
-    </script>";
+    header("Location: therapist-dashboard.php?message=" . urlencode($confirmationMessage));
+    exit;
 }
 ?>

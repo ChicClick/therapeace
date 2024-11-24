@@ -35,9 +35,9 @@ document.addEventListener('DOMContentLoaded', () => {
         })
         .then(response => response.text())
         .then(data => {
-            alert(data); // Display response message (success or error)
-            addServicePopup.style.display = 'none'; // Close the popup after submission
-            this.reset(); // Reset the form fields
+            addServicePopup.style.display = 'none';
+            this.reset();
+            window.location.href = "admindashboard.php?active=services-section";
         })
         .catch(error => {
             console.error('Error:', error);
@@ -90,7 +90,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const dropdownMenu = document.querySelector(".dropdown-menu");
 
         type = "therapist";
-        addTherapistPopup.style.display = "flex";
+        addTherapistPopup.style.display = "block";
         addStaffPopup.style.display = "none";
         addStaffButton.removeChild(dropdownMenu);
     }
@@ -123,7 +123,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
             type = "therapist";
             addTherapistPopup.style.display = "flex";
-            addTherapistPopup.style.left = "50%";
             addStaffPopup.style.display = "none";
             addStaffButton.removeChild(dropdownMenu);
         });

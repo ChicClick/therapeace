@@ -1,3 +1,40 @@
+@font-face {
+    font-family: 'Poppins';
+    src: url('../fonts/Poppins-Regular.ttf') format('truetype');
+    font-weight: 400;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Poppins';
+    src: url('../fonts/Poppins-SemiBold.ttf') format('truetype');
+    font-weight: 600; /* Semibold weight */
+}
+
+generic-calendar {
+    font-family: 'Poppins', sans-serif;
+}
+
+#calendar-loading {
+    height: 200px;
+    display: flex;
+    font-size: 35px;
+    font-weight:100;
+    flex-direction: column;
+    gap: 0;
+}
+
+#calendar-loading i{
+    margin: auto;
+    margin-bottom: 0;
+}
+
+#calendar-loading span{
+    margin: auto;
+    margin-top:5px;
+    font-size: 14px;
+}
+
 .popup {
     position: fixed;
     top: 50%;
@@ -16,8 +53,10 @@
 .popup-content {
     position: relative;
 }
+
 .popup-content h4 {
     align-self: center;
+    font-size: 20px;
 }
 
 .close {

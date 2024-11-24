@@ -64,12 +64,15 @@ $stmt->bind_param("ssssi", $summary, $status, $updated_at, $pdfPath, $reportID);
 
 if ($stmt->execute()) {
     if ($stmt->affected_rows > 0) {
-        echo "Report updated and PDF created successfully.";
+        header("Location: therapist-dashboard.php?message=" . urlencode("Updated Successfully"));
+        exit;
     } else {
-        echo "No rows were affected. Either the reportID does not exist or the data is unchanged.";
+        header("Location: therapist-dashboard.php?message=" . urlencode("No rows were affected. Either the reportID does not exist or the data is unchanged."));
+        exit;
     }
 } else {
-    echo "Error updating report: " . $stmt->error;
+    header("Location: therapist-dashboard.php?message=" . urlencode("Error updating PDF"));
+    exit;
 }
 
 $stmt->close();

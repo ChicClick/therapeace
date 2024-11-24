@@ -1,49 +1,71 @@
 let globalTherapistFilter = new TherapistFilter();
 
 document.addEventListener('DOMContentLoaded', () => {
-    
-
     const links = document.querySelectorAll('.left-section nav a');
     const sections = document.querySelectorAll('.right-section .content');
     const menuItems = document.querySelectorAll('.left-section ul li');
 
+    // Function to activate a section and corresponding menu item
+    function activateSection(targetId) {
+        // Remove active class from all sections
+        sections.forEach(section => {
+            section.classList.remove('active');
+        });
+
+        // Remove active class from all menu items
+        menuItems.forEach(item => {
+            item.classList.remove('active');
+        });
+
+        // Activate the section with the targetId
+        const targetSection = document.getElementById(targetId);
+        if (targetSection) {
+            targetSection.classList.add('active');
+        }
+
+        // Activate the corresponding menu item
+        links.forEach(link => {
+            if (link.getAttribute('data-target') === targetId) {
+                link.parentElement.classList.add('active');
+            }
+        });
+    }
+
+    // Check the URL for the 'active' parameter
+    const urlParams = new URLSearchParams(window.location.search);
+    const activeSection = urlParams.get('active');
+
+    if (activeSection) {
+        // Activate the section based on the 'active' parameter
+        activateSection(activeSection);
+        window.history.replaceState(null, '', window.location.pathname);
+    } else {
+        // Fallback: activate the first section by default
+        if (sections.length > 0) {
+            const defaultSection = sections[0].id;
+            activateSection(defaultSection);
+        }
+    }
+
+    // Handle menu link clicks
     links.forEach(link => {
         link.addEventListener('click', (event) => {
-            if (link.getAttribute('href') === 'registerlanding.php') {
-                // Allow default behavior for the "Sign Out" link
-                return; 
-            }
-
-            const targetId = link.getAttribute('data-target');
-
-            // Check if the clicked link is the "Sign Out" link
-            if (link.getAttribute('href') === 'adminlogin.php') {
-                // Allow default behavior for the "Sign Out" link
-                return; 
+            if (link.getAttribute('href') === 'registerlanding.php' || link.getAttribute('href') === 'adminlogin.php') {
+                // Allow default behavior for these links
+                return;
             }
 
             event.preventDefault();
 
-            // Remove active class from all sections
-            sections.forEach(section => {
-                section.classList.remove('active');
-            });
-
-            // Hide all menu items
-            menuItems.forEach(item => {
-                item.classList.remove('active');
-            });
-
-            // Show the target section
+            const targetId = link.getAttribute('data-target');
             if (targetId) {
-                document.getElementById(targetId).classList.add('active');
+                activateSection(targetId);
             }
-
-            // Add active class to the clicked menu item
-            link.parentElement.classList.add('active');
         });
     });
 });
+
+
 function filterSearch() {
     // Get the search input value
     const input = document.getElementById('searchInput').value.toLowerCase();
@@ -79,8 +101,6 @@ document.getElementById('add-appointment-button').addEventListener('click', open
 
 function openPopup() {
     document.getElementById('appointment-popup-form').style.display = 'flex';
-    // const calendar = new GenericCalendar("2024-11-11", "", "T001");
-    // calendar.create();
 }
 
 
@@ -105,9 +125,9 @@ $(document).ready(function() {
             $.ajax({
                 url: `a_fetch_patient_info.php?id=${patientId}`, // Endpoint to fetch patient details
                 type: 'GET',
-                success: function(response) {
+                success: async function(response) {
                     try {
-                        var patient = JSON.parse(response); // Parse the JSON response
+                        var patient = await JSON.parse(response); // Parse the JSON response
                         console.log(patient);
                         // Update the fields with patient data
                         $('#patient-name').val(patient.patient_name);

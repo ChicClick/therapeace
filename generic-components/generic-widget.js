@@ -271,4 +271,10 @@ class Therapist {
     }
 }
 
+class ViewReports extends WidgetEngine {
+    constructor(){
+        super();
+    }
+}
+
 customElements.define("generic-widget", WidgetEngine);

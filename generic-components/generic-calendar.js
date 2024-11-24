@@ -64,8 +64,11 @@
                 <span class="close">&times;</span>
                 <h4>Select Available Dates</h4>
                 <div id="calendar">
-                    <div id="calendar-loading">Loading</div>
-                    <div class="calendar-container">
+                    <div id="calendar-loading">
+                        <i class="fas fa-spinner fa-spin"></i>
+                        <span>Loading</span>
+                    </div>
+                    <div class="calendar-container" style="display:none">
                         <div class="month-navigation">
                             <a href="#" id="prevMonth" class="nav-link-month">&lt;</a>
                             <p id="currentMonth"></p>
@@ -195,7 +198,7 @@
             setTimeout( async () => {
                 const calendarFinalContainer = this.generateCalendar(this.calendarDiv);
                 await this.fetchBookedDatesForTherapist( calendarFinalContainer);
-            }, 1000);
+            }, 2000);
             
             return;
         }
@@ -286,7 +289,8 @@
         } catch (error) {
             console.error("Error fetching booked dates for therapist:", error);
         } finally {
-            this.calendarDiv.querySelector("#calendar-loading").innerHTML = "";
+            this.calendarDiv.querySelector("#calendar-loading").style.display = "none";
+            this.calendarDiv.querySelector(".calendar-container").style.display = "block";
         }
     }
 
@@ -348,7 +352,7 @@
             timeSlot.setMilliseconds(0);
     
             if ((isToday && (timeSlot <= currentTime || timeSlot <= nextHourTime))||
-                booked.includes(time) || this.blockedTimeSlots.includes(time)
+                booked.includes(time) || !this.blockedTimeSlots.includes(time)
             ) {
                 radioButton.disabled = true;
                 const label = document.createElement('label');
@@ -397,7 +401,9 @@
                     if (data.success) {
                         new MessagePopupEngine("Success", "Your Appointment has been rescheduled successfully!").instantiate();
                         setTimeout(()=> {
-                            window.location.reload();
+                            const currentUrl = new URL(window.location.href);
+                            currentUrl.searchParams.set("active", "appointments-section"); // Add or update 'active' parameter
+                            window.location.href = currentUrl.toString();
                         }, 1000);
                     } else {
                         new MessagePopupEngine("Error", "Failed to reschedule appointment. Please try again later.").instantiate();
@@ -436,7 +442,9 @@
                     if (data.success) {
                         new MessagePopupEngine("Success", "Your Appointment has been scheduled successfully!").instantiate();
                         setTimeout(()=> {
-                            window.location.reload();
+                            const currentUrl = new URL(window.location.href);
+                            currentUrl.searchParams.set("active", "appointments-section");
+                            window.location.href = currentUrl.toString();
                         }, 1000);
                     } else {
                         new MessagePopupEngine("Error", "Failed to reschedule appointment. Please try again later.").instantiate();
