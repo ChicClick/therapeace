@@ -545,12 +545,10 @@ input[type="radio"]:checked + label::after {
   border-bottom: none;
   font-weight: 600;
 }
+
 .tab.active:hover {
   background-color: #ffffff;
   color: #432705;
-  border: 2px solid #ccc;
-  border-bottom: none;
-  font-weight: 600;
 }
 .content-container {
   display: none;
