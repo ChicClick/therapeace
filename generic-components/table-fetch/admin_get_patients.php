@@ -27,12 +27,12 @@ $sqlAppointments = "SELECT
         patient.patientID,
         patient.patientName AS patient_name,
         parent.parentName AS parent_name,
-        services.serviceName AS service_name,
+        COALESCE(services.serviceName, '') AS service_name,
         patient.image AS image,
         patient.status AS patient_status
     FROM patient
     JOIN parent ON patient.parentID = parent.parentID
-    JOIN services ON patient.serviceID = services.serviceID";
+    LEFT JOIN services ON patient.serviceID = services.serviceID";
 
 $stmt = $mysqli->prepare($sqlAppointments);
 
