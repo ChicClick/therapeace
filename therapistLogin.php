@@ -9,6 +9,7 @@ session_start();
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>TheraPeace - Therapist Login</title>
     <link rel="stylesheet" href="loginstyles.css">
+    <link rel="icon" type="image/svg+xml" href="images/TheraPeace Logo.svg">
 </head>
 <body>
     <!-- Left Section -->
