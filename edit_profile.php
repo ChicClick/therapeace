@@ -62,6 +62,11 @@ $stmt->close();
         </div>
 
         <div class="form-group-profile">
+            <label>Availability</label>
+            <div class="input-field-availability"><?php echo htmlspecialchars($therapist['availability']); ?></div>
+        </div>
+
+        <div class="form-group-profile">
             <label for="address">Address</label>
             <textarea id="address" name="address" class="input-field" rows="3" style="font-family:'Poppins';"><?php echo htmlspecialchars($therapist['address']); ?></textarea>
         </div>
