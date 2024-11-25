@@ -13,8 +13,6 @@ $sql = "
         g.status AS guest_status
     FROM 
         guest g
-    WHERE 
-        g.schedule IS NULL
 ";
 
 // Execute the query

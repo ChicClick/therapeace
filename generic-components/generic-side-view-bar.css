@@ -44,8 +44,8 @@
 
 .side-view-bar-container {
     margin-right: 0;
-    max-width: 30vw;
-    width: 30vw;
+    max-width: 50vw;
+    width: 50vw;
     max-height: 100vh;
     background-color: rgba(246, 240, 220, 0.7);
     backdrop-filter: blur(20px);
@@ -66,8 +66,8 @@
 }
 
 .side-view-bar-title {
-    font-size: 1.5rem;
-    font-weight: bold;
+    font-size: 14px;
+    font-weight: bolder;
     padding: 5px;
     text-align: center;
     border-radius: 8px;
@@ -86,7 +86,7 @@
     border: 1px solid rgba(0, 0, 0, 0.2);
     border-radius: 4px;
     color: #432705;
-    font-size: 20px;
+    font-size: 15px;
 }
 
 .side-view-bar-content::-webkit-scrollbar {
@@ -109,6 +109,8 @@
 }
 
 .side-view-bar-header {
+    font-size: 15px;
+    fone-weight: bold;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -211,8 +213,9 @@
 }
 
 .profile-info h5 {
-    font-size: 12px;
-    color: #55555593;
+    font-size: 14px;
+    font-weight: 600;
+    color: #432705;
     margin-top: 5px;
     margin-bottom: 5px;
 }
@@ -244,6 +247,12 @@
     max-width: 300px;
 }
 
+strong {
+  font-size: 15px;
+  color: #432705;
+  font-weight: bold;
+}
+
 .profile-info p strong {
     font-size: 15px;
     color: #432705;
@@ -258,7 +267,7 @@
 }
 
 .notes-wrapper {
-    font-size: 15px;
+    font-size: 12px;
     background-color: #FBF5E2;
     color: #432705;
     height: fit-content;

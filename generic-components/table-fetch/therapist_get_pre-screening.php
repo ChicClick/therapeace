@@ -37,7 +37,7 @@ $sql = "
     FROM
         guest g
     WHERE
-        g.schedule IS NULL AND g.status = ?
+        g.status = ?
 ";
 
 $stmt = $conn->prepare($sql);

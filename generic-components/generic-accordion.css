@@ -24,7 +24,7 @@
 
 .accordion-header {
     font-weight: 400;
-    color: #4d4a47c3;
+    color: #432705;
     font-size: 12px;
     cursor: pointer;
     padding: 15px 20px;
@@ -35,14 +35,17 @@
 }
 
 .accordion-header:hover {
-    background-color: #e6e6e6;
+    background-color: #ab9984;
+    color: white;
 }
 
 .accordion-header.expanded {
-    background-color: #ddd;
+     background-color: #ab9984;
+    color: white;
 }
 
 .accordion-header::after {
+    font-weight: bold;
     content: "►";
     font-size: 14px;
     margin-left: 10px;
