@@ -3,7 +3,8 @@ include 'patient_get_profile.php';
 include 'patient_profile_functions.php';
 
 ?>   
-   <!-- Edit Profile Section (Initially Hidden) -->
+    <div class="wrapper">
+    <!-- Edit Profile Section (Initially Hidden) -->
         <section id="edit-profile-section" style="display: none;">
             <h1>EDIT PROFILE</h1>
             <hr>
@@ -54,3 +55,4 @@ include 'patient_profile_functions.php';
                 </form>
             </div>
         </section>
+    </div>
