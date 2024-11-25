@@ -649,7 +649,6 @@ class TableEngine extends HTMLElement {
                                 <h2>${data.therapist_name}</h2>
                                 <h3>${servicesInfo}</h3>
                             </div>
-                            <button class="view-notes-btn">View Notes</button>
                         </div>
                         <div class="profile-info">
                             <h5>CONTACT INFORMATION</h5>
@@ -697,7 +696,6 @@ class TableEngine extends HTMLElement {
                                 <h2>${data.staff_name}</h2>
                                 <h3>${data.position}</h3>
                             </div>
-                            <button class="view-notes-btn">View Notes</button>
                         </div>
                         <div class="profile-info">
                             <h5>CONTACT INFORMATION</h5>
