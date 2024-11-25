@@ -56,7 +56,7 @@ if (isset($_SESSION['patientName'])) {
             <div class="dropdown">
                 <button class="dropbtn">▼</button>
                 <div class="dropdown-content">
-                    <a href="patientProfile.php">Edit Profile</a>
+                    <a href="#" class="nav-link" data-target="patientProfile.php">Edit Profile</a>
                     <a href="settings.php">Settings</a>
                     <a href="#" id="logoutBtn">Log Out</a>
                 </div>
