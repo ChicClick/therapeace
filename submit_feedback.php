@@ -30,7 +30,7 @@ if ($result && mysqli_num_rows($result) > 0) {
 
         if (mysqli_query($conn, $sql)) {
             echo "<p>Thank you for your feedback!</p>";
-            header("Location: patientHome.php"); // Redirect back to the home page after submission
+            header("Location: patientHomepage.php"); // Redirect back to the home page after submission
             exit; // Make sure the script stops here
         } else {
             echo "<p>Error submitting feedback: " . mysqli_error($conn) . "</p>";
