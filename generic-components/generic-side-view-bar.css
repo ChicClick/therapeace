@@ -244,6 +244,12 @@
     max-width: 300px;
 }
 
+strong {
+  font-size: 15px;
+  color: #432705;
+  font-weight: bold;
+}
+
 .profile-info p strong {
     font-size: 15px;
     color: #432705;

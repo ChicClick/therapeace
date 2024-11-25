@@ -529,6 +529,10 @@ class TableEngine extends HTMLElement {
         if(this.tableType == "admin_therapists") {
             this.therapistsInfo(row["therapistID"])
         }
+
+        if(this.tableType == "admin_services") {
+            this.servicesInfo(row)
+        }
     }
 
     editService(row) {
@@ -590,6 +594,26 @@ class TableEngine extends HTMLElement {
                 console.error('Error:', error);
             });
         }
+    }
+
+    servicesInfo(row) {
+        new SideViewBarEngine("SERVICE", 
+            `
+               <div class="profile-info">
+                <h5>Service Information</h5>
+                <div class="contact-info-wrapper">
+                    <div class="contact-info-main">
+                        <strong>Service Name:</strong><p> ${row["serviceName"] || 'N/A'}</p>
+                        <strong>Availability:</strong><p> ${row["availability"] || 'N/A'}</p>
+                        <strong>Description:</strong><p> ${row["description"] || 'N/A'}</p>
+                        <strong>About:</strong><p> ${row["about"] || 'N/A'}</p>
+                        <strong>Price:</strong><p> ${row["price"] || 'N/A'}</p>
+                    </div>
+                </div>
+            </div>
+
+            `
+        ).render();
     }
 
     async therapistsInfo(therapistID) {
@@ -657,19 +681,19 @@ class TableEngine extends HTMLElement {
                             <h5>CONTACT INFORMATION</h5>
                             <div class="contact-info-wrapper">
                                 <div class="contact-info-main">
-                                    <p><strong>Address:</strong> ${data.address || 'N/A'}</p>
-                                    <p><strong>Phone:</strong> ${data.phone || 'N/A'}</p>
-                                    <p><strong>Email:</strong> ${data.email || 'N/A'}</p> <!-- Added Email -->
-                                    <p><strong>Birthday:</strong> ${data.birthday ? new Date(data.birthday).toLocaleDateString() : 'N/A'}</p> <!-- Added Birthday -->
+                                    <strong>Address:</strong><p> ${data.address || 'N/A'}</p>
+                                    <strong>Phone:</strong><p> ${data.phone || 'N/A'}</p>
+                                    <strong>Email:</strong><p>${data.email || 'N/A'}</p> <!-- Added Email -->
+                                    <strong>Birthday:</strong><p> ${data.birthday ? new Date(data.birthday).toLocaleDateString() : 'N/A'}</p> <!-- Added Birthday -->
                                 </div>
                             </div>
                             <h5>BASIC INFORMATION</h5>
-                            <p><strong>Date Hired:</strong> ${new Date(data.datehired).toLocaleDateString() || 'N/A'}</p>
-                            <p><strong>Gender:</strong> ${data.gender || 'N/A'}</p>
-                            <p><strong>Days Available:</strong> ${daysInfo || 'N/A'}</p> <!-- Added Days Available -->
-                            <p><strong>Times Available:</strong> ${timeInfo || 'N/A'}</p> <!-- Added Times Available -->
-                            <p><strong>Communication:</strong> ${commInfo || 'N/A'}</p> <!-- Added Communication -->
-                            <p><strong>Flexibility:</strong> ${flexInfo || 'N/A'}</p> <!-- Added Flexibility -->
+                            <strong>Date Hired:</strong><p> ${new Date(data.datehired).toLocaleDateString() || 'N/A'}</p>
+                            <strong>Gender:</strong><p> ${data.gender || 'N/A'}</p>
+                            <strong>Days Available:</strong><p> ${daysInfo || 'N/A'}</p> <!-- Added Days Available -->
+                            <strong>Times Available:</strong><p> ${timeInfo || 'N/A'}</p> <!-- Added Times Available -->
+                            <strong>Communication:</strong><p> ${commInfo || 'N/A'}</p> <!-- Added Communication -->
+                           <strong>Flexibility:</strong> <p>${flexInfo || 'N/A'}</p> <!-- Added Flexibility -->
                         </div>
                     </div>
 
@@ -704,13 +728,13 @@ class TableEngine extends HTMLElement {
                             <h5>CONTACT INFORMATION</h5>
                             <div class="contact-info-wrapper">
                                 <div class="contact-info-main">
-                                    <p><strong>Address:</strong> ${data.address || 'N/A'}</p>
-                                    <p><strong>Phone:</strong> ${data.phone || 'N/A'}</p>
+                                    <strong>Address:</strong><p> ${data.address || 'N/A'}</p>
+                                    <strong>Phone:</strong><p> ${data.phone || 'N/A'}</p>
                                 </div>
                             </div>
                             <h5>BASIC INFORMATION</h5>
-                            <p><strong>Date Hired:</strong> ${ new Date(data.datehired).toLocaleDateString() || 'N/A'}</p>
-                            <p><strong>Gender:</strong> ${data.gender || 'N/A'}</p>
+                            <strong>Date Hired:</strong><p> ${ new Date(data.datehired).toLocaleDateString() || 'N/A'}</p>
+                            <strong>Gender:</strong><p> ${data.gender || 'N/A'}</p>
                         </div>
                         </div>
                        
@@ -980,7 +1004,7 @@ class TableEngine extends HTMLElement {
                 const notesHTML = data.notes.length > 0 
                     ? data.notes.map(note => `
                         <div class="note-item">
-                            <p><strong>Date:</strong> ${note.feedbackdate}</p>
+                            <strong>Date:</strong><p> ${note.feedbackdate}</p>
                             <p>${note.feedback}</p>
                         </div>
                     `).join('') 
@@ -1002,15 +1026,15 @@ class TableEngine extends HTMLElement {
                             <h5>CONTACT INFORMATION</h5>
                             <div class="contact-info-wrapper">
                                 <div class="contact-info-main">
-                                    <p><strong>Parent/Guardian:</strong> ${patient.parentName || 'N/A'}</p>
-                                    <p><strong>Address:</strong> ${patient.address || 'N/A'}</p>
-                                    <p><strong>Phone:</strong> ${patient.phone || 'N/A'}</p>
-                                    <p><strong>Email:</strong> ${patient.email || 'N/A'}</p>
+                                    <strong>Parent/Guardian:</strong><p> ${patient.parentName || 'N/A'}</p>
+                                    <strong>Address:</strong><p> ${patient.address || 'N/A'}</p>
+                                    <strong>Phone:</strong><p> ${patient.phone || 'N/A'}</p>
+                                    <strong>Email:</strong><p> ${patient.email || 'N/A'}</p>
                                 </div>
                             </div>
                             <h5>BASIC INFORMATION</h5>
-                            <p><strong>Birthday:</strong> ${patient.getFormattedBirthday()}</p>
-                            <p><strong>Gender:</strong> ${patient.gender || 'N/A'}</p>
+                            <strong>Birthday:</strong><p> ${patient.getFormattedBirthday()}</p>
+                            <strong>Gender:</strong><p> ${patient.gender || 'N/A'}</p>
                         </div>
                         </div>
                        
