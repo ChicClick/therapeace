@@ -160,10 +160,10 @@ if (isset($_SESSION['firstname'])) {
                                         <div class="form-group">
                                         <label class="required" for="serviceID">Services:</label>
                                             <select id="serviceID" name="serviceID" required>
-                                                <option value="">Select Service</option>
+                                                <option value="">Select Available Service</option>
                                                 <?php
                                                 require 'db_conn.php';
-                                                $sql = "SELECT serviceID, serviceName FROM services";
+                                                $sql = "SELECT serviceID, serviceName FROM services WHERE availability = 'Available'";
                                                 $result = $conn->query($sql);
                                                 if ($result->num_rows > 0) {
                                                     while ($row = $result->fetch_assoc()) {

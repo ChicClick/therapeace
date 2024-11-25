@@ -16,11 +16,9 @@ $sql = "
         patient.email AS email,
         patient.address AS address,
         patient.birthday AS birthday,
-        patient.gender AS gender,
-        services.serviceName AS service
+        patient.gender AS gender
     FROM patient
     JOIN parent ON patient.parentID = parent.parentID
-    JOIN services ON patient.serviceID = services.serviceID
     WHERE patient.patientID = ?
 ";
 
