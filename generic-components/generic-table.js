@@ -542,7 +542,10 @@ class TableEngine extends HTMLElement {
                     </div>
                     <div class="form-group">
                         <label for="availability">Availability:</label>
-                        <input value="${row["availability"]}" type="text" id="availability" name="availability" placeholder="Available/Not Available" required>
+                        <select id="availability" name="availability" required>
+                            <option value="Available" ${row["availability"] === "Available" ? "selected" : ""}>Available</option>
+                            <option value="Not Available" ${row["availability"] === "Not Available" ? "selected" : ""}>Not Available</option>
+                        </select>
                     </div>
                 </div>
 
