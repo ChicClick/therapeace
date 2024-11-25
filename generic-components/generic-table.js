@@ -69,7 +69,7 @@ const excludedKeyMapper = [
     "AVAILABILITY", "ABOUT"
 ];
 
-const dateKey = ["schedule", "birthday", "datehired", "staff_datehired", "sessionDate","feedbackdate", "date_submitted"]
+const dateKey = ["schedule","sessionDate","feedbackdate", "date_submitted"]
 
 
 class TableEngine extends HTMLElement {
