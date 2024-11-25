@@ -1,9 +1,9 @@
 <?php return array(
     'root' => array(
         'name' => 'chicclick/therapeace',
-        'pretty_version' => '1.0.0+no-version-set',
-        'version' => '1.0.0.0',
-        'reference' => null,
+        'pretty_version' => 'dev-main',
+        'version' => 'dev-main',
+        'reference' => 'd9b313ad87d86104170e27a74acf2dec5c9ca155',
         'type' => 'library',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
@@ -29,9 +29,9 @@
             'dev_requirement' => false,
         ),
         'chicclick/therapeace' => array(
-            'pretty_version' => '1.0.0+no-version-set',
-            'version' => '1.0.0.0',
-            'reference' => null,
+            'pretty_version' => 'dev-main',
+            'version' => 'dev-main',
+            'reference' => 'd9b313ad87d86104170e27a74acf2dec5c9ca155',
             'type' => 'library',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),

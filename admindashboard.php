@@ -14,6 +14,7 @@ if (isset($_SESSION['firstname'])) {
 } else {
     $firstname = "Guest"; // Fallback in case the name is not set
 }
+
 ?>
 
 <!DOCTYPE html>
@@ -23,7 +24,7 @@ if (isset($_SESSION['firstname'])) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>TheraPeace</title>
     <link rel="stylesheet" href="adash.css">
-    
+
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.10.2/fullcalendar.min.css" />
@@ -32,6 +33,7 @@ if (isset($_SESSION['firstname'])) {
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 </head>
 <body>
+    <generic-side-view-bar></generic-side-view-bar>
     <!-- Left Section -->
     <div class="left-section">
         <div class="logo">
@@ -68,6 +70,7 @@ if (isset($_SESSION['firstname'])) {
 
     <!-- Right Section -->
     <div class="right-section">
+    <generic-message-popup></generic-message-popup>
         <div class="top-bar">
             <div class="search-bar">
                 <input type="text" placeholder="Search">
@@ -79,7 +82,6 @@ if (isset($_SESSION['firstname'])) {
 
             </div>
         </div>
-
                     <!-- Dashboard Section -->
             <div id="dashboard-section" class="content active">
                 <h4>DASHBOARD</h4>
@@ -110,58 +112,19 @@ if (isset($_SESSION['firstname'])) {
                 </button>
 
                 <!-- Calendar Modal -->
-                <div id="reschedulePopup" class="popup" style="display: none;">
-                    <div class="popup-content">
-                        <span class="close" onclick="closePopup()">&times;</span>
-                        <h4>Select Available Dates</h4>
-                        <div id="calendar">
-                            <div class="calendar-container">
-                            <div class="month-navigation">
-                                <a href="#" id="prevMonth" class="nav-link-month">&lt;</a> <!-- Previous month link -->
-                                <p id="currentMonth"></p> <!-- Dynamic month display -->
-                                <a href="#" id="nextMonth" class="nav-link-month">&gt;</a> <!-- Next month link -->
-                            </div>
-                                <div class="calendar-grid">
-                                    <!-- Calendar will be dynamically generated here -->
-                                </div>
-                            </div>
-                        </div>
-                        <input type="hidden" id="selectedDate" name="selectedDate" value="">
-                        <button id="proceedButton">Proceed  →</button>
-                    </div>
-                </div>
-                <div id="timePopup" class="popup" style="display: none;">
-                    <div class="popup-content">
-                        <span class="close" onclick="closeTimePopup()">&times;</span>
-                        <h4>Select Available Times</h4>
-                        <div id="availableTimes">
-                            <h5>Morning Sessions</h5>
-                            <ul id="morningTimes">
-                                <!-- Morning times will be dynamically added here -->
-                            </ul>
-                            <h5>Afternoon Sessions</h5>
-                            <ul id="afternoonTimes">
-                                <!-- Afternoon times will be dynamically added here -->
-                            </ul>
-                        </div>
+                <generic-calendar></generic-calendar>
 
-                            <!-- Hidden field to store selected time -->
-                            <input type="hidden" id="selectedTime" name="selectedTime" value="">
-
-                        <button id="proceedButton">Proceed  →</button>
-                    </div>
-                </div>
                   <!-- Hidden Pop-Up Form for Adding Appointment -->
                   <div id="appointment-popup-form" class="popup-form">
                     <div class="popup-content-form">
                         <span class="close-btn" id="close-popup">&times;</span>
                         <h2>Add Appointment</h2>
                         <h5>Fill Up Form</h5>
-                        <form id="appointment-form" method="POST" action="a_save_appointment.php">
+                        <form id="appointment-form">
                             <div class="form-row">
                                 <div class="form-group">
-                                    <label for="patient-ID">PatientID:</label>
-                                    <select id="patient-ID" name="patient-ID" required onchange="toggleInput(this)">
+                                    <label class="required" for="patient-ID">PatientID:</label>
+                                    <select id="patient-ID" name="patient-ID" required>
                                         <option value="">Select PatientID</option>
                                         <?php
                                         require 'db_conn.php';
@@ -169,84 +132,194 @@ if (isset($_SESSION['firstname'])) {
                                         $result = $conn->query($sql);
                                         if ($result->num_rows > 0) {
                                             while ($row = $result->fetch_assoc()) {
-                                                echo "<option value='" . $row["patientID"] . "'>" . $row["patientID"] . "</option>";
+                                                echo "<option value='" . $row["patientID"] . "'>" . $row["patientID"] . " - " . $row["patientName"] . "</option>";
                                             }
                                         }
                                         $conn->close();
-                                        ?>                                                                                
+                                        ?>
                                     </select>
                                 </div>
                                 <div class="form-group">
-                                    <label for="patient-name">Patient Name:</label>
+                                    <label class="required" for="patient-name">Patient Name:</label>
                                     <input type="text" id="patient-name" name="patient-name" required>
-                                </div>
-                                <div class="form-group">
-                                    <label for="parent-guardian">Parent/Guardian:</label>
-                                    <input type="text" id="parentID" name="parentID" required>
-                                </div>
-                                <div class="form-group">
-                                    <label for="contact-number">Contact Number:</label>
-                                    <input type="text" id="contact-number" name="contact-number" required>
-                                </div>
-                                <div class="form-group">
-                                    <label for="therapist">Therapist:</label>
-                                    <select id="therapist" name="therapist" required>
-                                        <option value="">Select a Therapist</option>
-                                    </select>
                                 </div>
                             </div>
 
-                            <div class="form-group services-group">
-                                <label>Services:</label>
-                                <div class="services-checkbox">
-                                    <?php
-                                    require 'db_conn.php';
-                                    $sql = "SELECT serviceID, serviceName FROM services";
-                                    $result = $conn->query($sql);
-                                    if ($result->num_rows > 0) {
-                                        while ($row = $result->fetch_assoc()) {
-                                            echo '<label><input type="checkbox" name="services[]" value="' . htmlspecialchars($row["serviceID"]) . '"> ' . htmlspecialchars($row["serviceName"]) . '</label><br>';
-                                        }
-                                    } else {
-                                        echo "No services found.";
-                                    }
-                                    $conn->close();
-                                    ?>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label class="required" for="parent-guardian">Parent/Guardian:</label>
+                                    <input type="text" id="parentID" name="parentID" required>
+                                </div>
+                                <div class="form-group">
+                                    <label class="required" for="contact-number">Contact Number:</label>
+                                    <input type="text" id="contact-number" name="contact-number" required>
+                                </div>
+                            </div>
+
+                            <div class="form-row">
+                                        <div class="form-group">
+                                        <label class="required" for="serviceID">Services:</label>
+                                            <select id="serviceID" name="serviceID" required>
+                                                <option value="">Select Service</option>
+                                                <?php
+                                                require 'db_conn.php';
+                                                $sql = "SELECT serviceID, serviceName FROM services";
+                                                $result = $conn->query($sql);
+                                                if ($result->num_rows > 0) {
+                                                    while ($row = $result->fetch_assoc()) {
+                                                        echo "<option value='" . $row["serviceID"] . "'>" . $row["serviceName"] . "</option>";
+                                                    }
+                                                }
+                                                $conn->close();
+                                                ?>
+                                        </select>
+                                        </div>
+
+                            </div>
+                            <hr />
+                            <h5>Filters</h5>
+
+                            <div class="form-row">
+                            <div class="form-group">
+                                        <label for="searchByName">Search by Name:</label>
+                                        <input type="text" id="searchByName" name="searchByName">
+                                    </div>
+                                        <div class="form-group">
+                                            <label for="specializationAppointment">Specialization:</label>
+                                                <div id="specialization-checkboxes">
+                                                    <?php
+                                                    require 'db_conn.php';
+                                                    $sql = "SELECT serviceID, serviceName FROM services";
+                                                    $result = $conn->query($sql);
+                                                    if ($result->num_rows > 0) {
+                                                        while ($row = $result->fetch_assoc()) {
+                                                            // Generate a checkbox for each service
+                                                            echo "<div class='checkbox-item'>
+                                                                    <input type='checkbox' id='" . $row["serviceName"] . "' name='specializationAppointment[]' value='" . $row["serviceID"] . "' onchange='updateSpecializationAppointment()'>
+                                                                    <label for='app_'" . $row["serviceName"] . "'>" . $row["serviceName"] . "</label>
+                                                                </div>";
+                                                        }
+                                                    } else {
+                                                        echo "<p>No services available.</p>";
+                                                    }
+                                                    $conn->close();
+                                                    ?>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="days_available">Day Availability</label>
+                                            <select id="day-appointment-availability" name="days_available" onchange="toggleAppointmentCustomDay()">
+                                                <option value="[1,2,3,4,5,6]" selected>Full-Time</option>
+                                                <option id="custom-appointment-day" value="[]">Custom</option>
+                                            </select>
+                                        </div>
+                                        <div class="form-group">
+                                            <div id="custom-appointment-day-options" style="display: none; margin-top: 10px;">
+                                                <label>Select Custom Days:</label>
+                                                <div class="day-list-checkbox">
+                                                    <div class="day-list"><input type="checkbox" value="1" onchange="updateAppointmentCustomDay()"> <label>M</label></div>
+                                                    <div class="day-list"><input type="checkbox" value="2" onchange="updateAppointmentCustomDay()"> <label>T</label></div>
+                                                    <div class="day-list"><input type="checkbox" value="3" onchange="updateAppointmentCustomDay()"> <label>W</label></div>
+                                                    <div class="day-list"><input type="checkbox" value="4" onchange="updateAppointmentCustomDay()"> <label>TH</label></div>
+                                                    <div class="day-list"><input type="checkbox" value="5" onchange="updateAppointmentCustomDay()"> <label>F</label></div>
+                                                    <div class="day-list"><input type="checkbox" value="6" onchange="updateAppointmentCustomDay()"> <label>SA</label></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-row">
+                                        <div class="form-group">
+                                            <label for="time-availability">Time Availability</label>
+                                            <select id="time-appointment-availability" name="times_available" onchange="toggleCustomAppointmentTime()">
+                                                <option value="[9,10,11,13,14,15,16,17]" selected>Full-Time</option>
+                                                <option value="[9,10,11]">Morning Shift</option>
+                                                <option value="[13,14,15,16,17]">Afternoon</option>
+                                                <option id="custom-appointment-time" value="[]">Custom</option>
+                                            </select>
+                                        </div>
+                                        <div class="form-group">
+                                            <div id="custom-appointment-time-options" style="display: none; margin-top: 10px;">
+                                                <label>Select Custom Hours:</label>
+                                                <div class="time-list-checkbox">
+                                                    <div class="time-list"><input type="checkbox" value="9" onchange="updateAppointCustomTime()"> <label>9 AM</label></div>
+                                                    <div class="time-list"><input type="checkbox" value="10" onchange="updateAppointCustomTime()"> <label>10 AM</label></div>
+                                                    <div class="time-list"><input type="checkbox" value="11" onchange="updateAppointCustomTime()"> <label>11 AM</label></div>
+                                                    <div class="time-list"><input type="checkbox" value="13" onchange="updateAppointCustomTime()"> <label>1 PM</label></div>
+                                                    <div class="time-list"><input type="checkbox" value="14" onchange="updateAppointCustomTime()"> <label>2 PM</label></div>
+                                                    <div class="time-list"><input type="checkbox" value="15" onchange="updateAppointCustomTime()"> <label>3 PM</label></div>
+                                                    <div class="time-list"><input type="checkbox" value="16" onchange="updateAppointCustomTime()"> <label>4 PM</label></div>
+                                                    <div class="time-list"><input type="checkbox" value="17" onchange="updateAppointCustomTime()"> <label>5 PM</label></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-row">
+                                        <div class="form-group">
+                                        <label for="appointmentCommunication">Communication Methods:</label>
+                                            <div class="communication-checkboxes">
+                                                <?php
+                                                    require 'db_conn.php';
+                                                    $sql = "SELECT * FROM communication";
+                                                    $result = $conn->query($sql);
+                                                    if ($result->num_rows > 0) {
+                                                        while ($row = $result->fetch_assoc()) {
+                                                            echo "<div class='checkbox-item'>";
+                                                            echo "<input type='checkbox' name='appointmentCommunication[]' value='" . $row["id"] . "' id='app_comm_" . $row["id"] . "' onchange='updateAppointmentCommunication()'>";
+                                                            echo "<label data-title='" . $row["description"] . "' for='app_comm_" . $row["id"] . "'>" . $row["name"] . "</label>";
+                                                            echo "</div>";
+                                                        }
+                                                    }
+                                                    $conn->close();
+                                                    ?>
+                                                                                                </div>
+                                                                                            </div>
+                                                                                            <div class="form-group">
+                                                                                            <label for="appointmentFlexibility">Flexibility:</label>
+                                                                                                <div class="flexibility-checkboxes">
+                                                                                                    <?php
+                                                    require 'db_conn.php';
+                                                    $sql = "SELECT * FROM flexibility";
+                                                    $result = $conn->query($sql);
+                                                    if ($result->num_rows > 0) {
+                                                        while ($row = $result->fetch_assoc()) {
+                                                            echo "<div class='checkbox-item'>";
+                                                            echo "<input type='checkbox' name='appointmentFlexibility[]' value='" . $row["id"] . "' id='app_flex_" . $row["id"] . "' onchange='updateAppointmentFlexibility()'>";
+                                                            echo "<label data-title='" . $row["description"] . "' for='app_flex_" . $row["id"] . "'>" . $row["name"] . "</label>";
+                                                            echo "</div>";
+                                                        }
+                                                    }
+                                                    $conn->close();
+                                                    ?>
+                                            </div>
+                                        </div>
+                                    </div>
+                            <div class="form-row">
+                                <div class="form-group">
+
                                 </div>
                             </div>
 
                             <input type="hidden" id="selectedDateTime" name="schedule">
-                            <button type="submit" class="submit-btn" onclick="handleSubmit()">Submit <i class="fas fa-arrow-right"></i></button>
-                        </form>
-                    </div>
-                </div>
-                <div id="confirmationPopup" class="popup" style="display: none;">
-                            <div class="popup-content">
-                                <span class="close" onclick="closeConfirmationPopup()">&times;</span>
-                                <h4>Confirmation</h4>
-                                <p id="confirmationMessage">Your appointment has been scheduled!</p>
+                            <div class="btn-container">
+                                <button type="button" class="reset-btn" onclick="resetFilters()">Filters <i class="fas fa-eraser"></i></button>
+                                <button type="button" class="submit-btn" onclick="submitAppointmentForm()">Submit <i class="fas fa-arrow-right"></i></button>
                             </div>
-                        </div></table>
-                
+                        </form>
+
+                    </div>
+                    <generic-widget></generic-widget>
+                </div>
             <div class="search-bar-content">
                 <input type="text" placeholder="Search by patient or therapist">
                 <button><i class="fas fa-search"></i></button>
             </div>
-            <table>
-                <thead>
-                    <tr>
-                        <th>NAME</th>
-                        <th>THERAPIST</th>
-                        <th>SERVICES</th>
-                        <th>STATUS</th>
-                        <th>SCHEDULES</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <?php include 'a_appointment.php'; ?> 
-                </tbody>
-            </table>
-        </div>        
+
+                    <!-- FOR REFERENCE DO NOT REMOVE 'a_appointment.php';?> -->
+            <generic-table data="admin_appointments" avatar="true"></generic-table>
+
+        </div>
         <!-- Patient Information Section -->
         <div id="patients-information-section" class="content">
             <h4>PATIENT INFORMATION</h4>
@@ -254,65 +327,33 @@ if (isset($_SESSION['firstname'])) {
                 <input type="text" placeholder="Search">
                 <button><i class="fas fa-search"></i></button>
             </div>
-            <table>
-                <thead>
-                    <tr>
-                        <th>NAME</th>
-                        <th>PARENT/GUARDIAN</th>
-                        <th>SERVICES</th>
-                        <th>COMPLETION</th>
-                    </tr>
-                </thead>
-                <tbody id="patients-tbody">
-                    <?php include 'a_patients.php'; ?>
-                </tbody>
-            </table>
 
-            <div class="patient-info" id="patient-info" style="display:none">
-                <h4>PROFILES</h4>
-                <div class="profile-header">
-                    <img src="images/about 1.jpg" alt="Profile Picture" class="profile-picture">
-                    <div class="profile-details">
-                        <h2 id="patient_name">Name</h2>
-                        <h3 id="service">Service</h3>
-                    </div>
-                </div>
-                <div class="profile-info">
-                    <h5>CONTACT INFORMATION</h5>
-                    <div class="contact-info-wrapper">
-                        <div class="contact-info-main">
-                            <p><strong>Parent/Guardian:</strong> <span id="parent_name"></span></p>
-                            <p><strong>Phone:</strong> <span id="phone"></span></p>
-                            <p><strong>Email:</strong> <span id="email"></span></p>
-                        </div>
-                        <div class="contact-info-additional">
-                            <p><strong>Address:</strong> <span id="address"></span></p>
-                        </div>
-                    </div>
-                    <h5>BASIC INFORMATION</h5>
-                    <p><strong>Birthday:</strong> <span id="birthday"></span></p>
-                    <p><strong>Gender:</strong> <span id="gender"></span></p>
-                </div>
-            </div>
-        </div>       
+            <generic-table data="admin_patients" avatar="true"></generic-table>
+            
+                    <!--'a_patients.php'; -->
+        </div>
         <!-- Staff Section -->
         <div id="staff-section" class="content">
             <div class="staff-header">
             <h4>STAFFS</h4>
             <!-- Add Staff Button -->
-
-                <button id="add-staff" class="add-staff"><i class="fas fa-plus"></i> Add Staff </button>
+                <button id="add-staff" class="add-staff">&nbsp;&nbsp;&nbsp;&nbsp;<i class="fas fa-plus"></i> Add &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    <div class="dropdown-menu .show">
+                        <div class="dropdown-item" onclick="staff()">Staff</div>
+                        <div class="dropdown-item" onclick="therapist()">Therapist</div>
+                    </div>
+            </button>
 
                     <!-- Hidden Pop-Up Form for Adding Staff -->
                 <div id="add-staff-popup" class="popup-form">
-                            <div class="popup-content-form">
+                            <div class="popup-content-form popup-margin">
                                 <span class="close-btn" id="close-add-staff">&times;</span>
-                                <h2>Add Staff</h2>
+                                <h2 id="add-staff-popup-title">Add Staff</h2>
                                 <form id="addstaff-form">
                                     <div class="form-row">
                                         <div class="form-group">
                                             <label for="staffName">Staff Name:</label>
-                                            <input type="text" id="staffName" name="staffName" required>
+                                            <input type="text" id="staffName" name="staffName" placeholder="e.g. John Doe" required>
                                         </div>
                                         <div class="form-group">
                                             <label for="position">Position:</label>
@@ -323,11 +364,11 @@ if (isset($_SESSION['firstname'])) {
                                     <div class="form-row">
                                         <div class="form-group">
                                             <label for="phoneNumber">Contact Number:</label>
-                                            <input type="text" id="phoneNumber" name="phoneNumber" required>
+                                            <input type="text" id="phoneNumber" name="phoneNumber" placeholder="09xxxxxxxxx" required>
                                         </div>
                                         <div class="form-group">
                                             <label for="address">Home Address:</label>
-                                            <input type="text" id="address" name="address" required>
+                                            <input type="text" id="address" name="address" placeholder="e.g. 123 Elm St., Brgy 1" required>
                                         </div>
                                         <div class="form-group">
                                         <label for="gender">Gender:</label>
@@ -343,161 +384,242 @@ if (isset($_SESSION['firstname'])) {
                                         </div>
                                     </div>
 
-                                    <button type="submit" class="submit-btn">Submit <i class="fas fa-arrow-right"></i></button>
+                                    <div class="btn-container">
+                                        <button type="submit" class="submit-btn">Submit <i class="fas fa-arrow-right"></i></button>
+                                    </div>
+
                                 </form>
                             </div>
-                </div>    
-            </div>
-            
-            <div class="staff-container">
-                    <div class="button-container">
-                        <button id="clinic-staff-btn" class="clinic-staff" onclick="setActive('clinic-staff-table')">
-                            <i class="fas fa-user"></i> Clinic Staff
-                        </button>
-                        <!-- Clinic Staff Table -->
-                        <div id="clinic-staff-table" class="table-container hidden"> 
-                            <table>
-                                <thead>
-                                    <tr>
-                                        <th>Name</th>
-                                        <th>Position</th>
-                                        <th>Date Hired</th>
-                                        <th>Action</th>
-                                    </tr>
-                                </thead>
-                                <tbody id="staff-tbody">
-                                    <?php include 'a_staff.php'; ?>
-                                </tbody>
-                            </table>
-                            <div class="staff-info" id="staff-info" style="display:none">
-                                <h4>PROFILES</h4>
-                                <div class="profile-header">
-                                    <img src="images/about 1.jpg" alt="Profile Picture" class="profile-picture">
-                                    <div class="profile-details">
-                                        <h2 id="staff_name">Name</h2>
-                                        <h3 id="staff-position">Position</h3>
-                                    </div>
-                                    <!-- Hidden Pop-Up Form for Editing Staff Profile -->
-                                    <div id="staff-profile-popup" class="popup-form">
-                                        <div class="popup-content-form">
-                                            <span class="close-btn" id="close-edit-staff-profile-popup">&times;</span>
-                                            <h2>Edit Staff Profile</h2>
-                                            <form id="editstaff-profile-form">
-                                                <div class="form-row">
-                                                    <div class="form-group">
-                                                        <label for="staffName">Staff Name:</label>
-                                                        <input type="text" id="staffName" name="staffName" required>
-                                                    </div>
-                                                    <div class="form-group">
-                                                        <label for="position">Position:</label>
-                                                        <input type="text" id="position" name="position" placeholder="Teacher/Helper etc." required>
-                                                    </div>
-                                                </div>
+                </div>
 
-                                                <div class="form-row">
-                                                    <div class="form-group">
-                                                        <label for="phoneNumber">Contact Number:</label>
-                                                        <input type="text" id="phoneNumber" name="phoneNumber" required>
-                                                    </div>
-                                                    <div class="form-group">
-                                                        <label for="address">Home Address:</label>
-                                                        <input type="text" id="address" name="address" required>
-                                                    </div>
-                                                    <div class="form-group">
-                                                    <label for="gender">Gender:</label>
-                                                        <select id="gender" name="gender" required>
-                                                            <option value="" disabled selected>Select Gender</option>
-                                                            <option value="Male">Male</option>
-                                                            <option value="Female">Female</option>
-                                                        </select>
-                                                    </div>
-                                                    <div class="form-group">
-                                                        <label for="datehired">Date Hired:</label>
-                                                        <input type="date" id="datehired" name="datehired" required>
-                                                    </div>
-                                                </div>
-
-                                                <button type="submit" class="submit-btn">Submit <i class="fas fa-arrow-right"></i></button>
-                                            </form>
+                <div id="add-therapist-popup" class="popup-form">
+                            <div class="popup-content-form popup-margin">
+                                <span class="close-btn" id="close-add-therapist">&times;</span>
+                                <h2 id="add-staff-popup-title">Add Therapist</h2>
+                                <form id="addtherapist-form">
+                                    <div class="form-row">
+                                        <div class="form-group">
+                                            <label for="therapistID">Therapist ID:</label>
+                                            <input type="text" id="therapistID" name="therapisID" placeholder="e.g. T0001" required>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="password">Password:</label>
+                                            <input type="password" id="password" name="password" required>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="therapistName">Name:</label>
+                                            <input type="text" id="therapistName" name="therapistName" placeholder="e.g. Dr. Strange" required>
+                                        </div>
+                                        <div class="form-group">
+                                        <label for="specialization">Specialization:</label>
+                                            <div id="specialization-checkboxes">
+                                                <?php
+                                                    require 'db_conn.php';
+                                                    $sql = "SELECT serviceID, serviceName FROM services";
+                                                    $result = $conn->query($sql);
+                                                    if ($result->num_rows > 0) {
+                                                        while ($row = $result->fetch_assoc()) {
+                                                            // Generate a checkbox for each service
+                                                            echo "<div class='checkbox-item'>
+                                                                <input type='checkbox' id='" . $row["serviceName"] . "' name='specialization[]' value='" . $row["serviceID"] . "' onchange='updateSpecialization()'>
+                                                                <label for='" . $row["serviceName"] . "'>" . $row["serviceName"] . "</label>
+                                                            </div>";
+                                                        }
+                                                    } else {
+                                                        echo "<p>No services available.</p>";
+                                                    }
+                                                    $conn->close();
+                                                    ?>
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
-                            <div class="profile-info">
-                                <h5>CONTACT INFORMATION</h5>
-                                <div class="contact-info-wrapper">
-                                    <div class="contact-info-main">
-                                        <p><strong>Phone:</strong> <span id="staff-phone"></span></p>
-                                        <p><strong>DateHired:</strong> <span id="staff-datehired"></span></p>
+
+                                    <div class="form-row">
+                                        <div class="form-group">
+                                            <label for="email">Email:</label>
+                                            <input type="text" id="email" name="email" placeholder="e.g. admin@email.com" required>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="phone">Contact Number:</label>
+                                            <input type="text" id="phone" name="phone" placeholder="09xxxxxxxxx" required>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="address">Home Address:</label>
+                                            <input type="text" id="address" name="address" placeholder="e.g. 123 Elm St., Brgy 1" required>
+                                        </div>
+                                        <div class="form-group">
+                                        <label for="gender">Gender:</label>
+                                            <select id="gender" name="gender" required>
+                                                <option value="" disabled selected>Select Gender</option>
+                                                <option value="Male">Male</option>
+                                                <option value="Female">Female</option>
+                                            </select>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="datehired">Date Hired:</label>
+                                            <input type="date" id="datehired" name="datehired" required>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="birthday">Birth Date:</label>
+                                            <input type="date" id="birthday" name="birthday" required>
+                                        </div>
                                     </div>
-                                </div>
-                                <h5>BASIC INFORMATION</h5>
-                                <p><strong>Gender:</strong> <span id="staff-gender"></span></p>
-                                <p><strong>Address:</strong> <span id="staff-address"></span></p>
-                                    
-                            </div>
-                            </div>
-                        </div>
 
-                        <button id="clinic-admin-btn" class="clinic-admin" onclick="setActive('clinic-admin-table')">
-                            <i class="fas fa-user-tie"></i> Clinic Admin
-                        </button>
-                        <!-- Clinic Admin Table -->
-                        <div id="clinic-admin-table" class="table-container hidden"> 
-                            <table>
-                                <thead>
-                                    <tr>
-                                        <th>Name</th>
-                                        <th>Contact Number</th>
-                                        <th>Birth Date</th>
-                                    </tr>
-                                </thead>
-                                <tbody id="staff-table">
-                                    <?php include 'a_admin.php'; ?>
-                                </tbody>
-                            </table>
-                        </div>
+                                    <div class="form-row">
+                                        <div class="form-group">
+                                            <label for="day-availability">Day Availability</label>
+                                            <select id="day-availability" name="days_available" required onchange="toggleCustomDay()">
+                                                <option value="[1,2,3,4,5,6]" selected>Full-Time</option>
+                                                <option id="custom-day" value="[]">Custom</option>
+                                            </select>
+                                        </div>
+                                        <div class="form-group">
+                                            <div id="custom-day-options" style="display: none; margin-top: 10px;">
+                                                <label>Select Custom Days:</label>
+                                                <div class="day-list-checkbox">
+                                                    <div class="day-list"><input type="checkbox" value="1" onchange="updateCustomDay()"> <label>M</label></div>
+                                                    <div class="day-list"><input type="checkbox" value="2" onchange="updateCustomDay()"> <label>T</label></div>
+                                                    <div class="day-list"><input type="checkbox" value="3" onchange="updateCustomDay()"> <label>W</label></div>
+                                                    <div class="day-list"><input type="checkbox" value="4" onchange="updateCustomDay()"> <label>TH</label></div>
+                                                    <div class="day-list"><input type="checkbox" value="5" onchange="updateCustomDay()"> <label>F</label></div>
+                                                    <div class="day-list"><input type="checkbox" value="6" onchange="updateCustomDay()"> <label>SA</label></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
 
-                        <button id="clinic-therapist-btn" class="clinic-therapist" onclick="setActive('clinic-therapist-table')">
-                            <i class="fas fa-user-md"></i> Therapists
-                        </button>
-                        <!-- Therapists Table -->
-                        <div id="clinic-therapist-table" class="table-container hidden"> 
-                            <table>
-                                <thead>
-                                    <tr>
-                                        <th>Name</th>
-                                        <th>Position</th>
-                                        <th>Date Hired</th>
-                                    </tr>
-                                </thead>
-                                <tbody id="staff-table">
-                                    <?php include 'a_therapist.php'; ?>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-            <script>
-                function setActive(button) {
-                    // Remove the active class from all buttons
-                    const buttons = document.querySelectorAll('.button-container button');
-                    buttons.forEach(btn => btn.classList.remove('active'));
+                                    <div class="form-row">
+                                        <div class="form-group">
+                                            <label for="time-availability">Time Availability</label>
+                                            <select id="time-availability" name="times_available" required onchange="toggleCustomTime()">
+                                                <option value="[9,10,11,13,14,15,16,17]" selected>Full-Time</option>
+                                                <option value="[9,10,11]">Morning Shift</option>
+                                                <option value="[13,14,15,16,17]">Afternoon</option>
+                                                <option id="custom-time" value="[]">Custom</option>
+                                            </select>
+                                        </div>
+                                        <div class="form-group">
+                                            <div id="custom-time-options" style="display: none; margin-top: 10px;">
+                                                <label>Select Custom Hours:</label>
+                                                <div class="time-list-checkbox">
+                                                    <div class="time-list"><input type="checkbox" value="9" onchange="updateCustomTime()"> <label>9 AM</label></div>
+                                                    <div class="time-list"><input type="checkbox" value="10" onchange="updateCustomTime()"> <label>10 AM</label></div>
+                                                    <div class="time-list"><input type="checkbox" value="11" onchange="updateCustomTime()"> <label>11 AM</label></div>
+                                                    <div class="time-list"><input type="checkbox" value="13" onchange="updateCustomTime()"> <label>1 PM</label></div>
+                                                    <div class="time-list"><input type="checkbox" value="14" onchange="updateCustomTime()"> <label>2 PM</label></div>
+                                                    <div class="time-list"><input type="checkbox" value="15" onchange="updateCustomTime()"> <label>3 PM</label></div>
+                                                    <div class="time-list"><input type="checkbox" value="16" onchange="updateCustomTime()"> <label>4 PM</label></div>
+                                                    <div class="time-list"><input type="checkbox" value="17" onchange="updateCustomTime()"> <label>5 PM</label></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-row">
+                                        <div class="form-group">
+                                        <label for="communication">Communication Methods:</label>
+                                            <div class="communication-checkboxes">
+                                                <?php
+                                                    require 'db_conn.php';
+                                                    $sql = "SELECT * FROM communication";
+                                                    $result = $conn->query($sql);
+                                                    if ($result->num_rows > 0) {
+                                                        while ($row = $result->fetch_assoc()) {
+                                                            // Create a checkbox for each communication method from the database
+                                                            echo "<div class='checkbox-item'>";
+                                                            echo "<input type='checkbox' name='communication[]' value='" . $row["id"] . "' id='comm_" . $row["id"] . "' onchange='updateCommunication()'>";
+                                                            echo "<label data-title='" . $row["description"] . "' for='comm_" . $row["id"] . "'>" . $row["name"] . "</label>";
+                                                            echo "</div>";
+                                                        }
+                                                    }
+                                                    $conn->close();
+                                                    ?>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                        <label for="flexibility">Flexibility:</label>
+                                            <div class="communication-checkboxes">
+                                                <?php
+                                                    require 'db_conn.php';
+                                                    $sql = "SELECT * FROM flexibility";
+                                                    $result = $conn->query($sql);
+                                                    if ($result->num_rows > 0) {
+                                                        while ($row = $result->fetch_assoc()) {
+                                                            echo "<div class='checkbox-item'>";
+                                                            echo "<input type='checkbox' name='flexibility[]' value='" . $row["id"] . "' id='flex_" . $row["id"] . "' onchange='updateFlexibility()'>";
+                                                            echo "<label data-title='" . $row["description"] . "' for='flex_" . $row["id"] . "'>" . $row["name"] . "</label>";
+                                                            echo "</div>";
+                                                        }
+                                                    }
+                                                    $conn->close();
+                                                    ?>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <input type="hidden" id="communication" name="communication" value="[]">
+                                    <input type="hidden" id="flexibility" name="flexibility" value="[]">
+                                    <input type="hidden" id="specialization" name="specialization" value="[]">
+
+                                    <div class="btn-container">
+                                        <button type="submit" class="submit-btn">Submit <i class="fas fa-arrow-right"></i></button>
+                                    </div>
+
+                                </form>
+                            </div>
+                </div>
+            </div>
+
+
+            <div class="tabs-container">
+                <div class="tab tab-staff active" data-target="content-staff">Staffs</div>
+                <div class="tab tab-clients" data-target="content-admins">Admins</div>
+                <div class="tab tab-projects" data-target="content-therapists">Therapist</div>
+            </div>
+
+                <div id="content-staff" class="content-container active">
                     
-                    // Add the active class to the clicked button
-                    button.classList.add('active');
-                }
-            </script>
-            </div>    
-        </div>   
+                        <generic-table data="admin_staffs"></generic-table>
+                                        <!-- include 'a_staff.php' -->
+                </div>                                    
+                <div id="content-admins" class="content-container">
+                    <generic-table data="admin_admins"></generic-table>
+                        <!--php include 'a_admin.php';-->
+                 
+                </div>
+                
+                <div id="content-therapists" class="content-container">
+                    <generic-table data="admin_therapists"></generic-table>
+                    <!--php include 'a_therapist.php';? -->
+                </div>
+
+                <script>
+                const tabs = document.querySelectorAll('.tab');
+                const contents = document.querySelectorAll('.content-container');
+
+                tabs.forEach(tab => {
+                    tab.addEventListener('click', () => {
+                   
+                    tabs.forEach(t => t.classList.remove('active'));
+                    contents.forEach(c => c.classList.remove('active'));
+
+                   
+                    tab.classList.add('active');
+                    document.getElementById(tab.dataset.target).classList.add('active');
+                    });
+                });
+                </script>
+
+        </div>
 
          <!-- Services Section -->
         <div id="services-section" class="content">
             <h4>MANAGE SERVICES</h4>
 
             <button class="add-service" id="add-service"><i class="fas fa-plus"></i> Add Service</button>
-                
+
                 <!-- Hidden Pop-Up Form for Adding Services -->
                 <div id="add-service-popup" class="popup-form">
-                            <div class="popup-content-form">
+                            <div class="popup-content-form popup-margin">
                                 <span class="close-btn" id="close-add-popup">&times;</span>
                                 <h2>Add Service</h2>
                                 <form id="addservice-form">
@@ -526,23 +648,17 @@ if (isset($_SESSION['firstname'])) {
                                             <input type="text" id="price" name="price" required>
                                         </div>
                                     </div>
+                                    <div class="btn-container">
+                                        <button type="submit" class="submit-btn">Submit <i class="fas fa-arrow-right"></i></button>
+                                    </div>
 
-                                    <button type="submit" class="submit-btn">Submit <i class="fas fa-arrow-right"></i></button>
                                 </form>
                             </div>
-                        </div>    
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>NAME OF SERVICE</th>
-                                <th>AVAILABILITY</th>
-                                <th>DESCRIPTION</th>
-                            </tr>
-                        </thead>
-                        <tbody id="services-tbody">
-                            <?php include 'a_services.php'; ?>
-                        </tbody>
-                    </table>
+                        </div>
+
+                        <generic-table data="admin_services" edit="true" delete="true"></generic-table>
+                            <!-- 'a_services.php' -->
+                 
 
             <div class="service-info" id="service-info" style="display:none">
                 <h4>VIEW SERVICE</h4>
@@ -557,7 +673,7 @@ if (isset($_SESSION['firstname'])) {
                         <button class="edit-service" id="edit-service">Edit Service</button>
                             <!-- Hidden Pop-Up Form for Editing Services -->
                         <div id="service-popup" class="popup-form">
-                            <div class="popup-content-form">
+                            <div class="popup-content-form popup-margin">
                                 <span class="close-btn" id="close-edit-service-popup">&times;</span>
                                 <h2>Edit Service</h2>
                                 <form id="editservice-form">
@@ -586,8 +702,9 @@ if (isset($_SESSION['firstname'])) {
                                             <input type="text" id="price" name="price" required>
                                         </div>
                                     </div>
-
-                                    <button type="submit" class="submit-btn">Submit <i class="fas fa-arrow-right"></i></button>
+                                    <div class="btn-container">
+                                        <button type="submit" class="submit-btn">Submit <i class="fas fa-arrow-right"></i></button>
+                                    </div>
                                 </form>
                             </div>
                         </div>
@@ -596,7 +713,7 @@ if (isset($_SESSION['firstname'])) {
                                         <p id="service-about"></p>
                                     </div>
                                 </div>
-        </div> 
+        </div>
             <!-- Edit Profile Section -->
             <div id="edit-profile-section" class="content">
                 <h4>Edit Profile</h4>
@@ -604,15 +721,19 @@ if (isset($_SESSION['firstname'])) {
                 <!--Personal Information  -->
                 <div id="edit-profile-section" class="edit-container">
                     <?php
-                        include 'a_edit_profile.php'
+                    include 'a_edit_profile.php'
                     ?>
                 </div>
-               
+
             </div>
 
     </div>
 
+    <script src="./generic-components/generic-message-popup.js" defer></script>
+    <script src="adash_therapist_filter.js" defer></script>
+    <script src="./generic-components/generic-widget.js" defer></script>
     <script src="adash.js" defer></script>
+    <script src="admindashboard.js" defer></script>
     <script src="a_dashgenerate_pdf.js" defer></script>
     <script src="a_staff_info.js" defer></script>
     <script src="a_editservice.js" defer></script>
@@ -620,5 +741,9 @@ if (isset($_SESSION['firstname'])) {
     <script src="a_confirmappointment.js" defer></script>
     <script src="a_editstaff_profile.js" defer></script>
     <script src="a_logout.js" defer></script>
+    <script src="./generic-components/generic-calendar.js" defer></script>
+    <script src="./generic-components/generic-table.js" defer></script>
+    <script src="./generic-components/generic-side-view-bar.js" defer></script>
+
 </body>
 </html>

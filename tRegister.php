@@ -1,67 +1,99 @@
 <?php
-// Database connection details
-$host = "localhost:3307";  
-$username = "root";  
-$password = "";  
-$dbname = "therapeacedb";
+// Enable error reporting for debugging
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
+
+// Include the database connection file
+include 'db_conn.php';
+
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\Exception;
+
+require 'PHPMailer/src/Exception.php';
+require 'PHPMailer/src/PHPMailer.php';
+require 'PHPMailer/src/SMTP.php';
 
 try {
-    // Connect to the database
-    $conn = new PDO("mysql:host=$host;dbname=$dbname", $username, $password);
-    $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-
-    // Check if the form is submitted
     if ($_SERVER["REQUEST_METHOD"] == "POST") {
+        // Generate a unique therapistID
+        $result = $conn->query("SELECT MAX(therapistID) AS maxID FROM therapist");
+        $row = $result->fetch_assoc();
+        $lastID = $row['maxID'];
+        $therapistID = "T" . str_pad(substr($lastID, 1) + 1, 3, '0', STR_PAD_LEFT); // Generates the ID as 'T001', 'T002', etc.
+
         // Prepare and bind the SQL statement
-        $stmt = $conn->prepare("INSERT INTO therapist (therapistID, specialization, therapistName, availability, email, phone, address, birthday, gender, datehired, password_hash) 
-                                VALUES (:therapistID, :specialization, :therapistName, :availability, :email, :phone, :address, :birthday, :gender, :datehired, :password_hash)");
+        $stmt = $conn->prepare("INSERT INTO therapist (therapistID, specialization, therapistName, availability, email, phone, address, birthday, gender, datehired, password_hash, days_available, times_available, communication, flexibility) 
+                                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
 
+        
         // Bind form data to SQL query parameters
-        $stmt->bindParam(':therapistID', $_POST['therapistID']);
-        $stmt->bindParam(':specialization', $_POST['specialization']);
-        $stmt->bindParam(':therapistName', $_POST['therapistName']);
-        $stmt->bindParam(':availability', $_POST['availability']);
-        $stmt->bindParam(':email', $_POST['email']);
-        $stmt->bindParam(':phone', $_POST['phone']);
-        $stmt->bindParam(':address', $_POST['address']);
-        $stmt->bindParam(':birthday', $_POST['birthday']);
-        $stmt->bindParam(':gender', $_POST['gender']);
-        $stmt->bindParam(':datehired', $_POST['date-hired']);
+        $stmt->bind_param(
+            "sssssssssssssss",
+            $therapistID, 
+            $_POST['specialization'],
+            $_POST['therapistName'], 
+            $_POST['availability'], 
+            $_POST['email'], 
+            $_POST['phone'], 
+            $_POST['address'], 
+            $_POST['birthday'], 
+            $_POST['gender'], 
+            $_POST['datehired'], 
+            $hashed_password, 
+            $_POST['days_available'], 
+            $_POST['times_available'],
+            $_POST['communication'],
+            $_POST['flexibility']
+        );
 
-        // Hash the password and bind it
+        // Hash the password
         $hashed_password = password_hash($_POST['password'], PASSWORD_DEFAULT);
-        $stmt->bindParam(':password_hash', $hashed_password);
 
         // Execute the SQL query
         $stmt->execute();
 
-        // Send email with credentials
-        $to = $_POST['email'];
-        $subject = "Your Registration Details";
-        $message = "Dear " . $_POST['therapistName'] . ",\n\nThank you for joining us as a therapist.\n\nHere are your credentials and employment details:\n\n";
-        $message .= "Therapist ID: " . $_POST['therapistID'] . "\n";
-        $message .= "Specialization: " . $_POST['specialization'] . "\n";
-        $message .= "Date Hired: " . $_POST['date-hired'] . "\n";
-        $message .= "Password: " . $_POST['password'] . " (Please remember to change your password after your first login)\n\n";
-        $message .= "Best regards,\nTheraPeace Team";
+        echo "Therapist registration successful!";
 
-        // Headers
-        $headers = "From: no-reply@therapeace.com\r\n";
-        $headers .= "Content-Type: text/plain; charset=UTF-8";
+        // Send email using PHPMailer
+        $mail = new PHPMailer(true);
+        try {
+            // Server settings for PHPMailer
+            $mail->isSMTP();
+            $mail->Host = 'smtp.gmail.com';
+            $mail->SMTPAuth = true;
+            $mail->Username = 'therapeacemanagement@gmail.com';
+            $mail->Password = 'ovzp bnem esqd nqyn'; // Replace with app-specific password
+            $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;
+            $mail->Port = 465;
 
-        // Send the email
-        if (mail($to, $subject, $message, $headers)) {
-            echo "Therapist registration successful! A confirmation email has been sent.";
-        } else {
-            echo "Therapist registration successful! However, the email could not be sent.";
+            // Email recipients and content
+            $mail->setFrom('therapeacemanagement@gmail.com', 'TheraPeace Team');
+            $mail->addAddress($_POST['email']);
+            $mail->isHTML(true);
+            $mail->Subject = "Your Registration Details";
+            $mail->Body = "
+                Dear {$_POST['therapistName']},<br><br>
+                Thank you for joining us as a therapist at TheraPeace.<br><br>
+                Your registration was successful. Here are your registration details:<br><br>
+                <strong>Therapist ID:</strong> {$therapistID}<br>
+                <strong>Date Hired:</strong> {$_POST['datehired']}<br><br>
+                 <b>Password:</b> {$_POST['password']}<br><br>
+                Please log in to set your password.<br><br>
+                Best regards,<br>TheraPeace Team
+            ";
+            $mail->send();
+            echo " A confirmation email has been sent.";
+        } catch (Exception $e) {
+            echo " However, the email could not be sent: {$mail->ErrorInfo}";
         }
 
-        echo "<br><a href='registerlanding.php'>Back to Registration Landing</a>"; // Link back to landing page
+        echo "<br /><b>Please check your email for details</b>"; // Link back to landing page
     }
-} catch (PDOException $e) {
+} catch (Exception $e) {
     echo "Error: " . $e->getMessage();
 }
 
 // Close the connection
-$conn = null;
+$conn->close();
 ?>

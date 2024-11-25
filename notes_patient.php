@@ -1,19 +1,31 @@
 <?php
-include 'db_conn.php'; // Database connection file
+include 'db_conn.php';
+include 'config.php';
 
-// Fetch patient IDs and names
-$query = "SELECT patientID, patientName FROM patient"; // Adjust table and column names if needed
-$result = $conn->query($query);
+$therapistID = $_SESSION['therapist_id'];
 
-// Generate HTML options
-$options = "";
+$query = "SELECT patientID, patientName 
+          FROM patient 
+          WHERE therapistID = ?";
+
+$stmt = $conn->prepare($query);
+$stmt->bind_param("s", $therapistID);
+$stmt->execute();
+$result = $stmt->get_result();
+
+$patients = [];
 if ($result && $result->num_rows > 0) {
     while ($row = $result->fetch_assoc()) {
-        $options .= "<option value='{$row['patientID']}'>{$row['patientName']}</option>";
+        $patients[] = [
+            'patientID' => $row['patientID'],
+            'patientName' => $row['patientName']
+        ];
     }
 }
 
-// Return options as response
-echo $options;
-?>
+header('Content-Type: application/json');
+echo json_encode($patients);
 
+$stmt->close();
+$conn->close();
+?>

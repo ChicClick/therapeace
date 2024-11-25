@@ -1,89 +1,64 @@
 <?php
 require 'db_conn.php';
 
+header('Content-Type: application/json');
+
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    // Check connection
     if (!$conn) {
-        die("Connection failed: " . $conn->connect_error);
+        die(json_encode(["error" => "Connection failed: " . $conn->connect_error]));
     }
 
-    // Get and validate inputs
-    $patientID = $_POST['patient-ID'] ?? null;
+    $patientID = $_POST['patientID'] ?? null;
     $parentID = $_POST['parentID'] ?? null;
-    $therapistID = $_POST['therapist'] ?? null;
-    $serviceIDs = isset($_POST['services']) ? $_POST['services'] : []; // array of service IDs
+    $therapistID = $_POST['therapistID'] ?? null;
+    $serviceID = $_POST['serviceID'] ?? null;
     $schedule = $_POST['schedule'] ?? null;
 
     // Check if all required fields are filled
-    if (empty($patientID) || empty($parentID) || empty($therapistID) || empty($serviceIDs) || empty($schedule)) {
-        die("All fields are required.");
+    if (!$patientID || !$parentID || !$therapistID || !$serviceID || !$schedule) {
+        echo json_encode(["error" => "All fields are required."]);
+        exit();
     }
 
-    // Verify if patientID exists in the patient table
-    $stmt = $conn->prepare("SELECT 1 FROM patient WHERE patientID = ?");
-    $stmt->bind_param("s", $patientID); // Bind as string
-    $stmt->execute();
-    $stmt->store_result();
-    if ($stmt->num_rows === 0) {
-        die("Error: The selected PatientID does not exist in the patient table.");
-    }
-    $stmt->close();
-
-    // Verify if parentID exists in the parent table
-    $stmt = $conn->prepare("SELECT 1 FROM parent WHERE parentID = ?");
-    $stmt->bind_param("s", $parentID); // Bind as string
-    $stmt->execute();
-    $stmt->store_result();
-    if ($stmt->num_rows === 0) {
-        die("Error: The selected ParentID does not exist in the parent table.");
-    }
-    $stmt->close();
-
-    // Verify if therapistID exists in the therapist table
-    $stmt = $conn->prepare("SELECT 1 FROM therapist WHERE therapistID = ?");
-    $stmt->bind_param("s", $therapistID); // Bind as string
-    $stmt->execute();
-    $stmt->store_result();
-    if ($stmt->num_rows === 0) {
-        die("Error: The selected TherapistID does not exist in the therapist table.");
-    }
-    $stmt->close();
-
-    // Verify each serviceID exists in the services table
-    foreach ($serviceIDs as $serviceID) {
-        $stmt = $conn->prepare("SELECT 1 FROM services WHERE serviceID = ?");
-        $stmt->bind_param("s", $serviceID); // Bind as string
+    function checkExistence($table, $column, $value) {
+        global $conn;
+        $stmt = $conn->prepare("SELECT 1 FROM $table WHERE $column = ?");
+        $stmt->bind_param("s", $value);
         $stmt->execute();
         $stmt->store_result();
-        if ($stmt->num_rows === 0) {
-            die("Error: The selected ServiceID {$serviceID} does not exist in the services table.");
-        }
-        $stmt->close();
+        return $stmt->num_rows > 0;
     }
 
-    // Prepare SQL statement for appointment insertion
+    if (!checkExistence('parent', 'parentID', $parentID)) {
+        echo json_encode(["error" => "ParentID does not exist."]);
+        exit();
+    }
+    if (!checkExistence('therapist', 'therapistID', $therapistID)) {
+        echo json_encode(["error" => "TherapistID does not exist."]);
+        exit();
+    }
+    if (!checkExistence('services', 'serviceID', $serviceID)) {
+        echo json_encode(["error" => "ServiceID does not exist."]);
+        exit();
+    }
+
+    // Insert appointment into database
     $sql = "INSERT INTO appointment (patientID, parentID, therapistID, serviceID, schedule) VALUES (?, ?, ?, ?, ?)";
     $stmt = $conn->prepare($sql);
-    if (!$stmt) {
-        die("Prepare failed: " . $conn->error);
+    if ($stmt === false) {
+        echo json_encode(["error" => "Failed to prepare SQL statement."]);
+        exit();
     }
 
-    // Bind and execute for each service ID
-    foreach ($serviceIDs as $serviceID) {
-        $stmt->bind_param("sssss", $patientID, $parentID, $therapistID, $serviceID, $schedule); // Bind as strings
-
-        if (!$stmt->execute()) {
-            // Provide more detailed error message
-            echo "Error saving appointment for service ID {$serviceID}: " . $stmt->error . "<br>";
-            $stmt->close();
-            $conn->close();
-            exit(); // Exit on error to avoid further issues
-        }
+    $stmt->bind_param("sssss", $patientID, $parentID, $therapistID, $serviceID, $schedule);
+    if ($stmt->execute()) {
+        echo json_encode(["success" => "Appointment scheduled successfully."]);
+    } else {
+        echo json_encode(["error" => "Error saving appointment."]);
     }
 
-    // Clean up and close connections
+    // Clean up
     $stmt->close();
     $conn->close();
-
 }
 ?>

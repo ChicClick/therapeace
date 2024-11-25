@@ -28,6 +28,11 @@ body {
     );
 }
 
+.required:after {
+    content:" *";
+    color: #E83845;
+}
+
 
 /*Pre Screening Styles*/
 .wrapper {

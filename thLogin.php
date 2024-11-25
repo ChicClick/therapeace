@@ -27,7 +27,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 // Password matches, login success
                 $_SESSION['therapist_id'] = $therapist['therapistID'];
                 $_SESSION['therapist_name'] = $therapist['therapistName']; // Store therapist name in session
-                header("Location: therapist-dashboard.php"); // Redirect to dashboard
+                header("Location: t_loading.php"); // Redirect to dashboard
                 exit;
             } else {
                 // Invalid password

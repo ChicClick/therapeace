@@ -49,8 +49,6 @@ if (isset($_POST['fetchTherapists'])) {
     exit();
 }
 
-
-// Get sessionID from POST request
 $sessionID = isset($_POST['sessionID']) ? $_POST['sessionID'] : '';
 
 if ($sessionID && $patientID) {

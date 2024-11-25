@@ -1,0 +1,82 @@
+@font-face {
+    font-family: 'Poppins';
+    src: url('../fonts/Poppins-Regular.ttf') format('truetype');
+    font-weight: 400;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Poppins';
+    src: url('../fonts/Poppins-SemiBold.ttf') format('truetype');
+    font-weight: 600; /* Semibold weight */
+}
+
+.generic-message-popup {
+    font-family: 'Poppins', sans-serif;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 99999;
+    background-color: #F6F0DC;
+    color: #432705;
+    box-shadow: 4.0px 8.0px 8.0px hsl(0deg 0% 0% / 0.38);
+    width: 500px;
+    border-radius: 8px;
+    text-align: center;
+}
+
+#message-popup-title h5 {
+    background-color: #432705;
+    color:#F6F0DC;
+    margin: 0;
+    border-top-right-radius: 8px;
+    border-top-left-radius: 8px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+
+#message-popup-container {
+    margin-top: 10px;
+}
+
+#message-popup-container p {
+    line-height: 50px;
+    text-align: justify;
+    text-indent: 36px;
+    margin: 0;
+}
+
+#okButton {
+    width: 120px;
+    padding: 13px;
+    color: #432705;
+    background-color: #fdfbf4;
+    border: none;
+    box-shadow: 0 0 10px rgba(0,0,0,0.2);
+    border-radius: 20px;
+    margin-top: 20px; /* Optional: Add some margin for spacing */
+    cursor: pointer;
+    margin-left: auto;
+    font-weight: 400;
+    font-size: 15px;
+    margin-bottom: 10px;
+}
+
+#okButton:hover {
+    background: linear-gradient(90deg, #FDBC10 0%, #FFEA09 100%);
+    color: #432705;
+}
+
+notes-popup.generic-message-popup {
+    width: 60vw !important;
+}
+
+.generic-message-popup .notes-title {
+    font-size: 50px !important;
+}
+
+.generic-message-popup .notes-container {
+    font-size: 20px !important;
+}
+

@@ -1,12 +1,23 @@
 <?php
-include 'db_conn.php';
+// Enable error reporting for debugging (remove in production)
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
 
-// Initialize a variable to hold confirmation status
-$confirmationMessage = "";
+include 'config.php';
+include 'db_conn.php'; // Include your database connection file
 
-// Assuming therapistID is stored in the session
+session_start(); // Start the session
+
+// Check if therapistID is set in the session
+if (!isset($_SESSION['therapist_id'])) {
+    die("Therapist ID not found in session."); // Stop execution if therapistID is missing
+}
+
 $therapistID = $_SESSION['therapist_id'];
+$confirmationMessage = ""; // Initialize a variable to hold confirmation status
 
+// Check if the request method is POST
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     // Retrieve form data
     $patientID = $_POST['patientID'];
@@ -18,14 +29,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     // Verify if the patientID exists and is assigned to the logged-in therapist
     $checkPatientQuery = "SELECT * FROM patient WHERE patientID = ? AND therapistID = ?";
     $stmtCheckPatient = $conn->prepare($checkPatientQuery);
-    $stmtCheckPatient->bind_param("ss", $patientID, $therapistID); // Bind patientID and therapistID
+    $stmtCheckPatient->bind_param("ss", $patientID, $therapistID);
     $stmtCheckPatient->execute();
     $resultCheckPatient = $stmtCheckPatient->get_result();
 
     // Proceed only if patientID exists and belongs to the logged-in therapist
     if ($resultCheckPatient->num_rows > 0) {
         // Fetch the serviceName based on the serviceID
-        $serviceQuery = "SELECT serviceName FROM service WHERE serviceID = ?";
+        $serviceQuery = "SELECT serviceName FROM services WHERE serviceID = ?";
         $stmtService = $conn->prepare($serviceQuery);
         $stmtService->bind_param("i", $serviceID);
         $stmtService->execute();
@@ -52,43 +63,31 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 if ($stmtFeedback) {
                     $stmtFeedback->bind_param("isss", $sessionID, $patientID, $feedback, $sessionDate);
                     if ($stmtFeedback->execute()) {
-                        // Set confirmation message
                         $confirmationMessage = "Feedback submitted successfully.";
                     } else {
                         $confirmationMessage = "Error inserting feedback: " . $stmtFeedback->error;
                     }
-
-                    // Close feedback statement
-                    $stmtFeedback->close();
+                    $stmtFeedback->close(); // Close feedback statement
                 } else {
                     $confirmationMessage = "Error preparing feedback statement: " . $conn->error;
                 }
-
-                // Close session statement
-                $stmtSession->close();
+                $stmtSession->close(); // Close session statement
             } else {
                 $confirmationMessage = "Error preparing session statement: " . $conn->error;
             }
         } else {
             $confirmationMessage = "Service not found.";
         }
-
-        // Close service statement
-        $stmtService->close();
+        $stmtService->close(); // Close service statement
     } else {
         $confirmationMessage = "Patient ID does not exist or does not belong to the logged-in therapist.";
     }
 
-    // Close patient check statement
-    $stmtCheckPatient->close();
-    
-    // Close the database connection
-    $conn->close();
-    
-    // Output the confirmation message and redirect to the therapist dashboard
-    echo "<script>
-        alert('$confirmationMessage');
-        window.location.href = 'therapist-dashboard.php'; // Redirect to therapist dashboard
-    </script>";
+    $stmtCheckPatient->close(); // Close patient check statement
+    $conn->close(); // Close the database connection
+
+    // Output the confirmation message and redirect to the therapist dashboard using JavaScript
+    header("Location: therapist-dashboard.php?message=" . urlencode($confirmationMessage));
+    exit;
 }
 ?>

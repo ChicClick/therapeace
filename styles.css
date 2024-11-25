@@ -55,6 +55,11 @@ nav.scrolled {
         background-color: beige;
     }
 }
+
+.left-section {
+    box-shadow: 2.0px 4.0px 4.0px hsl(0deg 0% 0% / 0.38);
+}
+
 .logo img {
     height:60px;
     width: 70px; 

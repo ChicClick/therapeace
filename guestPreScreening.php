@@ -173,11 +173,11 @@ foreach ($questions as $question) {
                             <?php if ($category === 'Personal Details'): ?>
                                 <div class="demographics-section" style="display: flex; justify-content: space-between; margin-bottom: 15px;">
                                     <div class="input-group">
-                                        <label for="dob">Date of Birth</label>
+                                        <label class="required" for="dob">Date of Birth</label>
                                         <input type="date" name="dob" id="dob" class="styled-input" required>
                                     </div>
                                     <div class="input-group">
-                                        <label for="gender">Gender</label>
+                                        <label class="required" for="gender">Gender</label>
                                         <select name="gender" id="gender" class="styled-select" required>
                                             <option value="male">Male</option>
                                             <option value="female">Female</option>
@@ -190,11 +190,11 @@ foreach ($questions as $question) {
                             <?php if ($category === 'During Pregnancy'): ?>
                                 <div class="demographics-section" style="display: flex; justify-content: space-between; margin-bottom: 15px;">
                                     <div class="input-group">
-                                        <label for="mother_age">Age of mother during pregnancy</label>
+                                        <label class="required" for="mother_age">Age of mother during pregnancy</label>
                                         <input type="number" name="mother_age" id="mother_age" class="styled-input" required>
                                     </div>
                                     <div class="input-group">
-                                        <label for="father_age">Age of father:</label>
+                                        <label class="required" for="father_age">Age of father:</label>
                                         <input type="number" name="father_age" id="father_age" class="styled-input" required>
                                     </div>
                                 </div>
@@ -203,7 +203,7 @@ foreach ($questions as $question) {
                             <?php if ($category === 'Delivery'): ?>
                                 <div class="demographics-section" style="display: flex; justify-content: space-between; margin-bottom: 15px;">
                                     <div class="input-group">
-                                        <label for="labor_hours">Hours of labor</label>
+                                        <label class="required" for="labor_hours">Hours of labor</label>
                                         <input type="number" name="labor_hours" id="labor_hours" class="styled-input" required>
                                     </div>
                                 </div>
@@ -212,11 +212,11 @@ foreach ($questions as $question) {
                             <?php if ($category === 'Personal History'): ?>
                                 <div class="demographics-section" style="display: flex; justify-content: space-between; margin-bottom: 15px;">
                                     <div class="input-group">
-                                        <label for="siblings">Ilan ang kapatid?</label>
+                                        <label class="required" for="siblings">Ilan ang kapatid?</label>
                                         <input type="number" name="siblings" id="siblings" class="styled-input" required>
                                     </div>
                                     <div class="input-group">
-                                        <label for="sibling_position">Pang-ilan sa magkakapatid?</label>
+                                        <label class="required" for="sibling_position">Pang-ilan sa magkakapatid?</label>
                                         <input type="number" name="sibling_position" id="sibling_position" class="styled-input" required>
                                     </div>
                                 </div>
@@ -226,17 +226,17 @@ foreach ($questions as $question) {
                                 <!-- Email and Phone Number fields styled like the question sections -->
                                 <div class="question-section" style="display: flex; justify-content: space-between; margin-bottom: 15px;">
                                     <div class="input-group">
-                                        <label for="email">Email</label>
+                                        <label class="required" for="email">Email</label>
                                         <input type="email" name="email" id="email" class="styled-input" required>
                                     </div>
                                     <div class="input-group">
-                                        <label for="phone">Phone Number</label>
+                                        <label class="required" for="phone">Phone Number</label>
                                         <input type="tel" name="phone" id="phone" class="styled-input" required>
                                     </div>
                                 </div>
                                 <div class="question-section" style="display: flex;">
                                     <div class="input-group">
-                                        <label for="guestName">Parent's Name</label>
+                                        <label class="required" for="guestName">Parent's Name</label>
                                         <input type="text" name="guestName" id="guestName" class="styled-input" required>
                                     </div>
                                 </div>
