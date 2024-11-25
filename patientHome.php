@@ -87,17 +87,16 @@
     <section class="feedback-section">
         <h2>Parent's Feedback</h2>
         <div class="feedback-carousel">
-            <div class="feedback-item">
-                <p>"Mom's about to send us flying off from therapy with Mommy Dana's expert parenting skills..."</p>
-                <h4>Mommy Dana</h4>
-            </div>
-            <div class="feedback-item">
-                <p>"Thanks to Teacher Julia, my son has improved significantly in his speech and interaction with other kids..."</p>
-                <h4>Mommy Mikkee</h4>
-            </div>
-            <div class="feedback-item">
-                <p>"Our daughter has grown confident and more expressive thanks to the amazing therapy sessions..."</p>
-                <h4>Mommy Wynn</h4>
-            </div>
+            <?php
+            // Include the PHP file that handles feedback display
+            include 'fetch_feedbacks.php';
+            ?>
         </div>
+            <!-- Leave Feedback Button -->
+            <button id="leave-feedback" class="leave-feedback" onclick="openFeedbackForm()">
+                <i class="fas fa-comment-dots"></i> Leave Feedback
+            </button>
     </section>
+
+
+    
