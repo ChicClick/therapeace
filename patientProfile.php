@@ -13,7 +13,7 @@ include 'patient_profile_functions.php';
                     <div class="profile-info">
                         <h2><?php echo htmlspecialchars($patientName); ?></h2>
                     </div>
-                    <button id="edit-btn" onclick="window.location.href='patientEditProfile.php';">View Appointments</button>
+                    <a href="#" class="nav-link" data-target="patientEditProfile.php">Notes</a>
                 </div>
 
                 <div class="profile-details">
@@ -53,4 +53,5 @@ include 'patient_profile_functions.php';
                 </div>
             </div>
         </section>
-</div>
+<div>
+
