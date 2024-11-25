@@ -40,12 +40,11 @@
 }
 
 .accordion-header.expanded {
-    background-color: #ddd;
+     background-color: #ab9984;
+    color: white;
 }
 
 .accordion-header::after {
-    background-color: #ab9984;
-    color: white;
     font-weight: bold;
     content: "►";
     font-size: 14px;
