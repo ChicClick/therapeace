@@ -517,7 +517,7 @@ input[type="radio"]:checked + label::after {
 
 .tabs-container {
   display: flex;
-  background-color: #f4f4f4;
+  background-color: #ffffff;
   border-bottom: 2px solid #ccc;
   padding: 10px;
   gap: none;
@@ -534,13 +534,15 @@ input[type="radio"]:checked + label::after {
 }
 
 .tab:hover {
-  background-color: #d4d4d4;
+  background-color: #ab9984;
+  color: white;
 }
 
 .tab.active {
   background-color: #ffffff;
   border: 2px solid #ccc;
   border-bottom: none;
+  font-weight: 600;
 }
 
 .content-container {
