@@ -63,7 +63,7 @@ $stmt->close();
 
         <div class="form-group-profile">
             <label>Availability</label>
-            <div class="input-field-availability"><?php echo htmlspecialchars($therapist['availability']); ?></div>
+            <div class="input-field-service"><?php echo htmlspecialchars($therapist['availability']); ?></div>
         </div>
 
         <div class="form-group-profile">
