@@ -148,6 +148,26 @@ function closeModal() {
 
 const navbar = document.querySelector('nav');
 const scrollTopBtn = document.querySelector('.scroll-top'); 
+let lastScrollTop = 0;
+const scrollThreshold = 100;
+
+window.addEventListener('scroll', function() {
+    let scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+
+    if (scrollTop > scrollThreshold) {
+        if (scrollTop > lastScrollTop) {
+            // User is scrolling down and has passed the threshold - hide the navbar
+            navbar.style.transform = 'translateY(-100%)';
+            navbar.style.opacity = '0';
+        } else {
+            // User is scrolling up - show the navbar
+            navbar.style.transform = 'translateY(0)';
+            navbar.style.opacity = '1';
+        }
+    }
+
+    lastScrollTop = scrollTop <= 0 ? 0 : scrollTop;
+});
 
 if(scrollTopBtn) {
     window.addEventListener('scroll', () => {
@@ -173,3 +193,69 @@ if(scrollTopBtn) {
 });
 
 }
+
+
+const carousel = document.querySelector('.feedback-carousel');
+    const leftControl = document.querySelector('.carousel-control.left');
+    const rightControl = document.querySelector('.carousel-control.right');
+    let currentIndex = 0;
+
+    function getItems() {
+        return document.querySelectorAll('.feedback-item'); // Dynamically get the items
+    }
+
+    function updateCarousel() {
+        const items = getItems();
+        const totalItems = items.length;
+
+        if (totalItems > 0) {
+            const offset = -currentIndex * 100; // Translate based on percentage to show one item
+            carousel.style.transform = `translateX(${offset}%)`;
+        }
+    }
+
+    function showNext() {
+        const items = getItems();
+        const totalItems = items.length;
+        if (totalItems > 0) {
+            currentIndex = (currentIndex + 1) % totalItems;
+            updateCarousel();
+        }
+    }
+
+    function showPrev() {
+        const items = getItems();
+        const totalItems = items.length;
+        if (totalItems > 0) {
+            currentIndex = (currentIndex - 1 + totalItems) % totalItems;
+            updateCarousel();
+        }
+    }
+
+    leftControl.addEventListener('click', showPrev);
+    rightControl.addEventListener('click', showNext);
+
+    // Optional: Automatic sliding
+    setInterval(showNext, 5000); // Adjust timing as desired
+
+    // Initialize carousel position
+    updateCarousel();
+
+
+// Create an IntersectionObserver to observe when images come into view
+const observer = new IntersectionObserver((entries, observer) => {
+    entries.forEach(entry => {
+        // Check if the image is in the viewport (intersecting)
+        if (entry.isIntersecting) {
+            entry.target.classList.add('visible'); // Add the 'visible' class to animate
+            observer.unobserve(entry.target); // Stop observing once it's in view
+        }
+    });
+}, {
+    threshold: 0.5 // Trigger the observer when at least 50% of the image is visible
+});
+
+// Observe each image in the "about-image" class
+document.querySelectorAll('.about-image').forEach(image => {
+    observer.observe(image);
+});

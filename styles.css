@@ -30,6 +30,7 @@
 body {
     font-family: 'Poppins', sans-serif;
     background-color: #f8f5e9;
+    overflow-x: hidden; /* Prevent horizontal overflow */
 }
 
 nav {
@@ -43,10 +44,57 @@ nav {
     z-index: 1000; 
     transition: background-color 0.3s ease; 
 }
+
+.nav-container {
+    display: flex;
+    align-items: center;
+    gap: 20px; /* Adds spacing between nav-links and button */
+    margin-left: auto; /* Pushes nav container to the right */
+}
+
+.nav-links {
+    display: flex;
+    align-items: center;
+    margin-top: 0;
+    list-style: none;
+    display: flex;
+    gap: 40px;
+    transition: transform 0.3s;   
+}
+
+.nav-links li a {
+    text-decoration: none;
+    color: #432705;
+    font-size: 14px;
+}
+
+.nav-links li a:hover {
+    text-decoration: underline;
+}
+
 nav.scrolled {
-    background-color: #fbf5e2; /* Background color when scrolled */
+    background: rgba(227,218,183,0.5);
+    -webkit-backdrop-filter: blur(6px);
+    backdrop-filter: blur(6px);
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); 
-    transition: background-color 0.3s ease, box-shadow 0.3s ease;
+    transition: transform 0.3s ease-in-out, opacity 0.1s ease-out;
+}
+
+.login-btn {
+    font-family: 'Poppins', sans-serif;
+    background: linear-gradient(90deg, #FDBC10 0%, #FFEA09 100%);
+    height:35px;
+    padding: 0px 35px;
+    font-size: 13px;
+    border: none;
+    border-radius: 20px;
+    cursor: pointer;
+    margin: 0px 20px 0px 30px;
+
+}
+
+.login-btn:hover {
+    background: linear-gradient(90deg, #FDBC10 100%, #FFEA09 0%);
 }
 
 
@@ -56,19 +104,16 @@ nav.scrolled {
     }
 }
 
-.left-section {
-    box-shadow: 2.0px 4.0px 4.0px hsl(0deg 0% 0% / 0.38);
-}
-
 .logo img {
-    height:60px;
-    width: 70px; 
+    height: 40px;
+    width: 50px; 
     margin-right: 10px; 
 }
+
 .logo h1{
     color: #432705;
     font-size: 25px;
-    font-weight: 800;
+    font-weight: none;
     margin: 0;
 }
 
@@ -80,97 +125,52 @@ nav.scrolled {
     height: 50px;
 }
 
-.nav-links {
-    display: flex;
-    margin-left: 550px;
-    align-items: right;
-    text-align: right;
-    margin-top: 18px;
-    list-style: none;
-    display: flex;
-    gap: 40px;
-    transition: transform 0.3s;   
-}
-
-.nav-links li a {
-    text-decoration: none;
+.hero-section {
+    position: relative;
+    background: linear-gradient(to bottom, rgba(227, 218, 183, .8), rgba(67, 39, 5, 0.6));
+    background-blend-mode: overlay;
+    padding: 70px; 
     color: #432705;
-    font-size: 14px;
-    font-weight: 600;
-}
-
-.login-btn {
-    font-family: 'Poppins', sans-serif;
-    background: linear-gradient(90deg, #FDBC10 0%, #FFEA09 100%);
-    color: #432705;
-    margin-top: 10px;
-    height: 35px;
-    padding: 8px 35px;
-    font-size: 13px;
-    border: none;
-    border-radius: 20px;
-    cursor: pointer;
-    text-decoration: none;
-    text-align: center;
-}
-.hero-container {
-    display: flex; 
-    align-items: center; 
-    justify-content: space-between; 
-    animation: fadeIn 0.5s ease-in; 
+    min-height: 100vh;
+    align-content: center;
   }
   
-.hero-content {
-    align-items: center;
-    background: radial-gradient(150.52% 100% at 10.19% 100%, rgba(236, 183, 35, 0.6) 10%, rgba(239, 209, 3, 0.45) 80.92%, rgba(255, 234, 9, 0.06) 96.5%);
-    float: right;
-    padding: 60px 20px;
-    width: 70%;
-    height: 650px;
+.hero-section::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: url('images/about\ 3.jpg') no-repeat center center / cover;
+    z-index: -1; 
+    opacity: 0.3; 
+    transform: scaleX(-1);
 }
 
 .hero-text {
-    margin-top: 100px;
-    align-items: right;
-    margin-left: 250px;     
-    flex: 1; /* Allow text to take up remaining space */
-    margin-right: 40px; /* Space between the text and image */
+    max-width: 80%;
+    padding: 20px;
+    border-radius: 10px;
+    justify-content: flex-start;
+    margin-top: auto;
 }
 
 .hero-text h1 {
-    font-family: "Architects Daughter", cursive;
-    font-size: 60px;
-    color: #432705;
-    margin-bottom: 20px;
-    font-weight: lighter;
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
 }
+
 
 .hero-text p {
-    font-size: 18px;
-    color: #432705;
-    margin-bottom: 30px;
-}
-
-.home-image-container {
-    width: 20%;
-    margin-left: 100px;
-    margin-top: 90px;
-    float: left;
-    flex-shrink: 0; /* Prevent the image from shrinking */
-}
-
-.home-image {
-    position: absolute;
-    width: 550px;
-    height: 550px;
-    object-fit: cover;  /* Ensures image scales nicely */
-    
+    font-size: 1.25rem;
+    max-width: 700px;
 }
 
 .enroll-btn {
     font-family: 'Poppins', sans-serif;
-    background-color: #FFF4CE;
-    margin-top: 10px;
+    background: linear-gradient(90deg, #FDBC10 0%, #FFEA09 100%);
+    margin-top: 30px;
     height:35px;
     padding: 0px 35px;
     font-size: 13px;
@@ -178,72 +178,171 @@ nav.scrolled {
     border-radius: 20px;
     cursor: pointer;
     margin-right: 80px;
-    float: right;
 }
 
 .enroll-btn:hover {
-    background: linear-gradient(90deg, #FDBC10 0%, #FFEA09 100%);
+    background: linear-gradient(90deg, #FDBC10 100%, #FFEA09 0%);
 }
 
 .about-section {
-    display: flex;
-    clear: both;
-    margin-left: 100px;
-    padding: 60px 20px;
+    padding: 100px 20px;
     background-color: #f8f5e9;
-    display: flex; 
-    justify-content: space-between;
-    align-items: flex-start;
-    flex-wrap: wrap; 
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative; /* Ensure positioning of child elements */
+    z-index: 1;
 }
 
-.about-section h2 {
-    font-family: "Architects Daughter", cursive;
-    margin-left:250px; 
-    color: #432705;
-    text-align: left;
-    font-size: 36px;
+.about-images-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
     margin-bottom: 40px;
-    width: 100%; 
     max-width: 100%;
-    font-weight: lighter;
+}
+
+.about-image {
+    position: relative;
+    margin: 0 15px; /* Add some margin between images */
+    max-width: 350px; /* Adjust as necessary for your image size */
+    opacity: 0; /* Make images initially invisible */
+    transform: translateY(50px) rotate(0deg); /* Apply both translateY and rotate */
+    transition: opacity 0.8s ease, transform 0.8s ease; /* Smooth transition */
+}
+
+.about-image.visible {
+    opacity: 1; /* Make images visible */
+    transform: translateY(0) rotate(0deg); /* Reset translateY and rotate to original */
+}
+
+.about-image img {
+    width: 100%;
+    border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+}
+
+/* Individual image rotations (applied separately) */
+.about-image-1 {
+    transform: translateY(50px) rotate(-5deg); /* Combine translateY and rotation */
+    z-index: 1;
+}
+
+.about-image-2 {
+    transform: translateY(50px) rotate(3deg); /* Combine translateY and rotation */
+    z-index: 2;
+}
+
+.about-image-3 {
+    transform: translateY(50px) rotate(5deg); /* Combine translateY and rotation */
+    z-index: 3;
+}
+
+.about-image.visible.about-image-1 {
+    transform: translateY(0) rotate(-5deg); /* Reset translateY and maintain rotation */
+}
+
+.about-image.visible.about-image-2 {
+    transform: translateY(0) rotate(0deg); /* Reset translateY and maintain rotation */
+}
+
+.about-image.visible.about-image-3 {
+    transform: translateY(0) rotate(5deg); /* Reset translateY and maintain rotation */
 }
 
 .about-content {
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
-    text-align: justify;
-    width: 60%; 
-    padding-right: 20px;
+    text-align: center;
+    max-width: 1000px;
+    color: #432705;
+    margin-top: 20px; /* Adds spacing between images and text */
+}
+
+.about-content h2 {
+    font-family: "Architects Daughter", cursive;
+    font-size: 36px;
+    margin-bottom: 20px;
+    font-weight: lighter;
 }
 
 .about-content p {
     font-size: 18px;
-    color: #432705;
-    max-width: 100%; 
-    line-height: 1.6; 
+    line-height: 1.6;
+    text-align: justify;
 }
 
-.about-images {
-    float: right;
-    width: 40%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+.bee-trail-wrapper {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 200px;
+    overflow: visible; /* Ensure the bee flies beyond the container boundaries */
+    z-index: 2; /* Keep it above the section content */
 }
 
-.about-images img {
-    max-width: 100%;
-    max-height: 100%;
-    border-radius: 10px; 
+.bee-trail-wrapper svg {
+    width: 100%;
+    height: auto;
+    position: relative;
+}
+
+/* Style for the dashed path (same for both bees) */
+.bee-trail-path {
+    stroke: #ffcc00;
+    stroke-width: 2;
+    fill: transparent;
+    stroke-dasharray: 15, 10; 
+    stroke-dashoffset: 2000;
+    animation: drawPath 5s forwards;
+}
+
+/* Bee animation: follow their respective paths */
+.bee {
+    position: absolute;
+    width: 30px;
+    height: 30px;
+    animation: flyAlongPath 5s linear infinite;
+}
+
+/* Bee 1 - standard path */
+.bee-1 {
+    animation-delay: 0s;
+    animation-duration: 5s;
+    offset-path: path('M0,150 C300,50, 600,250, 900,150 C1200,50, 1500,250, 1800,150');
+    offset-distance: 0%;
+}
+
+/* Bee 2 - add variation to the path with slight delay */
+.bee-2 {
+    animation-duration: 7s;
+    offset-path: path('M0,150 C200,100, 500,200, 900,150 C1200,100, 1600,200, 1800,150');/* Same path */
+    offset-distance: 0%; /* Start position */
+    animation-timing-function: ease-in-out; /* For a more non-linear motion */
+}
+
+/* Animation for drawing the path */
+@keyframes drawPath {
+    to {
+        stroke-dashoffset: 0;
+    }
+}
+
+/* Animation for the bees flying along the path */
+@keyframes flyAlongPath {
+    100% {
+        offset-distance: 100%; /* The bee will follow the path from start to end */
+    }
 }
 
 .pricing-section {
-    padding: 60px 20px;
+    padding: 60px 0px;
     background-color: #f8f5e9;
     text-align: center;
+    position: relative;
+    z-index: 1; /* Keeps pricing section above the wave */
 }
+
 .pricing-section h2 {
     font-family: "Architects Daughter", cursive;
     font-size: 36px;
@@ -307,6 +406,7 @@ nav.scrolled {
     margin-bottom: 5px;
     text-align: justify;
 }
+
 .enroll-btn-p {
     font-family: 'Poppins', sans-serif;
     background: linear-gradient(90deg, #FDBC10 0%, #FFEA09 100%);
@@ -320,56 +420,84 @@ nav.scrolled {
 }
 
 .feedback-section {
-    padding: 60px 20px;
-    background: radial-gradient(101.52% 100% at 4.19% 100%, rgba(236, 183, 35, 0.6) 12%, rgba(239, 209, 3, 0.45) 62.92%, rgba(255, 234, 9, 0.06) 96.5%);
+    padding: 90px 20px;
     text-align: center;
+    overflow: hidden; /* To prevent overflow from carousel movement */
+    background: #FFF4CE;
+    position: relative;
 }
 
 .feedback-carousel {
     display: flex;
-    justify-content: center;
-    gap: 20px;
-    max-width: 1000px;
-    margin: 0 auto;
+    transition: transform 0.5s ease-in-out;
+    width: 100%;
 }
+
+.feedback-carousel-container {
+    position: relative;
+    max-width: 900px; /* Adjust based on desired width */
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    overflow: hidden; /* Hide overflowing feedback items */
+}
+
 .feedback-section h2 {
     font-family: "Architects Daughter", cursive;
-    font-size: 36px;
     color: #432705;
-    margin-bottom: 20px;
-    text-align: center;
+    font-size: 36px;
+    margin-bottom: 40px;
     font-weight: lighter;
 }
+
 .feedback-item {
-    background-color: #333;
-    color: #fff;
+    min-width: 100%; /* Show one item at a time */
+    flex-shrink: 0;
+    color: #432705;
     padding: 20px;
     border-radius: 10px;
-    width: 300px;
     text-align: center;
 }
 
-.feedback-item p {
-    font-size: 16px;
-    margin-bottom: 10px;
+.carousel-control {
+    background: none;
+    border: none;
+    font-size: 30px; /* Increased size for visibility */
+    cursor: pointer;
+    padding: 10px;
+    color: #432705; /* Make sure the color contrasts well with the background */
+    transition: color 0.3s;
+    position: absolute; /* Make sure it's positioned relative to its container */
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 2; /* Ensure the buttons are above other elements */
 }
 
-.feedback-item h4 {
-    font-size: 18px;
-    font-weight: bold;
+.carousel-control:hover {
+    color: #FDBC10; /* Adjust hover color for better visibility */
+}
+
+.carousel-control.left {
+    left: 10px; /* Adjust as needed for your layout */
+}
+
+.carousel-control.right {
+    right: 10px; /* Adjust as needed for your layout */
 }
 
 .scroll-top {
+    font-family: 'Poppins', sans-serif;
     position: fixed;
     bottom: 20px;
     right: 20px;
-    background-color: #ffeb3b;
+    background: linear-gradient(90deg, #FDBC10 0%, #FFEA09 100%);
     border: none;
     padding: 10px 20px;
-    font-size: 14px;
+    font-size: 13px;
     border-radius: 20px;
     cursor: pointer;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    z-index: 10;
 }
 
 
@@ -377,13 +505,13 @@ nav.scrolled {
     display: flex;
     align-items: center;
     font-family: 'Poppins', sans-serif;
-    font-weight: 600;
+    font-weight: none;
     color: #432705;
     padding-right: 20px;
+    padding-left: 20px;
 }
 
 .welcome-text {
-    padding-top: 6px;
     margin-right: 10px; /* Space between the text and icon */
     font-size: 14px;
 }
@@ -412,12 +540,17 @@ nav.scrolled {
 .services-section {
     padding: 60px 20px;
     background-image: 
-        linear-gradient(to bottom, rgba(248, 245, 233, 1), rgba(248, 245, 233, 0) 20%, rgba(248, 245, 233, 0) 80%, rgba(248, 245, 233, 1)),
-        linear-gradient(rgba(255, 246, 120, 0.6), rgba(255, 246, 120, 0.6)), /* semi-transparent overlay */
-        url('images/beehive.png');
+    linear-gradient(rgba(255, 246, 120, 0.2), rgba(255, 246, 120, 0.3)), /* semi-transparent overlay */
+        url('images/beehive.png'); /* Keep the background image */
     background-size: cover;
     background-position: center;
     text-align: center;
+    position: relative;
+    z-index: 1; /* Ensure the services section appears below the bee trail */
+    overflow: visible; /* Allow overflow from the bee trail */
+    box-shadow:     inset 0 10px 30px rgba(200, 153, 0, 0.4), 
+                    inset 0 -4px 30px rgba(200, 153, 0, 0.3);  
+
 }
 
 .services-section h2 {
@@ -426,6 +559,8 @@ nav.scrolled {
     font-size: 36px;
     margin-bottom: 40px;
     font-weight: lighter;
+    position: relative;
+    z-index: 1; /* Ensure the services section appears below the bee trail */
 }
 
 .services-grid {
@@ -445,12 +580,12 @@ nav.scrolled {
 
 /* Hexagon shape styling */
 .service-item.hexagon {
-    width: calc(70% - 20px); /* Adjust width as needed */
-    background: linear-gradient(90deg, #FDBC10 0%, #FFEA09 100%);
+    width: calc(70% - 20px);
+    background: #ffbb0e;
     border: none;
     clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%); /* Hexagon shape */
     transform: rotate(90deg); /* Rotate the hexagon */
-    transition: background-color 0.3s;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); /* Add shadow */
 }
 
 /* Combined content styling */
@@ -487,7 +622,7 @@ nav.scrolled {
     left: 0;
     right: 0;
     padding: 10px;
-    background-color: rgb(255, 246, 120);
+    background-color: #FFF4CE;
     color: #432705;
     display: none;
     min-height: 100%;
@@ -501,7 +636,8 @@ nav.scrolled {
 
 /* Hover effects */
 .service-item.hexagon:hover {
-    background-color: rgb(255, 246, 120); 
+    background: #FFF4CE;
+    transition: transform 0.3s ease-in-out, opacity 0.3s ease-out;
 }
 
 /* Show the description on hover */
@@ -540,8 +676,9 @@ nav.scrolled {
     background-color: transparent;
     border: none;
     cursor: pointer;
-    font-size: 16px; 
+    font-size: 14px; 
     margin-left: 10px;
+    color: #432705;
 }
 
 /* Dropdown content (hidden by default) */
@@ -549,18 +686,19 @@ nav.scrolled {
     display: none; 
     position: absolute;
     right: 0; 
-    background-color: #f9f9f9;
-    min-width: 160px;
+    background-color: #FFF4CE;
+    min-width: 200px;
     box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2); 
     z-index: 1; 
     /* Additional styles to prevent cutting off */
     max-height: 200px; 
     overflow-y: auto;
+    font-size: 14px; 
 }
 
 /* Links inside the dropdown */
 .dropdown-content a {
-    color: black;
+    color: #432705;
     padding: 12px 16px; 
     text-decoration: none; 
     display: block; 
@@ -568,7 +706,7 @@ nav.scrolled {
 
 /* Change color of dropdown links on hover */
 .dropdown-content a:hover {
-    background-color: #f1f1f1;
+    background-color: #f0e4bb;
 }
 
 /* Show the dropdown content on button click */

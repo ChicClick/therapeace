@@ -15,6 +15,7 @@ if (isset($_SESSION['patientName'])) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>TheraPeace - Patient Appointments</title>
+    <link rel="icon" type="image/svg+xml" href="images/TheraPeace Logo.svg">
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -41,27 +42,31 @@ if (isset($_SESSION['patientName'])) {
     <generic-side-view-bar></generic-side-view-bar>
     <nav>
         <div class="logo">
-            <img src="images/logo.png" alt="TheraBee Logo" class="logo">
+            <img src="images/TheraPeace Logo.svg" alt="TheraPeace Logo">
             <h1>TheraPeace</h1>
         </div>
-        <ul class="nav-links">
-            <li><a href="#" class="nav-link" data-target="patientHome.php">Home</a></li>
-            <li><a href="#" class="nav-link" data-target="patientAppointments.php">Appointments</a></li>
-            <li><a href="#" class="nav-link" data-target="patientNotes.php">Notes</a></li>
-        </ul>
-
-        <div class="user-greeting">
-            <span class="welcome-text">Welcome back, <?php echo htmlspecialchars($patientName); ?>!</span>
-            <i class="notification-icon">🔔</i>
-            <div class="dropdown">
-                <button class="dropbtn">▼</button>
-                <div class="dropdown-content">
-                    <a href="#" class="nav-link" data-target="patientProfile.php">View Profile</a>
-                    <a href="settings.php">Settings</a>
-                    <a href="#" id="logoutBtn">Log Out</a>
+        <div class="nav-container">
+            <ul class="nav-links">
+                <li><a href="#" class="nav-link" data-target="patientHome.php">Home</a></li>
+                <li><a href="#" class="nav-link" data-target="patientAppointments.php">Appointments</a></li>
+                <li><a href="#" class="nav-link" data-target="patientNotes.php">Notes</a></li>
+            </ul>
+            <div class="user-greeting">
+                <span class="welcome-text">Welcome back, <?php echo htmlspecialchars($patientName); ?>!</span>
+                <div class="dropdown">
+                    <button class="dropbtn">▼</button>
+                    <div class="dropdown-content">
+                        <a href="#" class="nav-link" data-target="patientProfile.php"> <i class="fa fa-cog"></i> View Profile</a>
+                        <a href="#" id="logoutBtn"> <i class="fa fa-sign-out"></i> Log Out</a>
+                        <a href="#" id="leave-feedback-link" class="nav-link" onclick="openFeedbackForm();">
+                            <i class="fas fa-comment-dots"></i> Leave Feedback
+                        </a>
+                    </div>
                 </div>
             </div>
         </div>
+
+
     </nav>
 
     <!-- Main content please refer to patient_navigation_script.js if you want to navigation. 
@@ -85,7 +90,7 @@ if (isset($_SESSION['patientName'])) {
         <footer class="footer">
             <div class="footer-container">
                 <div class="footer-logo">
-                    <img src="images/logo.png" alt="TheraPeace Logo">
+                    <img src="images/TheraPeace Logo.svg" alt="TheraPeace Logo">
                     <h2>TheraPeace</h2>
                     <p>Your Partner in Patient Care</p>
                 </div>

@@ -1,4 +1,11 @@
 document.addEventListener('DOMContentLoaded', function() {
+    const pageIdentifier = document.querySelector('#page-identifier');
+    const navbar = document.querySelector('nav');
+
+    if (pageIdentifier && pageIdentifier.dataset.page === 'appointments') {
+        navbar.style.background = 'rgba(67, 39, 5, 0.9)';
+        navbar.classList.add('appointments-nav');
+    }
     
     // Get dropdown button and container
     const dropbtn = document.querySelector('.dropbtn');
@@ -8,11 +15,11 @@ document.addEventListener('DOMContentLoaded', function() {
         scrollTopBtn.click();
         const feedbackFormContent = `
             <form id="feedbackForm" class="feedbackForm" action="submit_feedback.php" method="post">
+                <div class="intro">
+                    <p>We value your feedback! Please take a moment to share your thoughts about our service. 
+                    Your input helps us improve and ensure a better experience for everyone.</p>
+                </div>
                 <div class="form-row">
-                    <div class="form-column-right">
-                        <label for="feedback">Feedback:</label>
-                        <textarea id="feedback" name="feedback" required></textarea>
-                    </div>
                     <div class="form-column-right">
                         <label for="rating">Rating:</label>
                         <select id="rating" name="rating" required>
@@ -24,6 +31,16 @@ document.addEventListener('DOMContentLoaded', function() {
                             <option value="5">5 - Excellent</option>
                         </select>
                     </div>
+                    <div class="form-column-right">
+                        <label for="feedback">Feedback:</label>
+                        <textarea id="feedback" name="feedback_text" required></textarea>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <label>
+                        <input type="checkbox" id="consent" name="consent">
+                        I consent to having my feedback displayed publicly (anonymous).
+                    </label>
                 </div>
                 <button type="submit">Submit</button>
             </form>
@@ -263,4 +280,47 @@ function closeReportRequestModal() {
         editButton.textContent = (editButton.textContent === 'Edit Profile') ? 'Save Changes' : 'Edit Profile';
     }
 
+
+
+    let currentIndex = 0;
+
+    function moveCarousel(direction) {
+        const carousel = document.querySelector('.feedback-carousel');
+        const items = document.querySelectorAll('.feedback-item'); // Dynamically fetch items
+        const totalItems = items.length;
     
+        if (totalItems === 0) return; // Exit if no feedback items
+    
+        if (direction === 'left') {
+            currentIndex = (currentIndex - 1 + totalItems) % totalItems;
+        } else if (direction === 'right') {
+            currentIndex = (currentIndex + 1) % totalItems;
+        }
+    
+        // Calculate the new offset
+        const offset = -currentIndex * 100; // Assuming each item takes up 100% width
+        carousel.style.transform = `translateX(${offset}%)`;
+    }
+    
+    // Automatic sliding (optional)
+    setInterval(() => moveCarousel('right'), 5000);
+    
+
+
+// Create an IntersectionObserver to observe when images come into view
+const observer = new IntersectionObserver((entries, observer) => {
+    entries.forEach(entry => {
+        // Check if the image is in the viewport (intersecting)
+        if (entry.isIntersecting) {
+            entry.target.classList.add('visible'); // Add the 'visible' class to animate
+            observer.unobserve(entry.target); // Stop observing once it's in view
+        }
+    });
+}, {
+    threshold: 0.5 // Trigger the observer when at least 50% of the image is visible
+});
+
+// Observe each image in the "about-image" class
+document.querySelectorAll('.about-image').forEach(image => {
+    observer.observe(image);
+});

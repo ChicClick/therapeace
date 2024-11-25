@@ -16,18 +16,7 @@ body {
     font-family: 'Poppins', sans-serif;
     margin: 0;
     padding: 0;
-    background: linear-gradient(to bottom, 
-    rgba(239, 209, 3, 0.50) 20%,  
-    rgba(245, 245, 220, 1.0) 80%); 
-}
-
-.user-info {
-    display: flex;
-    align-items: center;
-}
-
-.user-icon {
-    margin-left: 10px;
+    background: #fff4ce;
 }
 
 #content {
@@ -502,5 +491,35 @@ button[type="submit"]:hover {
 .modal a:focus {
     outline: none;  /* Remove the default focus outline */
     box-shadow: 0 0 5px rgba(0, 123, 255, 0.75);  /* Blue glow effect when focused */
+}
+
+.leave-feedback {
+    font-family: 'Poppins', sans-serif;
+    background: linear-gradient(90deg, #FDBC10 0%, #FFEA09 100%);
+    color: #432705;
+    margin-top: 10px;
+    height: 35px;
+    padding: 8px 35px;
+    font-size: 13px;
+    border: none;
+    border-radius: 20px;
+    cursor: pointer;
+    text-decoration: none;
+    text-align: center;
+}
+
+.leave-feedback:hover {
+    font-family: 'Poppins', sans-serif;
+    background: linear-gradient(90deg, #FDBC10 100%, #FFEA09 0%);
+    color: #432705;
+    margin-top: 10px;
+    height: 35px;
+    padding: 8px 35px;
+    font-size: 13px;
+    border: none;
+    border-radius: 20px;
+    cursor: pointer;
+    text-decoration: none;
+    text-align: center;
 }
 
