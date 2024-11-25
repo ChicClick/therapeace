@@ -4,6 +4,35 @@ document.addEventListener('DOMContentLoaded', function() {
     const dropbtn = document.querySelector('.dropbtn');
     const dropdown = document.querySelector('.dropdown');
 
+    openFeedbackForm = () => {
+        scrollTopBtn.click();
+        const feedbackFormContent = `
+            <form id="feedbackForm" class="feedbackForm" action="submit_feedback.php" method="post">
+                <div class="form-row">
+                    <div class="form-column-right">
+                        <label for="feedback">Feedback:</label>
+                        <textarea id="feedback" name="feedback" required></textarea>
+                    </div>
+                    <div class="form-column-right">
+                        <label for="rating">Rating:</label>
+                        <select id="rating" name="rating" required>
+                            <option value="">Select Rating</option>
+                            <option value="1">1 - Poor</option>
+                            <option value="2">2 - Fair</option>
+                            <option value="3">3 - Good</option>
+                            <option value="4">4 - Very Good</option>
+                            <option value="5">5 - Excellent</option>
+                        </select>
+                    </div>
+                </div>
+                <button type="submit">Submit</button>
+            </form>
+        `;
+        
+        const sidebar = new SideViewBarEngine("LEAVE FEEDBACK", feedbackFormContent);
+        sidebar.render();
+    };
+
     // Toggle dropdown on button click
     dropbtn.addEventListener('click', () => dropdown.classList.toggle('show'));
 
@@ -87,34 +116,6 @@ document.addEventListener('DOMContentLoaded', function() {
         })
         .catch(error => console.error('Error submitting report request:', error));
     });
-   
-    openFeedbackForm = () => {
-        const feedbackFormContent = `
-            <form id="feedbackForm" class="feedbackForm" action="submit_feedback.php" method="post">
-                <div class="form-row">
-                    <div class="form-column-right">
-                        <label for="feedback">Feedback:</label>
-                        <textarea id="feedback" name="feedback" required></textarea>
-                    </div>
-                    <div class="form-column-right">
-                        <label for="rating">Rating:</label>
-                        <select id="rating" name="rating" required>
-                            <option value="">Select Rating</option>
-                            <option value="1">1 - Poor</option>
-                            <option value="2">2 - Fair</option>
-                            <option value="3">3 - Good</option>
-                            <option value="4">4 - Very Good</option>
-                            <option value="5">5 - Excellent</option>
-                        </select>
-                    </div>
-                </div>
-                <button type="submit">Submit</button>
-            </form>
-        `;
-        
-        const sidebar = new SideViewBarEngine("LEAVE FEEDBACK", feedbackFormContent);
-        sidebar.render();
-    };
     
 });
 

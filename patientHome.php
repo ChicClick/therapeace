@@ -93,7 +93,7 @@
             ?>
         </div>
             <!-- Leave Feedback Button -->
-            <button id="leave-feedback" class="leave-feedback" onclick="openFeedbackForm()">
+            <button id="leave-feedback" class="leave-feedback" onclick="openFeedbackForm();">
                 <i class="fas fa-comment-dots"></i> Leave Feedback
             </button>
     </section>
