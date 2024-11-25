@@ -102,6 +102,7 @@ class TableEngine extends HTMLElement {
         this.services = [];
         this.flexibility = [];
         this.communication = [];
+        this.parent = [];
         this.reschedule = false;
         this.edit = false;
         this.delete = false;
@@ -153,6 +154,7 @@ class TableEngine extends HTMLElement {
                 await this.fetchServices();
                 await this.fetchFlexibility();
                 await this.fetchCommunication();
+                await this.fetchParent();
                 await this.fetchData(fullUrl);
             } else {
                 console.error(`Invalid data source key: ${newValue}`);
@@ -182,6 +184,18 @@ class TableEngine extends HTMLElement {
         if (name === 'avatar') {
             this.avatar = newValue === 'true';
             this.render();
+        }
+    }
+
+    async fetchParent() {
+        try {
+            const response = await fetch("z_get_all_parents.php");
+            if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+            const data = await response.json();
+            this.parent = data;
+            this.render();
+        } catch (error) {
+            console.error('Error fetching data:', error);
         }
     }
 
@@ -541,7 +555,95 @@ class TableEngine extends HTMLElement {
     }
 
     editAdminPatient(row) {
-        console.log("EDIT ADMIN PATIENT IAM HERE at LINE 544");
+        try {
+            fetch(`a_fetch_patientID.php?id=${row["patientID"]}`)
+            .then(async response => await response.json())
+            .then(data => {
+                console.log(data);
+                let parentOptions = `<option value="">Select Parent Name</option>`;
+                this.parent.forEach(parent => {
+                    parentOptions += `<option ${data["parentID"] == parent.parentID ? "selected" : ""} value="${parent.parentID}">${parent.parentName}</option>`;
+                });
+
+                const birthdayValue = data["birthday"] || "";
+    
+                const patientForm = `
+                <form action="a_edit_patient.php" method="POST" enctype="multipart/form-data">
+                    <input type="hidden" value="${data["patientID"]}" name="patientID">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="patID">Patient ID:</label>
+                            <input type="text" value="${data["patientID"]}" id="patientID" name="patID" placeholder="Enter Patient ID" disabled required>
+                        </div>
+                        <div class="form-group">
+                            <label for="patientName">Patient Name:</label>
+                            <input value="${data["patientName"]}" type="text" id="patientName" name="patientName" placeholder="Enter Patient Name" required>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="phone">Phone:</label>
+                            <input value="${data["phone"] || ''}" type="text" id="phone" name="phone" placeholder="Enter Phone Number" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="email">Email:</label>
+                            <input value="${data["email"] || ''}" type="email" id="email" name="email" placeholder="Enter Email" required>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="birthday">Birthday:</label>
+                            <input value="${birthdayValue}" type="date" id="birthday" name="birthday" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="address">Address:</label>
+                            <input value="${data["address"]}" type="text" id="address" name="address" placeholder="Enter Address" required>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="gender">Gender:</label>
+                            <select id="gender" name="gender" required>
+                                <option ${data["gender"] == "Female" ? "selected" : ""} value="Female">Female</option>
+                                <option ${data["gender"] == "Male" ? "selected" : ""} value="Male">Male</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="parentID">Parent Name:</label>
+                            <select id="parentID" name="parentID" required>
+                                ${parentOptions}
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="relationship">Relationship:</label>
+                            <input value="${data["relationship"] || ''}" type="text" id="relationship" name="relationship" placeholder="Enter Relationship" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="status">Status:</label>
+                            <select id="status" name="status" required>
+                                <option ${data["status"] == "Active" ? "selected" : ""} value="Active">Active</option>
+                                <option ${data["status"] == "Inactive" ? "selected" : ""} value="Inactive">Inactive</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="image">Profile Picture:</label>
+                            <input type="file" id="image" name="image" accept="image/*">
+                        </div>
+                    </div>
+                    <div class="btn-container">
+                        <button type="submit" class="submit-btn">Save</button>
+                    </div>
+                </form>
+                `;
+            new SideViewBarEngine("NEW PATIENT REGISTRATION",patientForm,"view-lg").render();
+            })
+            .catch(e => console.error("Error fetching parents ", e));
+        }
+        catch{}
     }
 
     editService(row) {
