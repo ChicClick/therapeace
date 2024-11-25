@@ -1,11 +1,4 @@
 document.addEventListener('DOMContentLoaded', function() {
-    const pageIdentifier = document.querySelector('#page-identifier');
-    const navbar = document.querySelector('nav');
-
-    if (pageIdentifier && pageIdentifier.dataset.page === 'appointments') {
-        navbar.style.background = 'rgba(67, 39, 5, 0.9)';
-        navbar.classList.add('appointments-nav');
-    }
     
     // Get dropdown button and container
     const dropbtn = document.querySelector('.dropbtn');
@@ -280,7 +273,7 @@ function closeReportRequestModal() {
         editButton.textContent = (editButton.textContent === 'Edit Profile') ? 'Save Changes' : 'Edit Profile';
     }
 
-
+    
 
     let currentIndex = 0;
 

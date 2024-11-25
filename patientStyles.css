@@ -110,8 +110,8 @@ hr {
 }
 
 #generateReportButton, #viewReportButton {
-    background-color: #fbf5e2; /* Change to your desired background color */
-    color: #FFA500; /* Change to your desired text color */
+    background-color: #ffbb0e; /* Change to your desired background color */
+    color: #fff4ce; /* Change to your desired text color */
     border: none; /* Remove default border */
     border-radius: 12px; /* Adjust the value for roundness */
     padding: 10px 20px; /* Add padding for a better appearance */
@@ -125,7 +125,7 @@ hr {
 }
 
 #generateReportButton:hover, #viewReportButton:hover {
-    background-color: #fff4d0ec; /* Change to a darker shade on hover */
+    background-color: #eaab0c; /* Change to a darker shade on hover */
 }
 
 
