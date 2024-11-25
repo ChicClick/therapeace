@@ -528,6 +528,7 @@ input[type="radio"]:checked + label::after {
   padding: 10px 20px;
   cursor: pointer;
   background-color: #e0e0e0;
+  color: #432705;
   border-radius: 5px 5px 0 0;
   font-weight: 200;
   transition: background-color 0.3s;
@@ -544,7 +545,13 @@ input[type="radio"]:checked + label::after {
   border-bottom: none;
   font-weight: 600;
 }
-
+.tab.active:hover {
+  background-color: #ffffff;
+  color: #432705;
+  border: 2px solid #ccc;
+  border-bottom: none;
+  font-weight: 600;
+}
 .content-container {
   display: none;
   padding: 20px;
