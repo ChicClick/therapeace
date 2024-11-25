@@ -163,7 +163,7 @@ if (isset($_SESSION['firstname'])) {
                                                 <option value="">Select Service</option>
                                                 <?php
                                                 require 'db_conn.php';
-                                                $sql = "SELECT serviceID, serviceName FROM services";
+                                                $sql = "SELECT serviceID, serviceName FROM services WHERE availability = 'Available'";
                                                 $result = $conn->query($sql);
                                                 if ($result->num_rows > 0) {
                                                     while ($row = $result->fetch_assoc()) {
