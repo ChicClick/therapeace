@@ -1020,7 +1020,6 @@ class TableEngine extends HTMLElement {
                                 <h2>${patient.patientName}</h2>
                                 <h3>${patient.service}</h3>
                             </div>
-                            <button class="view-notes-btn">View Notes</button>
                         </div>
                         <div class="profile-info">
                             <h5>CONTACT INFORMATION</h5>
