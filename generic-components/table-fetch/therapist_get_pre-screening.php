@@ -36,6 +36,8 @@ $sql = "
         g.status AS guest_status
     FROM
         guest g
+    WHERE
+        g.status = ?
 ";
 
 $stmt = $conn->prepare($sql);
