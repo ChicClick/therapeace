@@ -606,7 +606,9 @@ select {
 
 input[type="text"],
 input[type="date"],
-input[type="password"] {
+input[type="password"],
+input[type="email"],
+input[type="file"] {
   width: 90%; /* Reduce the input field width */
   padding: 8px; /* Adjust padding to make inputs shorter */
   border: 1px solid #ccc;

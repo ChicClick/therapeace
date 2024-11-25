@@ -26,6 +26,7 @@ const columnKeyMapper = new Map([
     ["PRICE", "PRICE"],
     ["PARENT", "PARENT"],
     ["PARENTNAME", "PARENT"], ["PARENT-NAME", "PARENT"], ["PARENT_NAME", "PARENT"],
+    ["PATIENT_STATUS", "STATUS"],
     ["RELATIONSHIP", "RELATIONSHIP"],
     ["REPORT_STATUS", "REPORT STATUS"], ["REPORTSTATUS","REPORT STATUS"], ["REPORT-STATUS", "REPORT STATUS"],
     ["REPORTS_STATUS", "REPORT STATUS"], ["REPORTSSTATUS","REPORT STATUS"], ["REPORTS-STATUS", "REPORT STATUS"],
@@ -494,6 +495,10 @@ class TableEngine extends HTMLElement {
         if(this.tableType == "admin_services" && row["serviceID"]) {
             this.editService(row);
         }
+
+        if(this.tableType == "admin_patients") {
+            this.editAdminPatient(row);
+        }
     }
     
     handleDeleteClick(row) {
@@ -533,6 +538,10 @@ class TableEngine extends HTMLElement {
         if(this.tableType == "admin_services") {
             this.servicesInfo(row)
         }
+    }
+
+    editAdminPatient(row) {
+        console.log("EDIT ADMIN PATIENT IAM HERE at LINE 544");
     }
 
     editService(row) {
@@ -1000,7 +1009,7 @@ class TableEngine extends HTMLElement {
                 }
                 
                 console.log(data.response);
-            
+                
                 const notesHTML = data.notes.length > 0 
                     ? data.notes.map(note => `
                         <div class="note-item">
@@ -1018,7 +1027,7 @@ class TableEngine extends HTMLElement {
                             <img src="${image}" alt="Profile Picture" class="profile-picture">
                             <div class="profile-details">
                                 <h2>${patient.patientName}</h2>
-                                <h3>${patient.service}</h3>
+                                <h3>${patient.service || 'N/A'}</h3>
                             </div>
                         </div>
                         <div class="profile-info">

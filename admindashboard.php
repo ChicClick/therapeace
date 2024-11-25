@@ -323,12 +323,15 @@ if (isset($_SESSION['firstname'])) {
         <!-- Patient Information Section -->
         <div id="patients-information-section" class="content">
             <h4>PATIENT INFORMATION</h4>
+            <button id="add-patient-button" class="add-appointment-button">
+                    <i class="fas fa-plus"></i> Add Patient
+                </button>
             <div class="search-bar-content">
                 <input type="text" placeholder="Search">
                 <button><i class="fas fa-search"></i></button>
             </div>
 
-            <generic-table data="admin_patients" avatar="true"></generic-table>
+            <generic-table data="admin_patients" avatar="true" edit="true"></generic-table>
             
                     <!--'a_patients.php'; -->
         </div>

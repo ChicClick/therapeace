@@ -114,6 +114,100 @@ document.getElementById('close-popup').addEventListener('click', function() {
     document.getElementById('appointment-popup-form').style.display = 'none';
 });
 
+document.getElementById('add-patient-button').addEventListener('click', function() {
+
+    try {
+        fetch("z_get_all_parents.php")
+        .then(async response => await response.json())
+        .then(data => {
+            let parentOptions = `<option value="">Select Parent Name</option>`;
+            data.forEach(parent => {
+                parentOptions += `<option value="${parent.parentID}">${parent.parentName}</option>`;
+            });
+
+            const patientForm = `
+            <form id="register-form" action="pRegister.php" method="POST" enctype="multipart/form-data">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="patientID">Patient ID:</label>
+                        <input type="text" id="patientID" name="patientID" placeholder="Enter Patient ID" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="patientName">Patient Name:</label>
+                        <input type="text" id="patientName" name="patientName" placeholder="Enter Patient Name" required>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="phone">Phone:</label>
+                        <input type="text" id="phone" name="phone" placeholder="Enter Phone Number" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Email:</label>
+                        <input type="email" id="email" name="email" placeholder="Enter Email" required>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="birthday">Birthday:</label>
+                        <input type="date" id="birthday" name="birthday" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="address">Address:</label>
+                        <input type="text" id="address" name="address" placeholder="Enter Address" required>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="gender">Gender:</label>
+                        <select id="gender" name="gender" required>
+                            <option value="Female">Female</option>
+                            <option value="Male">Male</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="parentID">Parent Name:</label>
+                        <select id="parentID" name="parentID" required>
+                            ${parentOptions}
+                        </select>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="relationship">Relationship:</label>
+                        <input type="text" id="relationship" name="relationship" placeholder="Enter Relationship" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="status">Status:</label>
+                        <select id="status" name="status" required>
+                            <option value="Active">Active</option>
+                            <option value="Inactive">Inactive</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="image">Profile Picture:</label>
+                        <input type="file" id="image" name="image" accept="image/*">
+                    </div>
+                    <div class="form-group">
+                        <label for="password_hash">Password:</label>
+                        <input type="password" id="password_hash" name="password" placeholder="Enter Password" required>
+                    </div>
+                </div>
+                <div class="btn-container">
+                    <button type="submit" class="submit-btn">Register</button>
+                </div>
+            </form>
+            `;
+        new SideViewBarEngine("NEW PATIENT REGISTRATION",patientForm,"view-lg").render();
+        })
+        .catch(e => console.error("Error fetching parents ", e));
+    }
+    catch{}
+   
+});
+
 
 $(document).ready(function() {
     $('#patient-ID').change(function() {

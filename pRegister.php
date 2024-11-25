@@ -112,6 +112,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
 }
 
-// Close the connection
+header("Location: admindashboard.php?active=patients-information-section");
 $conn->close();
 ?>

@@ -26,7 +26,7 @@ $sql = "
         services.serviceName AS service
     FROM patient
     JOIN parent ON patient.parentID = parent.parentID
-    JOIN services ON patient.serviceID = services.serviceID
+    LEFT JOIN services ON patient.serviceID = services.serviceID
     WHERE patient.patientID = ?
 ";
 
