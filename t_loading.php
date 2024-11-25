@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Loading...</title>
     <link rel="stylesheet" href="loadingstyles.css">
+    <link rel="icon" type="image/svg+xml" href="images/TheraPeace Logo.svg">
     <script>
         // Redirect to homepage after 2 seconds
         function redirectToHomepage() {
