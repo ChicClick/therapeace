@@ -13,7 +13,7 @@ include 'patient_profile_functions.php';
                     <div class="profile-info">
                         <h2><?php echo htmlspecialchars($patientName); ?></h2>
                     </div>
-                    <a href="#" class="nav-link" data-target="patientEditProfile.php">Notes</a>
+                    <a href="#" class="nav-link" data-target="patientEditProfile.php">Edit Profile</a>
                 </div>
 
                 <div class="profile-details">
