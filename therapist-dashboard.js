@@ -1,45 +1,45 @@
 // therapist-dashboard.js
 
-document.addEventListener('DOMContentLoaded', () => {
-    const links = document.querySelectorAll('.left-section nav a');
-    const sections = document.querySelectorAll('.right-section .content');
-    const menuItems = document.querySelectorAll('.left-section ul li');
+document.addEventListener("DOMContentLoaded", () => {
+  const links = document.querySelectorAll(".left-section nav a");
+  const sections = document.querySelectorAll(".right-section .content");
+  const menuItems = document.querySelectorAll(".left-section ul li");
 
-    links.forEach(link => {
-        link.addEventListener('click', (event) => {
-            const targetId = link.getAttribute('data-target');
+  links.forEach((link) => {
+    link.addEventListener("click", (event) => {
+      const targetId = link.getAttribute("data-target");
 
-            // Check if the clicked link is the "Sign Out" link
-            if (link.getAttribute('href') === 'loginlanding.html') {
-                // Allow default behavior for the "Sign Out" link
-                return; 
-            }
+      // Check if the clicked link is the "Sign Out" link
+      if (link.getAttribute("href") === "loginlanding.html") {
+        // Allow default behavior for the "Sign Out" link
+        return;
+      }
 
-            event.preventDefault();
+      event.preventDefault();
 
-            // Remove active class from all sections
-            sections.forEach(section => {
-                section.classList.remove('active');
-            });
+      // Remove active class from all sections
+      sections.forEach((section) => {
+        section.classList.remove("active");
+      });
 
-            // Hide all menu items
-            menuItems.forEach(item => {
-                item.classList.remove('active');
-            });
+      // Hide all menu items
+      menuItems.forEach((item) => {
+        item.classList.remove("active");
+      });
 
-            // Show the target section
-            if (targetId) {
-                document.getElementById(targetId).classList.add('active');
-            }
+      // Show the target section
+      if (targetId) {
+        document.getElementById(targetId).classList.add("active");
+      }
 
-            // Add active class to the clicked menu item
-            link.parentElement.classList.add('active');
-        });
+      // Add active class to the clicked menu item
+      link.parentElement.classList.add("active");
     });
+  });
 
-    /*-- NOTES SECTION --------------- ******************* --------- THIS IS A MARKER DO NOT REMOVE --*/
-     openModal = () => {
-        const modalContent = `
+  /*-- NOTES SECTION --------------- ******************* --------- THIS IS A MARKER DO NOT REMOVE --*/
+  openModal = () => {
+    const modalContent = `
         <form id="notesForm" class="notesForm" action="add_notes.php" method="post">
                 <div class="form-row">
                 <div class="form-column-left">
@@ -109,436 +109,502 @@ document.addEventListener('DOMContentLoaded', () => {
             </form>
         `;
 
-        const sidebar = new SideViewBarEngine("ADD SESSION NOTES", modalContent);
-        sidebar.render();
-    }
+    const sidebar = new SideViewBarEngine("ADD SESSION NOTES", modalContent);
+    sidebar.render();
+  };
 
-     extractTextFromImage = async () => {
-        const fileInput = document.getElementById('feedbackImage');
-        if (fileInput.files.length === 0) return;
+  extractTextFromImage = async () => {
+    const fileInput = document.getElementById("feedbackImage");
+    if (fileInput.files.length === 0) return;
 
-        const file = fileInput.files[0];
-        const reader = new FileReader();
-        const loadingIcon = document.getElementById('loadingIcon');
-        const feedbackTextarea = document.getElementById('feedback');
+    const file = fileInput.files[0];
+    const reader = new FileReader();
+    const loadingIcon = document.getElementById("loadingIcon");
+    const feedbackTextarea = document.getElementById("feedback");
 
-        // Show loading icon
-        loadingIcon.style.display = 'block';
+    // Show loading icon
+    loadingIcon.style.display = "block";
 
-        reader.onload = async function(event) {
-            const imageData = event.target.result;
+    reader.onload = async function (event) {
+      const imageData = event.target.result;
 
-            try {
-                const result = await Tesseract.recognize(
-                    imageData,
-                    'eng', // Specify the language code
-                    {
-                        logger: (m) => console.log(m) // Optional: log progress
-                    }
-                );
+      try {
+        const result = await Tesseract.recognize(
+          imageData,
+          "eng", // Specify the language code
+          {
+            logger: (m) => console.log(m), // Optional: log progress
+          }
+        );
 
-                const extractedText = result.data.text.trim(); // Get and trim extracted text
+        const extractedText = result.data.text.trim(); // Get and trim extracted text
 
-                if (extractedText) {
-                    // Insert the recognized text into the feedback textarea if text is found
-                    feedbackTextarea.value = extractedText;
-                } else {
-                    // Display an error message if no text was found
-                    alert("No text was found in the image. Please try a different image.");
-                }
-            } catch (error) {
-                console.error('Error extracting text:', error);
-                alert('An error occurred while processing the image');
-            } finally {
-                // Hide loading icon
-                loadingIcon.style.display = 'none';
-            }
-        };
-
-        reader.readAsDataURL(file);
-    }
-
-    loadPatients = async () => {
-        const patientSelect = document.getElementById("patientSelect");
-
-        const today = new Date().toISOString().split('T')[0];
-        document.getElementById('sessionDate').setAttribute('max', today);
-    
-        // Check if options are already loaded (beyond the default placeholder)
-        if (patientSelect.options.length > 1) return;
-
-        patientSelect.options[0].remove();
-
-        console.log(patientSelect);
-    
-        try {
-            const response = await fetch("notes_patient.php");
-            const data = await response.json();
-    
-            data.forEach(patient => {
-                const option = document.createElement("option");
-                option.value = patient.patientID;
-                option.textContent = patient.patientName;
-                patientSelect.appendChild(option);
-            });
-
-            await this.loadServices();
-        } catch (error) {
-            console.error('Error loading patient options:', error);
+        if (extractedText) {
+          // Insert the recognized text into the feedback textarea if text is found
+          feedbackTextarea.value = extractedText;
+        } else {
+          // Display an error message if no text was found
+          alert(
+            "No text was found in the image. Please try a different image."
+          );
         }
+      } catch (error) {
+        console.error("Error extracting text:", error);
+        alert("An error occurred while processing the image");
+      } finally {
+        // Hide loading icon
+        loadingIcon.style.display = "none";
+      }
     };
-    
 
-    loadServices = () => {
-        const therapySelect = document.getElementById("therapySelect");
-        const patientID = document.getElementById("patientSelect").value;
+    reader.readAsDataURL(file);
+  };
 
-        // Only fetch options if a patient is selected
-        if (!patientID) {
-            therapySelect.innerHTML = ""; // Clear previous options
-            return;
-        }
+  loadPatients = async () => {
+    const patientSelect = document.getElementById("patientSelect");
 
-        fetch(`notes_service.php?patientID=${patientID}`)
-            .then(response => response.text())
-            .then(data => {
-                therapySelect.innerHTML = data; // Directly set fetched options to the select element
-            })
-            .catch(error => console.error('Error loading service options:', error));
+    const today = new Date().toISOString().split("T")[0];
+    document.getElementById("sessionDate").setAttribute("max", today);
+
+    // Check if options are already loaded (beyond the default placeholder)
+    if (patientSelect.options.length > 1) return;
+
+    patientSelect.options[0].remove();
+
+    console.log(patientSelect);
+
+    try {
+      const response = await fetch("notes_patient.php");
+      const data = await response.json();
+
+      data.forEach((patient) => {
+        const option = document.createElement("option");
+        option.value = patient.patientID;
+        option.textContent = patient.patientName;
+        patientSelect.appendChild(option);
+      });
+
+      await this.loadServices();
+    } catch (error) {
+      console.error("Error loading patient options:", error);
+    }
+  };
+
+  loadServices = () => {
+    const therapySelect = document.getElementById("therapySelect");
+    const patientID = document.getElementById("patientSelect").value;
+
+    // Only fetch options if a patient is selected
+    if (!patientID) {
+      therapySelect.innerHTML = ""; // Clear previous options
+      return;
     }
 
-    /*-- PROGRESS REPORT MARKER DO NOT REMOVE**--
+    fetch(`notes_service.php?patientID=${patientID}`)
+      .then((response) => response.text())
+      .then((data) => {
+        therapySelect.innerHTML = data; // Directly set fetched options to the select element
+      })
+      .catch((error) => console.error("Error loading service options:", error));
+  };
+
+  /*-- PROGRESS REPORT MARKER DO NOT REMOVE**--
         ----------------------------------------------------
         ----------------------------------------------------
     */
-    
 
-    /*****INIT FUNCTIONS DO NOT REMOVE ************************************* */
-    fetchAccordionNotes();
-    checkMessage();
+  /*****INIT FUNCTIONS DO NOT REMOVE ************************************* */
+  fetchAccordionNotes();
+  checkMessage();
 });
 
 const checkMessage = () => {
+  const params = new URLSearchParams(window.location.search);
 
-    const params = new URLSearchParams(window.location.search);
+  if (params.has("message")) {
+    const message = params.get("message"); // Get the message value
 
-    if (params.has('message')) {
-        const message = params.get('message'); // Get the message value
+    const sanitizedMessage = message
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;");
 
-        const sanitizedMessage = message.replace(/</g, "&lt;").replace(/>/g, "&gt;");
-        
-        new MessagePopupEngine('INFORMATION', sanitizedMessage).instantiate();
+    new MessagePopupEngine("INFORMATION", sanitizedMessage).instantiate();
 
-        params.delete('message');
+    params.delete("message");
 
-        const newUrl = params.toString() ? `${window.location.pathname}?${params.toString()}` : window.location.pathname;
+    const newUrl = params.toString()
+      ? `${window.location.pathname}?${params.toString()}`
+      : window.location.pathname;
 
-        window.history.replaceState({}, '', newUrl);
-    }
+    window.history.replaceState({}, "", newUrl);
+  }
 };
 
-
 /** NOTES CALL BACK FUNCTION START */
-    fetchAccordionNotes = () => {
-        const accordionContainer = document.querySelector("#notes-accordion");
+fetchAccordionNotes = () => {
+    const cardsList = document.querySelector("#patient-feedback");
+    const datesContainer = document.querySelector("#patient-dates .therapist-feedback.list-items");
+    const feedbackView = document.querySelector("#patient-feedback-view");
+    const breadcrumb = document.querySelector("#breadcrumb");
 
-        if(!accordionContainer) {
-            throw new Error("Please make an empty div with notes-accordion id");
-        }
+    if (!cardsList || !datesContainer || !feedbackView || !breadcrumb) {
+        throw new Error("Required containers are missing in the HTML.");
+    }
 
-        accordionContainer.innerHTML = "";
-
-        fetch(`notes.php`)
+    fetch("notes.php")
         .then(response => {
             if (!response.ok) {
-                throw new Error(`HTTP error! status: ${response.status}`);
+                throw new Error(`HTTP error! Status: ${response.status}`);
             }
-            return response.json(); // Parse as JSON
+            return response.json();
         })
         .then(data => {
             if (!Array.isArray(data)) {
-                throw new Error("The fetched data is not an array.");
+                throw new Error("Fetched data is not an array.");
             }
-        
-            
-        // group nyio muna patient tapos key nya dapat yung name then loop nyo tapos pasa nyo yung value
-        const groupedByPatientName = data.reduce((map, item) => {
-            if (!map[item.patient_name]) {
-                map[item.patient_name] = [];
-            }
-            map[item.patient_name].push(item);
-            return map;
-        }, {});
 
-        Object.entries(groupedByPatientName).forEach(([key, value]) => {
-            const accordionTitle = `${key} (${value[0]["service_name"]})`
+            const groupedData = data.reduce((map, item) => {
+                if (!map[item.patientID]) {
+                    map[item.patientID] = { info: item, feedbacks: [] };
+                }
+                map[item.patientID].feedbacks.push(item);
+                return map;
+            }, {});
 
-            const accordion = new AccordionEngine(accordionTitle, "", value).render();
-            accordionContainer.appendChild(accordion);
+            Object.keys(groupedData).forEach(patientName => {
+                const patient = groupedData[patientName].info;
+                const card = document.createElement("div");
+                card.className = "therapist-feedback card";
+                card.dataset.patientName = patientName;
+                card.innerHTML = `
+                    <div class="therapist-feedback-card-content">
+                        <div class="therapist-feedback-avatar">
+                            <img src="images/${patient.image}" alt="Avatar">
+                        </div>
+                        <div class="therapist-feedback-info">
+                            <span class="therapist-feedback-card-title">${patient.patient_name}</span>
+                            <span class="therapist-feedback">ID: ${patient.patientID}</span>
+                        </div>
+                    </div>
+                `;
+                cardsList.appendChild(card);
+
+                card.addEventListener("click", () => {
+
+                    document.querySelectorAll(".therapist-feedback.card").forEach(c => {
+                        c.classList.remove("selected");
+                    });
+
+                    card.classList.add("selected");
+                    datesContainer.innerHTML = "";
+                    breadcrumb.innerHTML = `Patient Feedback Notes » <span class="breadcrumb-item">${patientName}</span>`;
+
+                    // Add feedback dates for the selected patient
+                    groupedData[patientName].feedbacks.forEach(feedback => {
+                        const listItem = document.createElement("li");
+                        listItem.className = "therapist-feedback";
+                        listItem.textContent = feedback.feedback_date;
+                        listItem.dataset.feedback = feedback.feedback;
+                        datesContainer.appendChild(listItem);
+
+                        // Attach click listener to each date
+                        listItem.addEventListener("click", () => {
+                            document.querySelectorAll(".therapist-feedback.list-items li").forEach(li => {
+                                li.classList.remove("selected");
+                            });
+                            listItem.classList.add("selected");
+
+                            breadcrumb.innerHTML = `Patient Feedback Notes » <span class="breadcrumb-item">${patientName}</span> » <span class="breadcrumb-item">${feedback.feedback_date}</span>`;
+
+                            feedbackView.innerHTML = `
+                                <h4>Feedback Details</h4>
+                                <p><strong>Date:</strong> ${feedback.feedback_date}</p>
+                                <p><strong>Feedback:</strong> ${feedback.feedback}</p>
+                                <p><strong>Service:</strong> ${feedback.service_name}</p>
+                            `;
+                        });
+                    });
+                });
+            });
+        })
+        .catch(error => {
+            console.error("Error fetching data:", error);
         });
-    })
-    .catch(error => {
-        console.error("Error fetching or processing data:", error);
-    });
-    
-    }
+};
+
 
 /** NOTES CALL BACK FUNCTION END */
 
-
 function filterSearch() {
-    // Get the search input value
-    const input = document.getElementById('searchInput').value.toLowerCase();
-    
-    // Get the table and its rows
-    const table = document.getElementById('appointmentsTable');
-    const rows = table.getElementsByTagName('tr');
-    
-    // Loop through table rows
-    for (let i = 1; i < rows.length; i++) { // Start from 1 to skip the header row
-        const cells = rows[i].getElementsByTagName('td');
-        let found = false;
-        
-        // Loop through each cell in the row
-        for (let j = 0; j < cells.length; j++) {
-            if (cells[j].innerText.toLowerCase().includes(input)) {
-                found = true;
-                break;
-            }
-        }
-        
-        // Show or hide the row based on the search input
-        rows[i].style.display = found ? '' : 'none';
+  Object.entries(groupedByPatientName).forEach(([key, value]) => {
+    const accordionTitle = `${key} (${value[0]["service_name"]})`;
+
+    const accordion = new AccordionEngine(accordionTitle, "", value).render();
+    accordionContainer.appendChild(accordion);
+  });
+  // Get the search input value
+  const input = document.getElementById("searchInput").value.toLowerCase();
+
+  // Get the table and its rows
+  const table = document.getElementById("appointmentsTable");
+  const rows = table.getElementsByTagName("tr");
+
+  // Loop through table rows
+  for (let i = 1; i < rows.length; i++) {
+    // Start from 1 to skip the header row
+    const cells = rows[i].getElementsByTagName("td");
+    let found = false;
+
+    // Loop through each cell in the row
+    for (let j = 0; j < cells.length; j++) {
+      if (cells[j].innerText.toLowerCase().includes(input)) {
+        found = true;
+        break;
+      }
     }
+
+    // Show or hide the row based on the search input
+    rows[i].style.display = found ? "" : "none";
+  }
 }
 
 function fetchFeedback(date, id) {
-    const notesContainer = document.getElementById("notes-info");
-    const notesDetails = document.getElementById("notes-details");
-    const notesDate = document.getElementById("notes-date");
+  const notesContainer = document.getElementById("notes-info");
+  const notesDetails = document.getElementById("notes-details");
+  const notesDate = document.getElementById("notes-date");
 
-    // Format the date to match the format used in the table
-    const formattedDate = new Date(date).toLocaleString('en-US', {
-        year: 'numeric', month: 'long', day: 'numeric'
-    });
+  // Format the date to match the format used in the table
+  const formattedDate = new Date(date).toLocaleString("en-US", {
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+  });
 
-    // Toggle visibility based on the current state and clicked row
-    if (notesContainer.style.display === "block" && notesContainer.getAttribute("data-id") === id) {
-        notesContainer.style.display = "none";
-        notesDetails.innerHTML = "<h5>Session Overview:</h5>";
-        notesContainer.removeAttribute("data-id");
-    } else {
-        // Show the notes container and populate with feedback
-        notesContainer.style.display = "block";
-        notesDate.innerText = formattedDate; // Set the formatted date
-        notesContainer.setAttribute("data-id", id);
+  // Toggle visibility based on the current state and clicked row
+  if (
+    notesContainer.style.display === "block" &&
+    notesContainer.getAttribute("data-id") === id
+  ) {
+    notesContainer.style.display = "none";
+    notesDetails.innerHTML = "<h5>Session Overview:</h5>";
+    notesContainer.removeAttribute("data-id");
+  } else {
+    // Show the notes container and populate with feedback
+    notesContainer.style.display = "block";
+    notesDate.innerText = formattedDate; // Set the formatted date
+    notesContainer.setAttribute("data-id", id);
 
-        // Fetch feedback from PHP script
-        fetch(`fetch_feedback.php?date=${date}`)
-            .then(response => response.json())
-            .then(data => {
-                notesDetails.innerHTML = "<h5>Session Overview:</h5>"; // Reset content
-                if (data.success) {
-                    notesDetails.innerHTML += `<p>${data.feedback}</p>`;
-                } else {
-                    notesDetails.innerHTML += `<p>No feedback available for this date.</p>`;
-                }
-            })
-            .catch(error => {
-                console.error("Error fetching feedback:", error);
-                notesDetails.innerHTML += `<p>Error loading feedback.</p>`;
-            });
-    }
+    // Fetch feedback from PHP script
+    fetch(`fetch_feedback.php?date=${date}`)
+      .then((response) => response.json())
+      .then((data) => {
+        notesDetails.innerHTML = "<h5>Session Overview:</h5>"; // Reset content
+        if (data.success) {
+          notesDetails.innerHTML += `<p>${data.feedback}</p>`;
+        } else {
+          notesDetails.innerHTML += `<p>No feedback available for this date.</p>`;
+        }
+      })
+      .catch((error) => {
+        console.error("Error fetching feedback:", error);
+        notesDetails.innerHTML += `<p>Error loading feedback.</p>`;
+      });
+  }
 }
-
-
 
 // therapist-dashboard.js
 function displayGuestChecklist(guestID) {
-    // Hide the guest table
-    const prescreeningTable = document.getElementById('pre-screening-table');
-    prescreeningTable.style.display = 'none'; 
+  // Hide the guest table
+  const prescreeningTable = document.getElementById("pre-screening-table");
+  prescreeningTable.style.display = "none";
 
-    // Fetch guest data using guestID
-    fetchGuestData(guestID)
-        .then(guestData => {
-            // Display guest information in the header
-            document.getElementById('checklist-name').innerText = guestData.guest_name;
-            document.getElementById('child-name').innerText = guestData.child_name || ""; 
-            document.getElementById('child-age').innerText = guestData.child_age || ""; 
+  // Fetch guest data using guestID
+  fetchGuestData(guestID)
+    .then((guestData) => {
+      // Display guest information in the header
+      document.getElementById("checklist-name").innerText =
+        guestData.guest_name;
+      document.getElementById("child-name").innerText =
+        guestData.child_name || "";
+      document.getElementById("child-age").innerText =
+        guestData.child_age || "";
 
-            // Show the checklist container
-            document.querySelector('.checklist-container').style.display = 'block';
+      // Show the checklist container
+      document.querySelector(".checklist-container").style.display = "block";
 
-            // Now fetch the checklist questions and answers
-            fetchChecklist(guestID);
-        })
-        .catch(error => console.error('Error fetching guest data:', error));
+      // Now fetch the checklist questions and answers
+      fetchChecklist(guestID);
+    })
+    .catch((error) => console.error("Error fetching guest data:", error));
 }
 
 function fetchGuestData(guestID) {
-    return fetch(`fetch_guest_data.php?guestID=${guestID}`)
-        .then(response => {
-            if (!response.ok) {
-                throw new Error('Network response was not ok');
-            }
-            return response.json(); // Parse JSON response
-        })
-        .then(data => {
-            return {
-                guest_name: data.guest_name,
-                child_name: data.child_name,
-                child_age: data.child_age
-            };
-        });
+  return fetch(`fetch_guest_data.php?guestID=${guestID}`)
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error("Network response was not ok");
+      }
+      return response.json(); // Parse JSON response
+    })
+    .then((data) => {
+      return {
+        guest_name: data.guest_name,
+        child_name: data.child_name,
+        child_age: data.child_age,
+      };
+    });
 }
 
 function fetchChecklist(guestID) {
-    const checklistSection = document.querySelector('.checklist-left-section');
-    checklistSection.innerHTML = 'Loading checklist...';
-    console.log("checklist");
-    fetch(`fetch_checklist.php?guestID=${guestID}`)
-        .then(response => {
-            if (!response.ok) {
-                throw new Error('Network response was not ok');
-            }
-            return response.text();
-        })
-        .then(data => {
-            checklistSection.innerHTML = data; // Populate checklist with fetched data
-        })
-        .catch(error => console.error('Error loading checklist:', error));
+  const checklistSection = document.querySelector(".checklist-left-section");
+  checklistSection.innerHTML = "Loading checklist...";
+  console.log("checklist");
+  fetch(`fetch_checklist.php?guestID=${guestID}`)
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error("Network response was not ok");
+      }
+      return response.text();
+    })
+    .then((data) => {
+      checklistSection.innerHTML = data; // Populate checklist with fetched data
+    })
+    .catch((error) => console.error("Error loading checklist:", error));
 }
 
 function displayGuestChecklistComplete(guestID) {
-    // Hide the guest table
-    const prescreeningTable = document.getElementById('pre-screening-table');
-    prescreeningTable.style.display = 'none'; 
+  // Hide the guest table
+  const prescreeningTable = document.getElementById("pre-screening-table");
+  prescreeningTable.style.display = "none";
 
-    // Fetch guest data using guestID
-    fetchGuestData(guestID)
-        .then(guestData => {
-            // Display guest information in the header
-            document.getElementById('checklist-name').innerText = guestData.guest_name;
-            document.getElementById('child-name').innerText = guestData.child_name || ""; 
-            document.getElementById('child-age').innerText = guestData.child_age || ""; 
+  // Fetch guest data using guestID
+  fetchGuestData(guestID)
+    .then((guestData) => {
+      // Display guest information in the header
+      document.getElementById("checklist-name").innerText =
+        guestData.guest_name;
+      document.getElementById("child-name").innerText =
+        guestData.child_name || "";
+      document.getElementById("child-age").innerText =
+        guestData.child_age || "";
 
-            // Show the checklist container
-            document.querySelector('.checklist-container').style.display = 'block';
+      // Show the checklist container
+      document.querySelector(".checklist-container").style.display = "block";
 
-            // Now fetch the checklist questions and answers
-            fetchChecklistComplete(guestID);
-        })
-        .catch(error => console.error('Error fetching guest data:', error));
+      // Now fetch the checklist questions and answers
+      fetchChecklistComplete(guestID);
+    })
+    .catch((error) => console.error("Error fetching guest data:", error));
 }
-
 
 function fetchChecklistComplete(guestID) {
-    const checklistSection = document.querySelector('.checklist-left-section');
-    checklistSection.innerHTML = 'Loading checklist...';
+  const checklistSection = document.querySelector(".checklist-left-section");
+  checklistSection.innerHTML = "Loading checklist...";
 
-    fetch(`fetch_checklist.php?guestID=${guestID}`)
-    .then(response => {
-        if (!response.ok) {
-            throw new Error('Network response was not ok');
-        }
-        return response.text();
+  fetch(`fetch_checklist.php?guestID=${guestID}`)
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error("Network response was not ok");
+      }
+      return response.text();
     })
-    .then(data => {
-        checklistSection.innerHTML = data; // Populate checklist with fetched data
+    .then((data) => {
+      checklistSection.innerHTML = data; // Populate checklist with fetched data
     })
-    .catch(error => console.error('Error loading checklist:', error));
+    .catch((error) => console.error("Error loading checklist:", error));
 
+  const checklistRightSection = document.querySelector(
+    ".checklist-right-section"
+  );
+  document.querySelector(".asses").style.display = "none";
 
-    const checklistRightSection = document.querySelector('.checklist-right-section');
-    document.querySelector('.asses').style.display = 'none';
-
-    fetch(`view_checklist.php?guestID=${guestID}`)
-        .then(response => {
-            if (!response.ok) {
-                throw new Error('Network response was not ok');
-            }
-            return response.text();
-        })
-        .then(data => {
-            checklistRightSection.innerHTML = data; // Populate checklist with fetched data
-        })
-        .catch(error => console.error('Error loading checklist:', error));
+  fetch(`view_checklist.php?guestID=${guestID}`)
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error("Network response was not ok");
+      }
+      return response.text();
+    })
+    .then((data) => {
+      checklistRightSection.innerHTML = data; // Populate checklist with fetched data
+    })
+    .catch((error) => console.error("Error loading checklist:", error));
 }
 
-
-
 function fetchProgress(id) {
-    const progressContainer = document.getElementById("progress-info");
-    const notesTextarea = document.getElementById("notesTextarea");
-    const saveButton = progressContainer.querySelector(".saveprogress-button"); // Corrected class selector
+  const progressContainer = document.getElementById("progress-info");
+  const notesTextarea = document.getElementById("notesTextarea");
+  const saveButton = progressContainer.querySelector(".saveprogress-button"); // Corrected class selector
 
-    if (progressContainer.style.display === "block" && progressContainer.getAttribute("data-id") === id) {
-        progressContainer.style.display = "none";
-        progressContainer.removeAttribute("data-id");
-    } else {
-        progressContainer.style.display = "block";
-        progressContainer.setAttribute("data-id", id);
+  if (
+    progressContainer.style.display === "block" &&
+    progressContainer.getAttribute("data-id") === id
+  ) {
+    progressContainer.style.display = "none";
+    progressContainer.removeAttribute("data-id");
+  } else {
+    progressContainer.style.display = "block";
+    progressContainer.setAttribute("data-id", id);
 
-        fetch(`fetch_report.php?reportID=${id}`)
-            .then(response => response.json()) // Parse JSON response
-            .then(data => {
-                console.log("Fetched data:", data); // Debugging: check the fetched data
+    fetch(`fetch_report.php?reportID=${id}`)
+      .then((response) => response.json()) // Parse JSON response
+      .then((data) => {
+        console.log("Fetched data:", data); // Debugging: check the fetched data
 
-                // Populate the textarea with the fetched summary
-                notesTextarea.value = data.summary;
+        // Populate the textarea with the fetched summary
+        notesTextarea.value = data.summary;
 
-                // Check the status and disable the textarea if 'verified'
-                if (data.status === "verified") {
-                    notesTextarea.disabled = true;
-                    saveButton.style.display = "none"; // Hide Save button
-                } else {
-                    notesTextarea.disabled = false;
-                    saveButton.style.display = "inline-block"; // Show Save button if not "verified"
-                }
-            })
-            .catch(error => console.error('Error fetching data:', error));
-    }
+        // Check the status and disable the textarea if 'verified'
+        if (data.status === "verified") {
+          notesTextarea.disabled = true;
+          saveButton.style.display = "none"; // Hide Save button
+        } else {
+          notesTextarea.disabled = false;
+          saveButton.style.display = "inline-block"; // Show Save button if not "verified"
+        }
+      })
+      .catch((error) => console.error("Error fetching data:", error));
+  }
 }
 
 function backLink() {
-    // Hide the checklist container and show the table again
-    document.querySelector('.checklist-container').style.display = 'none';
-    document.getElementById('pre-screening-table').style.display = 'table'; // or 'block' if using a block layout
+  // Hide the checklist container and show the table again
+  document.querySelector(".checklist-container").style.display = "none";
+  document.getElementById("pre-screening-table").style.display = "table"; // or 'block' if using a block layout
 }
 
 // Get logout modal element
-const logoutModal = document.getElementById('logoutModal');
-const logoutBtn = document.getElementById('logoutBtn');
-const closeModal = document.getElementById('closeModal');
-const confirmLogout = document.getElementById('confirmLogout');
-const cancelLogout = document.getElementById('cancelLogout');
+const logoutModal = document.getElementById("logoutModal");
+const logoutBtn = document.getElementById("logoutBtn");
+const closeModal = document.getElementById("closeModal");
+const confirmLogout = document.getElementById("confirmLogout");
+const cancelLogout = document.getElementById("cancelLogout");
 
 // Show the modal when logout button is clicked
-logoutBtn.addEventListener('click', (event) => {
-    event.preventDefault(); // Prevent the default action
-    
-    logoutModal.style.display = "block"
+logoutBtn.addEventListener("click", (event) => {
+  event.preventDefault(); // Prevent the default action
+
+  logoutModal.style.display = "block";
 });
 
 // Close the modal when the user clicks on <span> (x)
-closeModal.addEventListener('click', () => {
-    logoutModal.style.display = 'none';
+closeModal.addEventListener("click", () => {
+  logoutModal.style.display = "none";
 });
 
 // Close the modal when the user clicks outside of the modal
-window.addEventListener('click', (event) => {
-    if (event.target === logoutModal) {
-        logoutModal.style.display = 'none';
-    }
+window.addEventListener("click", (event) => {
+  if (event.target === logoutModal) {
+    logoutModal.style.display = "none";
+  }
 });
 
 // Confirm logout
-confirmLogout.addEventListener('click', () => {
-    window.location.href = 't_logout.php'; // Redirect to logout script
+confirmLogout.addEventListener("click", () => {
+  window.location.href = "t_logout.php"; // Redirect to logout script
 });
 
 // Cancel logout
-cancelLogout.addEventListener('click', () => {
-    logoutModal.style.display = 'none'; // Hide the modal
+cancelLogout.addEventListener("click", () => {
+  logoutModal.style.display = "none"; // Hide the modal
 });
