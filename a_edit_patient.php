@@ -21,6 +21,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $status = $_POST['status'];
     $imageName = null;
 
+    if (empty($patientID)) {
+        die("Error: patientID is required.");
+    }    
+
     if (isset($_FILES['image']) && $_FILES['image']['error'] === UPLOAD_ERR_OK) {
         $targetDir = "images/";
         $imageName = basename($_FILES['image']['name']);
@@ -51,9 +55,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     if ($stmt = $conn->prepare($sql)) {
         if ($imageName) {
-            $stmt->bind_param("ssssssssssi", $patientName, $phone, $email, $birthday, $address, $gender, $parentID, $relationship, $status, $imageName, $patientID);
+            $stmt->bind_param("sssssssssss", $patientName, $phone, $email, $birthday, $address, $gender, $parentID, $relationship, $status, $imageName, $patientID);
         } else {
-            $stmt->bind_param("sssssssssi", $patientName, $phone, $email, $birthday, $address, $gender, $parentID, $relationship, $status, $patientID);
+            $stmt->bind_param("ssssssssss", $patientName, $phone, $email, $birthday, $address, $gender, $parentID, $relationship, $status, $patientID);
         }
 
         if ($stmt->execute()) {
