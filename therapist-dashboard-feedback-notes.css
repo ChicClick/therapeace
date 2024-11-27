@@ -122,10 +122,13 @@
  .therapist-feedback .list-items li:hover {
     backgorund-color: #ab9984;
     color: white;
+    border-radius: 5px;
   }
+
   .therapist-feedback .list-items li.selected {
     backgorund-color: #ab9984;
     color: white;
+    border-radius: 5px;
     font-weight: bold;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     transition: all 0.3s ease-in-out;
@@ -138,7 +141,7 @@
     border-radius: 5px;
     display: flex;
     justify-content: start;
-    align-items: center;
+    align-items: left;
     text-align: left;
     padding: 20px;
     flex-direction: column;
