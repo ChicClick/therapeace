@@ -55,10 +55,13 @@
   .therapist-feedback.card:hover{
       background-color: #ab9984;
       color: white;
+      transition: all 0.3s ease-in-out;
   }
 
   .therapist-feedback.card.selected {
     background-color: #ab9984;
+    color: white;
+    font-weight: bold;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     transition: all 0.3s ease-in-out;
 }
@@ -115,6 +118,17 @@
     padding: 10px 0;
     border-bottom: 1px solid #eee;
     cursor: pointer;
+  }
+ .therapist-feedback .list-items li:hover {
+    backgorund-color: #ab9984;
+    color: white;
+  }
+  .therapist-feedback .list-items li.selected {
+    backgorund-color: #ab9984;
+    color: white;
+    font-weight: bold;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease-in-out;
   }
   
   .feedback-details {
