@@ -88,11 +88,18 @@ if (isset($_SESSION['firstname'])) {
 
                 <div class="dashboard">
                     <div class="data-section">
-                        <h3>Data</h3>
-                        <button class="view-report">Generate Report</button>
-                        <h1>Loading...</h1>
-                        <p class="growth-percentage">+ 2.1% vs last week</p>
-                        <p class="date-range">Patients from 1-12 August, 2024</p>
+                        <div class="data-section-header">
+                            <div>
+                                <h3>Data</h3>
+                                
+                                <h1>Loading...</h1>
+                                <p class="growth-percentage">+ 2.1% vs last week</p>
+                                <p class="date-range">Patients from 1-12 August, 2024</p>
+                            </div>
+                            <div>
+                                <button class="view-report">Generate Report</button>
+                            </div>
+                        </div>
                         <canvas id="patientChart"></canvas>
                     </div>
                     <div class="dashboard-appointment-section">
@@ -100,6 +107,11 @@ if (isset($_SESSION['firstname'])) {
                         <canvas id="appointmentChart"></canvas>
                     </div>
                 </div>
+                <div class="dashboard-table">
+                    <h3>Therapists</h3>
+                    <generic-table data="admin_dashboard" color="true"></generic-table>
+                </div>
+               
             </div>
 
         <!-- Appointments Section -->

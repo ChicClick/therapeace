@@ -18,7 +18,8 @@ const columnKeyMapper = new Map([
     ["GENDER", "GENDER"],
     ["GUESTNAME", "GUEST NAME"], ["GUEST_NAME", "GUEST NAME"],
     ["IMAGE", "IMAGE"],
-    ["MATCHTHERAPY", "MATCH THERAPY"], ["MATCH_THERAPY", "MATCH THERAPY"], 
+    ["MATCHTHERAPY", "MATCH THERAPY"], ["MATCH_THERAPY", "MATCH THERAPY"],
+    ["NO_PATIENTS_HANDLE", "NO. OF PATIENTS HANDLE"], 
     ["PATIENT", "PATIENT"],
     ["PATIENTNAME", "PATIENT"], ["PATIENT-NAME", "PATIENT"], ["PATIENT_NAME", "PATIENT"],
     ["PHONE", "PHONE"],
@@ -81,6 +82,7 @@ class TableEngine extends HTMLElement {
 
     static dataSources = new Map([
         ['admin_appointments', 'admin_get_appointments.php'],
+        ['admin_dashboard', 'admin_get_dashboard.php'],
         ['admin_patients', 'admin_get_patients.php'],
         ['admin_admins', 'admin_get_admins.php'],
         ['admin_therapists', 'admin_get_therapists.php'],
@@ -108,6 +110,7 @@ class TableEngine extends HTMLElement {
         this.delete = false;
         this.admin = true;
         this.avatar = false;
+        this.color = false;
         this.dayMapper = new Map([
             [0, "Sunday"],
             [1, "Monday"],
@@ -141,7 +144,7 @@ class TableEngine extends HTMLElement {
     }
 
     static get observedAttributes() {
-        return ['data', 'reschedule', 'edit', 'delete', 'admin', 'avatar'];
+        return ['data', 'reschedule', 'edit', 'delete', 'admin', 'avatar','color'];
     }
 
     async attributeChangedCallback(name, oldValue, newValue) {
@@ -185,6 +188,11 @@ class TableEngine extends HTMLElement {
             this.avatar = newValue === 'true';
             this.render();
         }
+
+        if(name === 'color') {
+            this.color = newValue === 'true';
+            this.render();
+        }
     }
 
     async fetchParent() {
@@ -216,6 +224,7 @@ class TableEngine extends HTMLElement {
             const services = await fetch("z_get_all_services.php");
             if(!services.ok) throw new Error(`HTTP error! status ${services.status}`);
             const data = await services.json();
+            console.log("DATA", data);
             this.services = data;
         } catch (e) {
             console.error('Error fetching data:', e);
@@ -312,12 +321,31 @@ class TableEngine extends HTMLElement {
                     // Append the first column to the row
                     tr.appendChild(firstColumn);
                 }
+
+                if(this.color) {
+                    const color = this.services.find(service => String(service.serviceName) === String(row["service_name"]));
+                    const card = `  
+                    <div class="avatar-container">
+                      <span class="color-container" style="background-color: ${color.serviceColor}"></span>
+                      <span>${row['patient_name'] ? row['patient_name'] : row['therapist_name'] ? row['therapist_name'] : ''}</span>
+                    </div>
+                    `;
+                    // Append the container to the first column
+                    firstColumn.innerHTML = card;
+                
+                    // Append the first column to the row
+                    tr.appendChild(firstColumn);
+                }
                 
 
                 Object.entries(row).forEach(([key, value]) => {
                     const keyUpper = key.toUpperCase();
                     
                     if (!excludedKeyMapper.includes(keyUpper) && key !== 'image') {
+
+                        if(this.color && key === "therapist_name") {
+                            return;
+                        }
 
                         if(this.avatar && key == "patient_name") {
                             return;
