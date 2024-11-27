@@ -115,21 +115,6 @@
     list-style: none;
     padding: 10px;
   }
- .therapist-feedback.list-items:hover{
-      background-color: #ab9984;
-      border-radius: 5px;
-      color: white;
-      transition: all 0.3s ease-in-out;
-  }
-
-  .therapist-feedback.list-items.selected {
-    background-color: #ab9984;
-    color: white;
-    border-radius: 5px;
-    font-weight: bold;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    transition: all 0.3s ease-in-out;
-}
 
   
   .therapist-feedback .list-items li {
