@@ -17,7 +17,7 @@ session_start();
     <img src="images/logo.png" alt="TheraBee Logo" class="logo">
     <h2>Sign In as Admin</h2>
 
-    <!-- Loading Screen -->
+    <!-- Loading Screen ETOOOOOOOOOOOOOO -->
     <div id="loading" style="display: none;" class="sk-folding-cube">
     <div class="sk-cube1 sk-cube"></div>
     <div class="sk-cube2 sk-cube"></div>
