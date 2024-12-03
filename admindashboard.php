@@ -170,7 +170,7 @@ if (isset($_SESSION['firstname'])) {
 
                             <div class="form-row">
                                         <div class="form-group">
-                                        <label class="required" for="serviceID">Services:</label>
+                                        <label class="required" for="serviceID">Service:</label>
                                             <select id="serviceID" name="serviceID" required>
                                                 <option value="">Select Available Service</option>
                                                 <?php
