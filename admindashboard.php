@@ -72,10 +72,9 @@ if (isset($_SESSION['firstname'])) {
     <div class="right-section">
     <generic-message-popup></generic-message-popup>
         <div class="top-bar">
-            <div class="search-bar">
-                <input type="text" placeholder="Search">
-                <button><i class="fas fa-search"></i></button>
-            </div>
+
+            <!-- removed the search bar -->
+
             <div class="profile-section">
                 <img src="images/about 3.jpg" alt="Profile Picture">
                 <span class="welcome-text">Welcome back, Admin!</span>
