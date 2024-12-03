@@ -869,6 +869,7 @@ nav.scrolled {
         max-width: 100%; /* Make it take up more space on smaller screens */
         padding: 15px;
         text-align: center; /* Center the text */
+        align-items: center;
     }
 
     .hero-text h1 {
