@@ -88,6 +88,124 @@ body {
   font-size: 11px;
 }
 
+/* Update to make it responsive*/
+/* Responsive Styles */
+/* Tablets and iPads (Portrait) */
+@media (max-width: 768px) {
+  .left-section {
+    width: 25%; /* Increase width slightly for tablets */
+    height: auto; /* Allow height to adjust as needed */
+    padding: 15px;
+  }
+
+  .left-section .logo img {
+    width: 50px; /* Reduce logo size */
+  }
+
+  .left-section h2 {
+    font-size: small; /* Adjust heading size */
+  }
+
+  .left-section li a {
+    font-size: 10px; /* Slightly smaller font size for links */
+  }
+
+  .left-section ul li a i {
+    font-size: 16px; /* Adjust icon size */
+  }
+}
+
+/* Mobile Phones */
+@media (max-width: 480px) {
+  .left-section {
+    width: 100%; /* Full width for mobile */
+    height: auto; /* Allow height to adjust */
+    padding: 10px;
+  }
+
+  .left-section .logo {
+    justify-content: center; /* Center the logo */
+    margin: 10px 0;
+  }
+
+  .left-section .logo img {
+    width: 40px; /* Smaller logo size */
+  }
+
+  .left-section h2 {
+    font-size: small; /* Reduce font size for heading */
+    text-align: center; /* Center align text */
+    margin: 10px 0;
+  }
+
+  .left-section ul {
+    margin: 0 auto;
+    padding: 0;
+    text-align: center; /* Center align menu items */
+  }
+
+  .left-section li {
+    justify-content: center; /* Center align list items */
+    padding: 5px; /* Adjust padding for smaller screens */
+  }
+
+  .left-section li a {
+    font-size: 9px; /* Smaller font size for links */
+  }
+
+  .left-section ul li a i {
+    font-size: 14px; /* Adjust icon size */
+  }
+}
+
+/* Laptops and Small Desktops */
+@media (min-width: 1024px) and (max-width: 1440px) {
+  .left-section {
+    width: 20%; /* Slightly smaller width for laptops */
+    padding: 20px;
+  }
+
+  .left-section .logo img {
+    width: 60px; /* Slightly larger logo size for laptops */
+  }
+
+  .left-section h2 {
+    font-size: medium; /* Increase heading size */
+  }
+
+  .left-section li a {
+    font-size: 12px; /* Slightly larger font size for links */
+  }
+
+  .left-section ul li a i {
+    font-size: 18px; /* Adjust icon size */
+  }
+}
+
+/* Desktop and Large Screens */
+@media (min-width: 1441px) {
+  .left-section {
+    width: 15%; /* Smaller width for large screens */
+    padding: 25px;
+  }
+
+  .left-section .logo img {
+    width: 70px; /* Logo at a comfortable size */
+  }
+
+  .left-section h2 {
+    font-size: large; /* Larger font size for heading */
+  }
+
+  .left-section li a {
+    font-size: 14px; /* Standard size for links */
+  }
+
+  .left-section ul li a i {
+    font-size: 20px; /* Adjust icon size */
+  }
+}
+
 /* Style for active menu item */
 .left-section ul li.active a {
   padding: 10px;
@@ -167,6 +285,100 @@ body {
   cursor: pointer;
 }
 
+/* Update for Responsiveness */
+/* Responsive Styles */
+/* Tablets and iPads (max-width: 768px) */
+@media (max-width: 768px) {
+  .left-section ul li.active a {
+    width: 120px; /* Adjust width for smaller screens */
+    font-size: 10px; /* Reduce font size */
+  }
+
+  .search-bar {
+    width: 70%; /* Adjust search bar width */
+  }
+
+  .right-section {
+    padding: 15px; /* Adjust padding */
+  }
+
+  .top-bar {
+    flex-wrap: wrap; /* Allow wrapping for better layout */
+    justify-content: center; /* Center-align elements */
+  }
+}
+
+/* Laptops and Small Desktops (min-width: 769px and max-width: 1024px) */
+@media (min-width: 769px) and (max-width: 1024px) {
+  .left-section ul li.active a {
+    width: 140px; /* Adjust width for laptop screens */
+    font-size: 12px; /* Slightly larger font size for better readability */
+  }
+
+  .search-bar {
+    width: 80%; /* Adjust search bar width */
+  }
+
+  .right-section {
+    padding: 20px; /* Increased padding for larger screens */
+  }
+
+  .top-bar {
+    flex-wrap: nowrap; /* Keep elements in a row */
+    justify-content: flex-start; /* Align elements to the start */
+  }
+}
+
+/* Desktop/Computer (min-width: 1025px) */
+@media (min-width: 1025px) {
+  .left-section ul li.active a {
+    width: 160px; /* Adjust width for desktop screens */
+    font-size: 14px; /* Larger font size for better visibility */
+  }
+
+  .search-bar {
+    width: 50%; /* Reduce search bar width */
+  }
+
+  .right-section {
+    padding: 25px; /* Increased padding for larger screens */
+  }
+
+  .top-bar {
+    flex-wrap: nowrap; /* Keep elements in a row */
+    justify-content: flex-start; /* Align elements to the start */
+  }
+}
+
+/* Mobile Phones (max-width: 480px) */
+@media (max-width: 480px) {
+  .left-section ul li.active a {
+    width: 100px; /* Further reduce width */
+    font-size: 9px; /* Adjust font size */
+    padding: 8px; /* Adjust padding */
+  }
+
+  .search-bar {
+    width: 90%; /* Full width for search bar */
+    padding: 4px; /* Adjust padding */
+  }
+
+  .right-section {
+    padding: 10px; /* Smaller padding for mobile */
+  }
+
+  .top-bar {
+    flex-direction: column; /* Stack elements vertically */
+    align-items: flex-start; /* Align items to the start */
+    gap: 10px; /* Add spacing between elements */
+  }
+}
+
+/* General Adjustments for Active State */
+.left-section ul li.active img {
+  filter: brightness(0) sepia(1) hue-rotate(60deg) saturate(3) brightness(1.3); /* Subtle adjustments for responsiveness */
+}
+
 /*Dashboard*/
 .dashboard {
   font-family: "Poppins", sans-serif;
@@ -243,8 +455,148 @@ body {
 canvas {
   max-width: 300px;
 }
+
+/* Responsive Styles */
+/* Tablets and iPads */
+/* Tablets and iPads (max-width: 768px) */
+@media (max-width: 768px) {
+  .dashboard {
+    flex-direction: column; /* Stack sections vertically */
+  }
+
+  .data-section,
+  .dashboard-appointment-section {
+    border-right: none; /* Remove border for stacked layout */
+    border-bottom: #d5d4d4 1px solid; /* Keep bottom border */
+    padding: 15px; /* Adjust padding */
+  }
+
+  .data-section h1 {
+    font-size: 1.8rem; /* Slightly smaller heading */
+  }
+
+  .data-section-header {
+    flex-direction: column; /* Stack headers */
+    align-items: flex-start;
+    gap: 10px;
+  }
+
+  .data-section canvas,
+  .dashboard-appointment-section canvas {
+    max-height: 250px; /* Adjust canvas height */
+  }
+
+  .view-report {
+    padding: 8px 16px; /* Adjust button size */
+    font-size: 14px; /* Adjust font size */
+  }
+}
+
+/* Laptops and Small Desktops (min-width: 769px and max-width: 1024px) */
+@media (min-width: 769px) and (max-width: 1024px) {
+  .dashboard {
+    flex-direction: row; /* Keep sections side by side */
+    flex-wrap: wrap; /* Allow wrapping if needed */
+  }
+
+  .data-section,
+  .dashboard-appointment-section {
+    border-right: #d5d4d4 1px solid; /* Add border back for side-by-side layout */
+    border-bottom: none; /* Remove bottom border */
+    padding: 20px; /* Adjust padding for larger screens */
+  }
+
+  .data-section h1 {
+    font-size: 2rem; /* Increase heading size */
+  }
+
+  .data-section-header {
+    flex-direction: row; /* Keep headers in a row */
+    align-items: center;
+    gap: 15px; /* Increase space between elements */
+  }
+
+  .data-section canvas,
+  .dashboard-appointment-section canvas {
+    max-height: 300px; /* Increase canvas height */
+  }
+
+  .view-report {
+    padding: 10px 20px; /* Larger button size */
+    font-size: 16px; /* Larger font size */
+  }
+}
+
+/* Desktop/Computer (min-width: 1025px) */
+@media (min-width: 1025px) {
+  .dashboard {
+    flex-direction: row; /* Keep sections side by side */
+    justify-content: space-between; /* Space out sections */
+  }
+
+  .data-section,
+  .dashboard-appointment-section {
+    border-right: #d5d4d4 1px solid; /* Keep border for desktop */
+    border-bottom: none; /* Remove bottom border */
+    padding: 25px; /* Increased padding for larger screens */
+  }
+
+  .data-section h1 {
+    font-size: 2.2rem; /* Larger heading for desktop */
+  }
+
+  .data-section-header {
+    flex-direction: row; /* Keep headers in a row */
+    align-items: center;
+    gap: 20px; /* Increase gap for better spacing */
+  }
+
+  .data-section canvas,
+  .dashboard-appointment-section canvas {
+    max-height: 350px; /* Larger canvas height */
+  }
+
+  .view-report {
+    padding: 12px 24px; /* Larger button size */
+    font-size: 18px; /* Larger font size */
+  }
+}
+
+/* Mobile Phones (max-width: 480px) */
+@media (max-width: 480px) {
+  .dashboard {
+    flex-direction: column; /* Stack sections vertically */
+  }
+
+  .data-section h1 {
+    font-size: 1.5rem; /* Reduce heading size */
+  }
+
+  .data-section,
+  .dashboard-appointment-section {
+    padding: 10px; /* Smaller padding for mobile */
+  }
+
+  .data-section-header {
+    align-items: center; /* Center-align headers */
+    text-align: center; /* Align text */
+  }
+
+  .data-section canvas,
+  .dashboard-appointment-section canvas {
+    max-width: 100%; /* Full width for smaller screens */
+    max-height: 200px; /* Reduce canvas height */
+  }
+
+  .view-report {
+    width: 100%; /* Full-width button */
+    padding: 10px; /* Adjust padding */
+    font-size: 12px; /* Smaller font size */
+  }
+}
 /*End Dashboard*/
 
+/*Patient Profile Section*/
 .profile-section {
   display: flex;
   align-items: center;
@@ -443,6 +795,150 @@ canvas {
   color: #432705;
   font-weight: bold;
 }
+/* Update for Responsiveness */
+/* Responsive Styles */
+/* Tablets and iPads */
+/* Tablets and iPads (max-width: 768px) */
+@media (max-width: 768px) {
+  .profile-header {
+    flex-direction: column; /* Stack image and name vertically */
+    align-items: center;
+    text-align: center;
+  }
+
+  .profile-picture {
+    margin-right: 0;
+    margin-bottom: 10px;
+  }
+
+  .profile-details h2,
+  .profile-details h3 {
+    font-size: 18px;
+  }
+
+  .profile-tabs {
+    width: 90%; /* Reduce width */
+    gap: 5px; /* Smaller gap between tabs */
+  }
+
+  .profile-info {
+    width: 90%;
+  }
+}
+
+/* Laptops and Small Desktops (min-width: 769px and max-width: 1024px) */
+@media (min-width: 769px) and (max-width: 1024px) {
+  .profile-header {
+    flex-direction: row; /* Display image and name side by side */
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .profile-picture {
+    margin-right: 20px; /* Space between picture and name */
+    width: 120px; /* Adjust image size */
+    height: 120px;
+  }
+
+  .profile-details h2 {
+    font-size: 20px; /* Larger font for heading */
+  }
+
+  .profile-details h3 {
+    font-size: 18px; /* Adjust subheading size */
+  }
+
+  .profile-tabs {
+    width: 80%; /* Slightly smaller width */
+    gap: 10px; /* Adjust gap between tabs */
+  }
+
+  .profile-info {
+    width: 80%; /* Adjust width */
+  }
+}
+
+/* Desktop/Computer (min-width: 1025px) */
+@media (min-width: 1025px) {
+  .profile-header {
+    flex-direction: row; /* Side by side layout */
+    justify-content: flex-start; /* Align to the left */
+    align-items: center;
+  }
+
+  .profile-picture {
+    margin-right: 30px; /* More space for larger screens */
+    width: 150px; /* Larger profile picture */
+    height: 150px;
+  }
+
+  .profile-details h2 {
+    font-size: 24px; /* Larger font size for headings */
+  }
+
+  .profile-details h3 {
+    font-size: 20px; /* Adjust font size for subheading */
+  }
+
+  .profile-tabs {
+    width: 70%; /* More width for tabs */
+    gap: 15px; /* Increase gap */
+  }
+
+  .profile-info {
+    width: 70%; /* Adjust width */
+  }
+
+  .contact-info-wrapper {
+    flex-direction: row; /* Side by side layout */
+    justify-content: space-between;
+  }
+
+  .contact-info-additional {
+    max-width: 50%; /* Restrict width for additional contact info */
+  }
+}
+
+/* Mobile Phones (max-width: 480px) */
+@media (max-width: 480px) {
+  .profile-picture {
+    width: 100px;
+    height: 100px;
+  }
+
+  .profile-details h2 {
+    font-size: 16px;
+  }
+
+  .profile-details h3 {
+    font-size: 14px;
+  }
+
+  .profile-tabs {
+    flex-wrap: wrap; /* Allow tabs to wrap */
+    gap: 5px;
+    width: 100%;
+    justify-content: center;
+  }
+
+  .profile-info {
+    width: 100%;
+    margin: 10px auto;
+  }
+
+  .profile-info h5,
+  .profile-info p {
+    font-size: 10px;
+  }
+
+  .contact-info-wrapper {
+    flex-direction: column;
+  }
+
+  .contact-info-additional {
+    max-width: 100%; /* Allow full width */
+  }
+}
 
 /* Modal Background */
 /* Modal and popup form styling */
@@ -639,6 +1135,134 @@ select {
   box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.1);
 }
 
+/* Update for Responsiveness */
+/* Responsive Styles */
+/* Tablets and iPads (max-width: 768px) */
+@media (max-width: 768px) {
+  .popup-content-form {
+    width: 80%;
+    margin-top: 10%;
+    min-height: 70vh;
+  }
+
+  .modal-content {
+    width: 90%;
+  }
+
+  .next-btn {
+    width: 100%;
+    bottom: 0;
+    right: 0;
+  }
+
+  .form-group {
+    flex-basis: 100%;
+  }
+
+  select {
+    width: 100%;
+  }
+
+  h2 {
+    font-size: 1.2rem;
+  }
+}
+
+/* Laptops and Small Desktops (min-width: 769px and max-width: 1024px) */
+@media (min-width: 769px) and (max-width: 1024px) {
+  .popup-content-form {
+    width: 60%;
+    margin-top: 5%;
+    min-height: 60vh;
+  }
+
+  .modal-content {
+    width: 80%;
+  }
+
+  .next-btn {
+    width: 100%;
+    padding: 15px;
+    font-size: 1.4rem;
+  }
+
+  .form-group {
+    flex-basis: 100%;
+  }
+
+  select {
+    width: 100%;
+  }
+
+  h2 {
+    font-size: 1.5rem;
+  }
+}
+
+/* Desktop/Computer (min-width: 1025px) */
+@media (min-width: 1025px) {
+  .popup-content-form {
+    width: 50%;
+    margin-top: 5%;
+    min-height: 60vh;
+  }
+
+  .modal-content {
+    width: 70%;
+  }
+
+  .next-btn {
+    width: auto;
+    padding: 20px;
+    font-size: 1.6rem;
+  }
+
+  .form-group {
+    flex-basis: 48%; /* Adjust form group size */
+  }
+
+  select {
+    width: 100%;
+  }
+
+  h2 {
+    font-size: 1.8rem;
+  }
+}
+
+/* Styles for Mobile Devices (max-width: 480px) */
+@media (max-width: 480px) {
+  .popup-content-form {
+    width: 90%;
+    min-height: 60vh;
+    margin-top: 15%;
+  }
+
+  .modal-content {
+    width: 95%;
+    padding: 15px;
+  }
+
+  .form-row {
+    flex-direction: column;
+  }
+
+  .next-btn {
+    padding: 15px;
+    font-size: 1.2rem;
+  }
+
+  .close-btn {
+    font-size: 18px;
+    top: 10px;
+    right: 10px;
+  }
+
+  h2 {
+    font-size: 1rem;
+  }
+}
+
 input[type="text"],
 input[type="date"],
 input[type="password"],
@@ -774,6 +1398,168 @@ input[type="checkbox"] {
   background-color: #f1f1f1; /* Change color on hover */
 }
 
+/* Update for Responsiveness */
+/* Responsive design */
+/* Tablets and smaller screens (max-width: 768px) */
+@media (max-width: 768px) {
+  /* Services section */
+  .services-group {
+    flex-basis: 100%; /* Make services take full width */
+  }
+
+  .services-checkbox label {
+    flex-basis: 100%; /* Adjust checkbox label to full width */
+  }
+
+  /* Time and day lists */
+  .time-list, .day-list {
+    flex-direction: column; /* Stack items vertically */
+  }
+
+  /* Button container */
+  .btn-container {
+    flex-direction: column;
+    gap: 15px; /* Space out buttons vertically */
+  }
+
+  .submit-btn, .reset-btn {
+    width: 100%; /* Full width for buttons */
+    margin-left: 0;
+    margin-right: 0;
+  }
+
+  /* Input fields */
+  input[type="text"],
+  input[type="date"],
+  input[type="password"],
+  input[type="email"],
+  input[type="file"] {
+    width: 100%; /* Full width for inputs */
+  }
+
+  /* Popup form adjustments */
+  .popup-content-form {
+    width: 90%; /* Adjust the popup form to be more mobile-friendly */
+    margin-top: 10%;
+  }
+}
+
+/* Laptops and Small Desktops (min-width: 769px and max-width: 1024px) */
+@media (min-width: 769px) and (max-width: 1024px) {
+  .services-group {
+    flex-basis: 48%; /* Use 48% width for services to show two per row */
+  }
+
+  .services-checkbox label {
+    flex-basis: 48%; /* Adjust label width for two per row */
+  }
+
+  .time-list, .day-list {
+    flex-direction: row; /* Align items horizontally */
+  }
+
+  .btn-container {
+    flex-direction: row; /* Arrange buttons horizontally */
+    gap: 20px; /* Space out buttons horizontally */
+  }
+
+  .submit-btn, .reset-btn {
+    width: auto; /* Buttons take automatic width */
+  }
+
+  input[type="text"],
+  input[type="date"],
+  input[type="password"],
+  input[type="email"],
+  input[type="file"] {
+    width: 100%; /* Keep inputs full width */
+  }
+
+  .popup-content-form {
+    width: 60%; /* Adjust the popup width for larger screens */
+    margin-top: 5%;
+  }
+}
+
+/* Desktop/Computer (min-width: 1025px) */
+@media (min-width: 1025px) {
+  .services-group {
+    flex-basis: 23%; /* Display services in a grid with 4 items per row */
+  }
+
+  .services-checkbox label {
+    flex-basis: 23%; /* Adjust label width for a 4-item grid */
+  }
+
+  .time-list, .day-list {
+    flex-direction: row; /* Align items horizontally */
+  }
+
+  .btn-container {
+    flex-direction: row; /* Arrange buttons horizontally */
+    gap: 30px; /* Larger gap between buttons */
+  }
+
+  .submit-btn, .reset-btn {
+    width: auto; /* Buttons take automatic width */
+  }
+
+  input[type="text"],
+  input[type="date"],
+  input[type="password"],
+  input[type="email"],
+  input[type="file"] {
+    width: 100%; /* Keep inputs full width */
+  }
+
+  .popup-content-form {
+    width: 50%; /* Adjust popup form width for larger screens */
+    margin-top: 5%;
+  }
+}
+
+/* Mobile Phones (max-width: 480px) */
+@media (max-width: 480px) {
+  /* Input fields on mobile */
+  input[type="text"],
+  input[type="date"],
+  input[type="password"],
+  input[type="email"],
+  input[type="file"] {
+    padding: 6px;
+    font-size: 0.8rem; /* Smaller font size */
+  }
+
+  .submit-btn, .reset-btn {
+    padding: 8px 15px; /* Smaller button padding */
+    font-size: 0.95rem; /* Adjust font size for buttons */
+  }
+
+  /* Services section */
+  .services-group {
+    flex-basis: 100%; /* Ensure services take up full width */
+  }
+
+  .services-checkbox label {
+    flex-basis: 100%; /* Full width for labels */
+  }
+
+  /* Time and day lists */
+  .time-list, .day-list {
+    flex-direction: column; /* Stack items vertically */
+  }
+
+  /* Popup form adjustments */
+  .popup-content-form {
+    width: 95%; /* Adjust popup width for mobile */
+    padding: 15px; /* Add more padding for mobile */
+  }
+
+  .dropdown-content {
+    min-width: 130px; /* Reduce dropdown width */
+  }
+}
+
 /* staff */
 .staff-info {
   padding: 20px;
@@ -890,6 +1676,159 @@ input[type="checkbox"] {
 
 .add-service:hover {
   background-color: #ddd;
+}
+
+/* Update for Responsiveness */
+/* Responsive design */
+/* Tablets and smaller screens (max-width: 768px) */
+@media (max-width: 768px) {
+  /* Staff Info Section */
+  .staff-info {
+    width: 100%; /* Full width for smaller screens */
+  }
+
+  /* Staff Header */
+  .staff-header {
+    flex-direction: column;
+    align-items: flex-start;
+    margin-bottom: 10px;
+  }
+
+  /* Add Staff Button */
+  .add-staff-button {
+    width: 100%; /* Make the add staff button full width */
+    margin-right: 0; /* Remove right margin */
+  }
+
+  /* Button Container */
+  .button-container {
+    width: 100%; /* Full width for buttons */
+    margin-right: 0; /* Remove margin */
+  }
+
+  /* Staff Container */
+  .staff-container {
+    flex-direction: column; /* Stack the staff container vertically */
+  }
+
+  /* Adjust buttons inside button-container */
+  .button-container button {
+    width: 100%; /* Full width for buttons */
+    margin-left: 0; /* Remove left margin */
+  }
+}
+
+/* Laptops and Small Desktops (min-width: 769px and max-width: 1024px) */
+@media (min-width: 769px) and (max-width: 1024px) {
+  /* Staff Info Section */
+  .staff-info {
+    width: 90%; /* Slightly smaller width on laptops */
+  }
+
+  /* Staff Header */
+  .staff-header {
+    flex-direction: row; /* Align header horizontally */
+    justify-content: space-between;
+    margin-bottom: 15px;
+  }
+
+  /* Add Staff Button */
+  .add-staff-button {
+    width: auto; /* Adjust width to content */
+  }
+
+  /* Button Container */
+  .button-container {
+    width: auto; /* Adjust width to content */
+    margin-right: 0; /* Remove margin */
+  }
+
+  /* Staff Container */
+  .staff-container {
+    flex-direction: row; /* Align staff list horizontally */
+    flex-wrap: wrap;
+  }
+
+  /* Adjust buttons inside button-container */
+  .button-container button {
+    width: auto; /* Adjust button width */
+    margin-left: 10px; /* Space between buttons */
+  }
+}
+
+/* Desktops and Larger Screens (min-width: 1025px) */
+@media (min-width: 1025px) {
+  /* Staff Info Section */
+  .staff-info {
+    width: 80%; /* Optimal width for desktops */
+  }
+
+  /* Staff Header */
+  .staff-header {
+    flex-direction: row; /* Align header horizontally */
+    justify-content: space-between;
+    margin-bottom: 20px;
+  }
+
+  /* Add Staff Button */
+  .add-staff-button {
+    width: auto; /* Adjust width to content */
+  }
+
+  /* Button Container */
+  .button-container {
+    width: auto; /* Adjust width to content */
+    margin-right: 0; /* Remove margin */
+  }
+
+  /* Staff Container */
+  .staff-container {
+    flex-direction: row; /* Align staff list horizontally */
+    flex-wrap: wrap;
+  }
+
+  /* Adjust buttons inside button-container */
+  .button-container button {
+    width: auto; /* Adjust button width */
+    margin-left: 15px; /* Space between buttons */
+  }
+}
+
+/* Mobile Phones (max-width: 480px) */
+@media (max-width: 480px) {
+  /* Staff Info Section */
+  .staff-info {
+    width: 100%; /* Ensure full width on mobile */
+    padding: 10px; /* Adjust padding */
+  }
+
+  /* Staff Header */
+  .staff-header h4 {
+    font-size: 16px; /* Adjust font size */
+  }
+
+  /* Add Staff Button */
+  .add-staff-button {
+    padding: 8px 12px; /* Adjust padding for mobile */
+    font-size: 12px; /* Smaller font size for mobile */
+  }
+
+  /* Button Container */
+  .button-container {
+    width: 100%; /* Full width for button container */
+    margin-right: 0; /* Remove margin */
+  }
+
+  /* Adjust buttons inside button-container */
+  .button-container button {
+    width: 100%; /* Full width for buttons */
+    font-size: 12px; /* Smaller font size for mobile */
+  }
+
+  /* Add Service Hover */
+  .add-service:hover {
+    background-color: #e0e0e0; /* Lighter background on hover for mobile */
+  }
 }
 
 /*  SERVICE  */
@@ -1026,6 +1965,181 @@ input[type="checkbox"] {
   margin-right: 4px; /* Adds space between icon and text */
 }
 
+/* Update for Responsiveness */
+/* Responsive design */
+/* Tablets and smaller screens (max-width: 768px) */
+@media (max-width: 768px) {
+  /* Service Header */
+  .service-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  /* Service Picture */
+  .service-picture {
+    width: 100%; /* Make image full width for smaller screens */
+    margin-right: 0; /* Remove margin */
+    margin-bottom: 10px; /* Space between image and text */
+  }
+
+  /* Service Details */
+  .service-details {
+    flex-direction: column;
+  }
+
+  .service-details h2 {
+    font-size: 28px; /* Slightly smaller font size */
+  }
+
+  .service-details h3 {
+    font-size: 18px; /* Slightly smaller font size */
+  }
+
+  .service-details h4 {
+    font-size: 16px; /* Slightly smaller font size */
+  }
+
+  .service-about p {
+    font-size: 14px; /* Smaller font size for mobile */
+  }
+
+  /* Buttons */
+  .edit-service, .add-service, .delete-btn {
+    width: 100%; /* Full width for buttons on mobile */
+    font-size: 12px; /* Smaller font size */
+    margin-right: 0; /* Remove right margin */
+    margin-bottom: 10px; /* Add space between buttons */
+  }
+}
+
+/* Laptops and Small Desktops (min-width: 769px and max-width: 1024px) */
+@media (min-width: 769px) and (max-width: 1024px) {
+  /* Service Header */
+  .service-header {
+    flex-direction: row; /* Align header horizontally */
+    justify-content: space-between;
+  }
+
+  /* Service Picture */
+  .service-picture {
+    width: 50%; /* Make image half width on laptops */
+    margin-right: 20px; /* Space between image and text */
+  }
+
+  /* Service Details */
+  .service-details {
+    flex-direction: column;
+    width: 50%; /* Adjust service details width */
+  }
+
+  .service-details h2 {
+    font-size: 32px; /* Larger font size */
+  }
+
+  .service-details h3 {
+    font-size: 20px; /* Larger font size */
+  }
+
+  .service-details h4 {
+    font-size: 18px; /* Larger font size */
+  }
+
+  .service-about p {
+    font-size: 16px; /* Adjust font size */
+  }
+
+  /* Buttons */
+  .edit-service, .add-service, .delete-btn {
+    width: 48%; /* Adjust button width for better spacing */
+    font-size: 14px; /* Slightly larger font size */
+    margin-right: 10px; /* Space between buttons */
+  }
+}
+
+/* Desktops and Larger Screens (min-width: 1025px) */
+@media (min-width: 1025px) {
+  /* Service Header */
+  .service-header {
+    flex-direction: row; /* Align header horizontally */
+    justify-content: space-between;
+    margin-bottom: 20px; /* Add margin for spacing */
+  }
+
+  /* Service Picture */
+  .service-picture {
+    width: 45%; /* Make image 45% width */
+    margin-right: 30px; /* Space between image and text */
+  }
+
+  /* Service Details */
+  .service-details {
+    flex-direction: column;
+    width: 50%; /* Adjust width for larger screens */
+  }
+
+  .service-details h2 {
+    font-size: 36px; /* Larger font size */
+  }
+
+  .service-details h3 {
+    font-size: 24px; /* Larger font size */
+  }
+
+  .service-details h4 {
+    font-size: 20px; /* Larger font size */
+  }
+
+  .service-about p {
+    font-size: 18px; /* Adjust font size */
+  }
+
+  /* Buttons */
+  .edit-service, .add-service, .delete-btn {
+    width: 32%; /* Adjust button width for desktop layout */
+    font-size: 16px; /* Larger font size */
+    margin-right: 15px; /* Space between buttons */
+  }
+}
+
+/* Mobile Phones (max-width: 480px) */
+@media (max-width: 480px) {
+  /* Service Header */
+  .service-header {
+    flex-direction: column;
+  }
+
+  /* Service Picture */
+  .service-picture {
+    width: 100%; /* Ensure full width on mobile */
+    margin-right: 0;
+    margin-bottom: 10px;
+  }
+
+  /* Service Details */
+  .service-details h2 {
+    font-size: 24px; /* Further reduced font size */
+  }
+
+  .service-details h3 {
+    font-size: 16px; /* Further reduced font size */
+  }
+
+  .service-details h4 {
+    font-size: 14px; /* Further reduced font size */
+  }
+
+  .service-about p {
+    font-size: 12px; /* Further reduced font size */
+  }
+
+  /* Buttons */
+  .edit-service, .add-service, .delete-btn {
+    width: 100%; /* Full width for buttons on mobile */
+    font-size: 12px;
+    padding: 8px 12px; /* Adjust button padding */
+  }
+}
+
 /* Profile Picture Section */
 .form-edit {
   width: 100%;
@@ -1154,6 +2268,80 @@ input[type="checkbox"] {
   transition: background-color 0.3s ease;
 }
 
+/* Update for Responsiveness */
+/* Mobile Phones */
+@media (max-width: 600px) {
+  .form-edit {
+    flex-direction: column;
+    gap: 15px;
+  }
+  
+  .profile-picture-section {
+    width: 50%; /* Adjust for smaller screens */
+  }
+
+  .edit-info-section, .additional-info-section {
+    width: 100%; /* Full width for small screens */
+    margin-right: 0;
+  }
+
+  .edit-input-field, .dob-field, .dob-field-year, .input-field-service {
+    font-size: 12px; /* Smaller input font size for mobile */
+  }
+
+  .save-profile {
+    width: 100%; /* Make save button full-width on small screens */
+    margin-top: 20px;
+  }
+}
+
+/* Tablets and Small Screens (Portrait) */
+@media (max-width: 768px) {
+  .profile-picture-section {
+    width: 30%;
+  }
+
+  .edit-info-section, .additional-info-section {
+    width: 48%; /* Reduce width to fit both sections on screen */
+  }
+
+  .save-profile {
+    width: 100%;
+    margin-top: 20px;
+  }
+}
+
+/* iPads and Larger Tablets (Landscape) */
+@media (max-width: 1024px) {
+  .profile-picture-section {
+    width: 20%;
+  }
+
+  .edit-info-section, .additional-info-section {
+    width: 45%;
+  }
+
+  .save-profile {
+    width: 250px;
+    margin-top: 20px;
+  }
+}
+
+/* Desktop and Laptops */
+@media (min-width: 1025px) {
+  .profile-picture-section {
+    width: 15%; /* Default width for larger screens */
+  }
+
+  .edit-info-section {
+    width: 35%; /* Default width for left column */
+  }
+
+  .additional-info-section {
+    width: 30%; /* Default width for right column */
+  }
+}
+
 /* Log Out Modal styles */
 .modal {
   display: none;
@@ -1263,20 +2451,6 @@ input[type="checkbox"] {
   position: relative;
 }
 
-/* Responsive */
-@media (max-width: 768px) {
-  .form-edit {
-    flex-direction: column;
-  }
-
-  .profile-picture-section,
-  .edit-info-section,
-  .additional-info-section {
-    width: 100%; /* Stack sections vertically on small screens */
-    margin-right: 0;
-  }
-}
-
 .tabs-container {
   display: flex;
   background-color: #f4f4f4;
@@ -1335,4 +2509,124 @@ input[type="checkbox"] {
 
 .content-container::-webkit-scrollbar-thumb:hover {
   background-color: #555;
+}
+
+/* Update for Responsive Styling */
+/* Mobile Phones */
+@media (max-width: 600px) {
+  .modal-content-logout {
+    width: 90%; /* Adjust width for mobile */
+    margin: 30% auto;
+    padding: 15px;
+  }
+
+  .dropdown-menu {
+    width: 120px; /* Smaller dropdown on mobile */
+  }
+
+  .tabs-container {
+    flex-direction: column;
+    align-items: center;
+    padding: 5px;
+  }
+
+  .tab {
+    margin-right: 0;
+    margin-bottom: 10px;
+    width: 100%;
+    text-align: center;
+  }
+
+  .content-container {
+    max-height: 50vh; /* Adjust content height for mobile */
+  }
+
+  .content-container::-webkit-scrollbar {
+    width: 6px; /* Smaller scrollbar on mobile */
+  }
+}
+
+/* Tablets and Small Screens (Portrait) */
+@media (max-width: 768px) {
+  .modal-content-logout {
+    width: 85%;
+  }
+
+  .dropdown-menu {
+    width: 130px;
+  }
+
+  .tabs-container {
+    padding: 8px;
+  }
+
+  .tab {
+    margin-right: 10px;
+  }
+
+  .content-container {
+    max-height: 55vh;
+  }
+}
+
+/* iPads and Larger Tablets (Landscape) */
+@media (max-width: 1024px) {
+  .modal-content-logout {
+    width: 75%;
+  }
+
+  .dropdown-menu {
+    width: 140px;
+  }
+
+  .tabs-container {
+    padding: 10px;
+  }
+
+  .tab {
+    margin-right: 15px;
+  }
+
+  .content-container {
+    max-height: 60vh;
+  }
+}
+
+/* Desktop and Laptops */
+@media (min-width: 1025px) {
+  .modal-content-logout {
+    width: 40%;
+    margin: 15% auto;
+  }
+
+  .dropdown-menu {
+    width: 150px;
+  }
+
+  .tabs-container {
+    display: flex;
+    justify-content: flex-start;
+  }
+
+  .tab {
+    margin-right: 20px;
+  }
+
+  .content-container {
+    max-height: 60vh;
+  }
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .form-edit {
+    flex-direction: column;
+  }
+
+  .profile-picture-section,
+  .edit-info-section,
+  .additional-info-section {
+    width: 100%; /* Stack sections vertically on small screens */
+    margin-right: 0;
+  }
 }
