@@ -386,9 +386,9 @@ if (isset($_SESSION['firstname'])) {
                                             <input type="text" id="address" name="address" placeholder="e.g. 123 Elm St., Brgy 1" required>
                                         </div>
                                         <div class="form-group">
-                                        <label for="gender">Gender:</label>
+                                        <label for="gender">Sex:</label>
                                             <select id="gender" name="gender" required>
-                                                <option value="" disabled selected>Select Gender</option>
+                                                <option value="" disabled selected>Select Sex</option>
                                                 <option value="Male">Male</option>
                                                 <option value="Female">Female</option>
                                             </select>
@@ -463,9 +463,9 @@ if (isset($_SESSION['firstname'])) {
                                             <input type="text" id="address" name="address" placeholder="e.g. 123 Elm St., Brgy 1" required>
                                         </div>
                                         <div class="form-group">
-                                        <label for="gender">Gender:</label>
+                                        <label for="gender">Sex:</label>
                                             <select id="gender" name="gender" required>
-                                                <option value="" disabled selected>Select Gender</option>
+                                                <option value="" disabled selected>Select Sex</option>
                                                 <option value="Male">Male</option>
                                                 <option value="Female">Female</option>
                                             </select>

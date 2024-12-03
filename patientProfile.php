@@ -36,7 +36,7 @@ include 'patient_profile_functions.php';
                             <p><strong>Birthday:</strong> <?php echo htmlspecialchars($patientBirthday); ?></p>
                         </div>
                         <div class="info-block">
-                            <p><strong>Gender:</strong> <?php echo htmlspecialchars($patientGender); ?></p>
+                            <p><strong>Sex:</strong> <?php echo htmlspecialchars($patientGender); ?></p>
                         </div>
                     </div>
 
@@ -91,7 +91,7 @@ include 'patient_profile_functions.php';
                             <input type="date" name="birthday" id="birthday" value="<?php echo htmlspecialchars($patientBirthday); ?>" required>
                         </div>
                         <div class="input-field">
-                            <label for="gender">Gender:</label>
+                            <label for="gender">Sex:</label>
                             <input type="text" name="gender" id="gender" value="<?php echo htmlspecialchars($patientGender); ?>" required>
                         </div>
                     </div>

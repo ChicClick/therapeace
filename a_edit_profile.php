@@ -69,7 +69,7 @@ $stmt->close();
     <!-- Right Column - Additional Information -->
     <div class="additional-info-section">
         <div class="form-group-profile">
-            <label>Gender</label>
+            <label>Sex</label>
             <input type="text" class="edit-input-field" value="<?php echo htmlspecialchars($admin['gender']); ?>" disabled>
         </div>
 
