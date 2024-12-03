@@ -593,7 +593,7 @@ if (isset($_SESSION['firstname'])) {
 
                 <div id="content-staff" class="content-container active">
                     
-                        <generic-table data="admin_staffs"></generic-table>
+                        <generic-table data="admin_staffs" edit="true"></generic-table>
                                         <!-- include 'a_staff.php' -->
                 </div>                                    
                 <div id="content-admins" class="content-container">
@@ -603,7 +603,7 @@ if (isset($_SESSION['firstname'])) {
                 </div>
                 
                 <div id="content-therapists" class="content-container">
-                    <generic-table data="admin_therapists"></generic-table>
+                    <generic-table data="admin_therapists" edit="true"></generic-table>
                     <!--php include 'a_therapist.php';? -->
                 </div>
 

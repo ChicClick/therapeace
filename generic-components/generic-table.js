@@ -541,6 +541,10 @@ class TableEngine extends HTMLElement {
         if(this.tableType == "admin_patients") {
             this.editAdminPatient(row);
         }
+
+        if(this.tableType == "admin_staffs") {
+            this.editAdminStaff(row);
+        }
     }
     
     handleDeleteClick(row) {
@@ -580,6 +584,66 @@ class TableEngine extends HTMLElement {
         if(this.tableType == "admin_services") {
             this.servicesInfo(row)
         }
+    }
+
+    editAdminStaff(row) {
+        try {
+            fetch(`a_fetch_staff_info.php?id=${row["staffID"]}`)
+            .then(async response => await response.json())
+            .then(data => {
+
+                const datehired = data["datehired"] || "";
+    
+                const staffForm = `
+                <form action="a_editstaffprofile_endpoint.php" method="POST" enctype="multipart/form-data">
+                    <input type="hidden" value="${data["staffID"]}" name="staffID">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="patID">Patient ID:</label>
+                            <input type="text" value="${data["staffID"]}" id="staffID" name="sID" disabled required>
+                        </div>
+                        <div class="form-group">
+                            <label for="staffName">Patient Name:</label>
+                            <input value="${data["staff_name"]}" type="text" id="staffName" name="staffName" placeholder="Enter Staff Name" required>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="phone">Phone:</label>
+                            <input value="${data["phone"] || ''}" type="text" id="phone" name="phone" placeholder="Enter Phone Number" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="position">Position:</label>
+                            <input value="${data["position"] || ''}" type="text" id="position" name="position" placeholder="Enter Position" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="gender">Gender:</label>
+                            <select id="gender" name="gender" required>
+                                <option ${data["gender"] == "Female" ? "selected" : ""} value="Female">Female</option>
+                                <option ${data["gender"] == "Male" ? "selected" : ""} value="Male">Male</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="datehired">Date Hired:</label>
+                            <input value="${datehired}" type="date" id="datehired" name="datehired" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="address">Address:</label>
+                            <input value="${data["address"]}" type="text" id="address" name="address" placeholder="e.g. 123 Elm St., Brgy" required>
+                        </div>
+                    </div>
+                    <div class="btn-container">
+                        <button type="submit" class="submit-btn">Save</button>
+                    </div>
+                </form>
+                `;
+            new SideViewBarEngine("EDIT STAFF INFORMATION",staffForm).render();
+            })
+            .catch(e => console.error("Error fetching parents ", e));
+        }
+        catch{}
     }
 
     editAdminPatient(row) {
@@ -667,7 +731,7 @@ class TableEngine extends HTMLElement {
                     </div>
                 </form>
                 `;
-            new SideViewBarEngine("NEW PATIENT REGISTRATION",patientForm,"view-lg").render();
+            new SideViewBarEngine("EDIT PATIENT REGISTRATION",patientForm,"view-lg").render();
             })
             .catch(e => console.error("Error fetching parents ", e));
         }
