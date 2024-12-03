@@ -213,12 +213,13 @@ const carousel = document.querySelector('.feedback-carousel');
     function updateCarousel() {
         const items = getItems();
         const totalItems = items.length;
-
+    
         if (totalItems > 0) {
-            const offset = -currentIndex * 100; // Translate based on percentage to show one item
-            carousel.style.transform = `translateX(${offset}%)`;
+            const itemWidth = items[0].offsetWidth; // Get the current width of each item
+            const offset = -currentIndex * itemWidth; // Use item width instead of percentage
+            carousel.style.transform = `translateX(${offset}px)`; // Use px instead of %
         }
-    }
+    }    
 
     function showNext() {
         const items = getItems();
@@ -242,11 +243,13 @@ const carousel = document.querySelector('.feedback-carousel');
     rightControl.addEventListener('click', showNext);
 
     // Optional: Automatic sliding
-    setInterval(showNext, 5000); // Adjust timing as desired
+    setInterval(showNext, 10000); // Adjust timing as desired
 
     // Initialize carousel position
     updateCarousel();
 
+
+    window.addEventListener('resize', updateCarousel);
 
 // Create an IntersectionObserver to observe when images come into view
 const observer = new IntersectionObserver((entries, observer) => {
