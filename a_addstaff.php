@@ -18,6 +18,8 @@ $stmt->bind_param("ssssss", $staffName, $position, $phoneNumber, $address, $gend
 // Execute the statement
 if ($stmt->execute()) {
     echo "New staff member added successfully.";
+    header("Location: admindashboard.php?active=staff-section");
+    exit;
 } else {
     echo "Error: " . $stmt->error;
 }
