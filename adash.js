@@ -159,7 +159,7 @@ document.getElementById('add-patient-button').addEventListener('click', function
                 </div>
                 <div class="form-row">
                     <div class="form-group">
-                        <label for="gender">Gender:</label>
+                        <label for="gender">Sex:</label>
                         <select id="gender" name="gender" required>
                             <option value="Female">Female</option>
                             <option value="Male">Male</option>
