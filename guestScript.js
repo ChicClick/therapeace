@@ -167,6 +167,12 @@ window.addEventListener('scroll', function() {
     }
 
     lastScrollTop = scrollTop <= 0 ? 0 : scrollTop;
+
+    const navLinks = document.querySelector(".nav-links");
+    // Only close the menu if it's open (active)
+    if (navLinks.classList.contains("active")) {
+        navLinks.classList.remove("active");
+    }
 });
 
 if(scrollTopBtn) {
@@ -259,3 +265,8 @@ const observer = new IntersectionObserver((entries, observer) => {
 document.querySelectorAll('.about-image').forEach(image => {
     observer.observe(image);
 });
+
+document.getElementById("hamburger-menu").addEventListener("click", function() {
+    document.querySelector(".nav-links").classList.toggle("active");
+});
+
