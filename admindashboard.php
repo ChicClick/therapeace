@@ -24,6 +24,7 @@ if (isset($_SESSION['firstname'])) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>TheraPeace</title>
     <link rel="stylesheet" href="adash.css">
+    <link rel="icon" type="image/svg+xml" href="images/TheraPeace Logo.svg">
 
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
@@ -592,7 +593,7 @@ if (isset($_SESSION['firstname'])) {
 
                 <div id="content-staff" class="content-container active">
                     
-                        <generic-table data="admin_staffs"></generic-table>
+                        <generic-table data="admin_staffs" edit="true"></generic-table>
                                         <!-- include 'a_staff.php' -->
                 </div>                                    
                 <div id="content-admins" class="content-container">
@@ -602,7 +603,7 @@ if (isset($_SESSION['firstname'])) {
                 </div>
                 
                 <div id="content-therapists" class="content-container">
-                    <generic-table data="admin_therapists"></generic-table>
+                    <generic-table data="admin_therapists" edit="true"></generic-table>
                     <!--php include 'a_therapist.php';? -->
                 </div>
 

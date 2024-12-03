@@ -167,6 +167,12 @@ window.addEventListener('scroll', function() {
     }
 
     lastScrollTop = scrollTop <= 0 ? 0 : scrollTop;
+
+    const navLinks = document.querySelector(".nav-links");
+    // Only close the menu if it's open (active)
+    if (navLinks.classList.contains("active")) {
+        navLinks.classList.remove("active");
+    }
 });
 
 if(scrollTopBtn) {
@@ -207,12 +213,13 @@ const carousel = document.querySelector('.feedback-carousel');
     function updateCarousel() {
         const items = getItems();
         const totalItems = items.length;
-
+    
         if (totalItems > 0) {
-            const offset = -currentIndex * 100; // Translate based on percentage to show one item
-            carousel.style.transform = `translateX(${offset}%)`;
+            const itemWidth = items[0].offsetWidth; // Get the current width of each item
+            const offset = -currentIndex * itemWidth; // Use item width instead of percentage
+            carousel.style.transform = `translateX(${offset}px)`; // Use px instead of %
         }
-    }
+    }    
 
     function showNext() {
         const items = getItems();
@@ -236,11 +243,13 @@ const carousel = document.querySelector('.feedback-carousel');
     rightControl.addEventListener('click', showNext);
 
     // Optional: Automatic sliding
-    setInterval(showNext, 5000); // Adjust timing as desired
+    setInterval(showNext, 10000); // Adjust timing as desired
 
     // Initialize carousel position
     updateCarousel();
 
+
+    window.addEventListener('resize', updateCarousel);
 
 // Create an IntersectionObserver to observe when images come into view
 const observer = new IntersectionObserver((entries, observer) => {
@@ -259,3 +268,21 @@ const observer = new IntersectionObserver((entries, observer) => {
 document.querySelectorAll('.about-image').forEach(image => {
     observer.observe(image);
 });
+
+document.getElementById("hamburger-menu").addEventListener("click", function() {
+    document.querySelector(".nav-links").classList.toggle("active");
+});
+
+const serviceItems = document.querySelectorAll('.service-item');
+
+// Check if the device is mobile or tablet
+if (window.innerWidth <= 768) {
+    // Add click event listener to toggle visibility
+    serviceItems.forEach(item => {
+        item.addEventListener('click', function() {
+            // Toggle active class to show description
+            this.classList.toggle('active');
+        });
+    });
+}
+

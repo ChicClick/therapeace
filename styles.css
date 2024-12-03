@@ -33,6 +33,7 @@ body {
     overflow-x: hidden; /* Prevent horizontal overflow */
 }
 
+/*STYLES FOR NAVBAR*/
 nav {
     display: flex;
     justify-content: space-between;
@@ -73,9 +74,7 @@ nav {
 }
 
 nav.scrolled {
-    background: rgba(227,218,183,0.8);
-    -webkit-backdrop-filter: blur(8px);
-    backdrop-filter: blur(8px);
+    background: rgba(227,218,183,1);
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); 
     transition: transform 0.3s ease-in-out, opacity 0.1s ease-out;
 }
@@ -95,13 +94,6 @@ nav.scrolled {
 
 .login-btn:hover {
     background: linear-gradient(90deg, #FDBC10 100%, #FFEA09 0%);
-}
-
-
-@media (min-height: 100vh) {
-    body.scrolled nav {
-        background-color: beige;
-    }
 }
 
 .logo img {
@@ -125,6 +117,42 @@ nav.scrolled {
     height: 50px;
 }
 
+.user-greeting {
+    display: flex;
+    align-items: center;
+    font-family: 'Poppins', sans-serif;
+    font-weight: 600;
+    color: #432705;
+    padding-right: 20px;
+    padding-left: 20px;
+}
+
+.welcome-text {
+    margin-right: 10px; /* Space between the text and icon */
+    font-size: 14px;
+}
+
+
+/* STYLES FOR HAMBURGER MENU */
+.hamburger-menu {
+    display: none;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+    width: 30px;
+    height: 25px;
+    cursor: pointer;
+}
+
+.hamburger-menu .bar {
+    width: 30px;
+    height: 4px;
+    background-color: #432705;
+    border-radius: 5px;
+}
+
+
+/* STYLES FOR HERO SECTION */
 .hero-section {
     position: relative;
     background: linear-gradient(to bottom, rgba(202,185,134,0.8), rgba(67, 39, 5, 0.6));
@@ -185,7 +213,7 @@ nav.scrolled {
 }
 
 .about-section {
-    padding: 100px 20px;
+    padding: 100px 20px 0;
     background-color: #f8f5e9;
     display: flex;
     flex-direction: column;
@@ -194,6 +222,8 @@ nav.scrolled {
     z-index: 1;
 }
 
+
+/*STYLES FOR ABOUT SECTION*/
 .about-images-container {
     display: flex;
     justify-content: center;
@@ -201,15 +231,17 @@ nav.scrolled {
     position: relative;
     margin-bottom: 40px;
     max-width: 100%;
+    flex-wrap: wrap; /* Allow images to stack on smaller screens */
 }
 
 .about-image {
     position: relative;
-    margin: 0 15px; /* Add some margin between images */
-    max-width: 350px; /* Adjust as necessary for your image size */
+    margin: 0 15px; /* margin between images */
+    max-width: 350px;
     opacity: 0; /* Make images initially invisible */
-    transform: translateY(50px) rotate(0deg); /* Apply both translateY and rotate */
-    transition: opacity 0.8s ease, transform 0.8s ease; /* Smooth transition */
+    transform: translateY(50px) rotate(0deg); 
+    transition: opacity 0.8s ease, transform 0.8s ease; 
+    width: 100%;
 }
 
 .about-image.visible {
@@ -256,6 +288,7 @@ nav.scrolled {
     max-width: 1000px;
     color: #432705;
     margin-top: 20px; /* Adds spacing between images and text */
+    margin-bottom: 100px;
 }
 
 .about-content h2 {
@@ -273,7 +306,7 @@ nav.scrolled {
 
 .bee-trail-wrapper {
     position: absolute;
-    bottom: 0;
+    bottom: -20px;
     left: 0;
     width: 100%;
     height: 200px;
@@ -335,208 +368,8 @@ nav.scrolled {
     }
 }
 
-.pricing-section {
-    padding: 60px 0px;
-    background-color: #f8f5e9;
-    text-align: center;
-    position: relative;
-    z-index: 1; /* Keeps pricing section above the wave */
-}
 
-.pricing-section h2 {
-    font-family: "Architects Daughter", cursive;
-    font-size: 36px;
-    color: #432705;
-    margin-bottom: 20px;
-    text-align: center;
-    font-weight: lighter;
-}
-
-.pricing-grid {
-    display: flex;
-    justify-content: center;
-    gap: 80px;
-}
-
-.pricing-item {
-    background-color: #f9f9f9;
-    padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-    border-width: 20px;
-    text-align: center;
-    width: 250px;
-    cursor: pointer;
-    border: 2px solid #FDBC10;
-    transition: transform 0.3s;
-}
-.pricing-item:hover {
-    transform: scale(1.05);
-}
-.pricing-item h3 {
-    font-size: 13px;
-    color: #FDBC10;
-    margin-bottom: 10px;
-    font-weight: bold;
-}
-
-.pricing-item h4 {
-    color: #432705;
-    font-size: 20px;
-    margin-bottom: 8x;
-}
-.pricing-item h5 {
-    color: #432705;
-    font-size: 9px;
-    margin-bottom: 8x;
-    font-weight: bold;
-}
-.pricing-item h1 {
-    font-family: "Poly", serif;
-    color: #432705;
-    font-size: 40px;
-    margin-bottom: 8x;
-    font-weight: lighter;
-}
-
-.pricing-item p {
-    color: #432705;
-    font-size: 10px;
-    padding: 15px;
-    margin-bottom: 5px;
-    text-align: justify;
-}
-
-.enroll-btn-p {
-    font-family: 'Poppins', sans-serif;
-    background: linear-gradient(90deg, #FDBC10 0%, #FFEA09 100%);
-    margin-bottom: 10px;
-    height:35px;
-    padding: 0px 35px;
-    font-size: 13px;
-    border: none;
-    border-radius: 20px;
-    cursor: pointer;
-}
-
-.feedback-section {
-    padding: 90px 20px;
-    text-align: center;
-    overflow: hidden; /* To prevent overflow from carousel movement */
-    background: #FFF4CE;
-    position: relative;
-}
-
-.feedback-carousel {
-    display: flex;
-    transition: transform 0.5s ease-in-out;
-    width: 100%;
-}
-
-.feedback-carousel-container {
-    position: relative;
-    max-width: 900px; /* Adjust based on desired width */
-    margin: 0 auto;
-    display: flex;
-    align-items: center;
-    overflow: hidden; /* Hide overflowing feedback items */
-}
-
-.feedback-section h2 {
-    font-family: "Architects Daughter", cursive;
-    color: #432705;
-    font-size: 36px;
-    margin-bottom: 40px;
-    font-weight: lighter;
-}
-
-.feedback-item {
-    min-width: 100%; /* Show one item at a time */
-    flex-shrink: 0;
-    color: #432705;
-    padding: 20px;
-    border-radius: 10px;
-    text-align: center;
-}
-
-.carousel-control {
-    background: none;
-    border: none;
-    font-size: 30px; /* Increased size for visibility */
-    cursor: pointer;
-    padding: 10px;
-    color: #432705; /* Make sure the color contrasts well with the background */
-    transition: color 0.3s;
-    position: absolute; /* Make sure it's positioned relative to its container */
-    top: 50%;
-    transform: translateY(-50%);
-    z-index: 2; /* Ensure the buttons are above other elements */
-}
-
-.carousel-control:hover {
-    color: #FDBC10; /* Adjust hover color for better visibility */
-}
-
-.carousel-control.left {
-    left: 10px; /* Adjust as needed for your layout */
-}
-
-.carousel-control.right {
-    right: 10px; /* Adjust as needed for your layout */
-}
-
-.scroll-top {
-    font-family: 'Poppins', sans-serif;
-    position: fixed;
-    bottom: 20px;
-    right: 20px;
-    background: linear-gradient(90deg, #FDBC10 0%, #FFEA09 100%);
-    border: none;
-    padding: 10px 20px;
-    font-size: 13px;
-    border-radius: 20px;
-    cursor: pointer;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-    z-index: 10;
-}
-
-
-.user-greeting {
-    display: flex;
-    align-items: center;
-    font-family: 'Poppins', sans-serif;
-    font-weight: 600;
-    color: #432705;
-    padding-right: 20px;
-    padding-left: 20px;
-}
-
-.welcome-text {
-    margin-right: 10px; /* Space between the text and icon */
-    font-size: 14px;
-}
-
-.notification-icon {
-    font-style: normal;
-    font-size: 18px;
-    position: relative;
-    margin-left: 5px; /* Space between text and icon */
-}
-
-.notification-icon::after {
-    content: '';
-    position: absolute;
-    top: -3px;
-    right: -3px; 
-    width: 8px; 
-    height: 8px;
-    background-color: red;
-    border-radius: 50%;
-}
-
-
-
-/* Styles for services */
+/* STYLES FOR SERVICES SECTION */
 .services-section {
     padding: 60px 20px;
     background-image: 
@@ -663,15 +496,202 @@ nav.scrolled {
 }
 
 
+/*STYLES FOR PRICING SECTION*/
+.pricing-section {
+    padding: 60px 0px;
+    background-color: #f8f5e9;
+    text-align: center;
+    position: relative;
+    z-index: 1; /* Keeps pricing section above the wave */
+}
+
+.pricing-section h2 {
+    font-family: "Architects Daughter", cursive;
+    font-size: 36px;
+    color: #432705;
+    margin-bottom: 20px;
+    text-align: center;
+    font-weight: lighter;
+}
+
+.pricing-grid {
+    display: flex;
+    justify-content: center;
+    gap: 80px;
+    flex-wrap: wrap; /* Allow items to wrap */
+    flex-direction: row; /* Keep row direction by default */
+}
+
+.pricing-item {
+    background-color: #f9f9f9;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    border-width: 20px;
+    text-align: center;
+    width: 250px;
+    cursor: pointer;
+    border: 2px solid #FDBC10;
+    transition: transform 0.3s;
+    margin-bottom: 20px; /* Space between items */
+}
+.pricing-item:hover {
+    transform: scale(1.05);
+}
+.pricing-item h3 {
+    font-size: 13px;
+    color: #FDBC10;
+    margin-bottom: 10px;
+    font-weight: bold;
+}
+
+.pricing-item h4 {
+    color: #432705;
+    font-size: 20px;
+    margin-bottom: 8x;
+}
+.pricing-item h5 {
+    color: #432705;
+    font-size: 9px;
+    margin-bottom: 8x;
+    font-weight: bold;
+}
+.pricing-item h1 {
+    font-family: "Poly", serif;
+    color: #432705;
+    font-size: 40px;
+    margin-bottom: 8x;
+    font-weight: lighter;
+}
+
+.pricing-item p {
+    color: #432705;
+    font-size: 10px;
+    padding: 15px;
+    margin-bottom: 5px;
+    text-align: justify;
+}
+
+.enroll-btn-p {
+    font-family: 'Poppins', sans-serif;
+    background: linear-gradient(90deg, #FDBC10 0%, #FFEA09 100%);
+    margin-bottom: 10px;
+    height:35px;
+    padding: 0px 35px;
+    font-size: 13px;
+    border: none;
+    border-radius: 20px;
+    cursor: pointer;
+}
 
 
-/* Dropdown container */
+/* STYLES FOR FEEDBACK SECTION */
+.feedback-section {
+    padding: 90px 20px;
+    text-align: center;
+    overflow: hidden; /* To prevent overflow from carousel movement */
+    background: #FFF4CE;
+    position: relative;
+}
+
+.feedback-carousel {
+    display: flex;
+    transition: transform 0.5s ease-in-out;
+    width: 100%;
+}
+
+.feedback-carousel-container {
+    position: relative;
+    max-width: 900px; /* Adjust based on desired width */
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    overflow: hidden; /* Hide overflowing feedback items */
+}
+
+.feedback-section h2 {
+    font-family: "Architects Daughter", cursive;
+    color: #432705;
+    font-size: 36px;
+    margin-bottom: 40px;
+    font-weight: lighter;
+}
+
+.feedback-item {
+    min-width: 100%; /* Show one item at a time */
+    flex-shrink: 0;
+    color: #432705;
+    padding: 20px;
+    border-radius: 10px;
+    text-align: center;
+    word-wrap: break-word; /* Ensures text wraps inside the item */
+    white-space: normal; /* Ensures normal text wrapping behavior */
+    box-sizing: border-box; /* Ensures padding doesn’t affect the width calculation */
+    display: flex;
+    flex-direction: column;
+    justify-content: center; /* Centers text vertically */
+    overflow-wrap: break-word;
+}
+
+.feedback-item p {
+    word-wrap: break-word;
+    white-space: normal; /* Ensures text wraps within the paragraph */
+    margin-bottom: 15px;
+}
+
+.feedback-item h4 {
+    white-space: normal; /* Allow name to wrap onto the next line if necessary */
+    margin-top: 0; /* Prevent margin above the name */
+}
+
+.carousel-control {
+    background: none;
+    border: none;
+    font-size: 30px; /* Increased size for visibility */
+    cursor: pointer;
+    padding: 10px;
+    color: #432705; /* Make sure the color contrasts well with the background */
+    transition: color 0.3s;
+    position: absolute; /* Make sure it's positioned relative to its container */
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 2; /* Ensure the buttons are above other elements */
+}
+
+.carousel-control:hover {
+    color: #FDBC10; /* Adjust hover color for better visibility */
+}
+
+.carousel-control.left {
+    left: 10px; /* Adjust as needed for your layout */
+}
+
+.carousel-control.right {
+    right: 10px; /* Adjust as needed for your layout */
+}
+
+.scroll-top {
+    font-family: 'Poppins', sans-serif;
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background: linear-gradient(90deg, #FDBC10 0%, #FFEA09 100%);
+    border: none;
+    padding: 10px 20px;
+    font-size: 13px;
+    border-radius: 20px;
+    cursor: pointer;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    z-index: 10;
+}
+
+
+/* STYLES FOR DROPDOWN */
 .dropdown {
     position: relative;
     display: inline-block; 
 }
 
-/* Dropdown button */
 .dropbtn {
     background-color: transparent;
     border: none;
@@ -681,8 +701,8 @@ nav.scrolled {
     color: #432705;
 }
 
-/* Dropdown content (hidden by default) */
 .dropdown-content {
+    /* hidden by default */
     display: none; 
     position: absolute;
     right: 0; 
@@ -696,7 +716,6 @@ nav.scrolled {
     font-size: 14px; 
 }
 
-/* Links inside the dropdown */
 .dropdown-content a {
     color: #432705;
     padding: 12px 16px; 
@@ -704,7 +723,6 @@ nav.scrolled {
     display: block; 
 }
 
-/* Change color of dropdown links on hover */
 .dropdown-content a:hover {
     background-color: #f0e4bb;
 }
@@ -715,7 +733,7 @@ nav.scrolled {
 }
 
 
-/* Log Out Modal styles */
+/* STYLES FOR LOG OUT MODAL */
 .modal {
     display: none; 
     position: fixed; 
@@ -728,7 +746,6 @@ nav.scrolled {
     background-color: rgba(0, 0, 0, 0.4); /* Black w/ opacity */
 }
 
-/* Modal content */
 .modal-content {
     background-color: #fefefe;
     margin: 15% auto; 
@@ -768,8 +785,7 @@ nav.scrolled {
 
 
 
-
-/*Footer styling*/
+/* STYLES FOR FOOTER SECTION */
 .footer {
     background-color: #554e3b;
     color: #fff;
@@ -838,7 +854,181 @@ nav.scrolled {
     font-size: 14px;
 }
 
-@media (max-width: 768px) {
+
+
+
+@media (min-height: 100vh) {
+    body.scrolled nav {
+        background-color: beige;
+    }
+}
+
+/* MEDIA QUERY FOR SMALLER SCREENS (mobile and tablet) */
+@media (max-width: 768px) and (min-width: 481px) {
+    .hero-text {
+        max-width: 100%; /* Make it take up more space on smaller screens */
+        padding: 15px;
+        text-align: center; /* Center the text */
+        align-items: center;
+    }
+
+    .hero-text h1 {
+        font-size: 1.8rem; /* Reduce the heading size */
+    }
+
+    .hero-text p {
+        font-size: 1rem; /* Reduce the font size for better readability */
+    }
+
+    .enroll-btn {
+        margin-left: auto; /* Center the button */
+        margin-right: auto; /* Center the button */
+        font-size: 14px; /* Slightly increase font size for readability */
+    }
+
+    .bee-trail-wrapper {
+        bottom: -150px; /* Push it further down on smaller screens */
+        height: 250px; /* Make the bee trail larger */
+        z-index: 5;
+    }
+
+    .bee-trail-path {
+        stroke: #ffcc00;
+        stroke-width: 4;
+    }
+
+    .bee {
+        width: 60px; /* Increase the size of the bees for better visibility */
+        height: 60px;
+    }
+    .nav-links {
+        display: none; /* Hide nav links by default */
+        width: 100%;
+        flex-direction: column;
+        background: rgba(227,218,183,0.8);
+        -webkit-backdrop-filter: blur(8px);
+        backdrop-filter: blur(8px);
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); 
+        transition: transform 0.3s ease-in-out, opacity 0.1s ease-out;
+        position: absolute;
+        top: 90px;
+        left: 0;
+        padding: 20px;
+    }
+
+    .nav-links.active {
+        display: flex; /* Show nav links when active */
+    }
+
+    .nav-links li {
+        padding: 10px 0;
+        text-align: center;
+        width: 100%;
+    }
+
+    .login-btn {
+        display: none; /* Hide the login button on smaller screens */
+    }
+
+    .hamburger-menu {
+        display: flex; /* Show the hamburger icon */
+    }
+
+    .services-section {
+        padding: 40px 10px; /* Adjust padding for smaller screens */
+    }
+
+    .services-grid {
+        grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); /* Adjust columns to fit smaller screens */
+        gap: 15px; /* Adjust the gap between items */
+    }
+
+    .service-content {
+        font-size: 16px; /* Adjust font size for smaller screens */
+    }
+
+    .service-item h3 {
+        font-size: 18px; /* Adjust heading size */
+    }
+
+    .service-icon {
+        font-size: 2.5em; /* Scale down icon size */
+    }
+
+    .service-item:hover .service-description {
+        display: none; /* Hide description on hover */
+    }
+
+    /* Add a class to allow click event to show the description */
+    .service-item.active .service-description {
+        display: block;
+    }
+
+    .pricing-grid {
+        gap: 20px; /* Reduce the gap between items */
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+    }
+
+    .pricing-item {
+        width: 100%; /* Make pricing items take full width */
+        max-width: 400px; /* Limit the width for larger mobile screens */
+    }
+
+    .pricing-item h1 {
+        font-size: 30px; /* Adjust the size for smaller screens */
+    }
+
+    .pricing-item h3 {
+        font-size: 16px; /* Adjust subtitle size */
+    }
+
+    .pricing-item p {
+        font-size: 12px; /* Increase font size for readability */
+    }
+
+    .enroll-btn-p {
+        padding: 0px 25px; /* Adjust button padding */
+        font-size: 14px; /* Increase button font size */
+    }
+
+    .feedback-carousel-container {
+        max-width: 80%; /* Make the carousel container take full width */
+        margin: 0 auto; /* Center the carousel */
+    }
+
+    .feedback-item {
+        min-width: 100%; /* Ensure feedback item takes full width on small screens */
+        padding: 20px; /* Add padding for spacing */
+        box-sizing: border-box; /* Prevent padding from affecting width */
+        text-align: left; /* Align text to the left for better readability */
+        word-wrap: break-word; /* Allow words to break and wrap */
+        white-space: normal; /* Allow text to wrap */
+        overflow-wrap: break-word; /* Prevent overflow of text */
+    }
+
+    .feedback-item p {
+        word-wrap: break-word; /* Ensure text breaks into new lines */
+        white-space: normal; /* Allow text to wrap within the paragraph */
+        margin-bottom: 15px; /* Space between text and name */
+    }
+
+    .feedback-item h4 {
+        word-wrap: break-word; /* Ensure name text wraps to the next line if too long */
+        white-space: normal; /* Allow name to break into new lines if needed */
+    }
+
+    .carousel-control {
+        font-size: 24px; /* Adjust control button size for smaller screens */
+        padding: 8px; /* Adjust padding for smaller screens */
+    }
+
+    .feedback-section h2 {
+        font-size: 28px; /* Adjust title font size */
+        margin-bottom: 30px; /* Adjust spacing */
+    }
+
     .footer-container {
         flex-direction: column;
         align-items: center;
@@ -850,3 +1040,181 @@ nav.scrolled {
     }
 }
 
+@media (max-width: 480px) {
+    .hero-text {
+        max-width: 100%; /* Make it take up more space on smaller screens */
+        padding: 15px;
+        text-align: center; /* Center the text */
+    }
+
+    .hero-text h1 {
+        font-size: 1.8rem; /* Reduce the heading size */
+    }
+
+    .hero-text p {
+        font-size: 1rem; /* Reduce the font size for better readability */
+    }
+
+    .enroll-btn {
+        margin-left: auto; /* Center the button */
+        margin-right: auto; /* Center the button */
+        font-size: 14px; /* Slightly increase font size for readability */
+    }
+    
+    .bee-trail-wrapper {
+        bottom: -150px; /* Push it further down on smaller screens */
+        height: 250px; /* Make the bee trail larger */
+        z-index: 5;
+    }
+
+    .bee-trail-path {
+        stroke: #ffcc00;
+        stroke-width: 4;
+    }
+
+    .bee {
+        width: 60px; /* Increase the size of the bees for better visibility */
+        height: 60px;
+    }
+    .nav-links {
+        display: none; /* Hide nav links by default */
+        width: 100%;
+        flex-direction: column;
+        background: rgba(227,218,183,0.8);
+        -webkit-backdrop-filter: blur(8px);
+        backdrop-filter: blur(8px);
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); 
+        transition: transform 0.3s ease-in-out, opacity 0.1s ease-out;
+        position: absolute;
+        top: 90px;
+        left: 0;
+        padding: 20px;
+    }
+
+    .nav-links.active {
+        display: flex; /* Show nav links when active */
+    }
+
+    .nav-links li {
+        padding: 10px 0;
+        text-align: center;
+        width: 100%;
+    }
+
+    .login-btn {
+        display: none; /* Hide the login button on smaller screens */
+    }
+
+    .hamburger-menu {
+        display: flex; /* Show the hamburger icon */
+    }
+
+    .services-section {
+        padding: 40px 10px; /* Adjust padding for smaller screens */
+    }
+
+    .services-grid {
+        grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); /* Adjust columns to fit smaller screens */
+        gap: 15px; /* Adjust the gap between items */
+    }
+
+    .service-content {
+        font-size: 16px; /* Adjust font size for smaller screens */
+    }
+
+    .service-item h3 {
+        font-size: 18px; /* Adjust heading size */
+    }
+
+    .service-icon {
+        font-size: 2.5em; /* Scale down icon size */
+    }
+
+    .service-description {
+        padding: 10px;
+        font-size: 14px; /* Adjust font size for descriptions */
+    }
+
+    .pricing-grid {
+        gap: 20px; /* Reduce the gap between items */
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+    }
+
+    .pricing-item {
+        width: 100%; /* Make pricing items take full width */
+        max-width: 400px; /* Limit the width for larger mobile screens */
+    }
+
+    .pricing-item h1 {
+        font-size: 30px; /* Adjust the size for smaller screens */
+    }
+
+    .pricing-item h3 {
+        font-size: 16px; /* Adjust subtitle size */
+    }
+
+    .pricing-item p {
+        font-size: 12px; /* Increase font size for readability */
+    }
+
+    .enroll-btn-p {
+        padding: 0px 25px; /* Adjust button padding */
+        font-size: 14px; /* Increase button font size */
+    }
+
+    .feedback-carousel-container {
+        max-width: 80%; /* Make the carousel container take full width */
+        margin: 0 auto; /* Center the carousel */
+    }
+
+    .feedback-item {
+        min-width: 100%; /* Ensure feedback item takes full width on small screens */
+        padding: 20px; /* Add padding for spacing */
+        box-sizing: border-box; /* Prevent padding from affecting width */
+        text-align: left; /* Align text to the left for better readability */
+        word-wrap: break-word; /* Allow words to break and wrap */
+        white-space: normal; /* Allow text to wrap */
+        overflow-wrap: break-word; /* Prevent overflow of text */
+    }
+
+    .feedback-item p {
+        word-wrap: break-word; /* Ensure text breaks into new lines */
+        white-space: normal; /* Allow text to wrap within the paragraph */
+        margin-bottom: 15px; /* Space between text and name */
+    }
+
+    .feedback-item h4 {
+        word-wrap: break-word; /* Ensure name text wraps to the next line if too long */
+        white-space: normal; /* Allow name to break into new lines if needed */
+    }
+
+    .carousel-control {
+        font-size: 24px; /* Adjust control button size for smaller screens */
+        padding: 8px; /* Adjust padding for smaller screens */
+    }
+
+    .feedback-section h2 {
+        font-size: 28px; /* Adjust title font size */
+        margin-bottom: 30px; /* Adjust spacing */
+    }
+
+    .footer-container {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .footer-logo, .footer-links, .footer-contact, .footer-social {
+        text-align: center;
+        margin: 10px 0;
+    }
+}
+
+/* MEDIA QUERY FOR LARGER SCREENS */
+@media (min-width: 1440px) {
+    /* Adjust styles for screens 1200px and larger */
+    .bee-trail-wrapper {
+        margin-bottom: 50px;
+    }
+}
