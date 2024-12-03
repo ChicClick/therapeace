@@ -171,19 +171,53 @@ body {
 .dashboard {
   font-family: "Poppins", sans-serif;
   display: flex;
-  gap: 50px;
-  padding: 20px;
   background-color: #ffffff;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  height: max-content;
+}
+
+.dashboard-table {
+  padding: 20px;
+}
+
+.data-section canvas {
+  max-height: 300px;
 }
 
 .data-section {
-  max-width: 300px;
+  flex: 2;
+  width: 100%;
+  border-right: #d5d4d4 1px solid;
+  border-bottom: #d5d4d4 1px solid;
 }
 
 .data-section h1 {
   font-size: 2rem;
   color: #333;
+}
+
+.data-section-header {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.dashboard-appointment-section {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  width: 100%;
+  border-bottom: #d5d4d4 1px solid;
+}
+
+.dashboard-appointment-section canvas {
+  margin: auto;
+  max-height: 400px;
+}
+
+.data-section,
+.dashboard-appointment-section {
+  padding: 20px;
 }
 
 .view-report {
@@ -473,7 +507,8 @@ canvas {
 }
 
 /* Styling for the pop-up form add appointment*/
-#add-therapist-form, .popup {
+#add-therapist-form,
+.popup {
   position: fixed;
   top: 50%;
   left: 50%;
@@ -606,7 +641,9 @@ select {
 
 input[type="text"],
 input[type="date"],
-input[type="password"] {
+input[type="password"],
+input[type="email"],
+input[type="file"] {
   width: 90%; /* Reduce the input field width */
   padding: 8px; /* Adjust padding to make inputs shorter */
   border: 1px solid #ccc;
@@ -834,7 +871,6 @@ input[type="checkbox"] {
   margin-right: 20px; /* Adds spacing between buttons and table */
   border-radius: 10px;
 }
-
 
 .add-staff {
   font-family: "Poppins", sans-serif;
@@ -1283,20 +1319,20 @@ input[type="checkbox"] {
 }
 
 .content-container::-webkit-scrollbar {
-    width: 8px;
-  }
-  
-  .content-container::-webkit-scrollbar-track {
-    background: #f1f1f1;
-    border-radius: 4px;
-  }
-  
-  .content-container::-webkit-scrollbar-thumb {
-    background-color: #ccc;
-    border-radius: 4px;
-    border: 2px solid #f1f1f1;
-  }
-  
-  .content-container::-webkit-scrollbar-thumb:hover {
-    background-color: #555;
-  }
+  width: 8px;
+}
+
+.content-container::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 4px;
+}
+
+.content-container::-webkit-scrollbar-thumb {
+  background-color: #ccc;
+  border-radius: 4px;
+  border: 2px solid #f1f1f1;
+}
+
+.content-container::-webkit-scrollbar-thumb:hover {
+  background-color: #555;
+}

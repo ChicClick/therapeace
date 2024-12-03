@@ -8,16 +8,18 @@ $therapist_id = $_SESSION['therapist_id'];
 // SQL query to join sessionfeedbacknotes, patient, and services tables, filtered by therapistID
 $sql = "
     SELECT
+        feedbackID,
         patient.patientID as patientID,
         patient.serviceID as serviceID,
-        patient.patientName AS patient_name,  
+        patient.patientName as patient_name,
+        patient.image as image,  
         sessionfeedbacknotes.feedbackdate,
         sessionfeedbacknotes.feedback,
-        services.serviceName AS service_name
+        services.serviceName as service_name
     FROM sessionfeedbacknotes
     JOIN patient ON sessionfeedbacknotes.patientID = patient.patientID
     JOIN services ON patient.serviceID = services.serviceID
-    WHERE patient.therapistID = ?"; // Filter by therapistID
+    WHERE patient.therapistID = ?";
 
 // Prepare the query to avoid SQL injection
 $stmt = $conn->prepare($sql);
@@ -41,6 +43,7 @@ if ($result->num_rows > 0) {
             'patientID' => $row['patientID'],
             'patient_name' => htmlspecialchars($row['patient_name'], ENT_QUOTES),
             'service_name' => htmlspecialchars($row['service_name'], ENT_QUOTES),
+            'image' => $row['image'],
             'feedback_date' => $formattedDate,
             'feedback_raw_date' => $rawDate,
             'feedback' => htmlspecialchars($row['feedback'], ENT_QUOTES),

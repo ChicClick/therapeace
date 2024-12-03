@@ -58,7 +58,7 @@ if (isset($_SESSION['patientName'])) {
                     <div class="dropdown-content">
                         <a href="#" class="nav-link" data-target="patientProfile.php"> <i class="fa fa-cog"></i> View Profile</a>
                         <a href="#" id="logoutBtn"> <i class="fa fa-sign-out"></i> Log Out</a>
-                        <a href="#" id="leave-feedback-link" class="nav-link" onclick="openFeedbackForm();">
+                        <a href="#" id="leave-feedback-link" onclick="openFeedbackForm();">
                             <i class="fas fa-comment-dots"></i> Leave Feedback
                         </a>
                     </div>

@@ -5,7 +5,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const dropdown = document.querySelector('.dropdown');
 
     openFeedbackForm = () => {
-        scrollTopBtn.click();
+  
         const feedbackFormContent = `
             <form id="feedbackForm" class="feedbackForm" action="submit_feedback.php" method="post">
                 <div class="intro">

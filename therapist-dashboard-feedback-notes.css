@@ -1,0 +1,207 @@
+.therapist-feedback .container {
+    width: 100%;
+    height: 100%;
+    margin-top: 0px;
+    margin: 0 auto;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .therapist-feedback header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+  }
+  
+  .therapist-feedback .content {
+    display: flex;
+    height: 70vh;
+  }
+  
+  .therapist-feedback .sidebar {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    border: solid 1px rgb(118, 98, 98);
+    margin-right: 10px;
+    background-color: #f9f9f9;
+    border-radius: 5px;
+    max-width: 25%;
+  }
+  
+  .therapist-feedback .cards-list {
+    flex: 1;
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .therapist-feedback .card {
+    background-color: #fff;
+    padding: 10px;
+    border:none;
+    border-bottom: solid 1px rgb(118, 98, 98);
+    gap:1px;
+    font-size: small;
+    max-width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    cursor: pointer;
+  }
+
+  .therapist-feedback.card:hover{
+      background-color: #ab9984;
+      border-radius: 5px;
+      color: white;
+      transition: all 0.3s ease-in-out;
+  }
+
+  .therapist-feedback.card.selected {
+    background-color: #ab9984;
+    color: white;
+    border-radius: 5px;
+    font-weight: bold;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease-in-out;
+}
+
+  .therapist-feedback-card-content {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.therapist-feedback-avatar img {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 1px solid #ddd;
+}
+
+.therapist-feedback-info {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap:0;
+}
+
+.therapist-feedback-card-title {
+    font-weight: bold;
+    color: #333;
+}
+
+.therapist-feedback {
+    margin-top: 0px;
+    margin-bottom: 0px;
+    color: #555;
+    font-size: 13px;
+}
+
+  .therapist-feedback .main-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    margin-right: 10px;
+    background-color: #fefdeb;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+  }
+  
+  .therapist-feedback .list-items {
+    list-style: none;
+    padding: 10px;
+  }
+
+  
+  .therapist-feedback .list-items li {
+    padding: 10px 0;
+    border-bottom: 1px solid #eee;
+    cursor: pointer;
+  }
+  
+  .feedback-details {
+    flex: 2;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    display: flex;
+    justify-content: start;
+    align-items: left;
+    text-align: left;
+    padding: 20px;
+    flex-direction: column;
+  }
+
+  .search-container {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    justify-content: flex-start;
+    width: 100%;
+  }
+
+  .therapist-feedback .sidebar input[type="text"] {
+    flex: 1;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 14px;
+    outline: none;
+    box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
+    transition: border-color 0.3s ease;
+    margin-left: 10px;
+    margin-top: 10px;
+}
+
+.therapist-feedback .sidebar input[type="text"]:focus {
+    border-color: #007BFF;
+}
+
+.therapist-feedback .sidebar button {
+    padding: 10px 15px;
+    border: none;
+    border-radius: 5px;
+    background-color: #ffffff;
+    color: #007BFF;
+    font-size: 14px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    margin-right: 10px;
+    margin-top: 10px;
+}
+
+.therapist-feedback .sidebar button:hover {
+    background-color: #0056b3;
+}
+
+.therapist-feedback .sidebar button i {
+    pointer-events: none;
+}
+
+.therapist-feedback {
+  color: #333;
+}
+
+.therapist-feedback span {
+  cursor: pointer;
+}
+
+.therapist-feedback .separator {
+  margin: 0 5px;
+}
+
+/* clickable design */
+.feedback, .feedback-date {
+  cursor: pointer;
+  padding: 10px;
+  background-color: #ab9984;
+  margin: 5px 0;
+}
+
+.customer:hover, .feedback-date:hover {
+  background-color: #ab9984;
+}

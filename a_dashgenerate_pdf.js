@@ -39,7 +39,7 @@ document.addEventListener('DOMContentLoaded', () => {
             if (dashboardData.appointmentData) {
                 const appointmentLabels = dashboardData.appointmentData.map(entry => entry.serviceName);
                 const appointmentCounts = dashboardData.appointmentData.map(entry => entry.appointment_count);
-                createAppointmentChart(appointmentLabels, appointmentCounts);
+                createAppointmentChart( appointmentCounts);
             }
         } catch (error) {
             console.error("Error loading dashboard data:", error);
@@ -64,21 +64,44 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // Function to create the appointment doughnut chart
-    function createAppointmentChart(labels, data) {
+    async function createAppointmentChart() {
         const ctx = document.getElementById('appointmentChart').getContext('2d');
-        new Chart(ctx, {
-            type: 'doughnut',
-            data: {
-                labels: labels,
-                datasets: [{
-                    label: 'Appointments per Service',
-                    data: data,
-                    backgroundColor: ['#ffd700', '#ffb700', '#ffaa00', '#ff9900']
-                }]
-            },
-            options: { responsive: true }
-        });
+
+        try {
+            const dashboardResponse = await fetch('./generic-components/table-fetch/admin_get_dashboard.php');
+            if (!dashboardResponse.ok) throw new Error(`HTTP error! status ${dashboardResponse.status}`);
+            const dashboardData = await dashboardResponse.json();
+    
+            const serviceCounts = dashboardData.reduce((acc, item) => {
+                acc[item.service_name] = (acc[item.service_name] || 0) + 1;
+                return acc;
+            }, {});
+
+            const serviceResponse = await fetch("z_get_all_services.php");
+            if (!serviceResponse.ok) throw new Error(`HTTP error! status ${serviceResponse.status}`);
+            const serviceData = await serviceResponse.json();
+
+            const labels = serviceData.map(service => service.serviceName);
+            const data = labels.map(label => serviceCounts[label] || 0);
+            const backgroundColors = serviceData.map(service => service.serviceColor);
+    
+            new Chart(ctx, {
+                type: 'doughnut',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: 'Appointments per Service',
+                        data: data,
+                        backgroundColor: backgroundColors
+                    }]
+                },
+                options: { responsive: true }
+            });
+        } catch (e) {
+            console.error('Error fetching data or creating chart:', e);
+        }
     }
+    
 
     // Generate PDF report
     function generateReport() {

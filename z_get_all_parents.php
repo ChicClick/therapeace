@@ -4,19 +4,19 @@ require 'db_conn.php';
 $response = [];
 
 try {
-    $sql = "SELECT serviceID, serviceName FROM services";
+    $sql = "SELECT parentID, parentName FROM parent";
     $result = $conn->query($sql);
 
     if ($result->num_rows > 0) {
 
         while ($row = $result->fetch_assoc()) {
             $response[] = [
-                'serviceID' => $row['serviceID'],
-                'serviceName' => $row['serviceName'],
+                'parentID' => $row['parentID'],
+                'parentName' => $row['parentName'],
             ];
         }
     } else {
-        $response['message'] = 'No services found.';
+        $response['message'] = 'No parent found.';
     }
 
     header('Content-Type: application/json');

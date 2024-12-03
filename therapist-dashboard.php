@@ -20,8 +20,10 @@ $therapistID = $_SESSION['therapist_id'];
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Therapist Dashboard</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="icon" type="image/svg+xml" href="images/TheraPeace Logo.svg">
     <link rel="stylesheet" href="styles-therapist.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="therapist-dashboard-feedback-notes.css">
     <script src="https://cdn.jsdelivr.net/npm/tesseract.js@4.0.2/dist/tesseract.min.js"></script>
 </head>
 <body>
@@ -118,20 +120,39 @@ $therapistID = $_SESSION['therapist_id'];
         <!-- Feedback Notes Section -->
         <div id="notes-section" class="content">
             <h4>FEEDBACK NOTES</h4>
-            <div class="search-bar-content">
-                <input type="text" placeholder="Search">
-                <button><i class="fas fa-search"></i></button>
+
+            <div class="therapist-feedback container">
+
+            <header class="therapist-feedback">
+                <h4 class="therapist-feedback" id="breadcrumb">Patient Feedback Notes » All Patients</h4>
+            </header>
+  
+            <div class="therapist-feedback content">
+                <!--LIST OF NAMES-->
+                <aside class="therapist-feedback sidebar">
+                <div class="search-container">
+                    <input type="text" placeholder="Search">
+                    <button><i class="fas fa-search"></i></button>
+                </div>
+                    <div id="patient-feedback" class="therapist-feedback cards-list">
+                        <!--CARD CONTAINER------!-->
+                    </div>
+                </aside>
+                
+                <!--MAIN CONTNT -->
+                <section id="patient-dates" class="therapist-feedback main-content">
+                    <ul class="therapist-feedback list-items">
+
+                    </ul>
+                </section>
+
+                <div id="patient-feedback-view" class="therapist-feedback feedback-details">
+                    <p>Click on a date to see their details.</p>
+                </div>
+            </div>
             </div>
 
-            <!-- Add Notes Button -->
-            <button id="add-notes" class="add-notes" onclick="openModal()"><i class="fas fa-plus"></i> Add Notes</button>    
-
-            <div id="notes-accordion">
-                <!--accordion-->
-            </div>
-
-           <!-- <generic-table data="therapist_notes" avatar="true"></generic-table> -->
-        </div>
+        </div> <!--feedback notes closing div -->
 
         <div id="report-section" class="content">
             <h4>PROGRESS REPORT</h4>

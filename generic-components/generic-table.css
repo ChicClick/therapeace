@@ -118,6 +118,8 @@
 .generic-table tr:hover {
     background-color: #ac9477dc;
     transition: background-color 0.3s ease;
+    border-radius: 5px;
+    cursor: pointer;
 }
 
 .generic-table tbody tr:hover td:first-child {
@@ -141,6 +143,7 @@
 
 /* Reschedule button */
 .reschedule-button {
+    font-size: 14px;
     color: #FFA500;
     text-decoration: none;
     font-weight: 600;
@@ -197,6 +200,12 @@
     height: 40px;
     border-radius: 50%;
     object-fit: cover;
+}
+
+.avatar-container .color-container {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
 }
 
 .badge {
