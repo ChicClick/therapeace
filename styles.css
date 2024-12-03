@@ -865,6 +865,26 @@ nav.scrolled {
 
 /* MEDIA QUERY FOR SMALLER SCREENS (mobile and tablet) */
 @media (max-width: 768px) and (min-width: 481px) {
+    .hero-text {
+        max-width: 100%; /* Make it take up more space on smaller screens */
+        padding: 15px;
+        text-align: center; /* Center the text */
+    }
+
+    .hero-text h1 {
+        font-size: 1.8rem; /* Reduce the heading size */
+    }
+
+    .hero-text p {
+        font-size: 1rem; /* Reduce the font size for better readability */
+    }
+
+    .enroll-btn {
+        margin-left: auto; /* Center the button */
+        margin-right: auto; /* Center the button */
+        font-size: 14px; /* Slightly increase font size for readability */
+    }
+
     .bee-trail-wrapper {
         bottom: -150px; /* Push it further down on smaller screens */
         height: 250px; /* Make the bee trail larger */
@@ -918,7 +938,7 @@ nav.scrolled {
     }
 
     .services-grid {
-        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); /* Adjust columns to fit smaller screens */
+        grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); /* Adjust columns to fit smaller screens */
         gap: 15px; /* Adjust the gap between items */
     }
 
@@ -934,9 +954,13 @@ nav.scrolled {
         font-size: 2.5em; /* Scale down icon size */
     }
 
-    .service-description {
-        padding: 10px;
-        font-size: 14px; /* Adjust font size for descriptions */
+    .service-item:hover .service-description {
+        display: none; /* Hide description on hover */
+    }
+
+    /* Add a class to allow click event to show the description */
+    .service-item.active .service-description {
+        display: block;
     }
 
     .pricing-grid {
@@ -1016,6 +1040,26 @@ nav.scrolled {
 }
 
 @media (max-width: 480px) {
+    .hero-text {
+        max-width: 100%; /* Make it take up more space on smaller screens */
+        padding: 15px;
+        text-align: center; /* Center the text */
+    }
+
+    .hero-text h1 {
+        font-size: 1.8rem; /* Reduce the heading size */
+    }
+
+    .hero-text p {
+        font-size: 1rem; /* Reduce the font size for better readability */
+    }
+
+    .enroll-btn {
+        margin-left: auto; /* Center the button */
+        margin-right: auto; /* Center the button */
+        font-size: 14px; /* Slightly increase font size for readability */
+    }
+    
     .bee-trail-wrapper {
         bottom: -150px; /* Push it further down on smaller screens */
         height: 250px; /* Make the bee trail larger */
@@ -1069,7 +1113,7 @@ nav.scrolled {
     }
 
     .services-grid {
-        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); /* Adjust columns to fit smaller screens */
+        grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); /* Adjust columns to fit smaller screens */
         gap: 15px; /* Adjust the gap between items */
     }
 

@@ -273,3 +273,16 @@ document.getElementById("hamburger-menu").addEventListener("click", function() {
     document.querySelector(".nav-links").classList.toggle("active");
 });
 
+const serviceItems = document.querySelectorAll('.service-item');
+
+// Check if the device is mobile or tablet
+if (window.innerWidth <= 768) {
+    // Add click event listener to toggle visibility
+    serviceItems.forEach(item => {
+        item.addEventListener('click', function() {
+            // Toggle active class to show description
+            this.classList.toggle('active');
+        });
+    });
+}
+
