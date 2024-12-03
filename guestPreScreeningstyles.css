@@ -22,10 +22,8 @@
 body {
     margin-top: 100px;
     color: #432705;
-    background: linear-gradient(to bottom, 
-    rgba(239, 209, 3, 0.50) 20%,  
-    rgba(245, 245, 220, 1.0)80%   
-    );
+    background: #fff4ce;
+    font-size: 14px;
 }
 
 .required:after {
@@ -33,31 +31,7 @@ body {
     color: #E83845;
 }
 
-
-/*Pre Screening Styles*/
-.wrapper {
-    text-align: center;
-    width: 100%;
-    padding: 0;
-    background-color: transparent;
-}
-
-.login-btn {
-    font-family: 'Poppins', sans-serif;
-    background: linear-gradient(90deg, #FDBC10 0%, #FFEA09 100%);
-    color: #432705;
-    margin-top: 10px;
-    height: 35px;
-    padding: 8px 35px;
-    font-size: 13px;
-    border: none;
-    border-radius: 20px;
-    cursor: pointer;
-    text-decoration: none;
-    text-align: center;
-}
-
-
+/* STYLES FOR PRE SCREENING SECTION START */
 .pre-screening-section {
     margin: 40px 0;
 }
@@ -66,27 +40,38 @@ body {
     font-size: 36px;
     font-weight: lighter;
     font-family: 'Architects Daughter', cursive;
+    text-align: center;
 }
 
 .pre-screening-card {
     display: flex;
     background-color: #fff;
-    border-radius: 10px;
+    border-radius: 30px;
     padding: 20px;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
     max-width: 800px;
     margin: 0 auto;
+    position: relative;
+}
+
+.pre-screening-card::before {
+    content: '';
+    position: absolute;
+    top: 30px;
+    bottom: 30px;
+    left: 35%; /* Positioned based on flex ratio (1:2) */
+    width: 1px;
+    background-color: #432705;
 }
 
 .left-section {
     flex: 1;
-    background-color: #f3e5ab;
     border-radius: 10px 0 0 10px;
-    padding: 20px;
+    padding: 10px;
     display: flex;
     flex-direction: column;
     justify-content: center;
-    text-align: left;
+    text-align: center;
     font-family: 'Poppins', sans-serif;
 }
 
@@ -101,11 +86,13 @@ body {
     flex: 2;
     padding: 20px;
     text-align: left;
+    position: relative;
 }
 
 .right-section ul {
-    list-style: none;
+    list-style:inside;
     padding: 0;
+    margin-left: 20px;
 }
 
 .right-section li {
@@ -113,20 +100,37 @@ body {
 }
 
 .start-test-btn {
-    background-color: #fdb441;
-    color: white;
+    font-family: 'Poppins', sans-serif;
+    background: linear-gradient(90deg, #FDBC10 0%, #FFEA09 100%);
+    height:35px;
+    padding: 0px 35px;
+    font-size: 14px;
     border: none;
-    padding: 10px 20px;
-    border-radius: 5px;
-    font-size: 16px;
+    border-radius: 20px;
     cursor: pointer;
+    margin: 20px 0px 0px 0px;
+    color: #432705;
+    font-weight: normal;
+    float: right;
 }
 
+.start-test-btn:hover {
+    background: linear-gradient(90deg, #FDBC10 100%, #FFEA09 0%);
+}
+
+
+/* STYLES FOR WHY PRE SCREENING SECTION*/
 .why-pre-screening {
     margin: 40px 0;
     background-color: transparent;
     padding: 40px;
     text-align: center;
+}
+
+
+.why-pre-screening h3{
+    margin-bottom: 20px;
+    font-size: 20px;
 }
 
 .benefits {
@@ -139,80 +143,27 @@ body {
     margin: 0 20px;
 }
 
-.benefit img {
-    width: 50px;
-    height: 50px;
-    margin-bottom: 10px;
+.benefit p{
+    text-align: justify;
 }
-
-
-/* Footer */
-footer {
-    background-color: #6B3E0F;
-    padding: 30px;
-    color: white;
-    margin-top: auto;
-}
-
-.footer-content {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-
-.footer-logo {
-    display: flex;
-    align-items: center;
-}
-
-.footer-logo img {
-    height: 40px;
-    margin-right: 10px;
-}
-
-.footer-contact {
-    text-align: right;
-}
-
-.wrapper {
-    display: flex;
-    flex-direction: column;
-    min-height: 100vh; /* Ensures the wrapper takes up the full viewport height */
-    margin: 0;
-}
-
-main {
-    flex-grow: 1; /* Makes the main content take up all available space */
-}
-
 
 .hidden {
     display: none;
 }
 
+
+
 /* Add styles for the form when it appears */
 .pre-screening-form {
     background-color: #fff;
     padding: 20px;
-    border-radius: 10px;
+    border-radius: 30px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     margin: 20px auto;
     width: 800px;
     text-align: left;
 }
 
-/* Styles for the button */
-.start-test-btn {
-    background-color: #f9a825;
-    color: #fff;
-    border: none;
-    padding: 10px 20px;
-    cursor: pointer;
-    font-size: 1.1em;
-    border-radius: 5px;
-}
-
-/* Optional: Styles for Proceed button */
 .proceed-btn {
     background-color: #f9a825;
     color: #fff;
@@ -224,7 +175,7 @@ main {
 }
 
 
-/* Style the TheraQuick test intro and steps */
+/* STYLES FOR TEST-INTRO AND STEPS */
 .test-intro {
     text-align: center;
     margin-top: 20px; /* Adjust the spacing as needed */
@@ -233,6 +184,8 @@ main {
 .test-intro h2 {
     font-size: 2.5rem;
     margin-bottom: 10px;
+    font-family: 'Architects Daughter', cursive;
+    font-weight: lighter;
 }
 
 .steps {
@@ -271,7 +224,7 @@ main {
 
 .steps .step.finish span {
     background-color: #ffcc00;
-  }
+}
 
 .line {
 width: 20%;
@@ -288,15 +241,11 @@ transition: background-color 0.5s ease;
 background-color: #ffcc00;
 }
 
+
 /* Style the form container to be below the test intro */
 #pre-screening-form {
     margin-top: 20px;
     padding: 20px;
-}
-
-.test-intro h2 {
-    font-family: 'Architects Daughter', cursive;
-    font-weight: lighter;
 }
 
 form input[type="text"], 
@@ -307,12 +256,10 @@ form input[type="date"] {
     border: none;
     border-radius: 20px;
     background-color: #fff4ce;
-    color: #AAA9A9;
+    color: #432705;
     font-size: 14px;
     outline: none;
 }
-
-
 
 /* Hide the default checkbox */
 .custom-checkbox input {
@@ -354,10 +301,6 @@ form input[type="date"] {
     border-width: 0 2px 2px 0; 
     transform: rotate(45deg); 
 }
-
-
-
-
 
 /* Container to hold both buttons and align them to the right */
 .button-container {
@@ -407,7 +350,6 @@ form input[type="date"] {
 }
 
 
-
 .input-error {
     border: 2px solid red;
 }
@@ -419,13 +361,12 @@ select {
     font-size: 14px;
     border: 1px solid #ccc;
     border-radius: 4px;
+    font-family: 'Poppins', sans-serif;
 }
 
 .form-group {
     margin-bottom: 16px;
 }
-
-
 
 
 
@@ -474,6 +415,8 @@ select {
     margin-top: 5px;
     border-radius: 5px;
     background-color: #fff4ce;
+    color: #432705;
+    font-family: 'Poppins', sans-serif;
 }
 
 .question-section > div {
@@ -507,7 +450,7 @@ button, input[type="submit"] {
 }
 
 button:hover, input[type="submit"]:hover {
-    background-color: #45a049;
+    background-color: #fdb441;
 }
 
 button:disabled, input[type="submit"]:disabled {
@@ -519,6 +462,8 @@ button:disabled, input[type="submit"]:disabled {
 button[type="button"] {
     background-color: #f9a825;
     margin-right: 10px;
+    border: none;
+    border-radius: 20px;
 }
 
 button[type="button"]:hover {
@@ -564,6 +509,8 @@ button[type="button"]:hover {
     border: 1px solid #fff4ce; /* Add a border */
     border-radius: 4px; /* Rounded corners */
     background-color: #fff4ce;
+    color: #432705;
+    font-family: 'Poppins', sans-serif;
 }
 
 /* Textarea specific styles */
@@ -578,12 +525,26 @@ button[type="button"]:hover {
     height: 35px;
 }
 
+.question-description {
+    font-size: 0.9em;
+    color: #555;
+    margin-bottom: 5px;
+}
+
+.required-asterisk {
+    color: red;
+    font-weight: bold;
+}
+
+/* input.invalid, textarea.invalid, select.invalid {
+    border: 2px solid red;
+    background-color: #ffe6e6;
+    outline: none;
+} */
 
 
 
-
-
-/*Modal Styles*/
+/* STYLES FOR SUCCESS MODAL */
 .modal {
     display: none; /* Hidden by default */
     position: fixed;
@@ -622,27 +583,12 @@ button[type="button"]:hover {
     margin-bottom: 15px;
 }
 
-#contact-form label {
-    font-weight: bold;
-    margin-top: 10px;
-}
-
-#contact-form input[type="email"],
-#contact-form input[type="text"] {
-    width: calc(100% - 300px);
-    padding: 8px;
-    margin-bottom: 15px;
-    border: 1px solid #ccc;
-    border-radius: 10px;
-    background-color: #fefdeb;
-}
-
 #contact-form button {
     background-color: #4CAF50;
     color: white;
     padding: 10px 20px;
     border: none;
-    border-radius: 4px;
+    border-radius: 30px;
     cursor: pointer;
 }
 
@@ -663,3 +609,4 @@ button[type="button"]:hover {
     text-decoration: none;
     cursor: pointer;
 }
+

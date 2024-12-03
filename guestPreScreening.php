@@ -13,6 +13,7 @@ foreach ($questions as $question) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>TheraPeace</title>
+    <link rel="icon" type="image/svg+xml" href="images/TheraPeace Logo.svg">
     <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="guestPreScreeningstyles.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -26,16 +27,24 @@ foreach ($questions as $question) {
         <!-- Navbar -->
         <nav>
             <div class="logo">
-                <img src="images/logo.png" alt="TheraBee Logo" class="logo">
+                <img src="images/TheraPeace Logo.svg" alt="TheraPeace Logo">
                 <h1>TheraPeace</h1>
             </div>
-            <ul class="nav-links">
-                <li><a href="guestHomepage.html">Home</a></li>
-                <li><a href="guestHomepage.html#about" data-nav-link>About Us</a></li>
-                <li><a href="guestHomepage.html#services" data-nav-link>Services</a></li>
-                <li><a href="guestHomepage.html#rates" data-nav-link>Rates</a></li>
-            </ul>   
-            <button class="login-btn" onclick="window.location.href='loginlanding.html';">Login</button>
+            <div class="nav-container">
+                <ul class="nav-links">
+                    <li><a href="#">Home</a></li>
+                    <li><a href="#about" data-nav-link>About Us</a></li>
+                    <li><a href="#services" data-nav-link>Services</a></li>
+                    <li><a href="#rates" data-nav-link>Rates</a></li>
+                </ul>
+                <button class="login-btn" onclick="window.location.href='loginlanding.html';">Login</button>
+                <!-- Hamburger menu icon for smaller devices -->
+                <div class="hamburger-menu" id="hamburger-menu">
+                    <span class="bar"></span>
+                    <span class="bar"></span>
+                    <span class="bar"></span>
+                </div>
+            </div>
         </nav>
 
         <!-- Pre-Screening Section -->
@@ -43,7 +52,7 @@ foreach ($questions as $question) {
             <h2>Take our TheraQuick test!</h2>
             <div class="pre-screening-card">
                 <div class="left-section">
-                    <p>Pre Screening</p>
+                    <p>Pre-Screening</p>
                     <h3>QUICK CHECK </h3>
                     <p>Click the Log In button if already a member</p>
                 </div>
@@ -125,7 +134,7 @@ foreach ($questions as $question) {
                                 // Define the questions to be skipped
                                 $questionsToSkip = [];
                                 if ($category === 'Personal Details') {
-                                    $questionsToSkip = ['Date of Birth', 'Age', 'Gender'];
+                                    $questionsToSkip = ['Date of Birth', 'Age', 'Sex'];
                                 } elseif ($category === 'During Pregnancy') {
                                     $questionsToSkip = ['Age of mother during pregnancy', 'Age of father'];
                                 } elseif ($category === 'Delivery') {
@@ -138,36 +147,46 @@ foreach ($questions as $question) {
                                 if (in_array($question['questionText'], $questionsToSkip)) {
                                     continue;
                                 }
+
+                                $isRequired = $question['isRequired'] ? 'required' : '';
+                                $requiredMark = $question['isRequired'] ? '<span class="required-asterisk">*</span>' : '';
+                                $description = !empty($question['description']) ? $question['description'] : '';
                                 ?>
 
                                 <div class="question-section">
-                                    <label><?= htmlspecialchars($question['questionText']) ?></label><br>
-                                    <?php
-                                    $options = !empty($question['options']) ? explode(',', $question['options']) : [];
-                                    ?>
-                                    <?php if ($question['inputType'] === 'radio'): ?>
-                                        <?php foreach ($options as $option): ?>
-                                            <input type="radio" name="question_<?= $question['questionID'] ?>" value="<?= htmlspecialchars($option) ?>">
-                                            <label><?= htmlspecialchars($option) ?></label><br>
-                                        <?php endforeach; ?>
-                                    <?php elseif ($question['inputType'] === 'checkbox'): ?>
-                                        <?php foreach ($options as $option): ?>
-                                            <input type="checkbox" name="question_<?= $question['questionID'] ?>[]" value="<?= htmlspecialchars($option) ?>">
-                                            <label><?= htmlspecialchars($option) ?></label><br>
-                                        <?php endforeach; ?>
-                                    <?php elseif (in_array($question['inputType'], ['text', 'number', 'date'])): ?>
-                                        <input type="<?= $question['inputType'] ?>" name="question_<?= $question['questionID'] ?>" class="styled-input"><br>
-                                    <?php elseif ($question['inputType'] === 'select'): ?>
-                                        <select name="question_<?= $question['questionID'] ?>" class="styled-select">
+                                        <label>
+                                            <?= htmlspecialchars($question['questionText']) ?> <?= $requiredMark ?>
+                                        </label>
+                                        <?php if (!empty($description)): ?>
+                                            <p class="question-description"><?= htmlspecialchars($description) ?></p>
+                                        <?php endif; ?>
+                                        
+                                        <?php
+                                        $options = !empty($question['options']) ? explode(',', $question['options']) : [];
+                                        ?>
+                                        <?php if ($question['inputType'] === 'radio'): ?>
                                             <?php foreach ($options as $option): ?>
-                                                <option value="<?= htmlspecialchars($option) ?>"><?= htmlspecialchars($option) ?></option>
+                                                <input type="radio" name="question_<?= $question['questionID'] ?>" value="<?= htmlspecialchars($option) ?>" <?= $isRequired ?>>
+                                                <label><?= htmlspecialchars($option) ?></label><br>
                                             <?php endforeach; ?>
-                                        </select><br>
-                                    <?php elseif ($question['inputType'] === 'textarea'): ?>
-                                        <textarea name="question_<?= $question['questionID'] ?>" class="styled-textarea"></textarea><br>
-                                    <?php endif; ?>
-                                </div>
-                            <?php endforeach; ?>
+                                        <?php elseif ($question['inputType'] === 'checkbox'): ?>
+                                            <?php foreach ($options as $option): ?>
+                                                <input type="checkbox" name="question_<?= $question['questionID'] ?>[]" value="<?= htmlspecialchars($option) ?>" <?= $isRequired ?>>
+                                                <label><?= htmlspecialchars($option) ?></label><br>
+                                            <?php endforeach; ?>
+                                        <?php elseif (in_array($question['inputType'], ['text', 'number', 'date'])): ?>
+                                            <input type="<?= $question['inputType'] ?>" name="question_<?= $question['questionID'] ?>" class="styled-input" <?= $isRequired ?>><br>
+                                        <?php elseif ($question['inputType'] === 'select'): ?>
+                                            <select name="question_<?= $question['questionID'] ?>" class="styled-select" <?= $isRequired ?>>
+                                                <?php foreach ($options as $option): ?>
+                                                    <option value="<?= htmlspecialchars($option) ?>"><?= htmlspecialchars($option) ?></option>
+                                                <?php endforeach; ?>
+                                            </select><br>
+                                        <?php elseif ($question['inputType'] === 'textarea'): ?>
+                                            <textarea name="question_<?= $question['questionID'] ?>" class="styled-textarea" <?= $isRequired ?>></textarea><br>
+                                        <?php endif; ?>
+                                    </div>
+                                <?php endforeach; ?>
 
                             <!-- General Input Group for similar types -->
                             <?php if ($category === 'Personal Details'): ?>
@@ -177,8 +196,8 @@ foreach ($questions as $question) {
                                         <input type="date" name="dob" id="dob" class="styled-input" required>
                                     </div>
                                     <div class="input-group">
-                                        <label class="required" for="gender">Gender</label>
-                                        <select name="gender" id="gender" class="styled-select" required>
+                                        <label class="required" for="sex">Sex</label>
+                                        <select name="sex" id="sex" class="styled-select" required>
                                             <option value="male">Male</option>
                                             <option value="female">Female</option>
                                             <option value="other">Other</option>
@@ -304,11 +323,11 @@ foreach ($questions as $question) {
         </div>
 
         <!-- Footer -->
-<footer class="footer">
+        <footer class="footer">
         <footer class="footer">
             <div class="footer-container">
                 <div class="footer-logo">
-                    <img src="images/logo.png" alt="TheraPeace Logo">
+                    <img src="images/TheraPeace Logo.svg" alt="TheraPeace Logo">
                     <h2>TheraPeace</h2>
                     <p>Your Partner in Patient Care</p>
                 </div>
@@ -349,6 +368,8 @@ foreach ($questions as $question) {
                 window.onload = function() { showModal(); };
             </script>
         <?php endif; ?>
+
         <script src="guestScript.js"></script>
+</div>
 </body>
 </html>

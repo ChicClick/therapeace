@@ -31,6 +31,7 @@ body {
     font-family: 'Poppins', sans-serif;
     background-color: #f8f5e9;
     overflow-x: hidden; /* Prevent horizontal overflow */
+    font-size: 14px;
 }
 
 /*STYLES FOR NAVBAR*/
@@ -84,12 +85,13 @@ nav.scrolled {
     background: linear-gradient(90deg, #FDBC10 0%, #FFEA09 100%);
     height:35px;
     padding: 0px 35px;
-    font-size: 13px;
+    font-size: 14px;
     border: none;
     border-radius: 20px;
     cursor: pointer;
     margin: 0px 20px 0px 30px;
-
+    color: #432705;
+    font-weight: normal;
 }
 
 .login-btn:hover {
@@ -201,7 +203,7 @@ nav.scrolled {
     margin-top: 30px;
     height:35px;
     padding: 0px 35px;
-    font-size: 13px;
+    font-size: 14px;
     border: none;
     border-radius: 20px;
     cursor: pointer;
@@ -288,7 +290,7 @@ nav.scrolled {
     max-width: 1000px;
     color: #432705;
     margin-top: 20px; /* Adds spacing between images and text */
-    margin-bottom: 100px;
+    margin-bottom: 150px;
 }
 
 .about-content h2 {
@@ -432,7 +434,7 @@ nav.scrolled {
 
 /* Common styles for service item texts */
 .service-item h3 {
-    font-size: 20px;
+    font-size: 18px;
     position: absolute;
     top: 60%;
     left: 0;
@@ -539,7 +541,7 @@ nav.scrolled {
     transform: scale(1.05);
 }
 .pricing-item h3 {
-    font-size: 13px;
+    font-size: 14px;
     color: #FDBC10;
     margin-bottom: 10px;
     font-weight: bold;
@@ -547,19 +549,19 @@ nav.scrolled {
 
 .pricing-item h4 {
     color: #432705;
-    font-size: 20px;
+    font-size: 14px;
     margin-bottom: 8x;
 }
 .pricing-item h5 {
     color: #432705;
-    font-size: 9px;
+    font-size: 10px;
     margin-bottom: 8x;
     font-weight: bold;
 }
 .pricing-item h1 {
     font-family: "Poly", serif;
     color: #432705;
-    font-size: 40px;
+    font-size: 36px;
     margin-bottom: 8x;
     font-weight: lighter;
 }
@@ -578,7 +580,7 @@ nav.scrolled {
     margin-bottom: 10px;
     height:35px;
     padding: 0px 35px;
-    font-size: 13px;
+    font-size: 14px;
     border: none;
     border-radius: 20px;
     cursor: pointer;
@@ -678,7 +680,7 @@ nav.scrolled {
     background: linear-gradient(90deg, #FDBC10 0%, #FFEA09 100%);
     border: none;
     padding: 10px 20px;
-    font-size: 13px;
+    font-size: 14px;
     border-radius: 20px;
     cursor: pointer;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
@@ -1045,6 +1047,7 @@ nav.scrolled {
         max-width: 100%; /* Make it take up more space on smaller screens */
         padding: 15px;
         text-align: center; /* Center the text */
+        align-items: center;
     }
 
     .hero-text h1 {
