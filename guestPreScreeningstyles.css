@@ -26,11 +26,6 @@ body {
     font-size: 14px;
 }
 
-.required:after {
-    content:" *";
-    color: #E83845;
-}
-
 /* STYLES FOR PRE SCREENING SECTION START */
 .pre-screening-section {
     margin: 40px 0;
@@ -127,7 +122,6 @@ body {
     text-align: center;
 }
 
-
 .why-pre-screening h3{
     margin-bottom: 20px;
     font-size: 20px;
@@ -151,28 +145,6 @@ body {
     display: none;
 }
 
-
-
-/* Add styles for the form when it appears */
-.pre-screening-form {
-    background-color: #fff;
-    padding: 20px;
-    border-radius: 30px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    margin: 20px auto;
-    width: 800px;
-    text-align: left;
-}
-
-.proceed-btn {
-    background-color: #f9a825;
-    color: #fff;
-    border: none;
-    padding: 10px 20px;
-    cursor: pointer;
-    font-size: 1.1em;
-    border-radius: 5px;
-}
 
 
 /* STYLES FOR TEST-INTRO AND STEPS */
@@ -242,102 +214,23 @@ background-color: #ffcc00;
 }
 
 
+
+/* Add styles for the form when it appears */
+.pre-screening-form {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 30px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    margin: 20px auto;
+    width: 800px;
+    text-align: left;
+}
+
 /* Style the form container to be below the test intro */
 #pre-screening-form {
     margin-top: 20px;
     padding: 20px;
 }
-
-form input[type="text"], 
-form input[type="date"] {
-    width: calc(100% - 20px); /* Full width minus padding */
-    padding: 10px;
-    margin-bottom: 15px;
-    border: none;
-    border-radius: 20px;
-    background-color: #fff4ce;
-    color: #432705;
-    font-size: 14px;
-    outline: none;
-}
-
-/* Hide the default checkbox */
-.custom-checkbox input {
-    display: none; 
-}
-
-/* Create a custom checkmark */
-.custom-checkbox label {
-    display: flex; 
-    align-items: center; 
-    cursor: pointer; 
-}
-
-.custom-checkbox .checkmark {
-    width: 20px; 
-    height: 20px; 
-    border: 2px solid #f9a825; 
-    border-radius: 4px; 
-    margin-right: 10px; 
-    position: relative;
-    background-color: #fff; 
-}
-
-/* Style the checkmark when checked */
-.custom-checkbox input:checked + label .checkmark {
-    background-color: #f9a825; 
-    border-color: #f9a825; 
-}
-
-/* Style the checkmark after it’s checked */
-.custom-checkbox input:checked + label .checkmark:after {
-    content: '';
-    position: absolute;
-    left: 5px; 
-    top: 2px; 
-    width: 5px; 
-    height: 10px;
-    border: solid white; 
-    border-width: 0 2px 2px 0; 
-    transform: rotate(45deg); 
-}
-
-/* Container to hold both buttons and align them to the right */
-.button-container {
-    text-align: right; /* Align buttons to the right */
-    margin-top: 20px;  /* Optional: Add space between the form and the buttons */
-}
-
-/* Additional Styling for Buttons */
-.proceed-btn, .back-btn {
-    padding: 10px 20px;
-    font-size: 1.1em;
-    cursor: pointer;
-    border-radius: 5px;
-    margin-top: 20px;
-}
-
-.proceed-btn {
-    background-color: #f9a825;
-    color: #fff;
-    border: none;
-}
-
-.proceed-btn:hover {
-    background-color: #e6b100;
-}
-
-.back-btn {
-    background-color: #f5f5f5;
-    color: #333;
-    border: none;
-    margin-right: 10px;
-}
-
-.back-btn:hover {
-    background-color: #e0e0e0;
-}
-
 
 /* Style for hiding the form steps initially */
 .form-step {
@@ -349,11 +242,9 @@ form input[type="date"] {
     display: block;
 }
 
-
 .input-error {
     border: 2px solid red;
 }
-
 
 select {
     width: 100%;
@@ -367,7 +258,6 @@ select {
 .form-group {
     margin-bottom: 16px;
 }
-
 
 
 /* General Form Styles */
@@ -391,17 +281,36 @@ select {
     margin-bottom: 15px;
 }
 
-/* For checkbox and radio buttons to be displayed horizontally */
-.question-section input[type="checkbox"],
-.question-section input[type="radio"] {
-    margin-right: 10px;  /* Add some space between the checkbox/radio and label */
-    margin-bottom: 0;
+/* For checkbox and radio buttons to be displayed properly */
+.question-section label {
+    display: inline-block; /* Ensure label remains inline */
+    vertical-align: middle; 
+    margin-bottom: 5px; 
 }
 
-.question-section label {
-    display: inline-block;
-    margin-right: 15px;
+/* Container for options (checkboxes/radios) */
+.option-group {
+    display: flex;
+    flex-direction: column; /* Stack items vertically */
 }
+
+/* Layout for individual option items */
+.option-item {
+    display: flex; /* Align input and label in one row */
+    align-items: center; 
+    gap: 10px; /* Space between input and label */
+}
+
+/* Reset margins for inputs and labels */
+.option-item input[type="checkbox"],
+.option-item input[type="radio"] {
+    margin: 0; /* Remove default margins */
+}
+
+.option-item label {
+    margin: 0; /* Remove default margins */
+}
+
 
 /* Styling for inputs of type text, number, and date */
 .question-section input[type="text"],
@@ -428,13 +337,15 @@ select {
     margin-right: 0; /* Remove margin for the last item */
 }
 
-
 .question-section textarea {
     height: 100px;
     resize: vertical;
 }
 
-/* Button Styles */
+
+
+
+/* STYLES FOR BUTTON */
 button, input[type="submit"] {
     display: inline-block;
     padding: 12px 25px;
@@ -483,7 +394,7 @@ button[type="button"]:hover {
 
 
 
-/* Container for demographics section */
+/* Container for demographics section/input group */
 .demographics-section {
     display: flex; /* Use flexbox for side-by-side layout */
     justify-content: space-between; /* Space out the items */
@@ -533,7 +444,12 @@ button[type="button"]:hover {
 
 .required-asterisk {
     color: red;
-    font-weight: bold;
+    font-weight: normal;
+}
+
+.required:after {
+    content:" *";
+    color: red;
 }
 
 /* input.invalid, textarea.invalid, select.invalid {
