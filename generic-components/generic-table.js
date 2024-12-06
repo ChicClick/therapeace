@@ -729,7 +729,7 @@ class TableEngine extends HTMLElement {
                             <input value="${data["position"] || ''}" type="text" id="position" name="position" placeholder="Enter Position" required>
                         </div>
                         <div class="form-group">
-                            <label for="gender">Gender:</label>
+                            <label for="gender">Sex:</label>
                             <select id="gender" name="gender" required>
                                 <option ${data["gender"] == "Female" ? "selected" : ""} value="Female">Female</option>
                                 <option ${data["gender"] == "Male" ? "selected" : ""} value="Male">Male</option>
@@ -805,7 +805,7 @@ class TableEngine extends HTMLElement {
                     </div>
                     <div class="form-row">
                         <div class="form-group">
-                            <label for="gender">Gender:</label>
+                            <label for="gender">Sex:</label>
                             <select id="gender" name="gender" required>
                                 <option ${data["gender"] == "Female" ? "selected" : ""} value="Female">Female</option>
                                 <option ${data["gender"] == "Male" ? "selected" : ""} value="Male">Male</option>
@@ -997,7 +997,7 @@ class TableEngine extends HTMLElement {
                             </div>
                             <h5>BASIC INFORMATION</h5>
                             <strong>Date Hired:</strong><p> ${new Date(data.datehired).toLocaleDateString() || 'N/A'}</p>
-                            <strong>Gender:</strong><p> ${data.gender || 'N/A'}</p>
+                            <strong>Sex:</strong><p> ${data.gender || 'N/A'}</p>
                             <strong>Days Available:</strong><p> ${daysInfo || 'N/A'}</p> <!-- Added Days Available -->
                             <strong>Times Available:</strong><p> ${timeInfo || 'N/A'}</p> <!-- Added Times Available -->
                             <strong>Communication:</strong><p> ${commInfo || 'N/A'}</p> <!-- Added Communication -->
@@ -1042,7 +1042,7 @@ class TableEngine extends HTMLElement {
                             </div>
                             <h5>BASIC INFORMATION</h5>
                             <strong>Date Hired:</strong><p> ${ new Date(data.datehired).toLocaleDateString() || 'N/A'}</p>
-                            <strong>Gender:</strong><p> ${data.gender || 'N/A'}</p>
+                            <strong>Sex:</strong><p> ${data.gender || 'N/A'}</p>
                         </div>
                         </div>
                        
@@ -1333,7 +1333,7 @@ class TableEngine extends HTMLElement {
                             </div>
                             <h5>BASIC INFORMATION</h5>
                             <strong>Birthday:</strong><p> ${patient.getFormattedBirthday()}</p>
-                            <strong>Gender:</strong><p> ${patient.gender || 'N/A'}</p>
+                            <strong>Sex:</strong><p> ${patient.gender || 'N/A'}</p>
                         </div>
                         </div>
                        
@@ -1460,7 +1460,7 @@ class PatientInfo {
         return `
             Patient ID: ${this.patientID}
             Name: ${this.patientName}
-            Gender: ${this.gender}
+            Sex: ${this.gender}
             Birthday: ${this.getFormattedBirthday()}
             Address: ${this.address}
             Phone: ${this.phone}

@@ -17,7 +17,7 @@ if ($result->num_rows > 0) {
 // Add additional fields that are not part of the questions table
 $additionalFields = [
     'age' => 2,  
-    'gender' => 3, 
+    'sex' => 3, 
     'dob' => 4,  
     'mother_age' => 8,
     'father_age' => 9, 
