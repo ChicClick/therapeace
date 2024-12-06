@@ -7,12 +7,15 @@ const columnKeyMapper = new Map([
     ["CHILDNAME", "CHILD NAME"], ["CHILD_NAME", "CHILD NAME"],
     ["CHILDAGE", "CHILD AGE"], ["CHILD_AGE", "CHILD AGE"],
     ["COMMENTS", "COMMENTS"], ["COMMENT", "COMMENTS"],
+    ["CONSENT", "CONSENT"],
+    ["CREATED_AT", "CREATED AT"],
     ["DATEHIRED", "DATE HIRED"],
     ["DATESUBMITTED", "DATE SUBMITTED"],["DATE_SUBMITTED", "DATE SUBMITTED"],
     ["DAYS_AVAILABLE", "DAYS AVAILABLE"],
     ["DESCRIPTION", "DESCRIPTION"],
     ["EMAIL", "EMAIL"],
     ["FEEDBACK", "FEEDBACK"],
+    ["FEEDBACK_TEXT", "FEEDBACK"],
     ["FEEDBACKDATE", "FEEDBACK DATE"],
     ["FLEXIBILITY", "FLEXIBILITY"],
     ["GENDER", "GENDER"],
@@ -28,12 +31,14 @@ const columnKeyMapper = new Map([
     ["PARENT", "PARENT"],
     ["PARENTNAME", "PARENT"], ["PARENT-NAME", "PARENT"], ["PARENT_NAME", "PARENT"],
     ["PATIENT_STATUS", "STATUS"],
+    ["RATING", "RATING"],
     ["RELATIONSHIP", "RELATIONSHIP"],
     ["REPORT_STATUS", "REPORT STATUS"], ["REPORTSTATUS","REPORT STATUS"], ["REPORT-STATUS", "REPORT STATUS"],
     ["REPORTS_STATUS", "REPORT STATUS"], ["REPORTSSTATUS","REPORT STATUS"], ["REPORTS-STATUS", "REPORT STATUS"],
     ["SCHEDULE", "SCHEDULE"],
     ["SERVICE", "SERVICE"],
     ["SERVICENAME", "SERVICE"], ["SERVICE-NAME", "SERVICE"], ["SERVICE_NAME", "SERVICE"],
+    ["SHOW", "SHOW"],
     ["SPECIALIZATION", "SPECIALIZATION"],
     ["STAFF", "STAFF"],
     ["STAFF_DATEHIRED", "DATE HIRED"],
@@ -83,6 +88,7 @@ class TableEngine extends HTMLElement {
     static dataSources = new Map([
         ['admin_appointments', 'admin_get_appointments.php'],
         ['admin_dashboard', 'admin_get_dashboard.php'],
+        ['admin_feedbacks', 'admin_get_feedbacks.php'],
         ['admin_patients', 'admin_get_patients.php'],
         ['admin_admins', 'admin_get_admins.php'],
         ['admin_therapists', 'admin_get_therapists.php'],
@@ -359,6 +365,26 @@ class TableEngine extends HTMLElement {
                             return;
                         }
 
+                        if(key === "show") {
+                            const td = document.createElement('td');
+                            const tdContent = document.createElement("div");
+                            tdContent.classList.add("td-container");
+                            let checkbox = document.createElement("input");
+                            checkbox.setAttribute("class","generic-table-checkbox");
+                            checkbox.setAttribute("type","checkbox");
+                            checkbox.checked = row["show"];
+                            
+                            checkbox.addEventListener("click",(e)=> {
+                                e.stopPropagation();
+                                row["show"] = checkbox.checked;
+                                this.handleCheckBox(row);
+                            })
+
+                            td.appendChild(checkbox);
+                            tr.appendChild(td);
+                            return;
+                        }
+
                         if(key === "specialization") {
                             const td = document.createElement('td');
                             const tdContent = document.createElement("div");
@@ -475,6 +501,27 @@ class TableEngine extends HTMLElement {
         //         }
         //     });
         // }, 2000);
+    }
+    
+    handleCheckBox(row) {
+        console.log("CHECKBOX", row);
+        try {
+            fetch('a_edit_feedback_show.php', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    feedbackID: row["feedbackID"],
+                    show: row["show"]
+                })
+            })
+            .then(res => res.json())
+            .then(res => console.log(res))
+            .catch(err => console.log('Error:', err));
+        } catch (error) {
+            console.log('Catch block error:', error);
+        }
     }
     
 

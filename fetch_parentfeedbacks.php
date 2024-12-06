@@ -2,11 +2,17 @@
 include 'db_conn.php'; // Make sure this includes your database connection
 
 // Query to get feedbacks with a rating between 3 and 5 and consent set to true
-$sql = "SELECT f.feedback_text, f.rating, p.parentName 
-        FROM feedbacks f
-        JOIN parent p ON f.parentID = p.parentID
-        WHERE f.rating BETWEEN 3 AND 5 AND f.consent = 1
-        ORDER BY f.created_at DESC";
+$sql = "
+    SELECT f.feedback_text, f.rating, p.parentName 
+    FROM feedbacks f
+    JOIN parent p ON f.parentID = p.parentID
+    JOIN feedbacks_settings fs ON fs.id = 1
+    WHERE f.show = 1 
+    AND f.consent = 1 
+    AND f.rating >= fs.minimum_rating
+    AND f.created_at BETWEEN fs.date_start AND fs.date_end
+    ORDER BY f.created_at DESC
+";
 
 $result = mysqli_query($conn, $sql);
 

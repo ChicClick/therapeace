@@ -2511,6 +2511,26 @@ input[type="checkbox"] {
   background-color: #555;
 }
 
+.table-actions {
+  display: flex;
+  flex-direction: row;
+  justify-content:flex-end;
+  border-bottom: 1px solid #ccc;
+  padding-bottom: 1em;
+}
+
+.table-actions-date {
+  margin-right: 1rem;
+  padding: 0!important;
+  padding-left: 4px!important;
+  width: 7rem!important;
+}
+
+.table-actions-select {
+  padding: 4px!important;
+  width: 5rem!important;
+}
+
 /* Update for Responsive Styling */
 /* Mobile Phones */
 @media (max-width: 600px) {

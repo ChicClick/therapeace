@@ -21,27 +21,30 @@ if (!isset($_SESSION['username'])) {
 
 $mysqli = $conn;
 
-$appointments = [];
-$sqlAppointments = "SELECT 
-        patient.patientName AS patient_name,
-        patient.image AS image, 
-        therapist.therapistName AS therapist_name, 
-        services.serviceName AS service_name, 
-        appointment.status AS status,
-        appointment.schedule 
-    FROM appointment
-    JOIN patient ON appointment.patientID = patient.patientID
-    JOIN therapist ON appointment.therapistID = therapist.therapistID
-    JOIN services ON appointment.serviceID = services.serviceID";
+$feedbacks = [];
+$sqlFeedbacks = "
+     SELECT 
+        f.`show`,
+        f.feedbackID,
+        f.parentID, 
+        f.rating, 
+        f.consent, 
+        f.feedback_text,
+        f.created_at
+    FROM feedbacks f
+    JOIN feedbacks_settings fs ON fs.id = 1  -- Join feedbacks_settings where ID = 1
+    WHERE f.rating BETWEEN fs.minimum_rating AND 5  -- Rating filter between minimum_rating and 5
+    AND f.created_at BETWEEN fs.date_start AND fs.date_end  -- Date filter between date_start and date_end
+";
 
-$stmt = $mysqli->prepare($sqlAppointments);
+$stmt = $mysqli->prepare($sqlFeedbacks);
 
 if ($stmt) {
     $stmt->execute();
     $result = $stmt->get_result();
 
     while ($row = $result->fetch_assoc()) {
-        $appointments[] = $row;
+        $feedbacks[] = $row;
     }
     $stmt->close();
 } else {
@@ -53,6 +56,6 @@ if ($stmt) {
 $mysqli->close();
 
 header("Content-Type: application/json");
-echo json_encode($appointments);
+echo json_encode($feedbacks);
 exit();
 ?>

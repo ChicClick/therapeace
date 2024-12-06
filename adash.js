@@ -278,6 +278,74 @@ $(document).ready(function() {
     });
 });
 
+$(document).ready(function () {
+    // Populate the table actions section
+    $('#table-actions').html(`
+        <div>
+            <label for="date-start">Start Date:</label>
+            <input class="table-actions-date" type="date" id="date-start" name="date-start" value="">
+        </div>
+
+        <div>
+            <label for="date-end">End Date:</label>
+            <input class="table-actions-date" type="date" id="date-end" name="date-end" value="">
+        </div>
+ 
+        <div>
+            <label for="min-rating">Minimum Rating:</label>
+            <select class="table-actions-select" id="min-rating" name="min-rating">
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="4">4</option>
+                <option value="5">5</option>
+            </select>
+        </div>
+    `);
+
+    $('#table-actions').on('change', 'input, select', function() {
+
+        var startDate = $('#date-start').val();
+        var endDate = $('#date-end').val();
+        var minRating = $('#min-rating').val();
+
+        var requestData = {
+            date_start: startDate,
+            date_end: endDate,
+            minimum_rating: minRating
+        };
+
+        $.ajax({
+            url: 'a_edit_feedbacks_settings.php',
+            method: 'POST',
+            contentType: 'application/json',
+            data: JSON.stringify(requestData),
+            success: function(response) {
+                console.log(response.message);
+            },
+            error: function(xhr, status, error) {
+                console.error('Error: ' + error);
+            }
+        });
+    });
+
+    $.ajax({
+        url: 'a_fetch_feedbacks_settings.php',
+        method: 'GET',
+        dataType: 'json',
+        success: function (data) {
+            console.log(data);
+            $('#date-start').val(data[0].date_start);
+            $('#date-end').val(data[0].date_end);
+            $('#min-rating').val(data[0].minimum_rating);
+        },
+        error: function (xhr, status, error) {
+            console.error('Error fetching feedback settings:', error);
+        }
+    });
+});
+
+
 // Staff Section 
 // Get references to the buttons and table container
 function setActive(tableId) {

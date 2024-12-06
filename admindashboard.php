@@ -49,7 +49,7 @@ if (isset($_SESSION['firstname'])) {
                 <li><a href="#" data-target="patients-information-section"><i class="fas fa-user"></i> Patient Information</a></li>
                 <li><a href="#" data-target="staff-section"><i class="fas fa-users"></i> Staffs</a></li>
                 <li><a href="#" data-target="services-section"><i class="fas fa-briefcase-medical"></i> Services</a></li>
-
+                <li><a href="#" data-target="feedbacks-section"><i class="fas fa-comment"></i> Feedbacks</a></li>
 
                 <p>OTHERS</p>
                 <li><a href="registerlanding.php" ><i class="fa fa-users"></i> Manage Accounts</a></li>
@@ -719,6 +719,15 @@ if (isset($_SESSION['firstname'])) {
                 </div>
 
             </div>
+
+              <!-- Feedbacks Section -->
+        <div id="feedbacks-section" class="content">
+            <h4>Feedbacks</h4>
+            <div id="table-actions" class="table-actions">
+               
+            </div>
+            <generic-table data="admin_feedbacks"></generic-table>
+        </div>
 
     </div>
 
