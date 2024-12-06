@@ -170,8 +170,8 @@ if (isset($_SESSION['firstname'])) {
 
                             <div class="form-row">
                                         <div class="form-group">
-                                        <label class="required" for="serviceID">Service:</label>
-                                            <select id="serviceID" name="serviceID" required>
+                                        <label class="required" for="serviceID">Services:</label>
+                                            <select onchange="updateSpecializationAppointment()" id="serviceID" name="serviceID" required>
                                                 <option value="">Select Available Service</option>
                                                 <?php
                                                 require 'db_conn.php';
@@ -191,33 +191,13 @@ if (isset($_SESSION['firstname'])) {
                             <hr />
                             <h5>Filters</h5>
 
-                            <div class="form-row">
-                            <div class="form-group">
-                                        <label for="searchByName">Search by Name:</label>
-                                        <input type="text" id="searchByName" name="searchByName">
-                                    </div>
+                                    <div class="form-row">
                                         <div class="form-group">
-                                            <label for="specializationAppointment">Specialization:</label>
-                                                <div id="specialization-checkboxes">
-                                                    <?php
-                                                    require 'db_conn.php';
-                                                    $sql = "SELECT serviceID, serviceName FROM services";
-                                                    $result = $conn->query($sql);
-                                                    if ($result->num_rows > 0) {
-                                                        while ($row = $result->fetch_assoc()) {
-                                                            // Generate a checkbox for each service
-                                                            echo "<div class='checkbox-item'>
-                                                                    <input type='checkbox' id='" . $row["serviceName"] . "' name='specializationAppointment[]' value='" . $row["serviceID"] . "' onchange='updateSpecializationAppointment()'>
-                                                                    <label for='app_'" . $row["serviceName"] . "'>" . $row["serviceName"] . "</label>
-                                                                </div>";
-                                                        }
-                                                    } else {
-                                                        echo "<p>No services available.</p>";
-                                                    }
-                                                    $conn->close();
-                                                    ?>
-                                            </div>
+                                            <label for="searchByName">Search by Name:</label>
+                                            <input type="text" id="searchByName" name="searchByName">
                                         </div>
+                                    </div>
+                                    <div class="form-row">
                                         <div class="form-group">
                                             <label for="days_available">Day Availability</label>
                                             <select id="day-appointment-availability" name="days_available" onchange="toggleAppointmentCustomDay()">
@@ -225,6 +205,8 @@ if (isset($_SESSION['firstname'])) {
                                                 <option id="custom-appointment-day" value="[]">Custom</option>
                                             </select>
                                         </div>
+                                    </div>
+                                    <div class="form-row">
                                         <div class="form-group">
                                             <div id="custom-appointment-day-options" style="display: none; margin-top: 10px;">
                                                 <label>Select Custom Days:</label>
@@ -238,8 +220,7 @@ if (isset($_SESSION['firstname'])) {
                                                 </div>
                                             </div>
                                         </div>
-                                    </div>
-
+                                    </div>               
                                     <div class="form-row">
                                         <div class="form-group">
                                             <label for="time-availability">Time Availability</label>
@@ -427,25 +408,23 @@ if (isset($_SESSION['firstname'])) {
                                         </div>
                                         <div class="form-group">
                                         <label for="specialization">Specialization:</label>
-                                            <div id="specialization-checkboxes">
-                                                <?php
-                                                    require 'db_conn.php';
-                                                    $sql = "SELECT serviceID, serviceName FROM services";
-                                                    $result = $conn->query($sql);
-                                                    if ($result->num_rows > 0) {
-                                                        while ($row = $result->fetch_assoc()) {
-                                                            // Generate a checkbox for each service
-                                                            echo "<div class='checkbox-item'>
-                                                                <input type='checkbox' id='" . $row["serviceName"] . "' name='specialization[]' value='" . $row["serviceID"] . "' onchange='updateSpecialization()'>
-                                                                <label for='" . $row["serviceName"] . "'>" . $row["serviceName"] . "</label>
-                                                            </div>";
-                                                        }
-                                                    } else {
-                                                        echo "<p>No services available.</p>";
-                                                    }
-                                                    $conn->close();
-                                                    ?>
-                                            </div>
+                                        <select id="specialization" name="specialization" required>
+                                            <option value="" disabled selected>Select a specialization</option>
+                                            <?php
+                                            require 'db_conn.php';
+                                            $sql = "SELECT serviceID, serviceName FROM services";
+                                            $result = $conn->query($sql);
+                                            if ($result->num_rows > 0) {
+                                                while ($row = $result->fetch_assoc()) {
+                                                    echo "<option value=" . $row["serviceID"] . ">" . $row["serviceName"] . "</option>";
+                                                }
+                                            } else {
+                                                echo "<option value='' disabled>No services available</option>";
+                                            }
+                                            $conn->close();
+                                            ?>
+                                        </select>
+
                                         </div>
                                     </div>
 
@@ -573,7 +552,6 @@ if (isset($_SESSION['firstname'])) {
                                     </div>
                                     <input type="hidden" id="communication" name="communication" value="[]">
                                     <input type="hidden" id="flexibility" name="flexibility" value="[]">
-                                    <input type="hidden" id="specialization" name="specialization" value="[]">
 
                                     <div class="btn-container">
                                         <button type="submit" class="submit-btn">Submit <i class="fas fa-arrow-right"></i></button>
@@ -750,7 +728,6 @@ if (isset($_SESSION['firstname'])) {
     <script src="adash.js" defer></script>
     <script src="admindashboard.js" defer></script>
     <script src="a_dashgenerate_pdf.js" defer></script>
-    <script src="a_staff_info.js" defer></script>
     <script src="a_editservice.js" defer></script>
     <script src="a_add_delete_service.js" defer></script>
     <script src="a_confirmappointment.js" defer></script>

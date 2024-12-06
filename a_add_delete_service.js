@@ -43,31 +43,6 @@ document.addEventListener('DOMContentLoaded', () => {
             console.error('Error:', error);
         });
     });
-
-    // Delete Service Button
-    document.getElementById('services-tbody').addEventListener('click', function(event) {
-        if (event.target.classList.contains('delete-btn')) {
-            const serviceID = event.target.getAttribute('data-id');
-            
-            if (confirm("Are you sure you want to delete this service?")) {
-                fetch('a_deleteservice.php', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/x-www-form-urlencoded'
-                    },
-                    body: 'serviceID=' + serviceID
-                })
-                .then(response => response.text())
-                .then(data => {
-                    alert(data); // Show success or error message
-                    event.target.closest('tr').remove(); // Remove the row from the table
-                })
-                .catch(error => {
-                    console.error('Error:', error);
-                });
-            }
-        }
-    });
 });
 // Add staff 
 document.addEventListener('DOMContentLoaded', () => {
@@ -185,8 +160,8 @@ document.addEventListener('DOMContentLoaded', () => {
         
         const submitButton = this.querySelector('button[type="submit"]');
         submitButton.disabled = true;
-        submitButton.textContent = 'Loading...';
-    
+        submitButton.textContent = 'Submitting...';
+        
         Array.from(this.elements).forEach(element => element.disabled = true);
     
         fetch('tRegister.php', {

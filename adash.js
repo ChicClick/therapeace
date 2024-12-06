@@ -278,85 +278,6 @@ $(document).ready(function() {
     });
 });
 
-
-// Patients Profile active row 
-document.addEventListener("DOMContentLoaded", function() {
-    const patientTable = document.getElementById('patients-tbody');
-    const patientInfo = document.getElementById('patient-info'); // Reference to the patient info section
-    let currentPatientId = null; // Track the current patient ID
-
-    // Add click event listener to the patient table
-    patientTable.addEventListener('click', function(e) {
-        const clickedRow = e.target.closest('tr'); // Check if a row was clicked
-        if (clickedRow) {
-            const patientId = clickedRow.getAttribute('data-patient-id');
-            console.log('Clicked patient ID:', patientId); // Debugging line
-
-            if (currentPatientId === patientId) {
-                // If the same patient is clicked again, hide the info
-                patientInfo.style.display = 'none';
-                currentPatientId = null; // Reset the current patient ID
-            } else {
-                // If a different patient is clicked, fetch and update the info
-                fetchPatientInfo(patientId);
-                currentPatientId = patientId; // Update the current patient ID
-            }
-        }
-    });
-
-    // Function to fetch and display patient info
-    function fetchPatientInfo(patientId) {
-        // Clear the current patient info
-        patientInfo.style.display = 'none'; // Hide the info while updating
-        clearPatientInfo();
-
-        // Fetch the clicked patient's detailed information
-        fetch(`a_fetch_patient_info.php?id=${patientId}`) // Corrected line
-            .then(response => {
-                if (!response.ok) { // Check for HTTP errors
-                    throw new Error('Network response was not ok');
-                }
-                return response.json();
-            })
-            .then(patientData => {
-                console.log('Fetched patient data:', patientData); // Debugging line
-                if (patientData.error) {
-                    console.error('Patient not found:', patientData.error);
-                    alert('Patient not found'); // Notify user
-                } else {
-                    // Populate the patient info section
-                    document.getElementById('patient_name').textContent = patientData.patient_name; // Ensure this matches your JSON keys
-                    document.getElementById('service').textContent = patientData.service; // Ensure this key exists in your PHP
-                    document.getElementById('parent_name').textContent = patientData.parent_name;
-                    document.getElementById('phone').textContent = patientData.phone;
-                    document.getElementById('email').textContent = patientData.email;
-                    document.getElementById('address').textContent = patientData.address;
-                    document.getElementById('birthday').textContent = patientData.birthday;
-                    document.getElementById('gender').textContent = patientData.gender;
-
-                    // Show the patient info section
-                    patientInfo.style.display = 'block';
-                }
-            })
-            .catch(err => console.error('Error fetching patient details:', err));
-    }
-
-    // Function to clear patient info
-    function clearPatientInfo() {
-        document.getElementById('patient_name').textContent = '';
-        document.getElementById('service').textContent = '';
-        document.getElementById('parent_name').textContent = '';
-        document.getElementById('phone').textContent = '';
-        document.getElementById('email').textContent = '';
-        document.getElementById('address').textContent = '';
-        document.getElementById('birthday').textContent = '';
-        document.getElementById('gender').textContent = '';
-    }
-});
-
-
-
-
 // Staff Section 
 // Get references to the buttons and table container
 function setActive(tableId) {
@@ -384,21 +305,3 @@ function displayTableData(data) {
     // Show the table container
     tableContainer.classList.remove('hidden');
 }
-
-// Event listeners for each button
-clinicStaffBtn.addEventListener('click', () => {
-    displayTableData(clinicStaffData);
-});
-
-clinicAdminBtn.addEventListener('click', () => {
-    displayTableData(clinicAdminData);
-});
-
-clinicTherapistBtn.addEventListener('click', () => {
-    displayTableData(clinicTherapistData);
-});
-
-
-
-//Service
-//Add Service 

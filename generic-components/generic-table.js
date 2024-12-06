@@ -71,7 +71,7 @@ const excludedKeyMapper = [
     "AVAILABILITY", "ABOUT"
 ];
 
-const dateKey = ["schedule","sessionDate","feedbackdate", "date_submitted"]
+const dateKey = ["schedule","sessionDate","feedbackdate", "date_submitted"];
 
 
 class TableEngine extends HTMLElement {
@@ -122,8 +122,6 @@ class TableEngine extends HTMLElement {
         ]);
 
          this.timeMapper = new Map([
-            [6, "6:00 AM"],
-            [7, "7:00 AM"],
             [8, "8:00 AM"],
             [9, "9:00 AM"],
             [10, "10:00 AM"],
@@ -135,10 +133,6 @@ class TableEngine extends HTMLElement {
             [16, "4:00 PM"],
             [17, "5:00 PM"],
             [18, "6:00 PM"],
-            [19, "7:00 PM"],
-            [20, "8:00 PM"],
-            [21, "9:00 PM"],
-            [22, "10:00 PM"]
         ]);
 
     }
@@ -152,7 +146,6 @@ class TableEngine extends HTMLElement {
             const endpoint = TableEngine.dataSources.get(newValue);
             if (endpoint) {
                 const fullUrl = `${TableEngine.url}${endpoint}`;
-                console.log('Fetching data from:', fullUrl);
                 this.tableType = newValue;
                 await this.fetchServices();
                 await this.fetchFlexibility();
@@ -224,7 +217,6 @@ class TableEngine extends HTMLElement {
             const services = await fetch("z_get_all_services.php");
             if(!services.ok) throw new Error(`HTTP error! status ${services.status}`);
             const data = await services.json();
-            console.log("DATA", data);
             this.services = data;
         } catch (e) {
             console.error('Error fetching data:', e);
@@ -254,7 +246,6 @@ class TableEngine extends HTMLElement {
     }
 
     render() {
-        console.log(this.services);
         this.innerHTML = '';
         const table = document.createElement('table');
         table.classList.add('generic-table');
@@ -372,42 +363,10 @@ class TableEngine extends HTMLElement {
                             const td = document.createElement('td');
                             const tdContent = document.createElement("div");
                             tdContent.classList.add("td-container");
-                
-                            let valuesToProcess = value;
-                            if (typeof value === 'string') {
-                                try {
-                                    valuesToProcess = JSON.parse(value);
-                                } catch (e) {
-                                    console.error('Error parsing value:', e);
-                                }
-                            }
-                
-                            if (Array.isArray(valuesToProcess)) {
-                                const serviceNames = [];
-                
-                                valuesToProcess.forEach(val => {
-                                    const service = this.services.find(service => String(service.serviceID) === String(val));
-                
-                                    if (!service) {
-                                        console.warn(`Service with ID ${val} not found in this.services.`);
-                                    } else {
-
-                                        let serviceText = service.serviceName;
-                
-                                        if (serviceText.endsWith("Therapy")) {
-                                            serviceText = serviceText.replace("Therapy", "").trim();
-                                        }
-                
-                                        serviceNames.push(serviceText);
-                                    }
-                                });
-                
-                                // Join the service names with a comma
-                                tdContent.textContent = serviceNames.join(", ");
-                            } else {
-                                console.warn('Parsed value is not an array:', valuesToProcess);
-                            }
-                
+                            
+                            const service = this.services.find(service => String(service.serviceID) === String(row.specialization)); //////
+                               
+                            tdContent.textContent = service.serviceName;
                             td.appendChild(tdContent);
                             tr.appendChild(td);
                             return;
@@ -460,7 +419,6 @@ class TableEngine extends HTMLElement {
                         rescheduleButton.addEventListener('click', (e) => {
                             e.stopPropagation();
                             e.preventDefault();
-                            console.log('Reschedule clicked');
                             this.handleRescheduleClick(row);
                         });
                         tdActions.appendChild(rescheduleButton);
@@ -521,13 +479,11 @@ class TableEngine extends HTMLElement {
     
 
     handleRescheduleClick(row) {
-        console.log(row);
         const appointmentDate = row.schedule ?? null;
         const appointmentID = row.appointmentID ?? null;
         const therapistID = row.therapistID ?? null;
 
         const calendarAppointment = new CalendarAppointment(appointmentID,null,null,null,therapistID,null,null);
-        console.log(appointmentDate);
        const calendar = new GenericCalendar(appointmentDate, calendarAppointment);
        calendar.create();
     }
@@ -544,6 +500,10 @@ class TableEngine extends HTMLElement {
 
         if(this.tableType == "admin_staffs") {
             this.editAdminStaff(row);
+        }
+
+        if(this.tableType == "admin_therapists") {
+            this.editAdminTherapists(row["therapistID"]);
         }
     }
     
@@ -586,6 +546,158 @@ class TableEngine extends HTMLElement {
         }
     }
 
+    editAdminTherapists(therapistID) {
+        try {
+            fetch(`a_fetch_therapist_info.php?id=${therapistID}`)
+            .then(async response => await response.json())
+            .then(data => {
+                const datehired = data["datehired"] || "";
+                const birthday = data["birthday"] || "";
+                const timesAvialable = JSON.parse(data["times_available"]) || [];
+                const daysAvialable = JSON.parse(data["days_available"]) || [];
+                const flexibility = JSON.parse(data["flexibility"]) || [];
+                const communication = JSON.parse(data["communication"]) || [];
+
+                console.log(daysAvialable)
+                let specializationOptions = `<option value="">Please Select Specialization</option>`
+                this.services.forEach(service =>{
+                    specializationOptions += `<option value=${service.serviceID} ${service.serviceID == data["specialization"]  ? "selected" : ""}>${service.serviceName}</option>`
+                });
+
+                let daysAvailableCheckBox = ""
+                this.dayMapper.forEach((k, v) => {
+                    const isChecked = daysAvialable.includes(v);
+                    daysAvailableCheckBox +=  `<div class="day-list">
+                        <input name="days_available[]" type="checkbox" value="${v}" ${isChecked ? "checked" : ""}>
+                        <label>${k}</label>
+                    </div>`;
+                });       
+
+                let timesAvailableCheckBox = "";
+                this.timeMapper.forEach((k, v) => {
+                    const isChecked = timesAvialable.includes(v);
+
+                    timesAvailableCheckBox +=  `<div class="day-list">
+                        <input name="times_available[]" type="checkbox" value="${v}" ${isChecked ? "checked" : ""}>
+                        <label>${k}</label>
+                    </div>`;
+                });
+                
+                let flexibilityCheckBox = "";
+                this.flexibility.forEach((k, v) => {
+                    const isChecked = flexibility.includes(v);
+                    
+                    flexibilityCheckBox +=  `<div class="day-list">
+                        <input name="flexibility[]" type="checkbox" value="${v}" ${isChecked ? "checked" : ""}>
+                        <label>${k.flexibilityName}</label>
+                    </div>`;
+                });
+
+                let communicationCheckBox = "";
+                this.communication.forEach((k, v) => {
+                    const isChecked = communication.includes(v);
+
+                    communicationCheckBox +=  `<div class="day-list">
+                        <input name="communication[]" type="checkbox" value="${v}" ${isChecked ? "checked" : ""}>
+                        <label>${k.communicationName}</label>
+                    </div>`;
+                });
+
+                const therapistForm = `
+                <form action="a_edit_therapist_info.php" method="POST" enctype="multipart/form-data">
+                    <input type="hidden" value="${data["therapistID"]}" name="therapistID">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="patID">Therapist ID:</label>
+                            <input type="text" value="${data["therapistID"]}" id="therapistID" name="tID" disabled required>
+                        </div>
+                        <div class="form-group">
+                            <label for="therapistName">Therapist Name:</label>
+                            <input value="${data["therapist_name"]}" type="text" id="therapistName" name="therapistName" placeholder="Enter Therapist Name" required>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="datehired">Date Hired:</label>
+                            <input value="${datehired}" type="date" id="datehired" name="datehired" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="email">Email:</label>
+                            <input value="${data["email"] || ''}" type="text" id="email" name="email" placeholder="Enter email address" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="phone">Phone:</label>
+                            <input value="${data["phone"] || ''}" type="text" id="phone" name="phone" placeholder="Enter phone number" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="gender">Gender:</label>
+                            <select id="gender" name="gender" required>
+                                <option ${data["gender"] == "Female" ? "selected" : ""} value="Female">Female</option>
+                                <option ${data["gender"] == "Male" ? "selected" : ""} value="Male">Male</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="birthday">Birth Date:</label>
+                            <input value="${birthday}" type="date" id="birthday" name="birthday" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="address">Address:</label>
+                            <input value="${data["address"]}" type="text" id="address" name="address" placeholder="e.g. 123 Elm St., Brgy" required>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="specialization">Specialization:</label>
+                            <select id="specialization" name="specialization" required>
+                                ${specializationOptions}
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="days_available">Days Available:</label>
+                            <div class="day-list-checkbox">
+                                ${daysAvailableCheckBox}
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="times_available">Times Available:</label>
+                            <div class="day-list-checkbox">
+                                ${timesAvailableCheckBox}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="flexibility">Flexibility:</label>
+                            <div class="day-list-checkbox">
+                                ${flexibilityCheckBox}
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="communication">Communication:</label>
+                            <div class="day-list-checkbox">
+                                ${communicationCheckBox}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="btn-container">
+                        <button type="submit" class="submit-btn">Save</button>
+                    </div>
+                </form>
+                `;
+            new SideViewBarEngine("EDIT THERAPIST INFORMATION",therapistForm).render();
+            })
+            .catch(e => console.error("Error fetching parents ", e));
+        }
+        catch{}
+    }
+
     editAdminStaff(row) {
         try {
             fetch(`a_fetch_staff_info.php?id=${row["staffID"]}`)
@@ -599,11 +711,11 @@ class TableEngine extends HTMLElement {
                     <input type="hidden" value="${data["staffID"]}" name="staffID">
                     <div class="form-row">
                         <div class="form-group">
-                            <label for="patID">Patient ID:</label>
+                            <label for="patID">Staff ID:</label>
                             <input type="text" value="${data["staffID"]}" id="staffID" name="sID" disabled required>
                         </div>
                         <div class="form-group">
-                            <label for="staffName">Patient Name:</label>
+                            <label for="staffName">Staff Name:</label>
                             <input value="${data["staff_name"]}" type="text" id="staffName" name="staffName" placeholder="Enter Staff Name" required>
                         </div>
                     </div>
@@ -651,7 +763,6 @@ class TableEngine extends HTMLElement {
             fetch(`a_fetch_patientID.php?id=${row["patientID"]}`)
             .then(async response => await response.json())
             .then(data => {
-                console.log(data);
                 let parentOptions = `<option value="">Select Parent Name</option>`;
                 this.parent.forEach(parent => {
                     parentOptions += `<option ${data["parentID"] == parent.parentID ? "selected" : ""} value="${parent.parentID}">${parent.parentName}</option>`;
@@ -825,21 +936,15 @@ class TableEngine extends HTMLElement {
         })
         .then(response =>
             {   
-                console.log(response);
                 return response.json()
             } 
             )
         .then(async data => {
-            console.log(data);
             if(data) {
                 let daysInfo = [], timeInfo = [], commInfo = [], flexInfo = [], servicesInfo = [];
 
-                JSON.parse(data.specialization).forEach(spe =>{
-                    const s = this.services.find(serv => serv.serviceID == spe);
-                    if(s) {
-                        servicesInfo.push(s.serviceName);
-                    }
-                });
+                const s = this.services.find(serv => serv.serviceID == data.specialization);
+                servicesInfo.push(s.serviceName);
 
                 JSON.parse(data.days_available).forEach(days =>{
                     const day =  this.dayMapper.get(days);
@@ -1097,8 +1202,6 @@ class TableEngine extends HTMLElement {
                         `;
 
                         therapies.forEach((serviceName) => {
-                            console.log(serviceName);
-                            console.log(therapyArray);
                             therapiesHTML += `
                                 <label>
                                     <input 
@@ -1144,12 +1247,9 @@ class TableEngine extends HTMLElement {
         })
         .then(response => response.json())
         .then(data => {
-            console.log(data)
             if (data) {
                 const image = "images/" + imageURL;
-            
-                console.log(data.response);
-            
+     
                 new SideViewBarEngine(
                     "PROGRESS REPORT", 
                     `
@@ -1193,7 +1293,6 @@ class TableEngine extends HTMLElement {
         })
         .then(response => response.json())
         .then(data => {
-            console.log(data)
             if (data) {
                 const patient = new PatientInfo(data);
                 
@@ -1201,8 +1300,6 @@ class TableEngine extends HTMLElement {
                 if(!imageUrl.startsWith("images/")) {
                     image = "images/" + imageUrl;
                 }
-                
-                console.log(data.response);
                 
                 const notesHTML = data.notes.length > 0 
                     ? data.notes.map(note => `
@@ -1271,7 +1368,6 @@ class TableEngine extends HTMLElement {
         })
         .then(response => response.json())
         .then(data => {
-            console.log(data);
             if (data.success) {
                 const sessionData = {
                     schedule: patientNotes.schedule,

@@ -50,10 +50,18 @@ try {
         // Hash the password
         $hashed_password = password_hash($_POST['password'], PASSWORD_DEFAULT);
 
-        // Execute the SQL query
-        $stmt->execute();
-
-        echo "Therapist registration successful!";
+        try {
+            // Execute the SQL query
+            $stmt->execute();
+            echo "New therapist added successfully.";
+        } catch (mysqli_sql_exception $e) {
+            // Check if the error is a duplicate email
+            if ($e->getCode() == 1062) { // 1062 is the SQL error code for duplicate entry
+                echo "Error: The email address already exists.";
+            } else {
+                echo "Error: " . $e->getMessage();
+            }
+        }        
 
         // Send email using PHPMailer
         $mail = new PHPMailer(true);
@@ -73,14 +81,41 @@ try {
             $mail->isHTML(true);
             $mail->Subject = "Your Registration Details";
             $mail->Body = "
-                Dear {$_POST['therapistName']},<br><br>
-                Thank you for joining us as a therapist at TheraPeace.<br><br>
-                Your registration was successful. Here are your registration details:<br><br>
-                <strong>Therapist ID:</strong> {$therapistID}<br>
-                <strong>Date Hired:</strong> {$_POST['datehired']}<br><br>
-                 <b>Password:</b> {$_POST['password']}<br><br>
-                Please log in to set your password.<br><br>
-                Best regards,<br>TheraPeace Team
+                <!DOCTYPE html>
+                <html lang='en'>
+                <head>
+                    <meta charset='UTF-8'>
+                    <meta name='viewport' content='width=device-width, initial-scale=1.0'>
+                    <title>Welcome Email</title>
+                </head>
+                <body style='font-family: Arial, sans-serif; background-color: #FFF4CE; margin: 0; padding: 0;'>
+                    <div style='width: 100%; max-width: 600px; margin: auto; background-color: #FFFFFF; border: 1px solid #FBC22A; border-radius: 8px; overflow: hidden; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);'>
+                        <div style='background-color: #432705; color: #FFF4CE; text-align: center; padding: 20px; font-size: 24px; font-weight: bold;'>
+                            Welcome to TheraPeace
+                        </div>
+                        <div style='padding: 20px; color: #432705; line-height: 1.6;'>
+                            Dear <strong style='color: #D57201;'>{$_POST['therapistName']}</strong>,<br><br>
+
+                            Thank you for joining us as a therapist at TheraPeace.<br><br>
+
+                            Your registration was successful. Here are your registration details:<br><br>
+
+                            <strong style='color: #D57201;'>Therapist ID:</strong> {$therapistID}<br>
+                            <strong style='color: #D57201;'>Date Hired:</strong> {$_POST['datehired']}<br><br>
+
+                            <b style='color: #FDBC10;'>Password:</b> {$_POST['password']}<br><br>
+
+                            Please <a href='#' style='display: inline-block; margin-top: 20px; background-color: #D57201; color: #FFF4CE; padding: 10px 20px; text-decoration: none; border-radius: 4px; font-size: 16px;'>log in</a> to set your password.<br><br>
+
+                            Best regards,<br>
+                            The TheraPeace Team
+                        </div>
+                        <div style='background-color: #FBC22A; color: #432705; text-align: center; padding: 10px; font-size: 14px;'>
+                            &copy; 2024 TheraPeace. All rights reserved.
+                        </div>
+                    </div>
+                </body>
+                </html>
             ";
             $mail->send();
             echo " A confirmation email has been sent.";
