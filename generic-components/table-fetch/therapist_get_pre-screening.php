@@ -3,15 +3,15 @@
 include ('../../config.php');
 include ('../../db_conn.php');
 
-if (!isset($_SESSION['therapist_id'])) {
+if (!isset($_SESSION['therapist_id']) && !isset($_SESSION['username'])) {
     http_response_code(401); // Unauthorized
     header("Content-Type: application/json");
     echo json_encode(['error' => 'Unauthorized access.']);
     exit();
 }
 
+
 $mysqli = $conn;
-$therapistID = $_SESSION['therapist_id'];
 
 // Validate and get 'status' from query parameters
 if (!isset($_GET['status']) || empty($_GET['status'])) {
@@ -32,6 +32,7 @@ $sql = "
         g.comments as comments,
         g.Age AS child_age,
         g.Email AS email,
+        g.Phone AS phone,
         g.DateSubmitted AS date_submitted,
         g.status AS guest_status
     FROM

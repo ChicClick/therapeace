@@ -16,11 +16,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $stmt->bind_param("ssi", $therapies, $comments, $guestId);
 
     if ($stmt->execute()) {
-        // Display a success message in a JavaScript alert
-        echo "<script>
-                alert('Form submitted successfully!');
-                window.location.href = 'therapist-dashboard.php';
-              </script>";
+        header("Location: admindashboard.php?active=checklist-section");
         exit();
     } else {
         echo "Error: " . $stmt->error;

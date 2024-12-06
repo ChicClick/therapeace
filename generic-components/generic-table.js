@@ -83,6 +83,7 @@ class TableEngine extends HTMLElement {
     cssLink = document.head.querySelector('link[href="./generic-components/generic-table.css"]');
     tableType;
 
+    static globalType = "";
     static url = './generic-components/table-fetch/';
 
     static dataSources = new Map([
@@ -103,6 +104,12 @@ class TableEngine extends HTMLElement {
         ['therapist_pre-screening_complete', 'therapist_get_pre-screening.php?status=2'],
         ['therapist_progress', 'therapist_get_progress.php']
     ]);
+
+    static setGlobalType(globalType) {
+        if(!TableEngine.globalType) {
+            TableEngine.globalType = globalType;
+        }
+    }
 
     constructor() {
         super();
@@ -214,7 +221,7 @@ class TableEngine extends HTMLElement {
             this.data = data;
             this.render();
         } catch (error) {
-            console.error('Error fetching data:', error);
+            console.error(`Error fetching data ${this.tableType}:`, error);
         }
     }
 
@@ -577,7 +584,7 @@ class TableEngine extends HTMLElement {
         }
 
         if(this.tableType == "therapist_pre-screening_pending" || this.tableType == "therapist_pre-screening_complete") {
-            this.patientPrescreening(row["GuestID"], row["guest_name"], row["child_name"],row["child_age"], row["guest_status"], row["match_therapy"], row["comments"])
+            this.patientPrescreening(row["GuestID"], row["guest_name"], row["child_name"],row["child_age"], row["guest_status"], row["match_therapy"], row["comments"], row["email"], row["phone"])
         }
 
         if(this.tableType == "admin_staffs") {
@@ -591,6 +598,15 @@ class TableEngine extends HTMLElement {
         if(this.tableType == "admin_services") {
             this.servicesInfo(row)
         }
+    }
+
+    addPatient(guestID, childName, email, phone) {
+        document.querySelector("#add-patient-button").click();
+        setTimeout(()=> {
+            document.querySelector('#patientName').value = childName;
+            document.querySelector('#phone').value = phone;
+            document.querySelector('#email').value = email;
+        }, 500);
     }
 
     editAdminTherapists(therapistID) {
@@ -1103,7 +1119,7 @@ class TableEngine extends HTMLElement {
         });
     }
 
-    async patientPrescreening(guestID, guestName, childName, childAge, guestStatus, matchTherapy = [], comments) {
+    async patientPrescreening(guestID, guestName, childName, childAge, guestStatus, matchTherapy = [], comments, email, phone) {
         let therapyArray = [];
 
         if (typeof matchTherapy === "string") {
@@ -1235,51 +1251,67 @@ class TableEngine extends HTMLElement {
                 container.appendChild(categoryDiv);
             }
 
-            const containerForm = document.createElement("div");
-            containerForm.classList.add("checklist-right-section")
-
-            const therapies = await this.servicesFetch();
-
-            let therapiesHTML = `
+            if(TableEngine.globalType == "admin") {
+                const containerForm = document.createElement("div");
+                containerForm.classList.add("checklist-right-section");
+                
+                let therapiesHTML = `
                     <div class="form-container-right">
                         <form class="asses" action="save_form.php" method="post">
-                        <input type="hidden" name="guestId" id="guestId" value="${guestID}">
-                        <div class="checkbox-group">
-                            <div class="section-title">Select Suitable Therapy</div>
-                        `;
-
-                        therapies.forEach((serviceName) => {
-                            therapiesHTML += `
+                            <input type="hidden" name="guestId" id="guestId" value="${guestID}">
+                            <input type="hidden" name="comments" id="comments" value="N/A">
+                            <div class="checkbox-group">
+                                <div class="section-title">Getting Ready</div>
+                                <div class="terms-container" style="max-height: 200px; overflow-y: auto; border: 1px solid #ccc; padding: 10px; margin-bottom: 10px;">
+                                    <p><strong>Terms and Conditions:</strong></p>
+                                    <p>1. You must follow the guidelines provided by the therapist during the sessions.</p>
+                                    <p>2. The institution reserves the right to terminate services in case of non-compliance.</p>
+                                    <p>3. Personal data will be handled according to our privacy policy.</p>
+                                    <p>4. Therapy sessions are strictly confidential and must not be shared without consent.</p>
+                                    <p>5. Payments for therapies are non-refundable once sessions have begun.</p>
+                                </div>
                                 <label>
                                     <input 
-                                    ${therapyArray.includes(serviceName) ? "checked" : ""} 
-                                    type="checkbox" name="therapies[]" 
-                                    value="${serviceName}" ${guestStatus == 2 ? "disabled" : ""}
-                                    > ${serviceName}
+                                        type="checkbox" name="therapies[]" 
+                                        value="terms" ${guestStatus == 2 ? "disabled" : ""}
+                                    > I have read and accept the terms and conditions.
                                 </label>
-                            `;
-                        });
+                                <label>
+                                    <input 
+                                        type="checkbox" name="therapies[]" 
+                                        value="privacy" ${guestStatus == 2 ? "disabled" : ""}
+                                    > I consent to the privacy policy and data usage agreement.
+                                </label>
+                            </div>
+                            <div class="btn-container-right">
+                                <button
+                                    id="save-button"
+                                    type="button" 
+                                    ${guestStatus == 2 ? "disabled" : ""}
+                                    style="display: ${guestStatus == 2 ? "none" : "block"}"
+                                >Register</button>
+                            </div>
+                        </form>
+                    </div>
+                `;
                 
-                     therapiesHTML += `
-                                </div>
-                                <div class="comments-section">
-                                    <div class="section-title">Additional Diagnosis/Comments</div>
-                                    <textarea class="section-textarea" ${guestStatus == 2 ? "disabled" : ""} name="comments" id="comments" placeholder="Enter comments here...">${comments ? comments : ""}</textarea>
-                                    <button 
-                                        type="submit" 
-                                        class="save-button" 
-                                        ${guestStatus == 2 ? "disabled" : ""}
-                                        style="display: ${guestStatus == 2 ? "none" : "block"}"
-                                    >Save</button>
-                                </div>
-                                
-                            </form>
-                        </div>
-               
-                    `;
-            containerForm.innerHTML = therapiesHTML;
+                containerForm.innerHTML = therapiesHTML;
+                mainContent.appendChild(containerForm);
+
+                setTimeout(()=> {
+                    document.querySelector("#save-button")?.addEventListener("click",async ()=> {
+                        this.addPatient(guestID, childName, email, phone);
+                    });
+                }, 1000); 
+            }
+
+            if(TableEngine.globalType == "therapist") {
+                container.classList.remove("checklist-left-section")
+                container.style.width = "100%!important";
+            }    
+
             mainContent.appendChild(container);
-            mainContent.appendChild(containerForm);
+           
  
             new SideViewBarEngine("PROGRESS", mainContent.innerHTML, "view-lg").render();
         })

@@ -49,6 +49,7 @@ if (isset($_SESSION['firstname'])) {
                 <li><a href="#" data-target="patients-information-section"><i class="fas fa-user"></i> Patient Information</a></li>
                 <li><a href="#" data-target="staff-section"><i class="fas fa-users"></i> Staffs</a></li>
                 <li><a href="#" data-target="services-section"><i class="fas fa-briefcase-medical"></i> Services</a></li>
+                <li><a href="#" data-target="checklist-section"><i class="fas fa-clipboard-list"></i> Pre-Screening Response</a></li>
                 <li><a href="#" data-target="feedbacks-section"><i class="fas fa-comment"></i> Feedbacks</a></li>
 
                 <p>OTHERS</p>
@@ -728,6 +729,37 @@ if (isset($_SESSION['firstname'])) {
             </div>
             <generic-table data="admin_feedbacks"></generic-table>
         </div>
+
+        <div id="checklist-section" class="content">
+            <h4>PRE-SCREENING RESPONSE</h4>
+            
+            <div class="tabs-container">
+                <div class="tab tab-pending active" data-target="content-pending">Pending</div>
+                <div class="tab tab-complete" data-target="content-complete">Complete</div>
+            </div>
+
+            <div id="content-pending" class="content-container active">
+                <generic-table data="therapist_pre-screening_pending"></generic-table>
+            </div>
+            <div id="content-complete" class="content-container">
+                <generic-table data="therapist_pre-screening_complete"></generic-table>
+            </div>
+        </div>
+        <script>
+                const tabsPreScreen = document.querySelectorAll('.tab');
+                const contentsPreScreen = document.querySelectorAll('.content-container');
+
+                tabsPreScreen.forEach(tab => {
+                    tab.addEventListener('click', () => {
+  
+                    tabsPreScreen.forEach(t => t.classList.remove('active'));
+                    contentsPreScreen.forEach(c => c.classList.remove('active'));
+     
+                    tab.classList.add('active');
+                    document.getElementById(tab.dataset.target).classList.add('active');
+                    });
+                });
+        </script>
 
     </div>
 

@@ -1,6 +1,7 @@
 // therapist-dashboard.js
 
 document.addEventListener("DOMContentLoaded", () => {
+  TableEngine.setGlobalType("therapist");
   const links = document.querySelectorAll(".left-section nav a");
   const sections = document.querySelectorAll(".right-section .content");
   const menuItems = document.querySelectorAll(".left-section ul li");
@@ -412,31 +413,6 @@ function fetchFeedback(date, id) {
   }
 }
 
-// therapist-dashboard.js
-function displayGuestChecklist(guestID) {
-  // Hide the guest table
-  const prescreeningTable = document.getElementById("pre-screening-table");
-  prescreeningTable.style.display = "none";
-
-  // Fetch guest data using guestID
-  fetchGuestData(guestID)
-    .then((guestData) => {
-      // Display guest information in the header
-      document.getElementById("checklist-name").innerText =
-        guestData.guest_name;
-      document.getElementById("child-name").innerText =
-        guestData.child_name || "";
-      document.getElementById("child-age").innerText =
-        guestData.child_age || "";
-
-      // Show the checklist container
-      document.querySelector(".checklist-container").style.display = "block";
-
-      // Now fetch the checklist questions and answers
-      fetchChecklist(guestID);
-    })
-    .catch((error) => console.error("Error fetching guest data:", error));
-}
 
 function fetchGuestData(guestID) {
   return fetch(`fetch_guest_data.php?guestID=${guestID}`)

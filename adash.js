@@ -1,6 +1,7 @@
 let globalTherapistFilter = new TherapistFilter();
 
 document.addEventListener('DOMContentLoaded', () => {
+    TableEngine.setGlobalType("admin");
     const links = document.querySelectorAll('.left-section nav a');
     const sections = document.querySelectorAll('.right-section .content');
     const menuItems = document.querySelectorAll('.left-section ul li');
