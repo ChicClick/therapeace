@@ -5,7 +5,6 @@ document.addEventListener('DOMContentLoaded', () => {
         try {
             const response = await fetch('a_dashboarddata.php');
             dashboardData = await response.json();
-            console.log("Dashboard Data:", dashboardData); // Debugging line
 
             // Display total patients
             if (dashboardData.totalPatients) {

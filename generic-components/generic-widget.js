@@ -237,12 +237,12 @@ class WidgetEngine extends HTMLElement{
         return flexibility.map(id => flexibilityMapper.get(id)).join(", ");
     }
 
-    specializationDisplay(specialization = []) {
+    specializationDisplay(specialization = 0) {
         if (!specialization || specialization.length === 0) {
             return "No Specialization to show";
         }
 
-        return specialization.map(id => specializationMap.get(id)).join(", ");
+        return specializationMap.get(specialization);
     }
     
 }

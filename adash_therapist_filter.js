@@ -26,7 +26,7 @@ class TherapistFilter {
     }
 
     setSpecialization(specialization) {
-        this.specialization = JSON.parse(specialization);
+        this.specialization = specialization;
     }
 
     setDaysAvailable(days) {
@@ -113,8 +113,7 @@ class TherapistFilter {
 
         if(this.specialization && this.specialization.length > 0) {
             filteredData = filteredData.filter(therapist => {
-                const specialization = therapist.specialization ? JSON.parse(therapist.specialization) : [];
-                return this.specialization.some(day => specialization.includes(day));
+                return this.specialization == therapist.specialization;
             });
         }
 
@@ -353,13 +352,10 @@ document.addEventListener("DOMContentLoaded", function() {
     }
 
     updateSpecializationAppointment = () => {
-        let selectedSpecializationAppointment = [];
-        document.querySelectorAll("input[name='specializationAppointment[]']:checked").forEach(function(checkbox) {
-            selectedSpecializationAppointment.push(parseInt(checkbox.value));
-        });
 
-        therapist.setSpecialization(JSON.stringify(selectedSpecializationAppointment));
-        console.log("Selected Specialization:", selectedSpecializationAppointment);
+        let value = document.querySelector("#serviceID").value;
+        therapist.setSpecialization([value]);
+        console.log("Selected Specialization:", value);
         therapist.filter();
     }
 
