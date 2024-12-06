@@ -165,15 +165,23 @@ foreach ($questions as $question) {
                                         $options = !empty($question['options']) ? explode(',', $question['options']) : [];
                                         ?>
                                         <?php if ($question['inputType'] === 'radio'): ?>
-                                            <?php foreach ($options as $option): ?>
-                                                <input type="radio" name="question_<?= $question['questionID'] ?>" value="<?= htmlspecialchars($option) ?>" <?= $isRequired ?>>
-                                                <label><?= htmlspecialchars($option) ?></label><br>
-                                            <?php endforeach; ?>
+                                            <div class="option-group">
+                                                <?php foreach ($options as $option): ?>
+                                                    <div class="option-item">
+                                                        <input type="radio" name="question_<?= $question['questionID'] ?>" value="<?= htmlspecialchars($option) ?>" <?= $isRequired ?>>
+                                                        <label><?= htmlspecialchars($option) ?></label>
+                                                    </div>
+                                                <?php endforeach; ?>
+                                            </div>
                                         <?php elseif ($question['inputType'] === 'checkbox'): ?>
-                                            <?php foreach ($options as $option): ?>
-                                                <input type="checkbox" name="question_<?= $question['questionID'] ?>[]" value="<?= htmlspecialchars($option) ?>" <?= $isRequired ?>>
-                                                <label><?= htmlspecialchars($option) ?></label><br>
-                                            <?php endforeach; ?>
+                                            <div class="option-group">
+                                                <?php foreach ($options as $option): ?>
+                                                    <div class="option-item">
+                                                        <input type="checkbox" name="question_<?= $question['questionID'] ?>[]" value="<?= htmlspecialchars($option) ?>" <?= $isRequired ?>>
+                                                        <label><?= htmlspecialchars($option) ?></label>
+                                                    </div>
+                                                <?php endforeach; ?>
+                                            </div>
                                         <?php elseif (in_array($question['inputType'], ['text', 'number', 'date'])): ?>
                                             <input type="<?= $question['inputType'] ?>" name="question_<?= $question['questionID'] ?>" class="styled-input" <?= $isRequired ?>><br>
                                         <?php elseif ($question['inputType'] === 'select'): ?>
@@ -200,7 +208,6 @@ foreach ($questions as $question) {
                                         <select name="sex" id="sex" class="styled-select" required>
                                             <option value="male">Male</option>
                                             <option value="female">Female</option>
-                                            <option value="other">Other</option>
                                         </select>
                                     </div>
                                 </div>
