@@ -2,6 +2,7 @@
     include 'config.php';
     include 'db_conn.php';
 
+    $patientID = $_SESSION['patientID'];
     // SQL query to fetch the most recently created report for the specified patient
     $sql = "SELECT r.reportID, r.patientID, r.therapistID, t.therapistName, r.status, r.created_at, r.pdf_path 
             FROM reports r

@@ -52,82 +52,77 @@ document.addEventListener('DOMContentLoaded', function() {
             dropdown.classList.remove('show');
         }
     };
-
-    // Event listener for the Generate Report button
-    document.getElementById('generateReportButton').addEventListener('click', generateReportButton);
-
-    // Show the report request modal
-    function generateReportButton() {
-        document.getElementById('reportRequestModal').style.display = 'block';
-
-        // Fetch the therapists for the logged-in patient
-        fetch('patient_get_notes.php', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/x-www-form-urlencoded',
-            },
-            body: new URLSearchParams({
-                'fetchTherapists': true // Indicate we want to fetch therapists
-            })
-        })
-        .then(response => {
-            // Log the raw response for debugging
-            console.log('Response:', response);
-            return response.json();
-        })
-        .then(data => {
-            console.log('Data:', data);
-            console.log('Therapists:', data.therapists);
-            if (data.success) {
-                const therapistSelect = document.getElementById('therapistSelect');
-                therapistSelect.innerHTML = ''; // Clear existing options
-                data.therapists.forEach(therapist => {
-                    console.log('Therapist:', therapist); // Log the therapist object
-                    const option = document.createElement('option');
-                    option.value = therapist.therapistID; // Use therapist ID for the value
-                    option.textContent = therapist.therapistName; // Display therapist name
-                    therapistSelect.appendChild(option);
-                });
-        
-                // If no therapists are found, you might want to inform the user
-                if (data.therapists.length === 0) {
-                    alert('No therapists found for your sessions.');
-                }
-            } else {
-                alert(data.error); // Alert the error message
-            }
-        })
-        
-        .catch(error => console.error('Error fetching therapists:', error));
-    }
-
-    // Event listener for submitting the report request
-    document.getElementById('submitReportRequest').addEventListener('click', function() {
-        const therapistID = document.getElementById('therapistSelect').value;
-
-        // Submit report request to server
-        fetch('patient_submit_report.php', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/x-www-form-urlencoded',
-            },
-            body: new URLSearchParams({
-                'therapistID': therapistID
-            })
-        })
-        .then(response => response.json())
-        .then(data => {
-            if (data.success) {
-                alert(data.message); // Display success message
-                closeReportRequestModal(); // Automatically close modal on success
-            } else {
-                alert(data.error); // Display error message
-            }
-        })
-        .catch(error => console.error('Error submitting report request:', error));
-    });
     
 });
+
+function submitReportRequest() {
+    const therapistID = document.getElementById('therapistSelect').value;
+
+    // Submit report request to server
+    fetch('patient_submit_report.php', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+        },
+        body: new URLSearchParams({
+            'therapistID': therapistID
+        })
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            alert(data.message); // Display success message
+            closeReportRequestModal(); // Automatically close modal on success
+        } else {
+            alert(data.error); // Display error message
+        }
+    })
+    .catch(error => console.error('Error submitting report request:', error));
+}
+
+function generateReportButton() {
+    document.getElementById('reportRequestModal').style.display = 'block';
+
+    // Fetch the therapists for the logged-in patient
+    fetch('patient_get_notes.php', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+        },
+        body: new URLSearchParams({
+            'fetchTherapists': true // Indicate we want to fetch therapists
+        })
+    })
+    .then(response => {
+        // Log the raw response for debugging
+        console.log('Response:', response);
+        return response.json();
+    })
+    .then(data => {
+        console.log('Data:', data);
+        console.log('Therapists:', data.therapists);
+        if (data.success) {
+            const therapistSelect = document.getElementById('therapistSelect');
+            therapistSelect.innerHTML = ''; // Clear existing options
+            data.therapists.forEach(therapist => {
+                console.log('Therapist:', therapist); // Log the therapist object
+                const option = document.createElement('option');
+                option.value = therapist.therapistID; // Use therapist ID for the value
+                option.textContent = therapist.therapistName; // Display therapist name
+                therapistSelect.appendChild(option);
+            });
+    
+            // If no therapists are found, you might want to inform the user
+            if (data.therapists.length === 0) {
+                alert('No therapists found for your sessions.');
+            }
+        } else {
+            alert(data.error); // Alert the error message
+        }
+    })
+    
+    .catch(error => console.error('Error fetching therapists:', error));
+}
 
 function closeReportRequestModal() {
     console.log('Close button clicked');
@@ -245,6 +240,7 @@ function closeReportRequestModal() {
     
 
     function openProgressReportPopup(reportID) {
+        console.log(reportID);
         if (reportID !== null) {
             // Open the popup and load the data for the selected report
             document.getElementById('progress-report-popup').style.display = 'block';

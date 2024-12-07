@@ -18,7 +18,7 @@ include 'patientFetchReport.php';
         <hr>
         <!-- Notes Search and Sort Section -->
         <div id="notes-table"> <!-- Wrapper to hide the entire section -->
-        <button id="generateReportButton">Request Progress Report</button>
+        <button id="generateReportButton" onclick="generateReportButton()">Request Progress Report</button>
         <button id="viewReportButton" onclick="openProgressReportPopup(<?= isset($report) ? $report['reportID'] : 'null' ?>)">   
              View Progress Report
         </button>
@@ -32,7 +32,7 @@ include 'patientFetchReport.php';
                     <h2>Request a Report</h2>
                     <label for="therapistSelect">Select Therapist:</label>
                     <select id="therapistSelect"></select>
-                    <button id="submitReportRequest">Submit Request</button>
+                    <button id="submitReportRequest" onclick="submitReportRequest()">Submit Request</button>
                 </div>
             </div>
             
