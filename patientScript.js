@@ -52,8 +52,55 @@ document.addEventListener('DOMContentLoaded', function() {
             dropdown.classList.remove('show');
         }
     };
-    
 });
+
+fetchReport = async () => {
+    const progressReportCardModalContent = document.querySelector('.progress-report-card-modal-container');
+    progressReportCardModalContent.innerHTML = "";
+    try{
+        await fetch('patientFetchReport.php')
+        .then(res =>  res.json())
+        .then(data => {
+            data.reports.forEach(report => {
+                console.lo
+                const reportCreationDate = new Date(report.created_at);
+                const currentDate = new Date();
+                const interval = currentDate - reportCreationDate;
+                const isReportAvailable= report.status != 'pending' && report.pdf_path;
+                const action = isReportAvailable ? `
+                     <p><a href="${`https://therapeace-d74d563df28a.herokuapp.com/` + report.pdf_path}" download>Download Report from ${report.therapistName}</a></p>
+                ` : `
+                    <p>Report is not available.</p>
+                `;
+                const card = `
+                <div class="report-item">
+                    <p><strong>Report ID:</strong>${report.reportID}</p>
+                    <p><strong>Therapist:</strong>${report.therapistName}></p>
+                    <p><strong>Status:</strong>${report.status}</p>
+                    <p><strong>Created At:</strong>${report.created_at}</p>
+    
+                    ${action}
+                    <hr>
+                </div>`;
+    
+                progressReportCardModalContent.innerHTML += card;
+            });
+
+            return data.isReportAvailable;
+        })
+        .then(isReportAvailable => {
+            if (isReportAvailable) {
+                document.getElementById('progress-report-popup').style.display = 'block';
+            } else {
+                alert('No report available for this patient.');
+            }
+        })
+        .catch(e => console.log(e))
+    }
+    catch (e){
+        console.error("patientFetchReport.php Error:", e);
+    }
+}
 
 function submitReportRequest() {
     const therapistID = document.getElementById('therapistSelect').value;
@@ -239,15 +286,8 @@ function closeReportRequestModal() {
     }
     
 
-    function openProgressReportPopup(reportID) {
-        console.log(reportID);
-        if (reportID !== null) {
-            // Open the popup and load the data for the selected report
-            document.getElementById('progress-report-popup').style.display = 'block';
-            // You can now use reportID to fetch specific report details if necessary
-        } else {
-            alert('No report available for this patient.');
-        }
+    async function openProgressReportPopup() {
+        await fetchReport();
     }
     
     function closePopup() {
