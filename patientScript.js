@@ -68,7 +68,7 @@ fetchReport = async () => {
                 const interval = currentDate - reportCreationDate;
                 const isReportAvailable= report.status != 'pending' && report.pdf_path;
                 const action = isReportAvailable ? `
-                     <p><a href="${`https://therapeace-d74d563df28a.herokuapp.com/` + report.pdf_path}" download>Download Report from ${report.therapistName}</a></p>
+                     <p><a href="${location.origin + "/" + report.pdf_path}" download>Download Report from ${report.therapistName}</a></p>
                 ` : `
                     <p>Report is not available.</p>
                 `;
