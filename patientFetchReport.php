@@ -1,12 +1,34 @@
 <?php
 header('Content-Type: application/json'); // Set content type to JSON
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
 
 include 'config.php';
 include 'db_conn.php';
+require 'vendor/autoload.php';
+
+use Aws\S3\S3Client;
+use Aws\Exception\AwsException;
+
+$bucketName = getenv('BUCKET_NAME');
+$region = getenv('REGION');
+$accessKey = getenv('ACCESS_KEY');
+$secretKey = getenv('SECRET_ACCESS_KEY');
+
+$s3Client = new S3Client([
+    'version' => 'latest',
+    'region'  => $region,
+    'credentials' => [  
+        'key'    => $accessKey,
+        'secret' => $secretKey,
+    ],
+    'http' => [
+        'verify' => false,
+    ],
+]);
 
 $patientID = $_SESSION['patientID'];
 
-// SQL query to fetch the most recent report for each therapist for the specified patient
 $sql = "SELECT r.reportID, r.patientID, r.therapistID, t.therapistName, r.status, r.created_at, r.pdf_path
         FROM reports r
         JOIN therapist t ON r.therapistID = t.therapistID
@@ -19,38 +41,70 @@ $sql = "SELECT r.reportID, r.patientID, r.therapistID, t.therapistName, r.status
         ORDER BY r.created_at DESC";
 
 $stmt = $conn->prepare($sql);
+if ($stmt === false) {
+    die('Query preparation failed: ' . $conn->error);
+}
+
 $stmt->bind_param("s", $patientID);
 $stmt->execute();
-$result = $stmt->get_result();
+
+// Bind result variables
+$stmt->bind_result($reportID, $patientID, $therapistID, $therapistName, $status, $created_at, $pdf_path);
 
 $response = [
     'isReportAvailable' => false,
     'reports' => [],
 ];
 
-// Fetch all reports
-while ($report = $result->fetch_assoc()) {
-    // Check if the report is more recent than one week
-    $reportCreationDate = new DateTime($report['created_at']);
+$foundReports = false; // Flag to check if any report is found
+
+// Fetch results
+while ($stmt->fetch()) {
+    $foundReports = true;
+    $reportCreationDate = new DateTime($created_at);
     $currentDate = new DateTime();
     $interval = $currentDate->diff($reportCreationDate);
 
-    // Only include the report if it is less than or equal to 7 days old
     if ($interval->days <= 60) {
         $response['isReportAvailable'] = true;
+
+        $s3Url = null;
+
+        // Ensure that pdf_path is not empty before generating the URL
+        if (!empty($pdf_path)) {
+            try {
+                $result = $s3Client->getObjectUrl($bucketName, $pdf_path);
+                $s3Url = $result;
+            } catch (AwsException $e) {
+                // Log the error message
+                error_log('Error fetching S3 URL: ' . $e->getMessage());
+                $s3Url = null;
+            }
+        }
+
         $response['reports'][] = [
-            'reportID' => $report['reportID'],
-            'patientID' => $report['patientID'],
-            'therapistID' => $report['therapistID'],
-            'therapistName' => $report['therapistName'],
-            'status' => $report['status'],
-            'created_at' => $report['created_at'],
-            'pdf_path' => $report['pdf_path'],
+            'reportID' => $reportID,
+            'patientID' => $patientID,
+            'therapistID' => $therapistID,
+            'therapistName' => $therapistName,
+            'status' => $status,
+            'created_at' => $created_at,
+            'pdf_path' => $s3Url, // This will be null if pdf_path is empty
         ];
     }
 }
 
+if (!$foundReports) {
+    error_log('No reports found for patient ' . $patientID);
+}
+
 $conn->close();
 
+$json_response = json_encode($response);
+if (json_last_error() !== JSON_ERROR_NONE) {
+    echo json_encode(['error' => 'JSON encoding failed: ' . json_last_error_msg()]);
+    exit;
+}
+
 // Output the JSON response
-echo json_encode($response);
+echo $json_response;

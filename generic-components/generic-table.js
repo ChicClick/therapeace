@@ -1213,20 +1213,24 @@ class TableEngine extends HTMLElement {
                     // Render options based on the input type
                     if (item.inputType === "checkbox" || item.inputType === "radio") {
                         (item.options || []).forEach((option) => {
+                            // Create label element
                             const label = document.createElement("label");
                             label.classList.add(item.inputType === "checkbox" ? "styled-checkbox" : "styled-radio");
-            
+
                             const input = document.createElement("input");
                             input.type = item.inputType;
-                            input.disabled = true; // Disable inputs
-                            input.name = `question-${item.questionID}`; // Group by question ID
-                            if (item.selectedAnswer === option) {
+                            input.name = `question-${item.questionID}`;
+                            input.value = option;
+                            input.disabled = true;
+                    
+                            if (item.selectedAnswer.trim() === option.trim()) {
                                 input.checked = true;
+                                input.setAttribute("checked", "checked");
                             }
-            
+
                             label.appendChild(input);
-                            label.appendChild(document.createTextNode(option)); // Add option text
-            
+                            label.appendChild(document.createTextNode(option));
+
                             answerDiv.appendChild(label);
                         });
                     } else {
@@ -1328,7 +1332,10 @@ class TableEngine extends HTMLElement {
         .then(data => {
             if (data) {
                 const image = "images/" + imageURL;
-     
+                const button = data.status != "verified" ? `                                        
+                                        <button type="submit">
+                                            Save
+                                        </button>` : "";
                 new SideViewBarEngine(
                     "PROGRESS REPORT", 
                     `
@@ -1347,9 +1354,8 @@ class TableEngine extends HTMLElement {
                                         <label for="notesTextarea">Save or Edit Report:</label>
                                         <textarea class="section-textarea" name="summary" id="notesTextarea" rows="4">${data.summary}</textarea>
                                         <input type="hidden" name="reportID" value="${reportID}"/>
-                                        <button type="submit">
-                                            Save
-                                        </button>
+                                        
+                                        ${button}
                                     </div>
                             </form> 
                         </div>

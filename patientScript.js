@@ -52,7 +52,38 @@ document.addEventListener('DOMContentLoaded', function() {
             dropdown.classList.remove('show');
         }
     };
+
+    changePassword = async (e) => {
+        e.preventDefault();
+        const changePasswordForm = `
+            <form id="changePasswordForm" action="patient_change_password.php" method="POST">
+                <div class="form-group">
+                    <label for="oldPassword">Old Password</label>
+                    <input type="password" id="oldPassword" name="oldPassword" required>
+                </div>
+    
+                <div class="form-group">
+                    <label for="newPassword">New Password</label>
+                    <input type="password" id="newPassword" name="newPassword" required>
+                </div>
+    
+                <div class="form-group">
+                    <label for="confirmPassword">Confirm New Password</label>
+                    <input type="password" id="confirmPassword" name="confirmPassword" required>
+                </div>
+    
+                <div class="error-message" id="error-message"></div>
+    
+                <div class="form-group">
+                    <input type="submit" value="Change Password">
+                </div>
+            </form>
+        `
+        new SideViewBarEngine("Change Password", changePasswordForm).render();
+    }
 });
+
+
 
 fetchReport = async () => {
     const progressReportCardModalContent = document.querySelector('.progress-report-card-modal-container');
@@ -62,13 +93,12 @@ fetchReport = async () => {
         .then(res =>  res.json())
         .then(data => {
             data.reports.forEach(report => {
-                console.lo
                 const reportCreationDate = new Date(report.created_at);
                 const currentDate = new Date();
                 const interval = currentDate - reportCreationDate;
                 const isReportAvailable= report.status != 'pending' && report.pdf_path;
                 const action = isReportAvailable ? `
-                     <p><a href="${location.origin + "/" + report.pdf_path}" download>Download Report from ${report.therapistName}</a></p>
+                     <p><a href="${report.pdf_path}" download>Download Report from ${report.therapistName}</a></p>
                 ` : `
                     <p>Report is not available.</p>
                 `;

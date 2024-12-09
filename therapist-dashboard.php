@@ -120,7 +120,7 @@ $therapistID = $_SESSION['therapist_id'];
         <!-- Feedback Notes Section -->
         <div id="notes-section" class="content">
             <h4>FEEDBACK NOTES</h4>
-
+            <button id="add-notes" class="add-notes" onclick="openModal()"><i class="fas fa-plus"></i> Add Notes</button> 
             <div class="therapist-feedback container">
 
             <header class="therapist-feedback">

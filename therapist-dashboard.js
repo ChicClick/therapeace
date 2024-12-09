@@ -170,9 +170,9 @@ document.addEventListener("DOMContentLoaded", () => {
     // Check if options are already loaded (beyond the default placeholder)
     if (patientSelect.options.length > 1) return;
 
-    patientSelect.options[0].remove();
-
-    console.log(patientSelect);
+    if(patientSelect.options[0]) {
+      patientSelect.options[0].remove();
+    }
 
     try {
       const response = await fetch("notes_patient.php");
@@ -243,41 +243,44 @@ const checkMessage = () => {
 
 /** NOTES CALL BACK FUNCTION START */
 fetchAccordionNotes = () => {
-    const cardsList = document.querySelector("#patient-feedback");
-    const datesContainer = document.querySelector("#patient-dates .therapist-feedback.list-items");
-    const feedbackView = document.querySelector("#patient-feedback-view");
-    const breadcrumb = document.querySelector("#breadcrumb");
+  const cardsList = document.querySelector("#patient-feedback");
+  const datesContainer = document.querySelector(
+    "#patient-dates .therapist-feedback.list-items"
+  );
+  const feedbackView = document.querySelector("#patient-feedback-view");
+  const breadcrumb = document.querySelector("#breadcrumb");
 
-    if (!cardsList || !datesContainer || !feedbackView || !breadcrumb) {
-        throw new Error("Required containers are missing in the HTML.");
-    }
+  if (!cardsList || !datesContainer || !feedbackView || !breadcrumb) {
+    throw new Error("Required containers are missing in the HTML.");
+  }
 
-    fetch("notes.php")
-        .then(response => {
-            if (!response.ok) {
-                throw new Error(`HTTP error! Status: ${response.status}`);
-            }
-            return response.json();
-        })
-        .then(data => {
-            if (!Array.isArray(data)) {
-                throw new Error("Fetched data is not an array.");
-            }
+  fetch("notes.php")
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`);
+      }
+      return response.json();
+    })
+    .then((data) => {
+      if (!Array.isArray(data)) {
+        throw new Error("Fetched data is not an array.");
+      }
 
-            const groupedData = data.reduce((map, item) => {
-                if (!map[item.patientID]) {
-                    map[item.patientID] = { info: item, feedbacks: [] };
-                }
-                map[item.patientID].feedbacks.push(item);
-                return map;
-            }, {});
+      const groupedData = data.reduce((map, item) => {
+        if (!map[item.patientID]) {
+          map[item.patientID] = { info: item, feedbacks: [] };
+        }
+        map[item.patientID].feedbacks.push(item);
+        return map;
+      }, {});
 
-            Object.keys(groupedData).forEach(patientName => {
-                const patient = groupedData[patientName].info;
-                const card = document.createElement("div");
-                card.className = "therapist-feedback card";
-                card.dataset.patientName = patientName;
-                card.innerHTML = `
+      if (data[0].message != 'No feedback found') {
+        Object.keys(groupedData).forEach((patientName) => {
+          const patient = groupedData[patientName].info;
+          const card = document.createElement("div");
+          card.className = "therapist-feedback card";
+          card.dataset.patientName = patientName;
+          card.innerHTML = `
                     <div class="therapist-feedback-card-content">
                         <div class="therapist-feedback-avatar">
                             <img src="images/${patient.image}" alt="Avatar">
@@ -288,51 +291,54 @@ fetchAccordionNotes = () => {
                         </div>
                     </div>
                 `;
-                cardsList.appendChild(card);
+          cardsList.appendChild(card);
 
-                card.addEventListener("click", () => {
+          card.addEventListener("click", () => {
+            document
+              .querySelectorAll(".therapist-feedback.card")
+              .forEach((c) => {
+                c.classList.remove("selected");
+              });
 
-                    document.querySelectorAll(".therapist-feedback.card").forEach(c => {
-                        c.classList.remove("selected");
-                    });
+            card.classList.add("selected");
+            datesContainer.innerHTML = "";
+            breadcrumb.innerHTML = `Patient Feedback Notes » <span class="breadcrumb-item">${patientName}</span>`;
 
-                    card.classList.add("selected");
-                    datesContainer.innerHTML = "";
-                    breadcrumb.innerHTML = `Patient Feedback Notes » <span class="breadcrumb-item">${patientName}</span>`;
+            // Add feedback dates for the selected patient
+            groupedData[patientName].feedbacks.forEach((feedback) => {
+              const listItem = document.createElement("li");
+              listItem.className = "therapist-feedback";
+              listItem.textContent = feedback.feedback_date;
+              listItem.dataset.feedback = feedback.feedback;
+              datesContainer.appendChild(listItem);
 
-                    // Add feedback dates for the selected patient
-                    groupedData[patientName].feedbacks.forEach(feedback => {
-                        const listItem = document.createElement("li");
-                        listItem.className = "therapist-feedback";
-                        listItem.textContent = feedback.feedback_date;
-                        listItem.dataset.feedback = feedback.feedback;
-                        datesContainer.appendChild(listItem);
+              // Attach click listener to each date
+              listItem.addEventListener("click", () => {
+                document
+                  .querySelectorAll(".therapist-feedback.list-items li")
+                  .forEach((li) => {
+                    li.classList.remove("selected");
+                  });
+                listItem.classList.add("selected");
 
-                        // Attach click listener to each date
-                        listItem.addEventListener("click", () => {
-                            document.querySelectorAll(".therapist-feedback.list-items li").forEach(li => {
-                                li.classList.remove("selected");
-                            });
-                            listItem.classList.add("selected");
+                breadcrumb.innerHTML = `Patient Feedback Notes » <span class="breadcrumb-item">${patientName}</span> » <span class="breadcrumb-item">${feedback.feedback_date}</span>`;
 
-                            breadcrumb.innerHTML = `Patient Feedback Notes » <span class="breadcrumb-item">${patientName}</span> » <span class="breadcrumb-item">${feedback.feedback_date}</span>`;
-
-                            feedbackView.innerHTML = `
+                feedbackView.innerHTML = `
                                 <h4>Feedback Details</h4>
                                 <p><strong>Date:</strong> ${feedback.feedback_date}</p>
                                 <p><strong>Feedback:</strong> ${feedback.feedback}</p>
                                 <p><strong>Service:</strong> ${feedback.service_name}</p>
                             `;
-                        });
-                    });
-                });
+              });
             });
-        })
-        .catch(error => {
-            console.error("Error fetching data:", error);
+          });
         });
+      }
+    })
+    .catch((error) => {
+      console.error("Error fetching data:", error);
+    });
 };
-
 
 /** NOTES CALL BACK FUNCTION END */
 
@@ -412,7 +418,6 @@ function fetchFeedback(date, id) {
       });
   }
 }
-
 
 function fetchGuestData(guestID) {
   return fetch(`fetch_guest_data.php?guestID=${guestID}`)
