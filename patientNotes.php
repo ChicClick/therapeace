@@ -8,7 +8,6 @@ if (isset($_SESSION['patientName'])) {
     exit;
 } 
 
-include 'patientFetchReport.php';
 ?>
 
     <div class="wrapper">
@@ -19,7 +18,7 @@ include 'patientFetchReport.php';
         <!-- Notes Search and Sort Section -->
         <div id="notes-table"> <!-- Wrapper to hide the entire section -->
         <button id="generateReportButton" onclick="generateReportButton()">Request Progress Report</button>
-        <button id="viewReportButton" onclick="openProgressReportPopup(<?= isset($report) ? $report['reportID'] : 'null' ?>)">   
+        <button id="viewReportButton" onclick="openProgressReportPopup()">   
              View Progress Report
         </button>
 
@@ -53,37 +52,10 @@ include 'patientFetchReport.php';
                 <!-- Close Button -->
                 <span class="close-btn" onclick="closePopup()">&times;</span>
                 <h2>Progress Report</h2>
-
-                <?php if ($result->num_rows > 0): ?>
-                    <?php while ($report = $result->fetch_assoc()): ?>
-                        <div class="report-item">
-                            <p><strong>Report ID:</strong> <?= htmlspecialchars($report['reportID']) ?></p>
-                            <p><strong>Therapist:</strong> <?= htmlspecialchars($report['therapistName']) ?></p>
-                            <p><strong>Status:</strong> <?= htmlspecialchars($report['status']) ?></p>
-                            <p><strong>Created At:</strong> <?= htmlspecialchars($report['created_at']) ?></p>
-
-                            <?php
-                                // Check report availability status
-                                $reportCreationDate = new DateTime($report['created_at']);
-                                $currentDate = new DateTime();
-                                $interval = $currentDate->diff($reportCreationDate);
-                                $isReportAvailable = ($interval->days <= 7) && ($report['status'] != 'pending' && !empty($report['pdf_path']));
-                            ?>
-
-                            <?php if ($isReportAvailable): ?>
-                                <!-- Display the download link for available reports -->
-                                <p><a href="<?= htmlspecialchars($report['pdf_path']) ?>" download>Download Report from <?= htmlspecialchars($report['therapistName']) ?></a></p>
-                            <?php else: ?>
-                                <p>Report is not available.</p>
-                            <?php endif; ?>
-
-
-                            <hr>
-                        </div>
-                    <?php endwhile; ?>
-                <?php else: ?>
-                    <p>No reports available for this patient.</p>
-                <?php endif; ?>
+                <div class="progress-report-card-modal-container">
+                    <!-- THIS IS WHERE THE CARD GOES PLEASE SEE patientScript.js line 61 -->
+                </div>
+                
             </div>
     </div>
 </div>

@@ -1,7 +1,3 @@
-<?php
-
-include 'patientFetchReport.php';
-?>
 
     <div class="wrapper">
         <!-- Appointments Tab -->

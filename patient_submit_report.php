@@ -35,20 +35,20 @@ $checkResult = $checkStmt->get_result();
 
 $testingMode = false; // Set to true for testing, false for production
 
-if ($checkResult->num_rows > 0) {
-    $lastReport = $checkResult->fetch_assoc();
-    $lastReportTime = strtotime($lastReport['created_at']);
-    $oneWeekInSeconds = 7 * 24 * 60 * 60; // 7 days in seconds
-    $currentTime = time();
+// if ($checkResult->num_rows > 0) {
+//     $lastReport = $checkResult->fetch_assoc();
+//     $lastReportTime = strtotime($lastReport['created_at']);
+//     $oneWeekInSeconds = 60 * 24 * 60 * 60; // 7 days in seconds
+//     $currentTime = time();
 
-    if (!$testingMode && ($currentTime - $lastReportTime) < $oneWeekInSeconds) {
-        echo json_encode([
-            'success' => false,
-            'error' => 'A report request was already submitted for this therapist within the past week. Please wait for it to be verified.'
-        ]);
-        exit();
-    }
-}
+//     if (!$testingMode && ($currentTime - $lastReportTime) < $oneWeekInSeconds) {
+//         echo json_encode([
+//             'success' => false,
+//             'error' => 'A report request was already submitted for this therapist within the past week. Please wait for it to be verified.'
+//         ]);
+//         exit();
+//     }
+// }
 
 // Fetch session feedback notes for the patient and selected therapist
 $sql = "SELECT feedback FROM sessionfeedbacknotes n
@@ -108,8 +108,13 @@ if (isset($responseData[0]['summary_text'])) {
 
 // Prepare the SQL statement to insert the report
 $insertSQL = "INSERT INTO reports (patientID, therapistID, summary, status, created_at, updated_at, pdf_path)
-              VALUES (?, ?, ?, 'Pending', NOW(), NOW(), '')";
-$insertStmt = $conn->prepare($insertSQL); // Use the existing $conn
+              VALUES (?, ?, ?, 'Pending', NOW(), NOW(), '')
+              ON DUPLICATE KEY UPDATE 
+                summary = VALUES(summary),
+                status = 'Pending',
+                updated_at = NOW();";
+
+$insertStmt = $conn->prepare($insertSQL);
 $insertStmt->bind_param("sss", $patientID, $therapistID, $summary);
 $insertSuccess = $insertStmt->execute();
 

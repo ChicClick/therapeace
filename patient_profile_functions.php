@@ -135,7 +135,7 @@ $scheduleDate = $patientSchedule;
 
 // Function to format the schedule date
 function formatSchedule($scheduleDate) {
-    $timestamp = strtotime($scheduleDate);
+    $timestamp = strtotime($scheduleDate ?? "");
     $dayOfWeek = date("l", $timestamp);
     return "Every " . $dayOfWeek;
 }
