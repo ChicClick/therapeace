@@ -1119,6 +1119,7 @@ nav.scrolled {
     .hamburger-menu {
         display: flex; /* Show the hamburger icon */
     }
+    
 
     .services-section {
         padding: 40px 10px; /* Adjust padding for smaller screens */
