@@ -26,6 +26,7 @@
                 <li><a href="#about" data-nav-link>About Us</a></li>
                 <li><a href="#services" data-nav-link>Services</a></li>
                 <li><a href="#rates" data-nav-link>Rates</a></li>
+                <!-- Add the login button as a list item -->
                 <li>
                     <button class="login-btn" onclick="window.location.href='loginlanding.html';">Login</button>
                 </li>
