@@ -1,12 +1,19 @@
 <?php
 include 'db_conn.php';
-require_once __DIR__ . '/fpdf/fpdf.php'; 
-require_once __DIR__ . '/fpdi/src/autoload.php'; 
+require_once __DIR__ . '/fpdf/fpdf.php';
+require_once __DIR__ . '/fpdi/src/autoload.php';
+require 'vendor/autoload.php';
 
+use Aws\Exception\AwsException;
+use Aws\S3\S3Client;
 use setasign\Fpdi\Fpdi;
 
-// Set the correct timezone
 date_default_timezone_set('Asia/Manila');
+
+$bucketName = 'therapeace-pdf-reports';
+$region = 'ap-southeast-2';
+$accessKey = 'AKIATX3PIEANFBCNKAE2';
+$secretKey = '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';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Debugging incoming POST data
@@ -17,21 +24,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 }
 
-
 $reportID = $_POST['reportID'];
 $summary = $_POST['summary'];
 $status = "verified";
-$updated_at = date('Y-m-d H:i:s'); // Current datetime
+$updated_at = date('Y-m-d H:i:s');
 
-// Check if template exists
 $templateFile = 'progressReport1.pdf';
 if (!file_exists($templateFile)) {
     die("Error: Template PDF file not found.");
-}
-
-// Check if pdf_reports directory exists and is writable
-if (!is_dir('pdf_reports')) {
-    mkdir('pdf_reports', 0777, true);  // Create the directory if it doesn't exist
 }
 
 $pdf = new Fpdi();
@@ -43,16 +43,41 @@ $pdf->SetFont('Arial', '', 10);
 $pdf->SetXY(30, 80);
 $pdf->MultiCell(0, 10, $summary);
 
-// Define the path for saving the PDF
-$pdfPath = 'pdf_reports/report_' . $reportID . '.pdf';
-$pdf->Output($pdfPath, 'F');
+$pdfContent = $pdf->Output('', 'S');
 
-// Check if PDF was created successfully
-if (!file_exists($pdfPath)) {
-    die("Error: PDF was not saved. Check directory permissions.");
+$s3Client = new S3Client([
+    'version' => 'latest',
+    'region' => $region,
+    'credentials' => [
+        'key' => $accessKey,
+        'secret' => $secretKey,
+    ],
+    'http' => [
+        'verify' => false, // Disable SSL verification
+    ],
+]);
+
+$keyName = 'report_' . $reportID . '.pdf';
+
+$s3Url = null;
+
+try {
+
+    $result = $s3Client->putObject([
+        'Bucket' => $bucketName,
+        'Key' => $keyName,
+        'Body' => $pdfContent,
+        'ACL' => 'private',
+    ]);
+
+    $s3Url = $s3Client->getObjectUrl($bucketName, $keyName);
+
+    echo "File uploaded successfully. S3 URL: " . $s3Url . "\n";
+} catch (AwsException $e) {
+    echo "Error uploading file: " . $e->getMessage() . "\n";
+    die("Error uploading file to S3.");
 }
 
-// Update the database with the new values
 $query = "UPDATE reports SET summary = ?, status = ?, updated_at = ?, pdf_path = ? WHERE reportID = ?";
 $stmt = $conn->prepare($query);
 
@@ -60,7 +85,7 @@ if (!$stmt) {
     die("Error preparing statement: " . $conn->error);
 }
 
-$stmt->bind_param("ssssi", $summary, $status, $updated_at, $pdfPath, $reportID);
+$stmt->bind_param("ssssi", $summary, $status, $updated_at, $keyName, $reportID);
 
 if ($stmt->execute()) {
     if ($stmt->affected_rows > 0) {
@@ -77,4 +102,3 @@ if ($stmt->execute()) {
 
 $stmt->close();
 $conn->close();
-?>

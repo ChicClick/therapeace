@@ -62,13 +62,12 @@ fetchReport = async () => {
         .then(res =>  res.json())
         .then(data => {
             data.reports.forEach(report => {
-                console.lo
                 const reportCreationDate = new Date(report.created_at);
                 const currentDate = new Date();
                 const interval = currentDate - reportCreationDate;
                 const isReportAvailable= report.status != 'pending' && report.pdf_path;
                 const action = isReportAvailable ? `
-                     <p><a href="${location.origin + "/" + report.pdf_path}" download>Download Report from ${report.therapistName}</a></p>
+                     <p><a href="${report.pdf_path}" download>Download Report from ${report.therapistName}</a></p>
                 ` : `
                     <p>Report is not available.</p>
                 `;
