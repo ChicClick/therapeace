@@ -1083,7 +1083,7 @@ nav.scrolled {
         width: 60px; /* Increase the size of the bees for better visibility */
         height: 60px;
     }
-    
+
     .nav-links {
         display: none; /* Hide nav links by default */
         width: 100%;
