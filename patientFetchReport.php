@@ -10,10 +10,15 @@ require 'vendor/autoload.php';
 use Aws\S3\S3Client;
 use Aws\Exception\AwsException;
 
-$bucketName = 'therapeace-pdf-reports';
-$region = 'ap-southeast-2';
-$accessKey = 'AKIATX3PIEANFBCNKAE2';
-$secretKey = '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';
+// $bucketName = 'therapeace-pdf-reports';
+// $region = 'ap-southeast-2';
+// $accessKey = 'AKIATX3PIEANFBCNKAE2';
+// $secretKey = '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';
+
+$bucketName = getenv('BUCKET_NAME');
+$region = getenv('REGION');
+$accessKey = getenv('ACCESS_KEY');
+$secretKey = getenv('SECRET_ACCESS_KEY');
 
 $s3Client = new S3Client([
     'version' => 'latest',

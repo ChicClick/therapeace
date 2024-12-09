@@ -9,11 +9,16 @@ use Aws\S3\S3Client;
 use setasign\Fpdi\Fpdi;
 
 date_default_timezone_set('Asia/Manila');
+// $db_name = getenv('DB_NAME');
+// $bucketName = 'therapeace-pdf-reports';
+// $region = 'ap-southeast-2';
+// $accessKey = 'AKIATX3PIEANFBCNKAE2';
+// $secretKey = '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';
 
-$bucketName = 'therapeace-pdf-reports';
-$region = 'ap-southeast-2';
-$accessKey = 'AKIATX3PIEANFBCNKAE2';
-$secretKey = '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';
+$bucketName = getenv('BUCKET_NAME');
+$region = getenv('REGION');
+$accessKey = getenv('ACCESS_KEY');
+$secretKey = getenv('SECRET_ACCESS_KEY');
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Debugging incoming POST data
