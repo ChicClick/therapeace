@@ -26,8 +26,10 @@
                 <li><a href="#about" data-nav-link>About Us</a></li>
                 <li><a href="#services" data-nav-link>Services</a></li>
                 <li><a href="#rates" data-nav-link>Rates</a></li>
+                <li>
+                    <button class="login-btn" onclick="window.location.href='loginlanding.html';">Login</button>
+                </li>
             </ul>
-            <button class="login-btn" onclick="window.location.href='loginlanding.html';">Login</button>
             <!-- Hamburger menu icon for smaller devices -->
             <div class="hamburger-menu" id="hamburger-menu">
                 <span class="bar"></span>
@@ -36,6 +38,7 @@
             </div>
         </div>
     </nav>
+
         
     <div class="hero-section">
         <div class="hero-text">
