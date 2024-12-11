@@ -130,24 +130,12 @@ document.getElementById('add-patient-button').addEventListener('click', function
             <form id="register-form" action="pRegister.php" method="POST" enctype="multipart/form-data">
                 <div class="form-row">
                     <div class="form-group">
-                        <label for="patientID">Patient ID:</label>
-                        <input type="text" id="patientID" name="patientID" placeholder="Enter Patient ID" required>
-                    </div>
-                    <div class="form-group">
                         <label for="patientName">Patient Name: <span style="color: red;">*</span></label>
                         <input type="text" id="patientName" name="patientName" placeholder="Enter Patient Name" required>
                     </div>
-                </div>
-                <div class="form-row">
                     <div class="form-group">
                         <label for="phone">Phone: <span style="color: red;">*</span></label>
                         <input type="tel" id="phone" name="phone" placeholder="09xxxxxxxxx" required minlength="11" maxlength="11" pattern="^[0-9]{11}$" title="Please enter an 11-digit contact number" oninput="this.value=this.value.replace(/[^0-9]/g,'')">
-                    </div>
-                    <div class="form-group">
-                        <label for="email">Email: <span style="color: red;">*</span></label>
-                        <input type="email" id="email" name="email" placeholder="Enter a valid email" required 
-                            pattern="^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$" 
-                             title="Please enter a valid email address (e.g., yourname@gmail.com)">
                     </div>
                 </div>
                 <div class="form-row">
@@ -190,14 +178,21 @@ document.getElementById('add-patient-button').addEventListener('click', function
                 </div>
                 <div class="form-row">
                     <div class="form-group">
-                        <label for="image">Profile Picture: <span style="color: red;">*</span></label>
-                        <input type="file" id="image" name="image" accept="image/*">
+                        <label for="email">Email: <span style="color: red;">*</span></label>
+                        <input type="email" id="email" name="email" placeholder="Enter a valid email" pattern="^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$" 
+                            title="Please enter a valid email address (e.g., yourname@gmail.com)">
                     </div>
                     <div class="form-group">
                         <label for="password_hash">Password: <span style="color: red;">*</span></label>
                         <input type="password" id="password_hash" name="password" placeholder="Enter a Strong Password" 
-                            required pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$" 
-                            title="Password must be at least 8 characters long, contain at least one lowercase letter, uppercase letter, special character and a number.">
+                            required pattern="^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$" 
+                            title="Password must be at least 8 characters long, contain at least one lowercase letter, uppercase letter, number, and special character.">
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="image">Profile Picture: <span style="color: red;">*</span></label>
+                        <input type="file" id="image" name="image" accept="image/*">
                     </div>
                 </div>
                 <div class="btn-container">
@@ -377,3 +372,16 @@ function displayTableData(data) {
     // Show the table container
     tableContainer.classList.remove('hidden');
 }
+
+// for incrementing therapistID
+document.addEventListener("DOMContentLoaded", function () {
+    // Fetch next therapistID on page load
+    fetch("a_incrementTherapistID.php")
+        .then(response => response.json())
+        .then(data => {
+            if (data.therapistID) {
+                document.getElementById("therapistID").value = data.therapistID;
+            }
+        })
+        .catch(error => console.error("Error fetching therapist ID:", error));
+});

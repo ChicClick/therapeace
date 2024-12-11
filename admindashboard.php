@@ -398,7 +398,7 @@ if (isset($_SESSION['firstname'])) {
                                     <div class="form-row">
                                         <div class="form-group">
                                             <label for="therapistID">Therapist ID:</label>
-                                            <input type="text" id="therapistID" name="therapisID" placeholder="e.g. T0001" required>
+                                            <input type="text" id="therapistID" name="therapisID" placeholder="Therapist ID" readonly required>
                                         </div>
                                         <div class="form-group">
                                             <label for="password">Password: <span style="color: red;">*</span></label>
