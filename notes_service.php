@@ -2,7 +2,7 @@
 include 'db_conn.php'; // Include your database connection file
 
 // Get the therapist ID from the GET request
-$therapistID = isset($_GET['therapistID']) ? $_GET['therapistID'] : null;
+$therapistID = isset($_GET['therapist_id']) ? $_GET['therapist_id'] : null;
 
 if ($therapistID) {
     // Query to fetch services linked to the therapist's specialization
