@@ -141,11 +141,15 @@ document.getElementById('add-patient-button').addEventListener('click', function
                 <div class="form-row">
                     <div class="form-group">
                         <label for="phone">Phone:</label>
-                        <input type="text" id="phone" name="phone" placeholder="Enter Phone Number" required>
+                        <input type="tel" id="phone" name="phone" placeholder="09xxxxxxxxx" required 
+                            maxlength="11" oninput="validatePhone()" 
+                            title="Phone number must be 11 digits and contain only numbers">
                     </div>
                     <div class="form-group">
                         <label for="email">Email:</label>
-                        <input type="email" id="email" name="email" placeholder="Enter Email" required>
+                        <input type="email" id="email" name="email" placeholder="Enter a valid email" required 
+                            pattern="^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$" 
+                             title="Please enter a valid email address (e.g., yourname@gmail.com)">
                     </div>
                 </div>
                 <div class="form-row">
@@ -176,7 +180,7 @@ document.getElementById('add-patient-button').addEventListener('click', function
                 <div class="form-row">
                     <div class="form-group">
                         <label for="relationship">Relationship:</label>
-                        <input type="text" id="relationship" name="relationship" placeholder="Enter Relationship" required>
+                        <input type="text" id="relationship" name="relationship" placeholder="e.g., Mother, Father, Guardian" required>
                     </div>
                     <div class="form-group">
                         <label for="status">Status:</label>
@@ -193,7 +197,9 @@ document.getElementById('add-patient-button').addEventListener('click', function
                     </div>
                     <div class="form-group">
                         <label for="password_hash">Password:</label>
-                        <input type="password" id="password_hash" name="password" placeholder="Enter Password" required>
+                        <input type="password" id="password_hash" name="password" placeholder="Enter a Strong Password" 
+                            required pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$" 
+                            title="Password must be at least 8 characters long, contain at least one lowercase letter, one uppercase letter, and one number.">
                     </div>
                 </div>
                 <div class="btn-container">
@@ -209,6 +215,11 @@ document.getElementById('add-patient-button').addEventListener('click', function
    
 });
 
+function validatePhone() {
+    var phoneInput = document.getElementById('phone');
+    // Allow only numbers and limit to 11 digits
+    phoneInput.value = phoneInput.value.replace(/\D/g, '').substring(0, 11);
+}
 
 $(document).ready(function() {
     $('#patient-ID').change(function() {
