@@ -193,24 +193,21 @@ document.addEventListener("DOMContentLoaded", () => {
 
   loadServices = () => {
     const therapySelect = document.getElementById("therapySelect");
+    const patientID = document.getElementById("patientSelect").value;
 
-    // Fetch therapistID from a hidden input or session if needed
-    const therapistID = document.getElementById("therapist_id").value;
-
-    // Only fetch options if a therapistID is available
-    if (!therapistID) {
-        therapySelect.innerHTML = ""; // Clear previous options
-        return;
+    // Only fetch options if a patient is selected
+    if (!patientID) {
+      therapySelect.innerHTML = ""; // Clear previous options
+      return;
     }
 
-    fetch(`notes_service.php?therapist_id=${therapistID}`)
-        .then((response) => response.text())
-        .then((data) => {
-            therapySelect.innerHTML = data; // Directly set fetched options to the select element
-        })
-        .catch((error) => console.error("Error loading service options:", error));
-};
-
+    fetch(`notes_service.php?patientID=${patientID}`)
+      .then((response) => response.text())
+      .then((data) => {
+        therapySelect.innerHTML = data; // Directly set fetched options to the select element
+      })
+      .catch((error) => console.error("Error loading service options:", error));
+  };
 
   /*-- PROGRESS REPORT MARKER DO NOT REMOVE**--
         ----------------------------------------------------
