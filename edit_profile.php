@@ -41,7 +41,8 @@ $stmt->close();
 <form class="form-edit" action="update_profile.php" method="POST">
     <!-- Profile Picture Section -->
     <div class="profile-picture-section">
-        <img src="images/about 4.jpg" alt="Profile Picture" class="profile-picture">
+        <!-- Removed the profile image -->
+        <!-- Profile Picture Section <img src="images/about 4.jpg" alt="Profile Picture" class="profile-picture"> -->
     </div>
 
     <!-- Left Column - Personal Information -->
