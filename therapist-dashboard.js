@@ -50,8 +50,8 @@ document.addEventListener("DOMContentLoaded", () => {
                     </select>
 
                     <label for="therapySelect">Select Service:</label>
-                    <select id="therapySelect" name="serviceID" required>
-                    </select>
+                    <label id="therapySelect" name="serviceID" required>
+                    </label>
                 </div>
                     <div class="form-column-right">
                         <label for="sessionDate">Session Date:</label>
