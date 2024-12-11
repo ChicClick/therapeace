@@ -134,17 +134,17 @@ document.getElementById('add-patient-button').addEventListener('click', function
                         <input type="text" id="patientID" name="patientID" placeholder="Enter Patient ID" required>
                     </div>
                     <div class="form-group">
-                        <label for="patientName">Patient Name:</label>
+                        <label for="patientName">Patient Name: <span style="color: red;">*</span></label>
                         <input type="text" id="patientName" name="patientName" placeholder="Enter Patient Name" required>
                     </div>
                 </div>
                 <div class="form-row">
                     <div class="form-group">
-                        <label for="phone">Phone:</label>
+                        <label for="phone">Phone: <span style="color: red;">*</span></label>
                         <input type="tel" id="phone" name="phone" placeholder="09xxxxxxxxx" required minlength="11" maxlength="11" pattern="^[0-9]{11}$" title="Please enter an 11-digit contact number" oninput="this.value=this.value.replace(/[^0-9]/g,'')">
                     </div>
                     <div class="form-group">
-                        <label for="email">Email:</label>
+                        <label for="email">Email: <span style="color: red;">*</span></label>
                         <input type="email" id="email" name="email" placeholder="Enter a valid email" required 
                             pattern="^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$" 
                              title="Please enter a valid email address (e.g., yourname@gmail.com)">
@@ -152,24 +152,24 @@ document.getElementById('add-patient-button').addEventListener('click', function
                 </div>
                 <div class="form-row">
                     <div class="form-group">
-                        <label for="birthday">Birthday:</label>
+                        <label for="birthday">Birthday: <span style="color: red;">*</span></label>
                         <input type="date" id="birthday" name="birthday" required>
                     </div>
                     <div class="form-group">
-                        <label for="address">Address:</label>
+                        <label for="address">Address: <span style="color: red;">*</span></label>
                         <input type="text" id="address" name="address" placeholder="Enter Address" required>
                     </div>
                 </div>
                 <div class="form-row">
                     <div class="form-group">
-                        <label for="gender">Sex:</label>
+                        <label for="gender">Sex: <span style="color: red;">*</span></label>
                         <select id="gender" name="gender" required>
                             <option value="Female">Female</option>
                             <option value="Male">Male</option>
                         </select>
                     </div>
                     <div class="form-group">
-                        <label for="parentID">Parent Name:</label>
+                        <label for="parentID">Parent Name: <span style="color: red;">*</span></label>
                         <select id="parentID" name="parentID" required>
                             ${parentOptions}
                         </select>
@@ -177,11 +177,11 @@ document.getElementById('add-patient-button').addEventListener('click', function
                 </div>
                 <div class="form-row">
                     <div class="form-group">
-                        <label for="relationship">Relationship:</label>
+                        <label for="relationship">Relationship: <span style="color: red;">*</span></label>
                         <input type="text" id="relationship" name="relationship" placeholder="e.g., Mother, Father, Guardian" required>
                     </div>
                     <div class="form-group">
-                        <label for="status">Status:</label>
+                        <label for="status">Status: <span style="color: red;">*</span></label>
                         <select id="status" name="status" required>
                             <option value="Active">Active</option>
                             <option value="Inactive">Inactive</option>
@@ -190,11 +190,11 @@ document.getElementById('add-patient-button').addEventListener('click', function
                 </div>
                 <div class="form-row">
                     <div class="form-group">
-                        <label for="image">Profile Picture:</label>
+                        <label for="image">Profile Picture: <span style="color: red;">*</span></label>
                         <input type="file" id="image" name="image" accept="image/*">
                     </div>
                     <div class="form-group">
-                        <label for="password_hash">Password:</label>
+                        <label for="password_hash">Password: <span style="color: red;">*</span></label>
                         <input type="password" id="password_hash" name="password" placeholder="Enter a Strong Password" 
                             required pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$" 
                             title="Password must be at least 8 characters long, contain at least one lowercase letter, uppercase letter, special character and a number.">
