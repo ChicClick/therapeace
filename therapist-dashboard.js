@@ -49,9 +49,9 @@ document.addEventListener("DOMContentLoaded", () => {
                         <option value="">Select a patient...</option> <!-- Default placeholder option -->
                     </select>
 
-                    <label for="therapySelect">Select Service:</label>
-                    <select id="therapySelect" name="serviceID" required>
-                    </select>
+                    <label for="therapySelect">Selected Service:</label>
+                    <label id="therapySelect" name="serviceID" required>
+                    </label>
                 </div>
                     <div class="form-column-right">
                         <label for="sessionDate">Session Date:</label>

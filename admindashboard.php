@@ -154,18 +154,18 @@ if (isset($_SESSION['firstname'])) {
                                     </select>
                                 </div>
                                 <div class="form-group">
-                                    <label class="required" for="patient-name">Patient Name: <span style="color: red;">*</span></label>
+                                    <label class="required" for="patient-name">Patient Name:</label>
                                     <input type="text" id="patient-name" name="patient-name" required>
                                 </div>
                             </div>
 
                             <div class="form-row">
                                 <div class="form-group">
-                                    <label class="required" for="parent-guardian">Parent/Guardian: <span style="color: red;">*</span></label>
+                                    <label class="required" for="parent-guardian">Parent/Guardian:</label>
                                     <input type="text" id="parentID" name="parentID" required>
                                 </div>
                                 <div class="form-group">
-                                    <label class="required" for="contact-number">Contact Number: <span style="color: red;">*</span></label>
+                                    <label class="required" for="contact-number">Contact Number:</label>
                                     <input type="text" id="contact-number" name="contact-number" required>
                                 </div>
                             </div>
