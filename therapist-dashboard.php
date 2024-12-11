@@ -94,12 +94,12 @@ $therapistID = $_SESSION['therapist_id'];
 
         <!-- Appointments Section -->
         <div id="appointments-section" class="content active">
-            <h4>APPOINTMENTS</h4>
+            <h4>UPCOMING APPOINTMENTS</h4>
             <div class="search-bar-content">
                 <input type="text" placeholder="Search" id="searchInput" onkeyup="filterSearch()">
                 <button><i class="fas fa-search"></i></button>
             </div>
-            <generic-table data="therapist_appointments" reschedule="true"></generic-table>
+            <generic-table data="therapist_upcoming_appointments" reschedule="true"></generic-table>
             <!-- Reschedule Popup -->
             <generic-calendar></generic-calendar>
         </div>

@@ -95,9 +95,9 @@ class TableEngine extends HTMLElement {
         ['admin_therapists', 'admin_get_therapists.php'],
         ['admin_services', 'admin_get_services.php'],
         ['admin_staffs', 'admin_get_staffs.php'],
-        ['patient_appointments', 'patient_get_appointments.php'],
+        ['patient_upcoming_appointments', 'patient_get_upcoming_appointments.php'],
         ['patient_sessions', 'patient_get_sessions.php'],
-        ['therapist_appointments', 'therapist_get_appointments.php'],
+        ['therapist_upcoming_appointments', 'therapist_get_upcoming_appointments.php'],
         ['therapist_patients', 'therapist_get_patients.php'],
         ['therapist_notes', 'therapist_get_notes.php'],
         ['therapist_pre-screening_pending', 'therapist_get_pre-screening.php?status=1'],
@@ -446,6 +446,7 @@ class TableEngine extends HTMLElement {
                     const tdActions = document.createElement('td');
                     tdActions.classList.add("td-container");
                     if (this.reschedule) {
+                        
                         const rescheduleButton = document.createElement('button');
                         rescheduleButton.classList.add('reschedule-button');
                         rescheduleButton.innerHTML = 'RESCHEDULE';

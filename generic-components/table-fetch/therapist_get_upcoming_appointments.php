@@ -24,13 +24,14 @@ $sql = "
         patient.patientName AS patient_name, 
         parent.parentName AS parent_name, 
         services.serviceName AS service_name, 
+        appointment.status as status,
         appointment.schedule,
         appointment.appointmentID
     FROM appointment
     JOIN patient ON appointment.patientID = patient.patientID
     JOIN parent ON appointment.parentID = parent.parentID
     JOIN services ON appointment.serviceID = services.serviceID
-    WHERE appointment.therapistID = ?"; 
+    WHERE appointment.therapistID = ? && appointment.status = 'ongoing'"; 
 
 $stmt = $conn->prepare($sql);
 
