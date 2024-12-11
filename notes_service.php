@@ -9,7 +9,7 @@ if ($therapistID) {
     $query = "
         SELECT DISTINCT s.serviceID, s.serviceName 
         FROM services s
-        INNER JOIN therapist ts ON s.specialization = ts.specialization
+        INNER JOIN therapist ts ON s.serviceName = ts.specialization
         WHERE ts.therapistID = ?
     ";
 
