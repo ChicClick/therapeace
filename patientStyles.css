@@ -594,3 +594,31 @@ button[type="submit"]:hover {
 .report-item .action a:hover {
     text-decoration: underline;
 }
+
+
+#passwordCriteria {
+    list-style-type: none;
+    padding-left: 0;
+}
+
+#passwordCriteria li {
+    color: red;
+    font-size: 0.8em;
+}
+
+#passwordCriteria li.valid {
+    color: green;
+}
+
+#passwordCriteria li.invalid {
+    color: red;
+}
+
+#newPassword {
+    border: 2px solid #ccc;
+    padding: 10px;
+}
+
+#newPassword:focus {
+    border: 2px solid #4CAF50;
+}

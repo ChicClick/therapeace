@@ -40,7 +40,7 @@ $stmt->close();
 <form class="form-edit" action="a_update_profile.php" method="POST">
     <!-- Profile Picture Section -->
     <div class="profile-picture-section">
-        <img src="images/about 4.jpg" alt="Profile Picture" class="edit-profile-picture">
+        <!-- Removed the image -->
     </div>
 
     <!-- Left Column - Personal Information -->

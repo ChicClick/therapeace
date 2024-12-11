@@ -2,6 +2,14 @@
 include 'config.php'; // Database connection settings
 include 'db_conn.php'; // Database connection script
 
+// Include PHPMailer files
+require 'PHPMailer/src/Exception.php';
+require 'PHPMailer/src/PHPMailer.php';
+require 'PHPMailer/src/SMTP.php';
+
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\Exception;
+
 $messageDisplay = ''; // Initialize a variable to hold the message for redirection
 
 // Check if there's a token in the URL
@@ -9,7 +17,7 @@ if (isset($_GET['token'])) {
     $token = $_GET['token'];
 
     // Check if the token is valid and hasn't expired
-    $query = "SELECT username, reset_token_expiry FROM admin WHERE reset_token = ?";
+    $query = "SELECT username, reset_token_expiry, username FROM admin WHERE reset_token = ?";
     $stmt = $conn->prepare($query);
     $stmt->bind_param("s", $token);
     $stmt->execute();

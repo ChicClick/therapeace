@@ -38,7 +38,8 @@ if (isset($_SESSION['firstname'])) {
     <!-- Left Section -->
     <div class="left-section">
         <div class="logo">
-            <img src="images/logo.png" alt="TheraPeace Logo">
+            <!-- Logo Update -->
+            <img src="images/TheraPeace Logo.svg" alt="TheraPeace Logo">
             <h2>TheraPeace</h2>
         </div>
         <nav>
@@ -53,7 +54,7 @@ if (isset($_SESSION['firstname'])) {
                 <li><a href="#" data-target="feedbacks-section"><i class="fas fa-comment"></i> Feedbacks</a></li>
 
                 <p>OTHERS</p>
-                <li><a href="registerlanding.php" ><i class="fa fa-users"></i> Manage Accounts</a></li>
+                <!-- Removed the manage account tab -->
                 <li><a href="#" data-target="edit-profile-section"><i class="fa fa-cog"></i> Edit Profile</a></li>
                 <li><a href="#" id="logoutBtn"><i class="fa fa-sign-out"></i>Log Out</a></li>
             </ul>
@@ -78,7 +79,7 @@ if (isset($_SESSION['firstname'])) {
             <!-- removed the search bar -->
 
             <div class="profile-section">
-                <img src="images/about 3.jpg" alt="Profile Picture">
+                <!-- removed the profile picture -->
                 <span class="welcome-text">Welcome back, Admin!</span>
 
             </div>
@@ -349,26 +350,26 @@ if (isset($_SESSION['firstname'])) {
                                 <form id="addstaff-form">
                                     <div class="form-row">
                                         <div class="form-group">
-                                            <label for="staffName">Staff Name:</label>
+                                            <label for="staffName">Staff Name: <span style="color: red;">*</span></label>
                                             <input type="text" id="staffName" name="staffName" placeholder="e.g. John Doe" required>
                                         </div>
                                         <div class="form-group">
-                                            <label for="position">Position:</label>
+                                            <label for="position">Position: <span style="color: red;">*</span></label>
                                             <input type="text" id="position" name="position" placeholder="Teacher/Helper etc." required>
                                         </div>
                                     </div>
 
                                     <div class="form-row">
                                         <div class="form-group">
-                                            <label for="phoneNumber">Contact Number:</label>
-                                            <input type="text" id="phoneNumber" name="phoneNumber" placeholder="09xxxxxxxxx" required>
+                                            <label for="phoneNumber">Contact Number: <span style="color: red;">*</span></label>
+                                            <input type="tel" id="phoneNumber" name="phoneNumber" placeholder="09xxxxxxxxx" required minlength="11" maxlength="11" pattern="^[0-9]{11}$" title="Please enter an 11-digit contact number" oninput="this.value=this.value.replace(/[^0-9]/g,'')">
                                         </div>
                                         <div class="form-group">
-                                            <label for="address">Home Address:</label>
+                                            <label for="address">Home Address: <span style="color: red;">*</span></label>
                                             <input type="text" id="address" name="address" placeholder="e.g. 123 Elm St., Brgy 1" required>
                                         </div>
                                         <div class="form-group">
-                                        <label for="gender">Sex:</label>
+                                        <label for="gender">Sex: <span style="color: red;">*</span></label>
                                             <select id="gender" name="gender" required>
                                                 <option value="" disabled selected>Select Sex</option>
                                                 <option value="Male">Male</option>
@@ -376,7 +377,7 @@ if (isset($_SESSION['firstname'])) {
                                             </select>
                                         </div>
                                         <div class="form-group">
-                                            <label for="datehired">Date Hired:</label>
+                                            <label for="datehired">Date Hired: <span style="color: red;">*</span></label>
                                             <input type="date" id="datehired" name="datehired" required>
                                         </div>
                                     </div>
@@ -397,18 +398,19 @@ if (isset($_SESSION['firstname'])) {
                                     <div class="form-row">
                                         <div class="form-group">
                                             <label for="therapistID">Therapist ID:</label>
-                                            <input type="text" id="therapistID" name="therapisID" placeholder="e.g. T0001" required>
+                                            <input type="text" id="therapistID" name="therapisID" placeholder="Therapist ID" readonly required>
                                         </div>
                                         <div class="form-group">
-                                            <label for="password">Password:</label>
-                                            <input type="password" id="password" name="password" required>
+                                            <label for="password">Password: <span style="color: red;">*</span></label>
+                                            <input type="password" id="password" name="password" required pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$" 
+                                                title="Password must be at least 8 characters long, contain at least one lowercase letter, uppercase letter, special character and a number.">
                                         </div>
                                         <div class="form-group">
-                                            <label for="therapistName">Name:</label>
-                                            <input type="text" id="therapistName" name="therapistName" placeholder="e.g. Dr. Strange" required>
+                                            <label for="therapistName">Name: <span style="color: red;">*</span></label>
+                                            <input type="text" id="therapistName" name="therapistName" placeholder="Enter Full Name" required>
                                         </div>
                                         <div class="form-group">
-                                        <label for="specialization">Specialization:</label>
+                                        <label for="specialization">Specialization: <span style="color: red;">*</span></label>
                                         <select id="specialization" name="specialization" required>
                                             <option value="" disabled selected>Select a specialization</option>
                                             <?php
@@ -431,19 +433,21 @@ if (isset($_SESSION['firstname'])) {
 
                                     <div class="form-row">
                                         <div class="form-group">
-                                            <label for="email">Email:</label>
-                                            <input type="text" id="email" name="email" placeholder="e.g. admin@email.com" required>
+                                            <label for="email">Email: <span style="color: red;">*</span></label>
+                                            <input type="email" id="email" name="email" placeholder="Enter a valid email" required 
+                                                pattern="^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$" 
+                                                title="Please enter a valid email address (e.g., yourname@gmail.com)">
                                         </div>
                                         <div class="form-group">
-                                            <label for="phone">Contact Number:</label>
-                                            <input type="text" id="phone" name="phone" placeholder="09xxxxxxxxx" required>
+                                            <label for="phone">Contact Number: <span style="color: red;">*</span></label>
+                                            <input type="text" id="phone" name="phone" placeholder="09xxxxxxxxx" required minlength="11" maxlength="11" pattern="^[0-9]{11}$" title="Please enter an 11-digit contact number" oninput="this.value=this.value.replace(/[^0-9]/g,'')">
                                         </div>
                                         <div class="form-group">
-                                            <label for="address">Home Address:</label>
+                                            <label for="address">Home Address: <span style="color: red;">*</span></label>
                                             <input type="text" id="address" name="address" placeholder="e.g. 123 Elm St., Brgy 1" required>
                                         </div>
                                         <div class="form-group">
-                                        <label for="gender">Sex:</label>
+                                        <label for="gender">Sex: <span style="color: red;">*</span></label>
                                             <select id="gender" name="gender" required>
                                                 <option value="" disabled selected>Select Sex</option>
                                                 <option value="Male">Male</option>
@@ -451,11 +455,11 @@ if (isset($_SESSION['firstname'])) {
                                             </select>
                                         </div>
                                         <div class="form-group">
-                                            <label for="datehired">Date Hired:</label>
+                                            <label for="datehired">Date Hired: <span style="color: red;">*</span></label>
                                             <input type="date" id="datehired" name="datehired" required>
                                         </div>
                                         <div class="form-group">
-                                            <label for="birthday">Birth Date:</label>
+                                            <label for="birthday">Birth Date: <span style="color: red;">*</span></label>
                                             <input type="date" id="birthday" name="birthday" required>
                                         </div>
                                     </div>

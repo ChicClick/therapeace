@@ -1083,6 +1083,7 @@ nav.scrolled {
         width: 60px; /* Increase the size of the bees for better visibility */
         height: 60px;
     }
+
     .nav-links {
         display: none; /* Hide nav links by default */
         width: 100%;
@@ -1108,8 +1109,12 @@ nav.scrolled {
         width: 100%;
     }
 
-    .login-btn {
-        display: none; /* Hide the login button on smaller screens */
+    /* Adjust login button inside dropdown */
+    .nav-links .login-btn {
+        display: block; /* Ensure it's visible */
+        width: 100%;
+        text-align: center;
+        margin: 10px 0;
     }
 
     .hamburger-menu {
