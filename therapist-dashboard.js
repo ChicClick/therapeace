@@ -49,7 +49,7 @@ document.addEventListener("DOMContentLoaded", () => {
                         <option value="">Select a patient...</option> <!-- Default placeholder option -->
                     </select>
 
-                    <label for="therapySelect">Select Service:</label>
+                    <label for="therapySelect">Selected Service:</label>
                     <label id="therapySelect" name="serviceID" required>
                     </label>
                 </div>
