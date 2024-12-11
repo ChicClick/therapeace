@@ -27,7 +27,8 @@ if (isset($_GET['message'])) {
                     <?php echo $messageDisplay; ?>
 
                     <!-- Password Reset Form -->
-                    <form action="admin_reset_password.php?token=<?php echo $_GET['token']; ?>" method="POST">
+                    <!-- updated the form action -->
+                    <form action="https://therapeace-d74d563df28a.herokuapp.com/admin_reset_password.php?token=<?php echo $_GET['token']; ?>" method="POST">
                         <input type="password" name="password" placeholder="Enter your new password" required>
                         <button type="submit">Submit New Password</button>
                     </form>

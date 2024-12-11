@@ -2,6 +2,9 @@
 include 'config.php'; 
 include 'db_conn.php'; 
 
+// for sending email
+require_once 'generic_mailer.php';
+
 // Enable error reporting for debugging
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
@@ -36,28 +39,31 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     $stmt->execute();
                     $stmt->close();
 
-                    $resetLink = "http://localhost/therapeace/adminResetPassword.php?token=" . $resetToken;
-                    $subject = "Password Reset Request";
-                    $message = "A request has been received to change the password for your TheraPeace account.\n\n" . $resetLink;
-                    $headers = "From: therapeacemanagement@gmail.com";
-
-                    if (mail($email, $subject, $message, $headers)) {
+                    // updated the domain
+                    $resetLink = 'https://therapeace-d74d563df28a.herokuapp.com/adminResetPassword.php?token=' . $resetToken;
+                    try {
+                        $mailer = new Mailer();
+                        $toEmail = $email;
+                        $subject = 'Password Reset Request';
+                        $body = 'A request was received to reset the password for your Therapeace account.<br><br>Click the link below to reset your password:<br><a href=' . $resetLink . '>Reset Password</a>';
+    
+                        $mailer->sendEmail($toEmail, $subject, $body);
                         $messageDisplay = 'An email with password reset instructions has been sent.';
-                    } else {
-                        $messageDisplay = 'Failed to send reset email. Please try again later.';
+                    } catch (Exception $e) {
+                        $messageDisplay = 'Failed to send reset email. Mailer Error: ' . $e->getMessage();
                     }
                 } else {
                     $messageDisplay = 'Failed to prepare statement for updating reset token.';
                 }
             } else {
-                $messageDisplay = 'No admin found with that Username.';
+                $messageDisplay = 'No patient found with that ID.';
             }
         } else {
             $messageDisplay = 'Failed to prepare statement for patient lookup.';
         }
     }
 
-    // Redirect to avoid form resubmission
+    echo $messageDisplay;
     header("Location: adminForgotPassword.php?message=" . urlencode($messageDisplay));
-    exit(); // Prevent further script execution
+    exit();
 }

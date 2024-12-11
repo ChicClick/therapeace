@@ -14,6 +14,13 @@ if (isset($_GET['message'])) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Forgot Password</title>
     <link rel="stylesheet" href="patientPasswordStyles.css">
+    <script>
+        function disableSubmitButton(form) {
+            const submitButton = form.querySelector('button[type="submit"]');
+            submitButton.disabled = true;
+            submitButton.textContent = "Submitting...";
+        }
+    </script>
 </head>
 <body>
     <div class="background-image"></div>
@@ -25,7 +32,7 @@ if (isset($_GET['message'])) {
                 <!-- Display the message -->
                 <?php echo $messageDisplay; ?>
                 
-                <form action="admin_forgot_password.php" method="POST">
+                <form action="admin_forgot_password.php" method="POST" onsubmit="disableSubmitButton(this)">
                     <input type="text" name="username" placeholder="Enter your Username" required>
                     <button type="submit">Submit</button>
                 </form>
