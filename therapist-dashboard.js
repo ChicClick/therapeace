@@ -50,6 +50,7 @@ document.addEventListener("DOMContentLoaded", () => {
                     </select>
 
                     <label for="therapySelect">Selected Service:</label>
+                    <input type="hidden" id="therapistID" value="<?php echo htmlspecialchars($therapistID, ENT_QUOTES); ?>">
                     <label id="therapySelect" name="serviceID" required>
                     </label>
                 </div>
@@ -193,21 +194,24 @@ document.addEventListener("DOMContentLoaded", () => {
 
   loadServices = () => {
     const therapySelect = document.getElementById("therapySelect");
-    const patientID = document.getElementById("patientSelect").value;
 
-    // Only fetch options if a patient is selected
-    if (!patientID) {
-      therapySelect.innerHTML = ""; // Clear previous options
-      return;
+    // Fetch therapistID from a hidden input or session if needed
+    const therapistID = document.getElementById("therapistID").value;
+
+    // Only fetch options if a therapistID is available
+    if (!therapistID) {
+        therapySelect.innerHTML = ""; // Clear previous options
+        return;
     }
 
-    fetch(`notes_service.php?patientID=${patientID}`)
-      .then((response) => response.text())
-      .then((data) => {
-        therapySelect.innerHTML = data; // Directly set fetched options to the select element
-      })
-      .catch((error) => console.error("Error loading service options:", error));
-  };
+    fetch(`notes_service.php?therapistID=${therapistID}`)
+        .then((response) => response.text())
+        .then((data) => {
+            therapySelect.innerHTML = data; // Directly set fetched options to the select element
+        })
+        .catch((error) => console.error("Error loading service options:", error));
+};
+
 
   /*-- PROGRESS REPORT MARKER DO NOT REMOVE**--
         ----------------------------------------------------
