@@ -32,12 +32,23 @@ body {
   display: flex; /* Align left and right sections side by side */
 }
 
+.main-content-container {
+  display: flex;
+  flex-direction: row;
+  height: 100%;
+}
+
+generic-table {
+  flex: 2;
+}
+
 .left-section {
-  width: 18%;
+  width: max-content;
   background-color: #fefdeb;
   padding: 10px;
-  height: 100vh; /* Ensure it takes the full height */
+  height: 100vh;
   box-sizing: border-box;
+  max-width: 18%;
 }
 
 .left-section .logo {
@@ -600,6 +611,9 @@ canvas {
 .profile-section {
   display: flex;
   align-items: center;
+  justify-content: flex-end; /* Aligns the content to the right */
+  width: 100%; /* Ensures full width */
+  padding: 10px;
 }
 
 .profile-section img {

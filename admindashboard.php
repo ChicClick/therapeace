@@ -38,7 +38,8 @@ if (isset($_SESSION['firstname'])) {
     <!-- Left Section -->
     <div class="left-section">
         <div class="logo">
-            <img src="images/logo.png" alt="TheraPeace Logo">
+            <!-- Logo Update -->
+            <img src="images/TheraPeace Logo.svg" alt="TheraPeace Logo">
             <h2>TheraPeace</h2>
         </div>
         <nav>
@@ -78,7 +79,7 @@ if (isset($_SESSION['firstname'])) {
             <!-- removed the search bar -->
 
             <div class="profile-section">
-                <img src="images/about 3.jpg" alt="Profile Picture">
+                <!-- removed the profile picture -->
                 <span class="welcome-text">Welcome back, Admin!</span>
 
             </div>
