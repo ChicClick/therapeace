@@ -53,7 +53,7 @@ if (isset($_SESSION['firstname'])) {
                 <li><a href="#" data-target="feedbacks-section"><i class="fas fa-comment"></i> Feedbacks</a></li>
 
                 <p>OTHERS</p>
-                <li><a href="registerlanding.php" ><i class="fa fa-users"></i> Manage Accounts</a></li>
+                <!-- Removed the manage account tab -->
                 <li><a href="#" data-target="edit-profile-section"><i class="fa fa-cog"></i> Edit Profile</a></li>
                 <li><a href="#" id="logoutBtn"><i class="fa fa-sign-out"></i>Log Out</a></li>
             </ul>
