@@ -141,9 +141,7 @@ document.getElementById('add-patient-button').addEventListener('click', function
                 <div class="form-row">
                     <div class="form-group">
                         <label for="phone">Phone:</label>
-                        <input type="tel" id="phone" name="phone" placeholder="09xxxxxxxxx" required 
-                            maxlength="11" oninput="validatePhone()" 
-                            title="Phone number must be 11 digits and contain only numbers">
+                        <input type="tel" id="phone" name="phone" placeholder="09xxxxxxxxx" required minlength="11" maxlength="11" pattern="^[0-9]{11}$" title="Please enter an 11-digit contact number" oninput="this.value=this.value.replace(/[^0-9]/g,'')">
                     </div>
                     <div class="form-group">
                         <label for="email">Email:</label>
@@ -199,7 +197,7 @@ document.getElementById('add-patient-button').addEventListener('click', function
                         <label for="password_hash">Password:</label>
                         <input type="password" id="password_hash" name="password" placeholder="Enter a Strong Password" 
                             required pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$" 
-                            title="Password must be at least 8 characters long, contain at least one lowercase letter, one uppercase letter, and one number.">
+                            title="Password must be at least 8 characters long, contain at least one lowercase letter, uppercase letter, special character and a number.">
                     </div>
                 </div>
                 <div class="btn-container">
@@ -214,12 +212,6 @@ document.getElementById('add-patient-button').addEventListener('click', function
     catch{}
    
 });
-
-function validatePhone() {
-    var phoneInput = document.getElementById('phone');
-    // Allow only numbers and limit to 11 digits
-    phoneInput.value = phoneInput.value.replace(/\D/g, '').substring(0, 11);
-}
 
 $(document).ready(function() {
     $('#patient-ID').change(function() {

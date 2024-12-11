@@ -362,7 +362,7 @@ if (isset($_SESSION['firstname'])) {
                                     <div class="form-row">
                                         <div class="form-group">
                                             <label for="phoneNumber">Contact Number:</label>
-                                            <input type="text" id="phoneNumber" name="phoneNumber" placeholder="09xxxxxxxxx" required>
+                                            <input type="tel" id="phoneNumber" name="phoneNumber" placeholder="09xxxxxxxxx" required minlength="11" maxlength="11" pattern="^[0-9]{11}$" title="Please enter an 11-digit contact number" oninput="this.value=this.value.replace(/[^0-9]/g,'')">
                                         </div>
                                         <div class="form-group">
                                             <label for="address">Home Address:</label>
@@ -402,7 +402,8 @@ if (isset($_SESSION['firstname'])) {
                                         </div>
                                         <div class="form-group">
                                             <label for="password">Password:</label>
-                                            <input type="password" id="password" name="password" required>
+                                            <input type="password" id="password" name="password" required pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$" 
+                                                title="Password must be at least 8 characters long, contain at least one lowercase letter, uppercase letter, special character and a number.">
                                         </div>
                                         <div class="form-group">
                                             <label for="therapistName">Name:</label>
@@ -433,11 +434,13 @@ if (isset($_SESSION['firstname'])) {
                                     <div class="form-row">
                                         <div class="form-group">
                                             <label for="email">Email:</label>
-                                            <input type="text" id="email" name="email" placeholder="e.g. admin@email.com" required>
+                                            <input type="email" id="email" name="email" placeholder="Enter a valid email" required 
+                                                pattern="^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$" 
+                                                title="Please enter a valid email address (e.g., yourname@gmail.com)">
                                         </div>
                                         <div class="form-group">
                                             <label for="phone">Contact Number:</label>
-                                            <input type="text" id="phone" name="phone" placeholder="09xxxxxxxxx" required>
+                                            <input type="text" id="phone" name="phone" placeholder="09xxxxxxxxx" required minlength="11" maxlength="11" pattern="^[0-9]{11}$" title="Please enter an 11-digit contact number" oninput="this.value=this.value.replace(/[^0-9]/g,'')">
                                         </div>
                                         <div class="form-group">
                                             <label for="address">Home Address:</label>
