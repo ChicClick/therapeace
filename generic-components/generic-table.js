@@ -584,7 +584,7 @@ class TableEngine extends HTMLElement {
         }
 
         if(this.tableType == "therapist_pre-screening_pending" || this.tableType == "therapist_pre-screening_complete") {
-            this.patientPrescreening(row["GuestID"], row["guest_name"], row["child_name"],row["child_age"], row["guest_status"], row["email"], row["phone"])
+            this.patientPrescreening(row["GuestID"], row["guest_name"], row["child_name"],row["child_age"], row["guest_status"], row["match_therapy"], row["comments"], row["email"], row["phone"])
         }
 
         if(this.tableType == "admin_staffs") {
