@@ -33,6 +33,7 @@ if (isset($_SESSION['patientName'])) {
     <script src="./generic-components/generic-side-view-bar.js" defer></script>
     <script src="./generic-components/generic-calendar.js" defer></script>
     <script src="./generic-components/generic-table.js" defer></script>
+    <script src="./generic-components/generic-table-filter.js" defer></script>
     <script src="./generic-components/generic-message-popup.js" defer></script>
     <script src="patientScript.js" defer></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js" defer></script>

@@ -12,16 +12,28 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $parentID = $_POST['parentID'] ?? null;
     $therapistID = $_POST['therapistID'] ?? null;
     $serviceID = $_POST['serviceID'] ?? null;
-    $schedule = $_POST['schedule'] ?? null;
+    $schedule = isset($_POST['schedule']) ? json_decode($_POST['schedule'], true) : null;
 
-    // Check if all required fields are filled
+    if (!is_array($schedule)) {
+        echo json_encode(["error" => "Invalid schedule format. Must be an array."]);
+        exit();
+    }
+
     if (!$patientID || !$parentID || !$therapistID || !$serviceID || !$schedule) {
         echo json_encode(["error" => "All fields are required."]);
         exit();
     }
 
-    function checkExistence($table, $column, $value) {
+    function checkExistence($table, $column, $value)
+    {
         global $conn;
+        $allowedTables = ['parent', 'therapist', 'services'];
+        $allowedColumns = ['parentID', 'therapistID', 'serviceID'];
+
+        if (!in_array($table, $allowedTables) || !in_array($column, $allowedColumns)) {
+            return false;
+        }
+
         $stmt = $conn->prepare("SELECT 1 FROM $table WHERE $column = ?");
         $stmt->bind_param("s", $value);
         $stmt->execute();
@@ -42,7 +54,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         exit();
     }
 
-    // Insert appointment into database
     $sql = "INSERT INTO appointment (patientID, parentID, therapistID, serviceID, schedule) VALUES (?, ?, ?, ?, ?)";
     $stmt = $conn->prepare($sql);
     if ($stmt === false) {
@@ -50,15 +61,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         exit();
     }
 
-    $stmt->bind_param("sssss", $patientID, $parentID, $therapistID, $serviceID, $schedule);
-    if ($stmt->execute()) {
-        echo json_encode(["success" => "Appointment scheduled successfully."]);
-    } else {
-        echo json_encode(["error" => "Error saving appointment."]);
+    foreach ($schedule as $scheduleTime) {
+        $stmt->bind_param("sssss", $patientID, $parentID, $therapistID, $serviceID, $scheduleTime);
+
+        if (!$stmt->execute()) {
+            echo json_encode(["error" => "Failed to execute SQL statement for schedule $scheduleTime."]);
+            exit();
+        }
     }
 
-    // Clean up
+    echo json_encode(["success" => "Appointments inserted successfully."]);
+
     $stmt->close();
     $conn->close();
 }
-?>

@@ -23,6 +23,7 @@ $mysqli = $conn;
 
 $appointments = [];
 $sqlAppointments = "SELECT 
+        appointmentID,
         patient.patientName AS patient_name,
         patient.image AS image, 
         therapist.therapistName AS therapist_name, 

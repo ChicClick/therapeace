@@ -28,8 +28,6 @@ $sql = "
         g.GuestID,
         g.GuestName AS guest_name,
         g.ChildName AS child_name,
-        g.matchTherapy as match_therapy,
-        g.comments as comments,
         g.Age AS child_age,
         g.Email AS email,
         g.Phone AS phone,
