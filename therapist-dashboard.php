@@ -30,7 +30,7 @@ $therapistID = $_SESSION['therapist_id'];
     <!-- Left Section -->
     <div class="left-section">
         <div class="logo">
-            <img src="images/logo.png" alt="TheraPeace Logo">
+            <img src="images/TheraPeace Logo.svg" alt="TheraPeace Logo">
             <h2>TheraPeace</h2>
         </div>
         <button class="hamburger-menu" id="hamburgerMenu">
