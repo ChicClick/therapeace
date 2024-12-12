@@ -38,16 +38,6 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   });
 
-  // Get references to the hamburger menu button and the navbar
-  const hamburgerMenu = document.getElementById('hamburgerMenu');
-  const navbar = document.querySelector('.navbar');
-  
-  // Add event listener to toggle the navbar visibility
-  hamburgerMenu.addEventListener('click', function() {
-      navbar.classList.toggle('active'); // Toggle the 'active' class on the navbar
-  });
-
-
   /*-- NOTES SECTION --------------- ******************* --------- THIS IS A MARKER DO NOT REMOVE --*/
   openModal = () => {
     const modalContent = `
@@ -59,10 +49,9 @@ document.addEventListener("DOMContentLoaded", () => {
                         <option value="">Select a patient...</option> <!-- Default placeholder option -->
                     </select>
 
-                    <label for="therapySelect">Selected Service:</label>
-                    <input type="hidden" id="therapistID" value="<?php echo htmlspecialchars($therapistID, ENT_QUOTES); ?>">
-                    <label id="therapySelect" name="serviceID" required>
-                    </label>
+                    <label for="therapySelect">Select Service:</label>
+                    <select id="therapySelect" name="serviceID" required>
+                    </select>
                 </div>
                     <div class="form-column-right">
                         <label for="sessionDate">Session Date:</label>
@@ -202,30 +191,23 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   };
 
-  loadServices = () => { 
+  loadServices = () => {
     const therapySelect = document.getElementById("therapySelect");
-    // Fetch therapistID from a hidden input or session if needed
-    const therapistID = document.getElementById("therapistID").value;
+    const patientID = document.getElementById("patientSelect").value;
 
-    // Only fetch options if a therapistID is available
-    if (!therapistID) {
-        therapySelect.innerHTML = ""; // Clear previous options
-        return;
+    // Only fetch options if a patient is selected
+    if (!patientID) {
+      therapySelect.innerHTML = ""; // Clear previous options
+      return;
     }
 
-    fetch(`notes_service.php?therapist_id=${therapistID}`)
-        .then((response) => response.json())  // Expecting JSON response with options and specialization
-        .then((data) => {
-            therapySelect.innerHTML = data.options;  // Insert the service options into the label
-
-            // Optionally, handle further logic with the specialization, if needed
-            const selectedService = data.specialization;
-            // You can do further actions with the selected service, like logging or UI updates if required
-        })
-        .catch((error) => console.error("Error loading service options:", error));
+    fetch(`notes_service.php?patientID=${patientID}`)
+      .then((response) => response.text())
+      .then((data) => {
+        therapySelect.innerHTML = data; // Directly set fetched options to the select element
+      })
+      .catch((error) => console.error("Error loading service options:", error));
   };
-
-
 
   /*-- PROGRESS REPORT MARKER DO NOT REMOVE**--
         ----------------------------------------------------
