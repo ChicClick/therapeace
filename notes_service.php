@@ -19,15 +19,32 @@ if ($therapistID) {
     $stmt->execute();
     $result = $stmt->get_result();
 
+    // Fetch therapist's specialization
+    $specializationQuery = "
+        SELECT specialization FROM therapist WHERE therapistID = ?
+    ";
+    $stmt = $conn->prepare($specializationQuery);
+    $stmt->bind_param("s", $therapistID);
+    $stmt->execute();
+    $specializationResult = $stmt->get_result();
+    $specialization = null;
+    if ($specializationResult && $specializationResult->num_rows > 0) {
+        $specializationRow = $specializationResult->fetch_assoc();
+        $specialization = $specializationRow['specialization'];
+    }
+
     // Generate HTML options
     $options = "";
     if ($result && $result->num_rows > 0) {
         while ($row = $result->fetch_assoc()) {
-            $options .= "<option value='{$row['serviceID']}'>{$row['serviceName']}</option>";
+            $isSelected = $row['serviceID'] == $specialization ? "selected" : "";
+            $options .= "<option value='{$row['serviceID']}' $isSelected>{$row['serviceName']}</option>";
         }
     } else {
         $options = "<option value=''>No services available</option>"; // Handle case with no services
     }
-    echo $options; // Output the options
+
+    // Return both the options and the therapist's specialization (if needed)
+    echo json_encode(['options' => $options, 'specialization' => $specialization]);
 }
 ?>
