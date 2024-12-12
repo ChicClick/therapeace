@@ -11,7 +11,7 @@ if (!isset($_SESSION['patientID'])) {
     exit();
 }
 
-// Get the logged-in patientID from session
+// Get the logged-in patientID and therapistID from session
 $patientID = $_SESSION['patientID'];
 $therapistID = isset($_POST['therapistID']) ? $_POST['therapistID'] : '';
 
@@ -35,75 +35,80 @@ $checkResult = $checkStmt->get_result();
 
 $testingMode = false; // Set to true for testing, false for production
 
-// if ($checkResult->num_rows > 0) {
-//     $lastReport = $checkResult->fetch_assoc();
-//     $lastReportTime = strtotime($lastReport['created_at']);
-//     $oneWeekInSeconds = 60 * 24 * 60 * 60; // 7 days in seconds
-//     $currentTime = time();
+if ($checkResult->num_rows > 0) {
+    $lastReport = $checkResult->fetch_assoc();
+    $lastReportTime = strtotime($lastReport['created_at']);
+    $twoWeeksInSeconds = 14 * 24 * 60 * 60; // 14 days in seconds
+    $currentTime = time();
 
-//     if (!$testingMode && ($currentTime - $lastReportTime) < $oneWeekInSeconds) {
-//         echo json_encode([
-//             'success' => false,
-//             'error' => 'A report request was already submitted for this therapist within the past week. Please wait for it to be verified.'
-//         ]);
-//         exit();
-//     }
-// }
+    if (!$testingMode && ($currentTime - $lastReportTime) < $twoWeeksInSeconds) {
+        echo json_encode([
+            'success' => false,
+            'error' => 'A report request was already submitted for this therapist within the past 14 days. Please wait for it to be verified.'
+        ]);
+        exit();
+    }
+}
 
 // Fetch session feedback notes for the patient and selected therapist
-$sql = "SELECT feedback FROM sessionfeedbacknotes n
-        JOIN sessions s ON n.sessionID = s.sessionID
-        WHERE s.patientID = ? AND s.therapistID = ?";
+$sql = "SELECT `feedback` FROM session_feedbacks
+        WHERE patientID = ? AND therapistID = ?";
 $stmt = $conn->prepare($sql); // Use the existing $conn
 $stmt->bind_param("ss", $patientID, $therapistID);
 $stmt->execute();
 $result = $stmt->get_result();
 
-$notes = [];
+$feedbackText = "";
 while ($row = $result->fetch_assoc()) {
-    $notes[] = $row['feedback']; // Collect feedback notes
+    $feedbackText .= $row['feedback'] . "\n\n";
 }
-$feedbackText = implode(" ", $notes);
 
-// Summarize the feedback notes using Hugging Face API
+// Define categories and extract their content
+$categories = [
+    'General Considerations' => '',
+    'Management Given' => '',
+    'Observations and Improvements' => '',
+    'Recommendations' => ''
+];
+
+// Regular expression to extract feedback for each category
+foreach ($categories as $category => &$content) {
+    if (preg_match("/{$category}:(.*?)(?=\n\n|$)/is", $feedbackText, $matches)) {
+        $content = trim($matches[1]);
+    }
+}
+
+// Summarize each category using the Hugging Face API
 $apiKey = "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";
 $url = "https://api-inference.huggingface.co/models/facebook/bart-large-cnn";
 
-$data = json_encode(["inputs" => $feedbackText]);
 $headers = [
     "Authorization: Bearer $apiKey",
     "Content-Type: application/json"
 ];
 
-$ch = curl_init($url);
-curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-curl_setopt($ch, CURLOPT_POST, true);
-curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
-curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+$summaryText = "";
+foreach ($categories as $category => $content) {
+    $data = json_encode(["inputs" => $content]);
+    
+    $ch = curl_init($url);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+    curl_setopt($ch, CURLOPT_POST, true);
+    curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
+    curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+    
+    curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+    
+    $response = curl_exec($ch);
+    curl_close($ch);
 
-curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-
-$response = curl_exec($ch);
-curl_close($ch);
-
-if (!$response) {
-    echo json_encode([
-        'success' => false,
-        'error' => 'Error connecting to summarization API.'
-    ]);
-    exit();
-}
-
-// Decode the response
-$responseData = json_decode($response, true);
-if (isset($responseData[0]['summary_text'])) {
-    $summary = $responseData[0]['summary_text'];
-} else {
-    echo json_encode([
-        'success' => false,
-        'error' => 'Error with API response: ' . json_encode($responseData)
-    ]);
-    exit();
+    $responseData = json_decode($response, true);
+    if (isset($responseData[0]['summary_text'])) {
+        $summary = $responseData[0]['summary_text'];
+        $summaryText .= "{$category}:\n{$summary}\n\n";
+    } else {
+        $summaryText .= "{$category}:\nError summarizing this section.\n\n";
+    }
 }
 
 // Prepare the SQL statement to insert the report
@@ -115,7 +120,7 @@ $insertSQL = "INSERT INTO reports (patientID, therapistID, summary, status, crea
                 updated_at = NOW();";
 
 $insertStmt = $conn->prepare($insertSQL);
-$insertStmt->bind_param("sss", $patientID, $therapistID, $summary);
+$insertStmt->bind_param("sss", $patientID, $therapistID, $summaryText);
 $insertSuccess = $insertStmt->execute();
 
 if ($insertSuccess) {
@@ -133,5 +138,4 @@ if ($insertSuccess) {
 // Close statements
 $stmt->close();
 $insertStmt->close();
-$checkStmt->close();
 ?>
