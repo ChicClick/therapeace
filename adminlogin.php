@@ -8,6 +8,7 @@ session_start();
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>TheraPeace</title>
+    <link rel="icon" type="image/svg+xml" href="images/TheraPeace Logo.svg">
     <link rel="stylesheet" href="admin-login-styles.css">
     <link rel="icon" type="image/svg+xml" href="images/TheraPeace Logo.svg">
 </head>

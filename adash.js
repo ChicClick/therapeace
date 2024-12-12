@@ -109,6 +109,99 @@ function filterSearch() {
     }
 }
 
+// update admin change password
+document.addEventListener('DOMContentLoaded', () => {
+    // Bind the changePassword function to a button or event
+    const changePasswordButton = document.getElementById('changePasswordButton'); // Replace with your button's ID or relevant trigger
+    if (changePasswordButton) {
+        changePasswordButton.addEventListener('click', changePassword);
+    }
+});
+
+const changePassword = async (e) => {
+    e.preventDefault();
+    const changePasswordForm = `
+        <form id="changePasswordForm" action="admin_change_password.php" method="POST">
+            <div class="form-group">
+                <label for="oldPassword">Old Password</label>
+                <input type="password" id="oldPassword" name="oldPassword" required>
+            </div>
+
+            <div class="form-group">
+                <label for="newPassword">New Password</label>
+                <input type="password" id="newPassword" name="newPassword" required>
+                <ul id="passwordCriteria">
+                    <li id="length" class="invalid">*Must be at least 8 characters long.</li>
+                    <li id="lowercase" class="invalid">*Must contain a lowercase letter.</li>
+                    <li id="uppercase" class="invalid">*Must contain an uppercase letter.</li>
+                    <li id="number" class="invalid">*Must contain a number or special character.</li>
+                </ul>
+            </div>
+
+            <div class="form-group">
+                <label for="confirmPassword">Confirm New Password</label>
+                <input type="password" id="confirmPassword" name="confirmPassword" required>
+            </div>
+
+            <div class="error-message" id="error-message"></div>
+
+            <div class="form-group">
+                <input type="submit" id="submitButton" value="Change Password" disabled>
+            </div>
+        </form>
+    `;
+
+    new SideViewBarEngine("Change Password", changePasswordForm).render();
+
+    // Password validation logic
+    const newPasswordInput = document.getElementById('newPassword');
+    const confirmPasswordInput = document.getElementById('confirmPassword');
+    const submitButton = document.getElementById('submitButton');
+    const passwordCriteria = {
+        length: false,
+        lowercase: false,
+        uppercase: false,
+        number: false
+    };
+
+    newPasswordInput.addEventListener('input', function() {
+        const password = newPasswordInput.value;
+
+        // Check length
+        passwordCriteria.length = password.length >= 8;
+        document.getElementById('length').className = passwordCriteria.length ? 'valid' : 'invalid';
+
+        // Check for lowercase letter
+        passwordCriteria.lowercase = /[a-z]/.test(password);
+        document.getElementById('lowercase').className = passwordCriteria.lowercase ? 'valid' : 'invalid';
+
+        // Check for uppercase letter
+        passwordCriteria.uppercase = /[A-Z]/.test(password);
+        document.getElementById('uppercase').className = passwordCriteria.uppercase ? 'valid' : 'invalid';
+
+        // Check for number or special character
+        passwordCriteria.number = /[0-9!@#$%^&*(),.?":{}|<>]/.test(password);
+        document.getElementById('number').className = passwordCriteria.number ? 'valid' : 'invalid';
+
+        // Enable/disable submit button based on validation
+        toggleSubmitButton();
+    });
+
+    confirmPasswordInput.addEventListener('input', function() {
+        // Enable/disable submit button based on validation
+        toggleSubmitButton();
+    });
+
+    function toggleSubmitButton() {
+        // Enable submit button if all criteria are met and passwords match
+        if (passwordCriteria.length && passwordCriteria.lowercase && passwordCriteria.uppercase && passwordCriteria.number && newPasswordInput.value === confirmPasswordInput.value) {
+            submitButton.disabled = false;
+        } else {
+            submitButton.disabled = true;
+        }
+    }
+};
+
 // Global variables to track the currently selected month and year
 let selectedMonth = new Date().getMonth(); // Start from the current month (0-11)
 let selectedYear = new Date().getFullYear(); // Start from the current year
