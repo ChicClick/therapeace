@@ -192,7 +192,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   };
 
-  loadServices = () => {
+  loadServices = () => { 
     const therapySelect = document.getElementById("therapySelect");
     // Fetch therapistID from a hidden input or session if needed
     const therapistID = document.getElementById("therapistID").value;
@@ -204,12 +204,17 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     fetch(`notes_service.php?therapist_id=${therapistID}`)
-        .then((response) => response.text())
+        .then((response) => response.json())  // Expecting JSON response with options and specialization
         .then((data) => {
-            therapySelect.innerHTML = data; // Directly set fetched options to the select element
+            therapySelect.innerHTML = data.options;  // Insert the service options into the label
+
+            // Optionally, handle further logic with the specialization, if needed
+            const selectedService = data.specialization;
+            // You can do further actions with the selected service, like logging or UI updates if required
         })
         .catch((error) => console.error("Error loading service options:", error));
-};
+  };
+
 
 
   /*-- PROGRESS REPORT MARKER DO NOT REMOVE**--
