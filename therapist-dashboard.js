@@ -42,51 +42,52 @@ document.addEventListener("DOMContentLoaded", () => {
   openModal = () => {
     const modalContent = `
         <form id="notesForm" class="notesForm" action="add_notes.php" method="post">
-                <div class="form-row">
+            <div class="form-row">
                 <div class="form-column-left">
                     <label for="patientSelect">Select Patient:</label>
                     <select id="patientSelect" name="patientID" required onclick="loadPatients()" onchange="loadServices()">
                         <option value="">Select a patient...</option> <!-- Default placeholder option -->
                     </select>
 
-                    <label for="therapySelect">Select Service:</label>
-                    <select id="therapySelect" name="serviceID" required>
+                    <label for="therapySelect">Selected Service:</label>
+                    <label id="therapySelect" name="serviceID" required>
+                        <!-- Service selection will be dynamically populated -->
+                    </label>
+                </div>
+                <div class="form-column-right">
+                    <label for="sessionDate">Session Date:</label>
+                    <input type="date" id="sessionDate" name="sessionDate" required>
+
+                    <label for="sessionTime">Select Session Time:</label>
+                    <select id="sessionTime" name="sessionTime">
+                        <option value="">Select Time...</option>
+                        <option value="9:00 AM">9:00 AM</option>
+                        <option value="10:00 AM">10:00 AM</option>
+                        <option value="11:00 AM">11:00 AM</option>
+                        <option value="12:00 PM">12:00 PM</option>
+                        <option value="1:00 PM">1:00 PM</option>
+                        <option value="2:00 PM">2:00 PM</option>
+                        <option value="3:00 PM">3:00 PM</option>
+                        <option value="4:00 PM">4:00 PM</option>
+                        <option value="5:00 PM">5:00 PM</option>
+                        <option value="6:00 PM">6:00 PM</option>
                     </select>
                 </div>
-                    <div class="form-column-right">
-                        <label for="sessionDate">Session Date:</label>
-                        <input type="date" id="sessionDate" name="sessionDate" required>
+            </div>
 
-                        <label for="sessionTime">Select Session Time:</label>
-                        <select id="sessionTime" name="sessionTime">
-                            <option value="">Select Time...</option>
-                            <option value="9:00 AM">9:00 AM</option>
-                            <option value="10:00 AM">10:00 AM</option>
-                            <option value="11:00 AM">11:00 AM</option>
-                            <option value="12:00 PM">12:00 PM</option>
-                            <option value="1:00 PM">1:00 PM</option>
-                            <option value="2:00 PM">2:00 PM</option>
-                            <option value="3:00 PM">3:00 PM</option>
-                            <option value="4:00 PM">4:00 PM</option>
-                            <option value="5:00 PM">5:00 PM</option>
-                            <option value="6:00 PM">6:00 PM</option>
-                        </select>
-                    </div>
+            <div class="form-group">
+                <label for="feedback">Feedback:
+                    <a href="#" onclick="document.getElementById('feedbackImage').click();" style="text-decoration: underline; color: #432705; padding:5px; font-size:12px; border-radius:5px;">
+                        <i class="fas fa-upload" style="margin-right: 5px;"></i> Attach Image
+                    </a>
+                </label>
+                <div style="position: relative;">
+                    <textarea id="feedback" name="feedback" required></textarea>
+                    <div id="loadingIcon" class="loading-icon" style="display: none;"></div>
                 </div>
+                <input type="file" id="feedbackImage" accept="image/*" style="display: none;" onchange="extractTextFromImage()" />
 
-                <div class="form-group">
-                    <label for="feedback">Feedback:
-                        <a href="#" onclick="document.getElementById('feedbackImage').click();" style="text-decoration: underline; color: #432705; padding:5px; font-size:12px; border-radius:5px;">
-                            <i class="fas fa-upload" style="margin-right: 5px;"></i> Attach Image
-                        </a>
-                    </label>
-                    <div style="position: relative;">
-                        <textarea id="feedback" name="feedback" required></textarea>
-                        <div id="loadingIcon" class="loading-icon" style="display: none;"></div>
-                    </div>
-                    <input type="file" id="feedbackImage" accept="image/*" style="display: none;" onchange="extractTextFromImage()" />
-
-                    <style>
+                <style>
                         .loading-icon {
                             position: absolute;
                             top: 40%;
