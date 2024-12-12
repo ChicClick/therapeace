@@ -15,7 +15,7 @@ session_start();
     <!-- Left Section -->
     <div class="left-section">
         <a href="loginlanding.html" class="back-link">&larr; Back</a>
-        <img src="images/logo.png" alt="TheraBee Logo" class="logo">
+        <img src="images/TheraPeace Logo.svg" alt="TheraPeace Logo" class="logo">
         <h2>Sign In as Therapist</h2>
 
         <!-- Loading Screen -->
@@ -44,15 +44,16 @@ session_start();
         <div class="text-content">
             <h1>Welcome to TheraPeace</h1>
             <p>
-                A management system for TheraBee.<br>
-                Optimize business processes<br>
-                and service management all in one comprehensive system.
+                Enhance operational efficiency and service delivery through our comprehensive platform.
+                Simplifying processes to support a better future for child development.
             </p>
         </div>
         <div class="illustration">
-            <img src="images/background.png" alt="Illustration" />
+            <!-- Placeholder for an image or illustration -->
+            <img src="images/background.png" alt="Illustration">
         </div>
     </div>
+
     <script>
         console.log("Loading screen triggered"); // Add this line
         function showLoading() {

@@ -29,10 +29,12 @@ body {
     margin: 0;
     font-family: 'Poppins', sans-serif;
     display: flex;
+    flex-direction: row; /* Side-by-side layout by default */
     justify-content: center;
-    align-items: stretch; /* Full height alignment */
+    align-items: stretch;
     height: 100vh;
     background-color: #fdf7ec;
+    overflow: hidden; /* Prevent scrolling on larger screens */
 }
 
 .left-section {
@@ -44,12 +46,12 @@ body {
     justify-content: flex-start;
     width: 40%;
     height: 100vh;
-    position: relative; /* For back link positioning */
+    position: relative; 
 }
 
 .back-link {
     position: absolute;
-    text-decoration: none; /* Removes the underline */
+    text-decoration: none; 
     top: 20px;
     left: 20px;
     color: #444;
@@ -59,7 +61,7 @@ body {
 }
 
 .logo {
-    width: 200px;
+    width: 170px;
     height: auto;
     margin-top: 100px;
     margin-bottom: 20px;
@@ -88,7 +90,7 @@ form input[type="password"] {
     border: none;
     border-radius: 20px;
     background-color: #fff4ce;
-    color: #AAA9A9;
+    color: #432705;
     font-size: 14px;
     outline: none;
 }
@@ -162,6 +164,10 @@ form input::placeholder {
     font-weight: 400; /* Poppins Regular */
     color: #432705;
     margin-bottom: 30px;
+    text-align: center;
+    max-width: 600px; 
+    margin-left: auto; 
+    margin-right: auto; 
 }
 
 .illustration img {
@@ -173,4 +179,92 @@ form input::placeholder {
     color: red;
     font-size: 14px;
     margin-bottom: 10px;
+}
+
+/* Responsive Design for Smaller Screens */
+@media (max-width: 768px) {
+    body {
+        flex-direction: row;
+        flex-wrap: wrap;
+        height: auto;
+        overflow-y: auto;
+    }
+
+    .left-section,
+    .right-section {
+        width: 100%;
+        height: auto;
+        padding: 20px;
+    }
+
+    .right-section {
+        order: -1; /* This moves the right section to the top */
+    }
+
+    .logo {
+        width: 100px;
+        margin-top: 50px;
+        margin-bottom: 15px;
+    }
+
+    .left-section h2 {
+        font-size: 18px;
+    }
+
+    form input[type="text"], 
+    form input[type="date"],
+    form input[type="password"] {
+        width: 90%;
+    }
+
+    .forgot-password {
+        align-self: center;
+        margin-right: 0;
+    }
+
+    .proceed-button {
+        width: 50%;
+    }
+
+    .right-section h1 {
+        font-size: 24px;
+    }
+
+    .right-section p {
+        font-size: 14px;
+    }
+
+    .illustration img {
+        display: none;
+    }
+}
+
+@media (max-width: 480px) {
+    body {
+        flex-direction: row;
+        flex-wrap: wrap;
+        height: auto;
+        overflow-y: auto;
+    }
+
+    .logo {
+        width: 100px;
+    }
+
+    .proceed-button {
+        width: 70%;
+        font-size: 12px;
+    }
+
+    .right-section h1 {
+        font-size: 20px;
+    }
+
+    .right-section p {
+        font-size: 12px;
+    }
+
+    .illustration img {
+        display: none;
+    }
 }
