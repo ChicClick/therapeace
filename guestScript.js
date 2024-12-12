@@ -183,6 +183,7 @@ document.addEventListener('DOMContentLoaded', function () {
     //     return true; // Always allows form submission
     // }
     
+    
 
     function fixStepIndicator(n) {
         var steps = document.getElementsByClassName("step");

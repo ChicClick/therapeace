@@ -215,7 +215,7 @@ if ($resultQuestions && $resultQuestions->num_rows > 0) {
 // Loop through each question page
 foreach ($pageQuestions as $pageNo => $questions) {
     // If you're dealing with multiple pages, you can repeat the import process here for each page if necessary
-    if ($pageNo > 1) { // Assuming you have more than one page
+    if ($pageNo > 1) { 
         $templateId = $pdf->importPage($pageNo); // Import subsequent pages
         $pdf->AddPage();
         $pdf->useTemplate($templateId, -5, 0); // Use the template for the PDF

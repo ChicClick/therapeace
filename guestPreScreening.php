@@ -70,7 +70,7 @@ foreach ($questions as $question) {
             </div>
         </section>
 
-    
+
         <!-- Pre-Screening Form (Initially Hidden) -->
         <div class="test-intro hidden">  <!-- 'hidden' class added here -->
             <h2>TheraQuick test!</h2>
@@ -280,7 +280,6 @@ foreach ($questions as $question) {
                             <?php endif; ?>
 
                             <!-- Navigation buttons -->
-                            
                                 <div class="navigation-buttons">
                                     <button type="button" onclick="prevCategory(<?= $categoryIndex ?>)">Previous</button>
                                     <?php if ($category !== 'School and Intervention History'): ?>
