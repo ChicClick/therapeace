@@ -165,10 +165,6 @@ generic-table {
   width: 30px;
 }
 
-.left-section .logo img {
-  width: 60px;
-}
-
 .left-section ul li a i {
   margin-right: 10px; /* Adjust the spacing as needed */
   font-size: 18px; /* Adjust icon size if necessary */
