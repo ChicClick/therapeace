@@ -40,10 +40,18 @@ document.addEventListener("DOMContentLoaded", () => {
   // Get references to the hamburger menu button and the navbar
   const hamburgerMenu = document.getElementById('hamburgerMenu');
   const navbar = document.querySelector('.navbar');
-  
+  const navLinks = document.querySelectorAll('.navbar a'); // Select all navigation links inside the navbar
+
   // Add event listener to toggle the navbar visibility
   hamburgerMenu.addEventListener('click', function() {
       navbar.classList.toggle('active'); // Toggle the 'active' class on the navbar
+  });
+
+  // Add event listener to each nav link to close the navbar when clicked
+  navLinks.forEach(link => {
+      link.addEventListener('click', function() {
+          navbar.classList.remove('active'); // Remove the 'active' class to close the navbar
+      });
   });
   /*-- NOTES SECTION --------------- ******************* --------- THIS IS A MARKER DO NOT REMOVE --*/
   openModal = () => {
