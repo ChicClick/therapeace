@@ -194,7 +194,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
   loadServices = () => {
     const therapySelect = document.getElementById("therapySelect");
-
     // Fetch therapistID from a hidden input or session if needed
     const therapistID = document.getElementById("therapistID").value;
 
@@ -204,7 +203,7 @@ document.addEventListener("DOMContentLoaded", () => {
         return;
     }
 
-    fetch(`notes_service.php?therapistID=${therapistID}`)
+    fetch(`notes_service.php?therapist_id=${therapistID}`)
         .then((response) => response.text())
         .then((data) => {
             therapySelect.innerHTML = data; // Directly set fetched options to the select element
