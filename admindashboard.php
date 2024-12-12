@@ -735,6 +735,8 @@ if (isset($_SESSION['firstname'])) {
         </div>
 
         <div id="checklist-section" class="content">
+
+            <!-- Pre-Screening Section -->
             <h4>PRE-SCREENING RESPONSE</h4>
             
             <div class="tabs-container">
