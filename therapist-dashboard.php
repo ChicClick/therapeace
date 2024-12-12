@@ -33,7 +33,10 @@ $therapistID = $_SESSION['therapist_id'];
             <img src="images/logo.png" alt="TheraPeace Logo">
             <h2>TheraPeace</h2>
         </div>
-        <nav>
+        <button class="hamburger-menu" id="hamburgerMenu">
+            <i class="fas fa-bars"></i> <!-- Hamburger icon -->
+        </button>
+        <nav class="navbar">
             <ul>
                 <p>MENU</p>
                 <li class="active"><a href="#" data-target="appointments-section"><i class="fas fa-calendar-check"></i> Appointments</a></li>
@@ -41,18 +44,14 @@ $therapistID = $_SESSION['therapist_id'];
                 <li><a href="#" data-target="notes-section"><i class="fas fa-file-alt"></i> Feedback Notes</a></li>
                 <li><a href="#" data-target="report-section"><i class="fas fa-chart-bar"></i> Progress Report</a></li>
                 <li><a href="#" data-target="checklist-section"><i class="fas fa-clipboard-list"></i> Pre-Screening Response</a></li>
-
+    
                 <p>OTHERS</p>
-                    <!---
-                        <li><a href="#"><i class="fa fa-cog"></i> Settings</a></li>
-                        <li><a href="#"><i class="fa fa-users"></i> Accounts</a></li>
-                        <li><a href="#"><i class="fa fa-info-circle"></i> Help</a></li>
-                    -->
                 <li><a href="#" data-target="Edit-section"><i class="fa fa-cog"></i> Edit Profile</a></li>
                 <li><a href="#" id="logoutBtn"><i class="fa fa-sign-out"></i> Sign Out</a></li>
             </ul>
         </nav>
     </div>
+
 
     <?php 
         if (isset($_GET['message']) && !empty($_GET['message'])) {
