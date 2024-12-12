@@ -54,15 +54,17 @@ foreach ($questions as $question) {
                 <div class="left-section">
                     <p>Pre-Screening</p>
                     <h3>QUICK CHECK </h3>
-                    <p>Click the Log In button if already a member</p>
+                    <p>Click the Log In button if already registered as a patient</p>
                 </div>
                 <div class="right-section">
-                    <p>Complete this quick pre-screening checklist to help us understand your needs and determine the best approach for your therapy.</p>
-                    <ul>
-                        <li><strong>Estimate Your Needs:</strong> Get an idea of your therapy requirements based on your responses to a few questions.</li>
-                        <li><strong>Personalized Recommendations:</strong> Receive tailored suggestions for therapy options suitable for you.</li>
-                        <li><strong>Confidential and Secure:</strong> Your information is kept confidential and used solely for providing the best care.</li>
+                    <p>Complete this quick pre-screening form to officially register as a patient and help us prepare for your therapy journey.</p>
+                    <br><ul>
+                        <li><strong>Confirm Your Needs:</strong> Share essential details to ensure we align with the therapy recommended for you by your developmental pediatrician.</li>
+                        <li><strong>Tailored Preparation:</strong> Your responses will help us customize your therapy experience and provide the best support.</li>
+                        <li><strong>Confidential and Secure:</strong> All information is securely stored and used exclusively for your care.</li>
                     </ul>
+                    <p><strong>Important Disclaimer:</strong>
+                    Please only proceed with this form if your child has already received a diagnosis from a developmental pediatrician. This helps us provide the right therapy for your child.</p>
                     <button class="start-test-btn" onclick="showPreScreeningForm()">Start Test</button>
                 </div>
             </div>
@@ -168,7 +170,7 @@ foreach ($questions as $question) {
                                             <div class="option-group">
                                                 <?php foreach ($options as $option): ?>
                                                     <div class="option-item">
-                                                        <input type="radio" name="question_<?= $question['questionID'] ?>" value="<?= htmlspecialchars($option) ?>" <?= $isRequired ?>>
+                                                        <input type="radio" name="question_<?= $question['questionID'] ?>" value="<?= htmlspecialchars($option) ?>">
                                                         <label><?= htmlspecialchars($option) ?></label>
                                                     </div>
                                                 <?php endforeach; ?>
@@ -177,7 +179,16 @@ foreach ($questions as $question) {
                                             <div class="option-group">
                                                 <?php foreach ($options as $option): ?>
                                                     <div class="option-item">
-                                                        <input type="checkbox" name="question_<?= $question['questionID'] ?>[]" value="<?= htmlspecialchars($option) ?>" <?= $isRequired ?>>
+                                                        <input type="checkbox" name="question_<?= $question['questionID'] ?>[]" value="<?= htmlspecialchars($option) ?>">
+                                                        <label><?= htmlspecialchars($option) ?></label>
+                                                    </div>
+                                                <?php endforeach; ?>
+                                            </div>
+                                        <?php elseif ($question['inputType'] === 'checkbox'): ?>
+                                            <div class="option-group" id="<?= ($question['questionID'] == 46) ? 'question-46' : '' ?>">
+                                                <?php foreach ($options as $option): ?>
+                                                    <div class="option-item">
+                                                        <input type="checkbox" name="question_<?= $question['questionID'] ?>[]" value="<?= htmlspecialchars($option) ?>" <?= ($question['questionID'] == 46) ? 'class="required-checkbox"' : '' ?>>
                                                         <label><?= htmlspecialchars($option) ?></label>
                                                     </div>
                                                 <?php endforeach; ?>
@@ -220,8 +231,8 @@ foreach ($questions as $question) {
                                         <input type="number" name="mother_age" id="mother_age" class="styled-input" required>
                                     </div>
                                     <div class="input-group">
-                                        <label class="required" for="father_age">Age of father:</label>
-                                        <input type="number" name="father_age" id="father_age" class="styled-input" required>
+                                        <label for="father_age">Age of father:</label>
+                                        <input type="number" name="father_age" id="father_age" class="styled-input">
                                     </div>
                                 </div>
                             <?php endif; ?>
@@ -229,8 +240,8 @@ foreach ($questions as $question) {
                             <?php if ($category === 'Delivery'): ?>
                                 <div class="demographics-section" style="display: flex; justify-content: space-between; margin-bottom: 15px;">
                                     <div class="input-group">
-                                        <label class="required" for="labor_hours">Hours of labor</label>
-                                        <input type="number" name="labor_hours" id="labor_hours" class="styled-input" required>
+                                        <label for="labor_hours">Hours of labor</label>
+                                        <input type="number" name="labor_hours" id="labor_hours" class="styled-input">
                                     </div>
                                 </div>
                             <?php endif; ?>
@@ -238,12 +249,12 @@ foreach ($questions as $question) {
                             <?php if ($category === 'Personal History'): ?>
                                 <div class="demographics-section" style="display: flex; justify-content: space-between; margin-bottom: 15px;">
                                     <div class="input-group">
-                                        <label class="required" for="siblings">Ilan ang kapatid?</label>
-                                        <input type="number" name="siblings" id="siblings" class="styled-input" required>
+                                        <label for="siblings">Ilan ang kapatid?</label>
+                                        <input type="number" name="siblings" id="siblings" class="styled-input">
                                     </div>
                                     <div class="input-group">
-                                        <label class="required" for="sibling_position">Pang-ilan sa magkakapatid?</label>
-                                        <input type="number" name="sibling_position" id="sibling_position" class="styled-input" required>
+                                        <label for="sibling_position">Pang-ilan sa magkakapatid?</label>
+                                        <input type="number" name="sibling_position" id="sibling_position" class="styled-input">
                                     </div>
                                 </div>
                             <?php endif; ?>   
@@ -319,7 +330,9 @@ foreach ($questions as $question) {
                 <span class="close" onclick="closeModal()">&times;</span>
                 <h2>Success!</h2>
                 <p>Your form was submitted successfully!</p>
-                <p>Please be aware that this checklist is designed to assess potential symptoms and should be interpreted alongside a thorough medical and clinical evaluation. It is not a stand-alone diagnostic tool and should only be used in conjunction with a comprehensive assessment of your individual circumstances. Thus, the submitted answers will still be reviewed by an affiliated therapist from our clinic, and you will receive an email with your results afterwards.</p>
+                <p>Please note that this form is intended for children who have already been diagnosed by a developmental pediatrician. It serves as part of the enrollment process for therapy services.</p>
+                <p>Once submitted, your form will be reviewed by the clinic’s admin team to assess the availability of a therapist for the therapy service you have requested. If a slot is available, you will receive an email with further details and instructions. If no slots are currently available, you will also be notified via email.</p>
+                <p>Thank you for your patience as we review your submission!</p>
                 <form id="contact-form" action="guestSendPDF.php" method="POST">
                     
                     <!-- Add hidden input for responseID -->
