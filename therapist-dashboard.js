@@ -38,6 +38,16 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   });
 
+  // Get references to the hamburger menu button and the navbar
+  const hamburgerMenu = document.getElementById('hamburgerMenu');
+  const navbar = document.querySelector('.navbar');
+  
+  // Add event listener to toggle the navbar visibility
+  hamburgerMenu.addEventListener('click', function() {
+      navbar.classList.toggle('active'); // Toggle the 'active' class on the navbar
+  });
+
+
   /*-- NOTES SECTION --------------- ******************* --------- THIS IS A MARKER DO NOT REMOVE --*/
   openModal = () => {
     const modalContent = `
