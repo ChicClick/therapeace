@@ -56,6 +56,10 @@ class SideViewBarEngine extends HTMLElement {
             document.head.appendChild(cssLink);
         }
 
+        const backdropDiv = document.createElement("div");
+        backdropDiv.classList.add("backdrop");
+
+        this.containerDiv.appendChild(backdropDiv);
         this.containerDiv.appendChild(container);
 
         setTimeout(() => {
@@ -66,9 +70,11 @@ class SideViewBarEngine extends HTMLElement {
     close() {
         // Close the side view bar
         const container = this.containerDiv.querySelector('.side-view-bar-container');
-        if (container) {
+        const backdrop = this.containerDiv.querySelector('.backdrop');
+        if (container && backdrop) {
             container.classList.remove('visible');
             setTimeout(() => {
+                backdrop.remove();
                 container.remove(); // Remove the container after animation ends
             }, 300); // Adjust delay based on your CSS animation duration
         }

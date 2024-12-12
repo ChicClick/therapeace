@@ -23,7 +23,7 @@ $appointments = [];
 $sqlAppointments = "SELECT a.appointmentID, a.schedule, t.therapistID, t.therapistName
                     FROM appointment a
                     JOIN therapist t ON a.therapistID = t.therapistID
-                    WHERE a.patientID = ?";
+                    WHERE a.patientID = ? && a.status ='ongoing'";
 $stmt = $mysqli->prepare($sqlAppointments);
 
 if ($stmt) {

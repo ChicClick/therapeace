@@ -93,9 +93,9 @@ class TableEngine extends HTMLElement {
         ['admin_therapists', 'admin_get_therapists.php'],
         ['admin_services', 'admin_get_services.php'],
         ['admin_staffs', 'admin_get_staffs.php'],
-        ['patient_appointments', 'patient_get_appointments.php'],
+        ['patient_upcoming_appointments', 'patient_get_upcoming_appointments.php'],
         ['patient_sessions', 'patient_get_sessions.php'],
-        ['therapist_appointments', 'therapist_get_appointments.php'],
+        ['therapist_upcoming_appointments', 'therapist_get_upcoming_appointments.php'],
         ['therapist_patients', 'therapist_get_patients.php'],
         ['therapist_notes', 'therapist_get_notes.php'],
         ['therapist_pre-screening_pending', 'therapist_get_pre-screening.php?status=1'],
@@ -444,6 +444,7 @@ class TableEngine extends HTMLElement {
                     const tdActions = document.createElement('td');
                     tdActions.classList.add("td-container");
                     if (this.reschedule) {
+                        
                         const rescheduleButton = document.createElement('button');
                         rescheduleButton.classList.add('reschedule-button');
                         rescheduleButton.innerHTML = 'RESCHEDULE';
@@ -596,6 +597,53 @@ class TableEngine extends HTMLElement {
         if(this.tableType == "admin_services") {
             this.servicesInfo(row)
         }
+
+        if(this.tableType == "admin_appointments") {
+            this.adminAppointments(row)
+        }
+    }
+
+    adminAppointments(row) {
+        const [date, time] = row["schedule"].split(" ");
+        const btnContainer = row["status"] === "ongoing" ? `
+            
+            <div class="btn-container">
+                <button type="submit" class="submit-btn"}>Mark as Complete <i class="fas fa-check"></i></button>
+            </div>
+        ` : "";
+        new SideViewBarEngine(`APPOINTMENT# - ${row.appointmentID}`, 
+            `
+            <form id="patient-appointment-form" action="a_appointment_mark_as_complete.php" method="POST">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="patient_name">Patient Name:</label>
+                        <input value="${row["patient_name"]}" type="text" id="patient_name" name="patient_name" placeholder="Type service name you want to edit" disabled>
+                    </div>
+                    <div class="form-group">
+                         <label for="therapist_name">Therapist Name:</label>
+                        <input value="${row["therapist_name"]}" type="text" id="therapist_name" name="therapist_name" placeholder="Type service name you want to edit" disabled>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="date-appointment">Date:</label>
+                        <input value="${date}" type="text" id="date-appointment" name="date-appointment" disabled>
+                    </div>
+                    <div class="form-group">
+                        <label for="time-appointment">Time:</label>
+                        <input value="${time}" type="text" id="time-appointment" name="time-appointment" disabled>
+                    </div>
+                    <div class="form-group">
+                        <label for="service">Service:</label>
+                        <input value="${row["service_name"]}" type="text" id="service" name="service" required>
+                    </div>
+                </div>
+                <input type="hidden" name="appointmentID" value="${row["appointmentID"]}"/>
+                ${btnContainer}
+            </form>                  
+            `
+        ).render();
     }
 
     addPatient(guestID, childName, email, phone) {
@@ -948,7 +996,7 @@ class TableEngine extends HTMLElement {
                 </div>
             </form>                  
             `
-        ).render()
+        ).render();
     }
 
     deleteService(rowID) {
