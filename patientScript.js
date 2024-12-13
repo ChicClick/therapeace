@@ -177,7 +177,7 @@ fetchReport = async () => {
         .then(res =>  res.json())
         .then(data => {
             data.reports.forEach(report => {
-                const reportCreationDate = new Date(report.created_at);
+                const reportCreationDate = new Date(report.updated_at);
                 const currentDate = new Date();
                 const interval = currentDate - reportCreationDate;
                 const isReportAvailable= report.status != 'pending' && report.pdf_path;
@@ -191,7 +191,7 @@ fetchReport = async () => {
                     <p><strong>Report ID:</strong>${report.reportID}</p>
                     <p><strong>Therapist:</strong>${report.therapistName}></p>
                     <p><strong>Status:</strong>${report.status}</p>
-                    <p><strong>Created At:</strong>${report.created_at}</p>
+                    <p><strong>Updated At:</strong>${report.updated_at}</p>
     
                     ${action}
                     <hr>
