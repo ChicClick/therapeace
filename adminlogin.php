@@ -8,6 +8,7 @@ session_start();
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>TheraPeace</title>
+    <link rel="icon" type="image/svg+xml" href="images/TheraPeace Logo.svg">
     <link rel="stylesheet" href="admin-login-styles.css">
     <link rel="icon" type="image/svg+xml" href="images/TheraPeace Logo.svg">
 </head>
@@ -15,10 +16,10 @@ session_start();
 <body>
     <!-- Left Section -->
     <div class="left-section">
-    <img src="images/logo.png" alt="TheraBee Logo" class="logo">
+    <img src="images/TheraPeace Logo.svg" alt="TheraPeace Logo" class="logo">
     <h2>Sign In as Admin</h2>
 
-    <!-- Loading Screen ETOOOOOOOOOOOOOO -->
+    <!-- Loading Screen -->
     <div id="loading" style="display: none;" class="sk-folding-cube">
     <div class="sk-cube1 sk-cube"></div>
     <div class="sk-cube2 sk-cube"></div>
@@ -46,13 +47,13 @@ session_start();
         <div class="text-content">
             <h1>Welcome to TheraPeace</h1>
             <p>
-                A management system for TheraBee.<br>
-                Optimize business processes<br>
-                and service management all in one comprehensive system.
+                Enhance operational efficiency and service delivery through our comprehensive platform.
+                Simplifying processes to support a better future for child development.
             </p>
         </div>
         <div class="illustration">
-            <img src="images/background.png" alt="Illustration" />
+            <!-- Placeholder for an image or illustration -->
+            <img src="images/background.png" alt="Illustration">
         </div>
     </div>
 

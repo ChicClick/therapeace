@@ -18,6 +18,7 @@
     font-weight: 600;
     font-style: normal;
 }
+
 @font-face {
     font-family: 'Poppins';
     src: url('fonts/Poppins-Extrabold.ttf') format('truetype');
@@ -33,6 +34,7 @@ body {
     align-items: stretch;
     height: 100vh;
     background-color: #fdf7ec;
+    overflow-y: hidden;
 }
 
 .left-section {
@@ -47,7 +49,7 @@ body {
 }
 
 .logo {
-    width: 200px;
+    width: 170px;
     height: auto;
     margin-top: 100px;
     margin-bottom: 20px;
@@ -58,6 +60,7 @@ body {
     font-weight: 600;
     margin-bottom: 20px;
     color: #432705;
+    text-align: center;
 }
 
 .role-button {
@@ -82,12 +85,13 @@ body {
 .right-section {
     background: linear-gradient(to bottom, #fefdeb 0%, #fff4ce 100%);
     padding: 40px;
-    width: 65%;
+    width: 60%;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
     text-align: center;
+    overflow-y: auto;
 }
 
 .text-content {
@@ -106,9 +110,88 @@ body {
     font-weight: 400; /* Poppins Regular */
     color: #432705;
     margin-bottom: 30px;
+    text-align: center;
+    max-width: 600px; 
+    margin-left: auto; 
+    margin-right: auto; 
 }
 
 .illustration img {
     max-width: 70%;
     height: auto;
+}
+
+/* Responsive Design for Smaller Screens */
+@media (max-width: 768px) {
+    body {
+        flex-direction: row;
+        flex-wrap: wrap;
+        height: auto;
+        overflow-y: auto;
+    }
+
+    .left-section,
+    .right-section {
+        width: 100%;
+        height: auto;
+        padding: 20px;
+    }
+
+    .right-section {
+        order: -1; /* This moves the right section to the top */
+    }
+
+    .logo {
+        width: 100px;
+        margin-top: 50px;
+        margin-bottom: 15px;
+    }
+
+    .left-section h2 {
+        font-size: 18px;
+    }
+
+    .role-button {
+        width: 70%;
+        padding: 10px 0;
+        font-size: 14px;
+    }
+
+    .right-section h1 {
+        font-size: 24px;
+    }
+
+    .right-section p {
+        font-size: 14px;
+    }
+
+    .illustration img {
+        max-width: 90%;
+    }
+}
+
+@media (max-width: 480px) {
+    body {
+        flex-direction: row;
+        flex-wrap: wrap;
+        height: auto;
+        overflow-y: auto;
+    }
+
+    .logo {
+        width: 100px;
+    }
+
+    .role-button {
+        width: 90%;
+        font-size: 14px;
+    }
+
+    .right-section h1 {
+        font-size: 20px;
+    }
+
+    .right-section p {
+        font-size: 12px;
+    }
 }

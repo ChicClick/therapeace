@@ -23,15 +23,17 @@ if (isset($_SESSION['firstname'])) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>TheraPeace</title>
-    <link rel="stylesheet" href="adash.css">
     <link rel="icon" type="image/svg+xml" href="images/TheraPeace Logo.svg">
-
+    <link rel="stylesheet" href="adash.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.10.2/fullcalendar.min.css" />
     <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.25/jspdf.plugin.autotable.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+
 </head>
 <body>
     <generic-side-view-bar></generic-side-view-bar>
@@ -42,7 +44,10 @@ if (isset($_SESSION['firstname'])) {
             <img src="images/TheraPeace Logo.svg" alt="TheraPeace Logo">
             <h2>TheraPeace</h2>
         </div>
-        <nav>
+        <button class="hamburger-menu" id="hamburgerMenu">
+            <i class="fas fa-bars"></i> <!-- Hamburger icon -->
+        </button>
+        <nav class="navbar">
             <ul>
                 <p>MENU</p>
                 <li><a href="#" data-target="dashboard-section"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
@@ -55,6 +60,7 @@ if (isset($_SESSION['firstname'])) {
 
                 <p>OTHERS</p>
                 <!-- Removed the manage account tab -->
+                <li><a href="#" id="changePassword" onclick="changePassword(event)"> <i class="fa fa-key"></i> Change Password</a></li>
                 <li><a href="#" data-target="edit-profile-section"><i class="fa fa-cog"></i> Edit Profile</a></li>
                 <li><a href="#" id="logoutBtn"><i class="fa fa-sign-out"></i>Log Out</a></li>
             </ul>
@@ -735,6 +741,8 @@ if (isset($_SESSION['firstname'])) {
         </div>
 
         <div id="checklist-section" class="content">
+
+            <!-- Pre-Screening Section -->
             <h4>PRE-SCREENING RESPONSE</h4>
             
             <div class="tabs-container">

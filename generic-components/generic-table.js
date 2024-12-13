@@ -6,7 +6,6 @@ const columnKeyMapper = new Map([
     ["COMMUNICATION", "COMMUNICATION"],
     ["CHILDNAME", "CHILD NAME"], ["CHILD_NAME", "CHILD NAME"],
     ["CHILDAGE", "CHILD AGE"], ["CHILD_AGE", "CHILD AGE"],
-    ["COMMENTS", "COMMENTS"], ["COMMENT", "COMMENTS"],
     ["CONSENT", "CONSENT"],
     ["CREATED_AT", "CREATED AT"],
     ["DATEHIRED", "DATE HIRED"],
@@ -21,7 +20,6 @@ const columnKeyMapper = new Map([
     ["GENDER", "GENDER"],
     ["GUESTNAME", "GUEST NAME"], ["GUEST_NAME", "GUEST NAME"],
     ["IMAGE", "IMAGE"],
-    ["MATCHTHERAPY", "MATCH THERAPY"], ["MATCH_THERAPY", "MATCH THERAPY"],
     ["NO_PATIENTS_HANDLE", "NO. OF PATIENTS HANDLE"], 
     ["PATIENT", "PATIENT"],
     ["PATIENTNAME", "PATIENT"], ["PATIENT-NAME", "PATIENT"], ["PATIENT_NAME", "PATIENT"],
@@ -594,7 +592,7 @@ class TableEngine extends HTMLElement {
         }
 
         if(this.tableType == "therapist_pre-screening_pending" || this.tableType == "therapist_pre-screening_complete") {
-            this.patientPrescreening(row["GuestID"], row["guest_name"], row["child_name"],row["child_age"], row["guest_status"], row["match_therapy"], row["comments"], row["email"], row["phone"])
+            this.patientPrescreening(row["GuestID"], row["guest_name"], row["child_name"],row["child_age"], row["guest_status"], row["email"], row["phone"])
         }
 
         if(this.tableType == "admin_staffs") {
@@ -1176,7 +1174,7 @@ class TableEngine extends HTMLElement {
         });
     }
 
-    async patientPrescreening(guestID, guestName, childName, childAge, guestStatus, matchTherapy = [], comments, email, phone) {
+    async patientPrescreening(guestID, guestName, childName, childAge, guestStatus, email, phone) {
         let therapyArray = [];
 
         if (typeof matchTherapy === "string") {
@@ -1333,14 +1331,14 @@ class TableEngine extends HTMLElement {
                                 </div>
                                 <label>
                                     <input 
-                                        type="checkbox" name="therapies[]" 
+                                        type="checkbox" name="therapies[]" id="terms-checkbox"
                                         value="terms" ${guestStatus == 2 ? "disabled" : ""}
                                         required
                                     > I have read and accept the terms and conditions.
                                 </label>
                                 <label>
                                     <input 
-                                        type="checkbox" name="therapies[]" 
+                                        type="checkbox" name="therapies[]" id="privacy-checkbox"
                                         value="privacy" ${guestStatus == 2 ? "disabled" : ""}
                                         required
                                     > I consent to the privacy policy and data usage agreement.
@@ -1357,7 +1355,7 @@ class TableEngine extends HTMLElement {
                         </form>
                     </div>
                 `;
-                
+
                 containerForm.innerHTML = therapiesHTML;
                 console.log(document.querySelector('.checklist-right-section'));
                 mainContent.appendChild(containerForm);

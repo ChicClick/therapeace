@@ -1,21 +1,21 @@
 <?php
 include 'db_conn.php'; // Include your database connection file
 
-// Get the therapist ID from the GET request
-$therapistID = isset($_GET['therapist_id']) ? $_GET['therapist_id'] : null;
+// Get the patient ID from the GET request
+$patientID = isset($_GET['patientID']) ? $_GET['patientID'] : null;
 
-if ($therapistID) {
-    // Query to fetch services linked to the therapist's specialization
+if ($patientID) {
+    // Query to fetch services linked to the selected patient's appointments
     $query = "
         SELECT DISTINCT s.serviceID, s.serviceName 
         FROM services s
-        INNER JOIN therapist ts ON s.serviceID = ts.specialization
-        WHERE ts.therapistID = ?
+        INNER JOIN appointment a ON s.serviceID = a.serviceID
+        WHERE a.patientID = ?
     ";
 
     // Prepare and execute the statement
     $stmt = $conn->prepare($query);
-    $stmt->bind_param("s", $therapistID);
+    $stmt->bind_param("s", $patientID);
     $stmt->execute();
     $result = $stmt->get_result();
 

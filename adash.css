@@ -25,6 +25,84 @@
   font-style: normal;
 }
 
+/* Add Hamburger Menu styles */
+.hamburger-menu {
+  display: none; /* Hide the menu button by default */
+  background: transparent;
+  border: none;
+  font-size: 30px;
+  color: #432705;
+  cursor: pointer;
+  padding: 10px;
+}
+
+/* Show the hamburger menu on smaller screens */
+@media (max-width: 768px) {
+  .hamburger-menu {
+      display: block; /* Show hamburger menu button */
+  }
+
+  /* Hide the navigation by default */
+  .navbar {
+      display: none; 
+  }
+
+  .navbar.active {
+      display: block; /* Show navbar when active class is added */
+  }
+
+  .left-section {
+      width: 100%; /* Make the left section take full width */
+      max-width: 100%; /* Remove the fixed width */
+      padding: 10px; /* Adjust padding for smaller screens */
+  }
+
+  .left-section .logo {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      width: 100%;
+      margin-top: 0;
+  }
+
+  .left-section h2 {
+      font-size: 18px;
+  }
+
+  .left-section ul {
+      padding: 0;
+      margin-left: 0;
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+  }
+
+  .left-section li {
+      padding: 10px 0;
+      display: block;
+      width: 100%;
+  }
+
+  .left-section li a {
+      display: block;
+      font-size: 14px;
+      padding: 8px;
+      color: #432705;
+      text-decoration: none;
+  }
+
+  .left-section ul li.active a {
+      background-color: #edededc7;
+      color: #fdbc10;
+  }
+
+  .left-section p {
+      display: block;
+      font-size: 10px;
+      padding: 8px;
+  }
+}
+
 body {
   font-family: "Poppins", sans-serif;
   margin: 0;
@@ -52,7 +130,7 @@ generic-table {
 }
 
 .left-section .logo {
-  margin-left: 4%;
+  margin-left: 7%;
   margin-top: 9px;
   text-align: left;
   margin-bottom: 20px;
@@ -62,15 +140,16 @@ generic-table {
 
 .left-section h2 {
   color: #432705;
-  margin-left: 5px;
+  margin-left: 10px;
   font-size: large;
   font-weight: bolder;
   text-align: left;
-  margin-bottom: 20px;
+  margin-top: 18px;
+  margin-bottom: 18px;
 }
 
 .left-section .logo img {
-  width: 60px;
+  width: 30px;
 }
 .left-section ul li a i {
   margin-right: 10px; /* Adjust the spacing as needed */
@@ -97,124 +176,6 @@ generic-table {
   font-weight: 600;
   display: block;
   font-size: 11px;
-}
-
-/* Update to make it responsive*/
-/* Responsive Styles */
-/* Tablets and iPads (Portrait) */
-@media (max-width: 768px) {
-  .left-section {
-    width: 25%; /* Increase width slightly for tablets */
-    height: auto; /* Allow height to adjust as needed */
-    padding: 15px;
-  }
-
-  .left-section .logo img {
-    width: 50px; /* Reduce logo size */
-  }
-
-  .left-section h2 {
-    font-size: small; /* Adjust heading size */
-  }
-
-  .left-section li a {
-    font-size: 10px; /* Slightly smaller font size for links */
-  }
-
-  .left-section ul li a i {
-    font-size: 16px; /* Adjust icon size */
-  }
-}
-
-/* Mobile Phones */
-@media (max-width: 480px) {
-  .left-section {
-    width: 100%; /* Full width for mobile */
-    height: auto; /* Allow height to adjust */
-    padding: 10px;
-  }
-
-  .left-section .logo {
-    justify-content: center; /* Center the logo */
-    margin: 10px 0;
-  }
-
-  .left-section .logo img {
-    width: 40px; /* Smaller logo size */
-  }
-
-  .left-section h2 {
-    font-size: small; /* Reduce font size for heading */
-    text-align: center; /* Center align text */
-    margin: 10px 0;
-  }
-
-  .left-section ul {
-    margin: 0 auto;
-    padding: 0;
-    text-align: center; /* Center align menu items */
-  }
-
-  .left-section li {
-    justify-content: center; /* Center align list items */
-    padding: 5px; /* Adjust padding for smaller screens */
-  }
-
-  .left-section li a {
-    font-size: 9px; /* Smaller font size for links */
-  }
-
-  .left-section ul li a i {
-    font-size: 14px; /* Adjust icon size */
-  }
-}
-
-/* Laptops and Small Desktops */
-@media (min-width: 1024px) and (max-width: 1440px) {
-  .left-section {
-    width: 20%; /* Slightly smaller width for laptops */
-    padding: 20px;
-  }
-
-  .left-section .logo img {
-    width: 60px; /* Slightly larger logo size for laptops */
-  }
-
-  .left-section h2 {
-    font-size: medium; /* Increase heading size */
-  }
-
-  .left-section li a {
-    font-size: 12px; /* Slightly larger font size for links */
-  }
-
-  .left-section ul li a i {
-    font-size: 18px; /* Adjust icon size */
-  }
-}
-
-/* Desktop and Large Screens */
-@media (min-width: 1441px) {
-  .left-section {
-    width: 15%; /* Smaller width for large screens */
-    padding: 25px;
-  }
-
-  .left-section .logo img {
-    width: 70px; /* Logo at a comfortable size */
-  }
-
-  .left-section h2 {
-    font-size: large; /* Larger font size for heading */
-  }
-
-  .left-section li a {
-    font-size: 14px; /* Standard size for links */
-  }
-
-  .left-section ul li a i {
-    font-size: 20px; /* Adjust icon size */
-  }
 }
 
 /* Style for active menu item */
@@ -280,8 +241,7 @@ generic-table {
   flex-grow: 1;
   padding: 5px;
   border: none;
-  background-color: #f0f0f5;
-  border-radius: 10px;
+  background-color: transparent;
 }
 
 .search-bar input:focus {
@@ -323,7 +283,7 @@ generic-table {
 @media (min-width: 769px) and (max-width: 1024px) {
   .left-section ul li.active a {
     width: 140px; /* Adjust width for laptop screens */
-    font-size: 12px; /* Slightly larger font size for better readability */
+  
   }
 
   .search-bar {
@@ -344,7 +304,7 @@ generic-table {
 @media (min-width: 1025px) {
   .left-section ul li.active a {
     width: 160px; /* Adjust width for desktop screens */
-    font-size: 14px; /* Larger font size for better visibility */
+    
   }
 
   .search-bar {
@@ -1288,8 +1248,7 @@ input[type="file"] {
   border: 1px solid #ccc;
   border-radius: 5px;
   font-size: 0.9rem;
-  background-color: #fefdeb;
-  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.1);
+  
 }
 
 input[type="date"] {
@@ -2157,7 +2116,7 @@ input[type="checkbox"] {
 
 /* Profile Picture Section */
 .form-edit {
-  width: 100%;
+  width: 90%;
   display: flex;
   flex-wrap: wrap;
   gap: 20px;
@@ -2664,4 +2623,26 @@ input[type="checkbox"] {
     width: 100%; /* Stack sections vertically on small screens */
     margin-right: 0;
   }
+}
+
+#passwordCriteria {
+  list-style-type: none;
+  padding-left: 0;
+}
+#passwordCriteria li {
+  color: red;
+  font-size: 0.8em;
+}
+#passwordCriteria li.valid {
+  color: green;
+}
+#passwordCriteria li.invalid {
+  color: red;
+}
+#newPassword {
+  border: 2px solid #ccc;
+  padding: 10px;
+}
+#newPassword:focus {
+  border: 2px solid #4CAF50;
 }

@@ -26,11 +26,145 @@
   font-style: normal;
 }
 
+/* Add Hamburger Menu styles */
+.hamburger-menu {
+  display: none;
+  background: transparent;
+  border: none;
+  font-size: 30px;
+  color: #432705;
+  cursor: pointer;
+  padding: 10px;
+}
+
+/* Show the hamburger menu on smaller screens */
+@media (max-width: 1026px) {
+  .hamburger-menu {
+    display: block;
+    font-size: 30px;
+    cursor: pointer;
+    transition: transform 0.3s ease-in-out;
+    position: fixed; /* Keep the hamburger fixed on the screen */
+    top: 10px; /* Adjust position as needed */
+    left: 10px; /* Adjust position as needed */
+    z-index: 1000; /* Ensure it stays above other elements */
+  }
+
+  /* Rotate the hamburger icon when the navbar is active */
+  .navbar.active ~ .hamburger-menu {
+    transform: rotate(90deg); /* Rotate the hamburger */
+    transition: transform 0.5s ease-in-out, opacity 0.5s ease-in-out;
+  }
+
+  /* Hide the navigation by default */
+  .navbar {
+    visibility: hidden; /* Keep the navbar in the DOM but hidden */
+    opacity: 0;
+    transform: translateX(-100%); /* Initial position off-screen to the left */
+    transition: transform 0.5s ease-in-out, opacity 0.5s ease-in-out, visibility 0s 0.5s; /* Add delay to visibility */
+    width: 70%; /* Set the width of the navbar */
+    position: fixed; /* Ensure it stays on top */
+    top: 0;
+    left: 0;
+    height: 100%; /* Full height */
+    background: #fefdeb; /* Add background color for visibility */
+    z-index: 999; /* Keep it below the hamburger */
+  }
+
+  /* Show the navbar when active */
+  .navbar.active {
+    visibility: visible; /* Make navbar visible */
+    opacity: 1;
+    transform: translateX(0); /* Slide in from left */
+    transition: transform 0.5s ease-in-out, opacity 0.5s ease-in-out, visibility 0s; /* No delay on visibility */
+  }
+
+  /* Hide the logo and remove its space in the layout */
+  .logo {
+    display: none !important;
+  }
+
+  /* Adjust left-section for mobile */
+  .left-section {
+    width: 30%; /* Default width when the hamburger is closed */
+    padding: 0;
+    position: fixed;
+    top: 0;
+    left: 0; /* Position left-section at the left side */
+    margin-left: 0; /* Reset margin */
+    background-color: #fefdeb;
+    height: 100%; /* Full height */
+    z-index: 998; /* Keep it below the navbar */
+    transition: width 0.3s ease-in-out; /* Smooth transition for width */
+  }
+
+  /* Adjust width of left-section when the navbar is active */
+  .navbar.active + .left-section {
+    width: 70%; /* Same width as the navbar */
+    padding: 10px; /* Add padding when visible */
+  }
+
+  .navbar.active + .logo {
+    display: block !important;
+    z-index: 1001;
+  }
+
+  /* Styling for left-section content */
+  .left-section h2 {
+    font-size: 18px;
+  }
+
+  .left-section ul {
+    margin-top: 100px;
+    padding: 0;
+    margin-left: 0;
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .left-section li {
+    padding: 10px 0;
+    display: block;
+    width: 100%;
+  }
+
+  .left-section li a {
+    display: block;
+    font-size: 14px;
+    padding: 8px;
+    color: #432705;
+    text-decoration: none;
+  }
+
+  .left-section ul li.active a {
+    width: 150px;
+    background-color: #edededc7;
+    color: #fdbc10;
+  }
+
+  .left-section p {
+    display: block;
+    font-size: 10px;
+    padding: 8px;
+  }
+
+  /* Adjust margin-bottom of hamburger when navbar is active */
+  .navbar.active + .hamburger-menu {
+    margin-bottom: 200px; /* Adjust margin to create space below the navbar */
+  }
+
+  .top-bar {
+    margin-left: 20px;
+  }
+}
+
+
 body {
   font-family: "Poppins", sans-serif;
   margin: 0;
   padding: 0;
-  display: flex; /* Align left and right sections side by side */
+  display: flex;
 }
 
 .main-content-container {
@@ -39,21 +173,21 @@ body {
   height: 100%;
 }
 
-generic-table {
+/* Generic Table Styling */
+.generic-table {
   flex: 2;
 }
 
 .left-section {
   width: max-content;
   background-color: #fefdeb;
-  padding: 10px;
   height: 100vh;
   box-sizing: border-box;
   max-width: 18%;
 }
 
 .left-section .logo {
-  margin-left: 4%;
+  margin-left: 7%;
   margin-top: 9px;
   text-align: left;
   margin-bottom: 20px;
@@ -63,15 +197,16 @@ generic-table {
 
 .left-section h2 {
   color: #432705;
-  margin-left: 5px;
+  margin-left: 10px;
   font-size: large;
   font-weight: bolder;
   text-align: left;
-  margin-bottom: 20px;
+  margin-top: 18px;
+  margin-bottom: 18px;
 }
 
 .left-section .logo img {
-  width: 60px;
+  width: 30px;
 }
 
 .left-section ul li a i {

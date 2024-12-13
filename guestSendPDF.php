@@ -33,8 +33,8 @@ $answerPositions = [
     2 => ['x' => 51, 'y' => 31],
     3 => ['x' => 56, 'y' => 31],
     4 => ['x' => 46, 'y' => 35.5],
-    5 => ['x' => 53, 'y' => 40],
-    6 => ['x' => 158, 'y' => 40],
+    5 => ['x' => 130, 'y' => 31],
+    6 => ['x' => 128, 'y' => 35.5],
     8 => ['x' => 49, 'y' => 81],
     9 => ['x' => 49, 'y' => 85],
     10 => ['x' => 30, 'y' => 94],
@@ -136,6 +136,12 @@ $optionPositions = [
         'Neighbors' => ['x' => 131, 'y' => 222],
         'Cousins' => ['x' => 131, 'y' => 226.5],
     ],
+    46 => [
+        'Speech Therapy' => ['x' => 58, 'y' => 41.3],
+        ' Physical Therapy' => ['x' => 92, 'y' => 41.5],
+        ' Occupational Therapy' => ['x' => 127.5, 'y' => 41.5],
+    ],
+
 
 ];
 
@@ -209,7 +215,7 @@ if ($resultQuestions && $resultQuestions->num_rows > 0) {
 // Loop through each question page
 foreach ($pageQuestions as $pageNo => $questions) {
     // If you're dealing with multiple pages, you can repeat the import process here for each page if necessary
-    if ($pageNo > 1) { // Assuming you have more than one page
+    if ($pageNo > 1) { 
         $templateId = $pdf->importPage($pageNo); // Import subsequent pages
         $pdf->AddPage();
         $pdf->useTemplate($templateId, -5, 0); // Use the template for the PDF

@@ -47,33 +47,19 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $rowService = $resultService->fetch_assoc();
             $serviceName = $rowService['serviceName'];
 
-            // Insert into sessions table with therapistID
-            $sessionQuery = "INSERT INTO sessions (patientID, sessionType, sessionDate, therapistID, sessionTime) VALUES (?, ?, ?, ?, ?)";
-            $stmtSession = $conn->prepare($sessionQuery);
-            if ($stmtSession) {
-                $stmtSession->bind_param("sssss", $patientID, $serviceName, $sessionDate, $therapistID, $sessionTime);
-                $stmtSession->execute();
-
-                // Get the last inserted sessionID
-                $sessionID = $stmtSession->insert_id;
-
-                // Prepare to insert feedback into sessionfeedbacknotes
-                $feedbackQuery = "INSERT INTO sessionfeedbacknotes (sessionID, patientID, feedback, feedbackDate) VALUES (?, ?, ?, ?)";
-                $stmtFeedback = $conn->prepare($feedbackQuery);
-                if ($stmtFeedback) {
-                    $stmtFeedback->bind_param("isss", $sessionID, $patientID, $feedback, $sessionDate);
-                    if ($stmtFeedback->execute()) {
-                        $confirmationMessage = "Feedback submitted successfully.";
-                    } else {
-                        $confirmationMessage = "Error inserting feedback: " . $stmtFeedback->error;
-                    }
-                    $stmtFeedback->close(); // Close feedback statement
+            // Insert into session_feedbacks table
+            $sessionFeedbackQuery = "INSERT INTO session_feedbacks (patientID, sessionType, sessionDate, therapistID, sessionTime, feedback) VALUES (?, ?, ?, ?, ?, ?)";
+            $stmtSessionFeedback = $conn->prepare($sessionFeedbackQuery);
+            if ($stmtSessionFeedback) {
+                $stmtSessionFeedback->bind_param("ssssss", $patientID, $serviceName, $sessionDate, $therapistID, $sessionTime, $feedback);
+                if ($stmtSessionFeedback->execute()) {
+                    $confirmationMessage = "Feedback submitted successfully.";
                 } else {
-                    $confirmationMessage = "Error preparing feedback statement: " . $conn->error;
+                    $confirmationMessage = "Error inserting feedback: " . $stmtSessionFeedback->error;
                 }
-                $stmtSession->close(); // Close session statement
+                $stmtSessionFeedback->close(); // Close statement
             } else {
-                $confirmationMessage = "Error preparing session statement: " . $conn->error;
+                $confirmationMessage = "Error preparing session feedback statement: " . $conn->error;
             }
         } else {
             $confirmationMessage = "Service not found.";

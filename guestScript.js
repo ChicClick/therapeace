@@ -46,63 +46,99 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     };
 
+    /* TEMPORARILY COMMENT OUT THIS FUNCTION TO BYPASS THE REQUIRED FIELDS IN THE FORM AND USE THE VERSION BELOW THIS */
     function validateForm() {
-        var inputs, textareas, selects, valid = true;
+        var fields, valid = true;
         var currentCategory = categories[currentCategoryIndex];
         var firstInvalidField = null; // Track the first invalid field
     
-        // Get all input, textarea, and select elements within the current category
-        inputs = currentCategory.querySelectorAll("input[required]");
-        textareas = currentCategory.querySelectorAll("textarea[required]");
-        selects = currentCategory.querySelectorAll("select[required]");
+        // Get all elements marked as 'required' within the current category
+        fields = currentCategory.querySelectorAll("[required]");
     
-        // Validate input elements
-        for (var i = 0; i < inputs.length; i++) {
-            if ((inputs[i].type === "radio" || inputs[i].type === "checkbox")) {
-                var groupName = inputs[i].name;
-                var groupChecked = currentCategory.querySelectorAll(`input[name='${groupName}']:checked`).length > 0;
-                if (!groupChecked) {
-                    highlightInvalidField(inputs[i]);
-                    valid = false;
-                    if (!firstInvalidField) firstInvalidField = inputs[i];
-                } else {
-                    removeHighlight(inputs[i]);
+        // Validate each field dynamically
+        for (var i = 0; i < fields.length; i++) {
+            var field = fields[i];
+    
+            // Clear previous error messages
+            clearErrorMessages(field);
+    
+            if ((field.type === "radio" || field.type === "checkbox")) {
+                if (field.type === "checkbox" && !field.name) {
+                    // For standalone required checkboxes
+                    if (!field.checked) {
+                        highlightInvalidField(field);
+                        valid = false;
+                        if (!firstInvalidField) firstInvalidField = field;
+                    } else {
+                        removeHighlight(field);
+                    }
+                } else if (field.type === "checkbox" || field.type === "radio") {
+                    // For grouped checkboxes/radios
+                    var groupName = field.name;
+                    var groupChecked = currentCategory.querySelectorAll(`input[name='${groupName}']:checked`).length > 0;
+                    if (!groupChecked) {
+                        highlightInvalidField(field);
+                        valid = false;
+                        if (!firstInvalidField) firstInvalidField = field;
+                    } else {
+                        removeHighlight(field);
+                    }
                 }
-            } else if (inputs[i].value.trim() === "") {
-                highlightInvalidField(inputs[i]);
+            } else if (field.type === "email") {
+                // Validate email format
+                var emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+                if (!emailRegex.test(field.value.trim())) {
+                    highlightInvalidField(field);
+                    valid = false;
+                    showErrorMessage(field, "Please enter a valid email address.");
+                    if (!firstInvalidField) firstInvalidField = field;
+                } else {
+                    removeHighlight(field);
+                }
+            } else if (field.name === "phone") {
+                // Validate phone number for exactly 11 digits
+                var phoneRegex = /^\d{11}$/;
+                if (!phoneRegex.test(field.value.trim())) {
+                    highlightInvalidField(field);
+                    valid = false;
+                    showErrorMessage(field, "Must be exactly 11 digits starting with (09).");
+                    if (!firstInvalidField) firstInvalidField = field;
+                } else {
+                    removeHighlight(field);
+                }
+            } else if (field.value.trim() === "") {
+                // Generic validation for other field types
+                highlightInvalidField(field);
                 valid = false;
-                if (!firstInvalidField) firstInvalidField = inputs[i];
+                if (!firstInvalidField) firstInvalidField = field;
             } else {
-                removeHighlight(inputs[i]);
+                removeHighlight(field);
             }
         }
     
-        // Validate textarea elements
-        for (var i = 0; i < textareas.length; i++) {
-            if (textareas[i].value.trim() === "") {
-                highlightInvalidField(textareas[i]);
+        // Custom validation for referred therapy service
+        const question46Checkboxes = currentCategory.querySelectorAll("input[name='question_46[]']");
+        if (question46Checkboxes.length > 0) {
+            const isChecked = Array.from(question46Checkboxes).some(checkbox => checkbox.checked);
+            
+            // Clear previous error messages for all checkboxes in the group
+            question46Checkboxes.forEach(checkbox => clearErrorMessages(checkbox));
+            
+            if (!isChecked) {
+                // Highlight all checkboxes in the group
+                question46Checkboxes.forEach(checkbox => highlightInvalidField(checkbox));
+                showErrorMessage(question46Checkboxes[0], "Please select at least one option for this question.");
                 valid = false;
-                if (!firstInvalidField) firstInvalidField = textareas[i];
+                if (!firstInvalidField) firstInvalidField = question46Checkboxes[0];
             } else {
-                removeHighlight(textareas[i]);
+                // Remove highlights for all checkboxes if validation passes
+                question46Checkboxes.forEach(checkbox => removeHighlight(checkbox));
             }
         }
     
-        // Validate select elements
-        for (var i = 0; i < selects.length; i++) {
-            if (selects[i].value.trim() === "") {
-                highlightInvalidField(selects[i]);
-                valid = false;
-                if (!firstInvalidField) firstInvalidField = selects[i];
-            } else {
-                removeHighlight(selects[i]);
-            }
-        }
-    
-        // Focus on the first invalid field and display an alert
+        // Focus on the first invalid field
         if (!valid && firstInvalidField) {
             firstInvalidField.focus();
-            alert("Please complete all required fields before proceeding.");
         }
     
         // Mark the step as finished if valid
@@ -122,12 +158,31 @@ document.addEventListener('DOMContentLoaded', function () {
         field.classList.remove("invalid");
     }
     
-
+    // Show error message below the field
+    function showErrorMessage(field, message) {
+        // Create a div element to hold the error message
+        var errorMessage = document.createElement("div");
+        errorMessage.classList.add("error-message");
+        errorMessage.textContent = message;
+    
+        // Append the error message below the field
+        field.parentElement.appendChild(errorMessage);
+    }
+    
+    // Remove any existing error message
+    function clearErrorMessages(field) {
+        var errorMessages = field.parentElement.querySelectorAll(".error-message");
+        errorMessages.forEach(function (message) {
+            message.remove();
+        });
+    }
+    
 
     /* USE THIS FOR TESTING TO BYPASS REQUIRED FIELDS */
     // function validateForm() {
     //     return true; // Always allows form submission
     // }
+    
     
 
     function fixStepIndicator(n) {
@@ -304,7 +359,7 @@ const carousel = document.querySelector('.feedback-carousel');
     rightControl.addEventListener('click', showNext);
 
     // Optional: Automatic sliding
-    setInterval(showNext, 10000); // Adjust timing as desired
+    setInterval(showNext, 20000); // Adjust timing as desired
 
     // Initialize carousel position
     updateCarousel();
