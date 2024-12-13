@@ -59,8 +59,7 @@ include 'patient_profile_functions.php';
             <hr>
             <div class="profile-container">
                 <h3>BASIC INFORMATION</h3>
-                <form action="patient_profile_functions.php" method="POST">
-
+                <form id="edit-profile-form">
                     <div class="input-group">
                     <div class="input-field">
                         <label for="patientName">Patient Name:</label>
@@ -100,7 +99,7 @@ include 'patient_profile_functions.php';
                         <input type="text" name="address" id="address" value="<?php echo htmlspecialchars($patientAddress); ?>" required>
                     </div>
 
-                    <button type="submit">Save Changes</button>
+                    <button id="patient-edit-profile-save" type="button" onclick="editProfileSave(event)">Save Changes</button>
                 </form>
             </div>
         </section>

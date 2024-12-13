@@ -136,9 +136,38 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         }
     };
+
 });
 
+logMe = () => {
+    const tableEngine = document.querySelectorAll("generic-table")[0];
+    console.log(tableEngine.data)
+}
 
+editProfileSave = async (e) => {
+    e.preventDefault();
+    const formData = document.querySelector("#edit-profile-form");
+
+    if(!formData.checkValidity()) {
+        return;
+    }
+
+    const formValues = new FormData(formData);
+    try {
+        const response = await fetch("patient_profile_functions.php", {
+            method: "POST",
+            body: formValues,
+        });
+
+        if (!response.ok) {
+            throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+
+        new MessagePopupEngine("Success!", "Profile Update Successfully!").instantiate();
+    } catch (err) {
+        console.error("Error occurred:", err);
+    }
+}
 
 fetchReport = async () => {
     const progressReportCardModalContent = document.querySelector('.progress-report-card-modal-container');
