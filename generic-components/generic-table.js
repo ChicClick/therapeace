@@ -83,6 +83,10 @@ class TableEngine extends HTMLElement {
     cssLink = document.head.querySelector('link[href="./generic-components/generic-table.css"]');
     tableType;
 
+    get tableData() {
+        return this.data;
+    }
+
     static globalType = "";
     static url = './generic-components/table-fetch/';
 
@@ -165,6 +169,11 @@ class TableEngine extends HTMLElement {
                 await this.fetchCommunication();
                 await this.fetchParent();
                 await this.fetchData(fullUrl);
+
+                this.dispatchEvent(new CustomEvent('data-updated', {
+                    detail: this.data,
+                    bubbles: true,
+                }));
             } else {
                 console.error(`Invalid data source key: ${newValue}`);
             }
@@ -1326,12 +1335,14 @@ class TableEngine extends HTMLElement {
                                     <input 
                                         type="checkbox" name="therapies[]" 
                                         value="terms" ${guestStatus == 2 ? "disabled" : ""}
+                                        required
                                     > I have read and accept the terms and conditions.
                                 </label>
                                 <label>
                                     <input 
                                         type="checkbox" name="therapies[]" 
                                         value="privacy" ${guestStatus == 2 ? "disabled" : ""}
+                                        required
                                     > I consent to the privacy policy and data usage agreement.
                                 </label>
                             </div>
@@ -1348,11 +1359,19 @@ class TableEngine extends HTMLElement {
                 `;
                 
                 containerForm.innerHTML = therapiesHTML;
+                console.log(document.querySelector('.checklist-right-section'));
                 mainContent.appendChild(containerForm);
 
                 setTimeout(()=> {
+          
                     document.querySelector("#save-button")?.addEventListener("click",async ()=> {
-                        this.addPatient(guestID, childName, email, phone);
+                       
+                        const formStatus = document.querySelector('.form-container-right > form')?.checkValidity();
+                        if(formStatus) {
+                            this.addPatient(guestID, childName, email, phone);
+                        } else {
+                            new MessagePopupEngine("ALERT", "Please accept the terms and conditions to proceed").instantiate()
+                        }
                     });
                 }, 1000); 
             }
