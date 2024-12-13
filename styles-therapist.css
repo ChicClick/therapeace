@@ -53,15 +53,16 @@
   /* Rotate the hamburger icon when the navbar is active */
   .navbar.active ~ .hamburger-menu {
     transform: rotate(90deg); /* Rotate the hamburger */
+    transition: transform 0.5s ease-in-out, opacity 0.5s ease-in-out;
   }
 
   /* Hide the navigation by default */
   .navbar {
-    display: none;
+    visibility: hidden; /* Keep the navbar in the DOM but hidden */
     opacity: 0;
-    transform: translateX(-100%);
-    transition: transform 0.5s ease-in-out, opacity 0.5s ease-in-out;
-    width: 50%; /* Set the width of the navbar */
+    transform: translateX(-100%); /* Initial position off-screen to the left */
+    transition: transform 0.5s ease-in-out, opacity 0.5s ease-in-out, visibility 0s 0.5s; /* Add delay to visibility */
+    width: 70%; /* Set the width of the navbar */
     position: fixed; /* Ensure it stays on top */
     top: 0;
     left: 0;
@@ -72,9 +73,10 @@
 
   /* Show the navbar when active */
   .navbar.active {
-    display: block;
+    visibility: visible; /* Make navbar visible */
     opacity: 1;
     transform: translateX(0); /* Slide in from left */
+    transition: transform 0.5s ease-in-out, opacity 0.5s ease-in-out, visibility 0s; /* No delay on visibility */
   }
 
   /* Hide the logo and remove its space in the layout */
@@ -84,21 +86,27 @@
 
   /* Adjust left-section for mobile */
   .left-section {
-    width: 5%; /* Default width when the hamburger is closed */
-    overflow: hidden; /* Hide content initially */
+    width: 30%; /* Default width when the hamburger is closed */
     padding: 0;
-    transition: width 0.5s ease-in-out, padding 0.5s ease-in-out;
     position: fixed;
     top: 0;
-    left: 0;
+    left: 0; /* Position left-section at the left side */
+    margin-left: 0; /* Reset margin */
+    background-color: #fefdeb;
     height: 100%; /* Full height */
-    z-index: 998; /* Keep below navbar and hamburger */
+    z-index: 998; /* Keep it below the navbar */
+    transition: width 0.3s ease-in-out; /* Smooth transition for width */
   }
 
   /* Adjust width of left-section when the navbar is active */
   .navbar.active + .left-section {
-    width: 50%; /* Same width as the navbar */
+    width: 70%; /* Same width as the navbar */
     padding: 10px; /* Add padding when visible */
+  }
+
+  .navbar.active + .logo {
+    display: block !important;
+    z-index: 1001;
   }
 
   /* Styling for left-section content */
@@ -107,6 +115,7 @@
   }
 
   .left-section ul {
+    margin-top: 100px;
     padding: 0;
     margin-left: 0;
     list-style: none;
@@ -141,8 +150,12 @@
   }
 
   /* Adjust margin-bottom of hamburger when navbar is active */
-  .navbar.active ~ .hamburger-menu {
-    margin-bottom: 50px; /* Adjust margin to create space below the navbar */
+  .navbar.active + .hamburger-menu {
+    margin-bottom: 200px; /* Adjust margin to create space below the navbar */
+  }
+
+  .top-bar {
+    margin-left: 20px;
   }
 }
 
