@@ -3,14 +3,24 @@ include 'db_conn.php'; // Include your database connection file
 
 // Get the patient ID from the GET request
 $patientID = isset($_GET['patientID']) ? $_GET['patientID'] : null;
+$therapistID = isset($_GET['therapistID']) ? $_GET['therapistID'] : null;
 
 if ($patientID) {
     // Query to fetch services linked to the selected patient's appointments
     $query = "
-        SELECT DISTINCT s.serviceID, s.serviceName 
-        FROM services s
-        INNER JOIN appointment a ON s.serviceID = a.serviceID
-        WHERE a.patientID = ?
+        SELECT DISTINCT
+    s.serviceID,
+    s.serviceName,
+    t.specialization
+    FROM
+        services s
+    INNER JOIN
+        appointment a ON s.serviceID = a.serviceID
+    INNER JOIN
+        therapist t ON a.therapistID = t.therapistID
+    WHERE
+        a.patientID = ?
+        AND s.serviceID = t.specialization
     ";
 
     // Prepare and execute the statement
@@ -23,11 +33,13 @@ if ($patientID) {
     $options = "";
     if ($result && $result->num_rows > 0) {
         while ($row = $result->fetch_assoc()) {
-            $options .= "<option value='{$row['serviceID']}'>{$row['serviceName']}</option>";
+            $options .= "<option value='{$row['serviceID']}'>{$row['serviceName']}</option>
+                         <input type='hidden' name='serviceID' value='{$row['serviceID']}' />
+            ";
         }
     } else {
-        $options = "<option value=''>No services available</option>"; // Handle case with no services
+        $options = "<option value=''>No services available</option>";
+        
     }
     echo $options; // Output the options
 }
-?>

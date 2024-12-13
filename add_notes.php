@@ -7,8 +7,6 @@ error_reporting(E_ALL);
 include 'config.php';
 include 'db_conn.php'; // Include your database connection file
 
-session_start(); // Start the session
-
 // Check if therapistID is set in the session
 if (!isset($_SESSION['therapist_id'])) {
     die("Therapist ID not found in session."); // Stop execution if therapistID is missing
