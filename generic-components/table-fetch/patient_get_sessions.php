@@ -19,7 +19,7 @@ $patientID = $_SESSION['patientID'];
 
 $sessions = [];
 $sqlSessions = "SELECT s.sessionID, s.sessionDate, s.sessionTime, t.therapistID, t.therapistName
-                FROM session_feedbacks s
+                FROM sessions s
                 JOIN therapist t ON s.therapistID = t.therapistID
                 WHERE s.patientID = ? AND s.sessionDate <= NOW()";
 $stmt = $mysqli->prepare($sqlSessions);
