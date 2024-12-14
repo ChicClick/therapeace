@@ -1460,7 +1460,7 @@ class TableEngine extends HTMLElement {
                     `).join('') 
                     : `<p>No notes yet</p>`;
             
-                new SideViewBarEngine(
+                const sideViewBar = new SideViewBarEngine(
                     "PROFILES", 
                     `
                     <div class="patient-info" id="patient-info">
@@ -1486,15 +1486,23 @@ class TableEngine extends HTMLElement {
                             <strong>Sex:</strong><p> ${patient.gender || 'N/A'}</p>
                         </div>
                         </div>
+
+                        <div class="view-notes-btn" style="display:flex; align-content: center">
+                            <button type="button">VIEW REPORT</button>
+                        </div>
+                        
                        
                     </div>
                     `
-                ).render();
-            
+                );
+                sideViewBar.render();
+                const notesSection = document.querySelector('a[data-target="notes-section"]');
                 const notesButton = document.querySelector('.view-notes-btn');
                 if (notesButton) {
                     notesButton.addEventListener('click', () => {
-                        window.location.href = '#notes-section';
+                        sideViewBar.close();
+                        notesSection.click();
+                        document.querySelectorAll("#patient-feedback > div > div > div.therapist-feedback-info > span.therapist-feedback").forEach(data => data.textContent.split(" ")[1] == patientID ? data.click() : null);
                     });
                 }
             } else {

@@ -68,15 +68,14 @@ class SideViewBarEngine extends HTMLElement {
     }
 
     close() {
-        // Close the side view bar
         const container = this.containerDiv.querySelector('.side-view-bar-container');
         const backdrop = this.containerDiv.querySelector('.backdrop');
         if (container && backdrop) {
             container.classList.remove('visible');
             setTimeout(() => {
                 backdrop.remove();
-                container.remove(); // Remove the container after animation ends
-            }, 300); // Adjust delay based on your CSS animation duration
+                container.remove();
+            }, 300);
         }
     }
 }
