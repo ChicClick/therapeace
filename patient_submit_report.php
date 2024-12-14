@@ -51,7 +51,7 @@ if ($checkResult->num_rows > 0) {
 }
 
 // Fetch session feedback notes for the patient and selected therapist
-$sql = "SELECT `feedback` FROM session_feedbacks
+$sql = "SELECT `feedback` FROM sessionfeedbacknotes
         WHERE patientID = ? AND therapistID = ?";
 $stmt = $conn->prepare($sql); // Use the existing $conn
 $stmt->bind_param("ss", $patientID, $therapistID);

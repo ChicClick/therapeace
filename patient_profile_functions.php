@@ -68,7 +68,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     updatePatientProfile($patientID, $updatedName, $updatedEmail, $updatedPhone, $updatedAddress, $updatedParentName, $updatedRelationship, $profileImagePath);
 
 
-    header("Location: patientProfile.php?success=1");
+     echo json_encode([
+        'success' => true,
+        'message' => 'Profile Updated Successfully.'
+    ]);
     exit();
 }
 
@@ -123,6 +126,7 @@ function updatePatientProfile($patientID, $name, $email, $phone, $address, $pare
         }
 
         $conn->commit();
+        
     } catch (Exception $e) {
         $conn->rollback();
         die('Error: ' . $e->getMessage());

@@ -65,7 +65,7 @@ document.addEventListener("DOMContentLoaded", () => {
                     </select>
 
                     <label for="therapySelect">Selected Service:</label>
-                    <label id="therapySelect" name="serviceID" required>
+                    <label id="therapySelect" required>
                         <!-- Service selection will be dynamically populated -->
                     </label>
                 </div>
@@ -213,13 +213,14 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // Only fetch options if a patient is selected
     if (!patientID) {
-      therapySelect.innerHTML = ""; // Clear previous options
+      therapySelect.innerHTML = "Select a patient"; // Clear previous options
       return;
     }
 
     fetch(`notes_service.php?patientID=${patientID}`)
       .then((response) => response.text())
       .then((data) => {
+        console.log(data);
         therapySelect.innerHTML = data; // Directly set fetched options to the select element
       })
       .catch((error) => console.error("Error loading service options:", error));

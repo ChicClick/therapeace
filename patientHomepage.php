@@ -41,6 +41,7 @@ if (isset($_SESSION['patientName'])) {
 </head>
 <body>
     <generic-side-view-bar></generic-side-view-bar>
+    <generic-message-popup></generic-message-popup>
     <nav>
         <div class="logo">
             <img src="images/TheraPeace Logo.svg" alt="TheraPeace Logo">

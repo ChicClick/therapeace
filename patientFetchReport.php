@@ -29,16 +29,16 @@ $s3Client = new S3Client([
 
 $patientID = $_SESSION['patientID'];
 
-$sql = "SELECT r.reportID, r.patientID, r.therapistID, t.therapistName, r.status, r.created_at, r.pdf_path
+$sql = "SELECT r.reportID, r.patientID, r.therapistID, t.therapistName, r.status, r.updated_at, r.pdf_path
         FROM reports r
         JOIN therapist t ON r.therapistID = t.therapistID
         WHERE r.patientID = ?
-        AND r.created_at = (
-            SELECT MAX(sub_r.created_at)
+        AND r.updated_at = (
+            SELECT MAX(sub_r.updated_at)
             FROM reports sub_r
             WHERE sub_r.therapistID = r.therapistID AND sub_r.patientID = r.patientID
         )
-        ORDER BY r.created_at DESC";
+        ORDER BY r.updated_at DESC";
 
 $stmt = $conn->prepare($sql);
 if ($stmt === false) {
@@ -49,7 +49,7 @@ $stmt->bind_param("s", $patientID);
 $stmt->execute();
 
 // Bind result variables
-$stmt->bind_result($reportID, $patientID, $therapistID, $therapistName, $status, $created_at, $pdf_path);
+$stmt->bind_result($reportID, $patientID, $therapistID, $therapistName, $status, $updated_at, $pdf_path);
 
 $response = [
     'isReportAvailable' => false,
@@ -61,7 +61,7 @@ $foundReports = false; // Flag to check if any report is found
 // Fetch results
 while ($stmt->fetch()) {
     $foundReports = true;
-    $reportCreationDate = new DateTime($created_at);
+    $reportCreationDate = new DateTime($updated_at);
     $currentDate = new DateTime();
     $interval = $currentDate->diff($reportCreationDate);
 
@@ -88,7 +88,7 @@ while ($stmt->fetch()) {
             'therapistID' => $therapistID,
             'therapistName' => $therapistName,
             'status' => $status,
-            'created_at' => $created_at,
+            'updated_at' => $updated_at,
             'pdf_path' => $s3Url, // This will be null if pdf_path is empty
         ];
     }
