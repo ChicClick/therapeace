@@ -17,7 +17,7 @@ include 'config.php';
     <div class="left-section">
     <a href="loginlanding.html" class="back-link">&larr; Back</a>
     <img src="images/TheraPeace Logo.svg" alt="TheraPeace Logo" class="logo">
-    <h2>Sign In as Patient</h2>
+    <h2>Sign In as Parent</h2>
 
     <!-- Loading Screen -->
     <div id="loading" style="display: none;" class="sk-folding-cube">
