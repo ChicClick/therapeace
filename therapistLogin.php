@@ -32,7 +32,34 @@ session_start();
             <p class="error-message" style="color: red;"><?php echo $_SESSION['error_message']; ?></p>
         <?php endif; ?>
             <input type="text" name="therapist_number" placeholder="Therapist Number" required>
-            <input type="date" name="hire_date" placeholder="Hire Date" required>
+
+            <!-- Dropdown Selection for Day, Month, Year -->
+            <div class="hire-date-fields">
+                <select name="hire_day" required>
+                    <option value="" disabled selected>Day Hired</option>
+                    <?php for ($i = 1; $i <= 31; $i++) : ?>
+                        <option value="<?= $i; ?>"><?= $i; ?></option>
+                    <?php endfor; ?>
+                </select>
+                <select name="hire_month" required>
+                    <option value="" disabled selected>Month Hired</option>
+                    <?php 
+                    $months = [
+                        "January", "February", "March", "April", "May", "June", 
+                        "July", "August", "September", "October", "November", "December"
+                    ];
+                    foreach ($months as $index => $month) : ?>
+                        <option value="<?= $index + 1; ?>"><?= $month; ?></option>
+                    <?php endforeach; ?>
+                </select>
+                <select name="hire_year" required>
+                    <option value="" disabled selected>Year Hired</option>
+                    <?php for ($i = date('Y'); $i >= 1900; $i--) : ?>
+                        <option value="<?= $i; ?>"><?= $i; ?></option>
+                    <?php endfor; ?>
+                </select>
+            </div>
+
             <input type="password" name="password" placeholder="Password" required>
             <a href="therapistForgotPassword.php" class="forgot-password">Forgot Password?</a>
             <button type="submit" class="proceed-button">Proceed &rarr;</button>
