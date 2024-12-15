@@ -317,9 +317,7 @@ class TableEngine extends HTMLElement {
                 const firstColumn = document.createElement('td');
                 if (this.avatar) {
                         let image = row['image'];
-                    if(!image.startsWith("images/")) {
-                        image = "images/" + image;
-                    }
+
                     const card = `  
                     <div class="avatar-container">
                       <img src="${image}" />
@@ -1396,7 +1394,7 @@ class TableEngine extends HTMLElement {
         .then(response => response.json())
         .then(data => {
             if (data) {
-                const image = "images/" + imageURL;
+                const image =  imageURL;
                 const button = data.status != "verified" ? `                                        
                                         <button type="submit">
                                             Save
@@ -1447,9 +1445,6 @@ class TableEngine extends HTMLElement {
                 const patient = new PatientInfo(data);
                 
                 let image = imageUrl;
-                if(!imageUrl.startsWith("images/")) {
-                    image = "images/" + imageUrl;
-                }
                 
                 const notesHTML = data.notes.length > 0 
                     ? data.notes.map(note => `
