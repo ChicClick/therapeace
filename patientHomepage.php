@@ -54,7 +54,7 @@ if (isset($_SESSION['patientName'])) {
                 <li><a href="#" class="nav-link" data-target="patientNotes.php">Notes</a></li>
             </ul>
             <div class="user-greeting">
-                <span class="welcome-text">Welcome back, <?php echo htmlspecialchars($patientName); ?>!</span>
+                <span class="welcome-text"><?php echo htmlspecialchars($patientName); ?></span>
                 <div class="dropdown">
                     <button class="dropbtn">▼</button>
                     <div class="dropdown-content">
