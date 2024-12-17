@@ -634,7 +634,10 @@ if (isset($_SESSION['firstname'])) {
                                         </div>
                                         <div class="form-group">
                                             <label for="availability">Availability:</label>
-                                            <input type="text" id="availability" name="availability" placeholder="Available/Not Available" required>
+                                            <select id="availability" name="availability" required>
+                                                <option value="Available">Available</option>
+                                                <option value="Not Available">Not Available</option>
+                                            </select>
                                         </div>
                                     </div>
 
@@ -688,7 +691,10 @@ if (isset($_SESSION['firstname'])) {
                                         </div>
                                         <div class="form-group">
                                             <label for="availability">Availability:</label>
-                                            <input type="text" id="availability" name="availability" placeholder="Available/Not Available" required>
+                                            <select id="availability" name="availability" required>
+                                                <option value="Available">Available</option>
+                                                <option value="Not Available">Not Available</option>
+                                            </select>
                                         </div>
                                     </div>
 
