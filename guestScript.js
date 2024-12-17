@@ -393,7 +393,7 @@ const serviceItems = document.querySelectorAll('.service-item');
 
 // Check if the device is mobile or tablet
 if (window.innerWidth <= 768) {
-    // Add click event listener to toggle visibility
+    // Add click event listener to toggle visibility (hexagon)
     serviceItems.forEach(item => {
         item.addEventListener('click', function() {
             // Toggle active class to show description
