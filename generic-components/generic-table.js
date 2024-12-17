@@ -81,6 +81,10 @@ class TableEngine extends HTMLElement {
     cssLink = document.head.querySelector('link[href="./generic-components/generic-table.css"]');
     tableType;
 
+    get tableData() {
+        return this.data;
+    }
+
     static globalType = "";
     static url = './generic-components/table-fetch/';
 
@@ -163,6 +167,11 @@ class TableEngine extends HTMLElement {
                 await this.fetchCommunication();
                 await this.fetchParent();
                 await this.fetchData(fullUrl);
+
+                this.dispatchEvent(new CustomEvent('data-updated', {
+                    detail: this.data,
+                    bubbles: true,
+                }));
             } else {
                 console.error(`Invalid data source key: ${newValue}`);
             }
@@ -308,9 +317,7 @@ class TableEngine extends HTMLElement {
                 const firstColumn = document.createElement('td');
                 if (this.avatar) {
                         let image = row['image'];
-                    if(!image.startsWith("images/")) {
-                        image = "images/" + image;
-                    }
+
                     const card = `  
                     <div class="avatar-container">
                       <img src="${image}" />
@@ -1324,12 +1331,14 @@ class TableEngine extends HTMLElement {
                                     <input 
                                         type="checkbox" name="therapies[]" id="terms-checkbox"
                                         value="terms" ${guestStatus == 2 ? "disabled" : ""}
+                                        required
                                     > I have read and accept the terms and conditions.
                                 </label>
                                 <label>
                                     <input 
                                         type="checkbox" name="therapies[]" id="privacy-checkbox"
                                         value="privacy" ${guestStatus == 2 ? "disabled" : ""}
+                                        required
                                     > I consent to the privacy policy and data usage agreement.
                                 </label>
                             </div>
@@ -1346,11 +1355,19 @@ class TableEngine extends HTMLElement {
                 `;
 
                 containerForm.innerHTML = therapiesHTML;
+                console.log(document.querySelector('.checklist-right-section'));
                 mainContent.appendChild(containerForm);
 
                 setTimeout(()=> {
+          
                     document.querySelector("#save-button")?.addEventListener("click",async ()=> {
-                        this.addPatient(guestID, childName, email, phone);
+                       
+                        const formStatus = document.querySelector('.form-container-right > form')?.checkValidity();
+                        if(formStatus) {
+                            this.addPatient(guestID, childName, email, phone);
+                        } else {
+                            new MessagePopupEngine("ALERT", "Please accept the terms and conditions to proceed").instantiate()
+                        }
                     });
                 }, 1000); 
             }
@@ -1377,7 +1394,7 @@ class TableEngine extends HTMLElement {
         .then(response => response.json())
         .then(data => {
             if (data) {
-                const image = "images/" + imageURL;
+                const image =  imageURL;
                 const button = data.status != "verified" ? `                                        
                                         <button type="submit">
                                             Save
@@ -1428,9 +1445,6 @@ class TableEngine extends HTMLElement {
                 const patient = new PatientInfo(data);
                 
                 let image = imageUrl;
-                if(!imageUrl.startsWith("images/")) {
-                    image = "images/" + imageUrl;
-                }
                 
                 const notesHTML = data.notes.length > 0 
                     ? data.notes.map(note => `
@@ -1441,7 +1455,7 @@ class TableEngine extends HTMLElement {
                     `).join('') 
                     : `<p>No notes yet</p>`;
             
-                new SideViewBarEngine(
+                const sideViewBar = new SideViewBarEngine(
                     "PROFILES", 
                     `
                     <div class="patient-info" id="patient-info">
@@ -1467,15 +1481,23 @@ class TableEngine extends HTMLElement {
                             <strong>Sex:</strong><p> ${patient.gender || 'N/A'}</p>
                         </div>
                         </div>
+
+                        <div class="view-notes-btn" style="display:flex; align-content: center">
+                            <button type="button">VIEW REPORT</button>
+                        </div>
+                        
                        
                     </div>
                     `
-                ).render();
-            
+                );
+                sideViewBar.render();
+                const notesSection = document.querySelector('a[data-target="notes-section"]');
                 const notesButton = document.querySelector('.view-notes-btn');
                 if (notesButton) {
                     notesButton.addEventListener('click', () => {
-                        window.location.href = '#notes-section';
+                        sideViewBar.close();
+                        notesSection.click();
+                        document.querySelectorAll("#patient-feedback > div > div > div.therapist-feedback-info > span.therapist-feedback").forEach(data => data.textContent.split(" ")[1] == patientID ? data.click() : null);
                     });
                 }
             } else {

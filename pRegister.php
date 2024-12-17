@@ -6,15 +6,22 @@ error_reporting(E_ALL);
 
 // Include the database connection file
 include 'db_conn.php';
+include 'generic_aws.php';
+require_once 'generic_mailer.php';
 
-use PHPMailer\PHPMailer\PHPMailer;
-use PHPMailer\PHPMailer\Exception;
+function generateRandomPassword($length = 6) {
+    $characters = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+    $charactersLength = strlen($characters);
+    $randomString = '';
+    for ($i = 0; $i < $length; $i++) {
+        $randomString .= $characters[random_int(0, $charactersLength - 1)];
+    }
+    return $randomString;
+}
 
-require 'PHPMailer/src/Exception.php';
-require 'PHPMailer/src/PHPMailer.php';
-require 'PHPMailer/src/SMTP.php';
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
+
     try {
 
         $result = $conn->query("SELECT MAX(patientID) AS maxID FROM patient");
@@ -29,21 +36,25 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             die("Error in SQL preparation: " . $conn->error);
         }
 
-        // Handle image file upload
+        $s3 = new AwsS3("image");
+
         $imagePath = null;
         if (isset($_FILES['image']) && is_uploaded_file($_FILES['image']['tmp_name'])) {
-            // Ensure the file is an image (Optional: Additional checks can be added here for file type and size)
             $imageTmpPath = $_FILES['image']['tmp_name'];
             $imageExt = pathinfo($_FILES['image']['name'], PATHINFO_EXTENSION);
-            $imageName = uniqid('img_', true) . '.' . $imageExt;  // Generate a unique name
-            $imagePath = 'images/' . $imageName;
-
-            if (!move_uploaded_file($imageTmpPath, $imagePath)) {
-                die("Error uploading image.");
+            $imageName = uniqid('img_', true) . '.' . $imageExt;
+            $s3Key = 'images/' . $imageName;
+ 
+            $imagePath = $s3->uploadFile($imageTmpPath, $s3Key);
+        
+            if (!$imagePath) {
+                die("Error uploading image to S3.");
             }
         }
 
-        $hashed_password = password_hash($_POST['password'], PASSWORD_DEFAULT);
+        $randomPassword = generateRandomPassword();
+
+        $hashed_password = password_hash($randomPassword, PASSWORD_DEFAULT);
 
         $stmt->bind_param(
             "sssssssssssss", 
@@ -65,36 +76,36 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         // Execute the SQL query
         if ($stmt->execute()) {
             echo "Patient registration successful!";
-
-            // Send email using PHPMailer
-            $mail = new PHPMailer(true);
+    
             try {
-                // Server settings for PHPMailer
-                $mail->isSMTP();
-                $mail->Host = 'smtp.gmail.com';
-                $mail->SMTPAuth = true;
-                $mail->Username = 'therapeacemanagement@gmail.com';
-                $mail->Password = 'ovzp bnem esqd nqyn'; // Replace with app-specific password
-                $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;
-                $mail->Port = 465;
-
-                // Email recipients and content
-                $mail->setFrom('therapeacemanagement@gmail.com', 'TheraPeace Team');
-                $mail->addAddress($_POST['email']);
-                $mail->isHTML(true);
-                $mail->Subject = "Your Registration Details";
-                $mail->Body = "
-                    Dear {$_POST['patientName']},<br><br>
-                    Thank you for registering with TheraPeace.<br><br>
-                    Here are your credentials:<br>
-                    <b>Patient ID:</b> {$patientID}<br>
-                    <b>Password:</b> {$_POST['password']}<br><br>
-                    Please remember to change your password after your first login.<br><br>
-                    Best regards,<br>TheraPeace Team
+                $mailer = new Mailer();
+                $toEmail = $_POST['email'];
+                $subject = 'Your Registration Details';
+                $body = "
+                    <div style='font-family: Arial, sans-serif; background-color: #FFF4CE; color: #432705; margin: 0; padding: 0;'>
+                        <div style='max-width: 600px; margin: 20px auto; background-color: #FFFFFF; border: 1px solid #D57201; border-radius: 8px; box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); overflow: hidden;'>
+                            <div style='background-color: #D57201; color: #FFFFFF; text-align: center; padding: 20px;'>
+                                <h1 style='margin: 0; font-size: 24px;'>Welcome to TheraPeace</h1>
+                            </div>
+                            <div style='padding: 20px; line-height: 1.6;'>
+                                <p>Dear <b style='color: #D57201;'>" . $_POST['patientName'] . "</b>,</p>
+                                <p>Thank you for registering with <b style='color: #D57201;'>TheraPeace</b>.</p>
+                                <p>Here are your credentials:</p>
+                                <p>
+                                    <b style='color: #D57201;'>Patient ID:</b> " . $patientID . "<br>
+                                    <b style='color: #D57201;'>Password:</b> " . $randomPassword . "
+                                </p>
+                                <p>Please remember to change your password after your first login.</p>
+                                <p>Best regards,<br>The TheraPeace Team</p>
+                            </div>
+                            <div style='background-color: #FDBC10; color: #432705; text-align: center; padding: 15px; font-size: 14px;'>
+                                <p>&copy; 2024 TheraPeace. All rights reserved.</p>
+                            </div>
+                        </div>
+                    </div>
                 ";
 
-
-                $mail->send();
+                $mailer->sendEmail($toEmail, $subject, $body);
                 echo " A confirmation email has been sent.";
             } catch (Exception $e) {
                 echo " However, the email could not be sent: {$mail->ErrorInfo}";

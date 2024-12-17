@@ -108,6 +108,7 @@ body {
   margin: 0;
   padding: 0;
   display: flex; /* Align left and right sections side by side */
+  overflow-x: hidden;
 }
 
 .main-content-container {
@@ -1306,6 +1307,7 @@ input[type="checkbox"] {
   display: flex;
   width: 100%;
 }
+
 .submit-btn {
   position: relative; /* Positioning the button */ /* Distance from the bottom edge */
   width: 150px;
@@ -1328,6 +1330,10 @@ input[type="checkbox"] {
 
 .submit-btn:hover {
   background-color: #ffc107;
+}
+
+#admin-register-patient:disabled {
+  background-color: #c5c5c5 !important;
 }
 
 .reset-btn {

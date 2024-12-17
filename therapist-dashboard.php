@@ -79,10 +79,6 @@ $therapistID = $_SESSION['therapist_id'];
     <!-- Right Section -->
     <div class="right-section">
         <div class="top-bar">
-            <div class="search-bar">
-                <input type="text" placeholder="Search">
-                <button><i class="fas fa-search"></i></button>
-            </div>
             <div class="profile-section">
                 <img src="images/about 3.jpg" alt="Profile Picture">
                 <p class="welcome-text">

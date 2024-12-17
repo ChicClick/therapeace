@@ -1,4 +1,4 @@
-<?php 
+<?php
 include 'guest_screening_questions.php';
 $groupedQuestions = [];
 foreach ($questions as $question) {
@@ -118,94 +118,94 @@ foreach ($questions as $question) {
             <div class="form-container">
                 <form action="submit_pre_screening.php" method="POST">
 
-                    <?php $categoryIndex = 0; ?>
+                    <?php $categoryIndex = 0;?>
                     <?php foreach ($groupedQuestions as $category => $categoryQuestions): ?>
-                        <div class="category-section" id="category-<?= $categoryIndex ?>" style="display: <?= ($categoryIndex === 0) ? 'block' : 'none' ?>">
-                            <h3><?= htmlspecialchars($category) ?></h3> <!-- Display category name -->
+                        <div class="category-section" id="category-<?=$categoryIndex?>" style="display: <?=($categoryIndex === 0) ? 'block' : 'none'?>">
+                            <h3><?=htmlspecialchars($category)?></h3> <!-- Display category name -->
 
                             <?php foreach ($categoryQuestions as $question): ?>
-                                <?php 
-                                // Check if the question should be skipped based on its properties
-                                if (!empty($question['skip']) && $question['skip'] === true) {
-                                    continue; // Skip this question
-                                }
-                                ?>
+                                <?php
+// Check if the question should be skipped based on its properties
+if (!empty($question['skip']) && $question['skip'] === true) {
+    continue; // Skip this question
+}
+?>
 
                                 <!-- Skip specific input types under General Input Group -->
-                                <?php 
-                                // Define the questions to be skipped
-                                $questionsToSkip = [];
-                                if ($category === 'Personal Details') {
-                                    $questionsToSkip = ['Date of Birth', 'Age', 'Sex'];
-                                } elseif ($category === 'During Pregnancy') {
-                                    $questionsToSkip = ['Age of mother during pregnancy', 'Age of father'];
-                                } elseif ($category === 'Delivery') {
-                                    $questionsToSkip = ['Hours of labor'];
-                                } elseif ($category === 'Personal History') {
-                                    $questionsToSkip = ['Ilan ang kapatid?', 'Pang ilan sa magkakapatid?'];
-                                }
+                                <?php
+// Define the questions to be skipped
+$questionsToSkip = [];
+if ($category === 'Personal Details') {
+    $questionsToSkip = ['Date of Birth', 'Age', 'Sex'];
+} elseif ($category === 'During Pregnancy') {
+    $questionsToSkip = ['Age of mother during pregnancy', 'Age of father'];
+} elseif ($category === 'Delivery') {
+    $questionsToSkip = ['Hours of labor'];
+} elseif ($category === 'Personal History') {
+    $questionsToSkip = ['Ilan ang kapatid?', 'Pang ilan sa magkakapatid?'];
+}
 
-                                // Check if the current question should be skipped
-                                if (in_array($question['questionText'], $questionsToSkip)) {
-                                    continue;
-                                }
+// Check if the current question should be skipped
+if (in_array($question['questionText'], $questionsToSkip)) {
+    continue;
+}
 
-                                $isRequired = $question['isRequired'] ? 'required' : '';
-                                $requiredMark = $question['isRequired'] ? '<span class="required-asterisk">*</span>' : '';
-                                $description = !empty($question['description']) ? $question['description'] : '';
-                                ?>
+$isRequired = $question['isRequired'] ? 'required' : '';
+$requiredMark = $question['isRequired'] ? '<span class="required-asterisk">*</span>' : '';
+$description = !empty($question['description']) ? $question['description'] : '';
+?>
 
                                 <div class="question-section">
                                         <label>
-                                            <?= htmlspecialchars($question['questionText']) ?> <?= $requiredMark ?>
+                                            <?=htmlspecialchars($question['questionText'])?> <?=$requiredMark?>
                                         </label>
                                         <?php if (!empty($description)): ?>
-                                            <p class="question-description"><?= htmlspecialchars($description) ?></p>
-                                        <?php endif; ?>
-                                        
+                                            <p class="question-description"><?=htmlspecialchars($description)?></p>
+                                        <?php endif;?>
+
                                         <?php
-                                        $options = !empty($question['options']) ? explode(',', $question['options']) : [];
-                                        ?>
+$options = !empty($question['options']) ? explode(',', $question['options']) : [];
+?>
                                         <?php if ($question['inputType'] === 'radio'): ?>
                                             <div class="option-group">
                                                 <?php foreach ($options as $option): ?>
                                                     <div class="option-item">
-                                                        <input type="radio" name="question_<?= $question['questionID'] ?>" value="<?= htmlspecialchars($option) ?>">
-                                                        <label><?= htmlspecialchars($option) ?></label>
+                                                        <input type="radio" name="question_<?=$question['questionID']?>" value="<?=htmlspecialchars($option)?>">
+                                                        <label><?=htmlspecialchars($option)?></label>
                                                     </div>
-                                                <?php endforeach; ?>
+                                                <?php endforeach;?>
                                             </div>
                                         <?php elseif ($question['inputType'] === 'checkbox'): ?>
                                             <div class="option-group">
                                                 <?php foreach ($options as $option): ?>
                                                     <div class="option-item">
-                                                        <input type="checkbox" name="question_<?= $question['questionID'] ?>[]" value="<?= htmlspecialchars($option) ?>">
-                                                        <label><?= htmlspecialchars($option) ?></label>
+                                                        <input type="checkbox" name="question_<?=$question['questionID']?>[]" value="<?=htmlspecialchars($option)?>">
+                                                        <label><?=htmlspecialchars($option)?></label>
                                                     </div>
-                                                <?php endforeach; ?>
+                                                <?php endforeach;?>
                                             </div>
                                         <?php elseif ($question['inputType'] === 'checkbox'): ?>
-                                            <div class="option-group" id="<?= ($question['questionID'] == 46) ? 'question-46' : '' ?>">
+                                            <div class="option-group" id="<?=($question['questionID'] == 46) ? 'question-46' : ''?>">
                                                 <?php foreach ($options as $option): ?>
                                                     <div class="option-item">
-                                                        <input type="checkbox" name="question_<?= $question['questionID'] ?>[]" value="<?= htmlspecialchars($option) ?>" <?= ($question['questionID'] == 46) ? 'class="required-checkbox"' : '' ?>>
-                                                        <label><?= htmlspecialchars($option) ?></label>
+                                                        <input type="checkbox" name="question_<?=$question['questionID']?>[]" value="<?=htmlspecialchars($option)?>" <?=($question['questionID'] == 46) ? 'class="required-checkbox"' : ''?>>
+                                                        <label><?=htmlspecialchars($option)?></label>
                                                     </div>
-                                                <?php endforeach; ?>
+                                                <?php endforeach;?>
                                             </div>
                                         <?php elseif (in_array($question['inputType'], ['text', 'number', 'date'])): ?>
-                                            <input type="<?= $question['inputType'] ?>" name="question_<?= $question['questionID'] ?>" class="styled-input" <?= $isRequired ?>><br>
+                                            <input type="<?=$question['inputType']?>" name="question_<?=$question['questionID']?>" class="styled-input" <?=$isRequired?>><br>
                                         <?php elseif ($question['inputType'] === 'select'): ?>
-                                            <select name="question_<?= $question['questionID'] ?>" class="styled-select" <?= $isRequired ?>>
+                                            <select name="question_<?=$question['questionID']?>" class="styled-select" <?=$isRequired?>>
                                                 <?php foreach ($options as $option): ?>
-                                                    <option value="<?= htmlspecialchars($option) ?>"><?= htmlspecialchars($option) ?></option>
-                                                <?php endforeach; ?>
+                                                    <option value="<?=htmlspecialchars($option)?>"><?=htmlspecialchars($option)?></option>
+                                                <?php endforeach;?>
                                             </select><br>
                                         <?php elseif ($question['inputType'] === 'textarea'): ?>
-                                            <textarea name="question_<?= $question['questionID'] ?>" class="styled-textarea" <?= $isRequired ?>></textarea><br>
-                                        <?php endif; ?>
+                                            <textarea name="question_<?=$question['questionID']?>" class="styled-textarea" <?=$isRequired?>></textarea><br>
+                                        <?php endif;?>
                                     </div>
-                                <?php endforeach; ?>
+                                <?php endforeach;?>
 
                             <!-- General Input Group for similar types -->
                             <?php if ($category === 'Personal Details'): ?>
@@ -222,7 +222,7 @@ foreach ($questions as $question) {
                                         </select>
                                     </div>
                                 </div>
-                            <?php endif; ?>
+                            <?php endif;?>
 
                             <?php if ($category === 'During Pregnancy'): ?>
                                 <div class="demographics-section" style="display: flex; justify-content: space-between; margin-bottom: 15px;">
@@ -235,7 +235,7 @@ foreach ($questions as $question) {
                                         <input type="number" name="father_age" id="father_age" class="styled-input">
                                     </div>
                                 </div>
-                            <?php endif; ?>
+                            <?php endif;?>
 
                             <?php if ($category === 'Delivery'): ?>
                                 <div class="demographics-section" style="display: flex; justify-content: space-between; margin-bottom: 15px;">
@@ -244,7 +244,7 @@ foreach ($questions as $question) {
                                         <input type="number" name="labor_hours" id="labor_hours" class="styled-input">
                                     </div>
                                 </div>
-                            <?php endif; ?>
+                            <?php endif;?>
 
                             <?php if ($category === 'Personal History'): ?>
                                 <div class="demographics-section" style="display: flex; justify-content: space-between; margin-bottom: 15px;">
@@ -257,7 +257,7 @@ foreach ($questions as $question) {
                                         <input type="number" name="sibling_position" id="sibling_position" class="styled-input">
                                     </div>
                                 </div>
-                            <?php endif; ?>   
+                            <?php endif;?>
 
                             <?php if ($categoryIndex === 0): ?>
                                 <!-- Email and Phone Number fields styled like the question sections -->
@@ -277,22 +277,24 @@ foreach ($questions as $question) {
                                         <input type="text" name="guestName" id="guestName" class="styled-input" required>
                                     </div>
                                 </div>
-                            <?php endif; ?>
+                            <?php endif;?>
 
                             <!-- Navigation buttons -->
                                 <div class="navigation-buttons">
-                                    <button type="button" onclick="prevCategory(<?= $categoryIndex ?>)">Previous</button>
+                                    <?php if ($categoryIndex !== 0): ?>
+                                        <button type="button" onclick="prevCategory(<?=$categoryIndex?>)">Previous</button>
+                                    <?php endif;?>
                                     <?php if ($category !== 'School and Intervention History'): ?>
-                                        <button type="button" onclick="nextCategory(<?= $categoryIndex ?>)">Next</button>
-                                    <?php endif; ?>
+                                        <button type="button" onclick="nextCategory(<?=$categoryIndex?>)">Next</button>
+                                    <?php endif;?>
                                     <?php if ($category === 'School and Intervention History'): ?>
-                                        <button style="background-color: #EBEBEB" type="button" onclick="nextCategory(<?= $categoryIndex ?>)" disabled>Next</button>
-                                    <?php endif; ?>
+                                        <button style="background-color: #EBEBEB" type="button" onclick="nextCategory(<?=$categoryIndex?>)" disabled>Next</button>
+                                    <?php endif;?>
                                 </div>
-                            
+
                         </div>
-                        <?php $categoryIndex++; ?>
-                    <?php endforeach; ?>
+                        <?php $categoryIndex++;?>
+                    <?php endforeach;?>
 
                     <button type="submit" style="display:none; margin-right: auto; margin-left: auto;" id="submit-button">Submit</button>
                 </form>
@@ -333,7 +335,7 @@ foreach ($questions as $question) {
                 <p>Once submitted, your form will be reviewed by the clinic’s admin team to assess the availability of a therapist for the therapy service you have requested. If a slot is available, you will receive an email with further details and instructions. If no slots are currently available, you will also be notified via email.</p>
                 <p>Thank you for your patience as we review your submission!</p>
                 <form id="contact-form" action="guestSendPDF.php" method="POST">
-                    
+
                     <!-- Add hidden input for responseID -->
                     <input type="hidden" name="responseID" id="responseID" value="">
                     <button type="submit">Download PDF</button>
@@ -380,13 +382,13 @@ foreach ($questions as $question) {
             <div class="footer-bottom">
                 <p>&copy; 2024 TheraPeace. All Rights Reserved.</p>
             </div>
-        </footer>  
-        
+        </footer>
+
         <?php if (isset($_GET['success']) && $_GET['success'] == 1): ?>
             <script>
                 window.onload = function() { showModal(); };
             </script>
-        <?php endif; ?>
+        <?php endif;?>
 
         <script src="guestScript.js"></script>
 </div>

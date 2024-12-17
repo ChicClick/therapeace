@@ -6,7 +6,13 @@ include('db_conn.php');
 $therapist_id = $_SESSION['therapist_id']; // Therapist ID from session
 
 // Query to fetch the therapist's information based on therapist_id
-$query = "SELECT * FROM therapist WHERE therapistID = ?";
+$query = "
+    SELECT t.*, s.*
+    FROM therapist t
+    INNER JOIN services s ON s.serviceID = t.specialization
+    WHERE t.therapistID = ?
+";
+
 $stmt = $conn->prepare($query);
 $stmt->bind_param("s", $therapist_id); // Bind therapist_id as an integer parameter
 $stmt->execute();
@@ -117,7 +123,7 @@ $stmt->close();
 
         <div class="form-group-profile">
             <label>Service</label>
-            <div class="input-field-service"><?php echo htmlspecialchars($therapist['specialization']); ?></div>
+            <div class="input-field-service"><?php echo htmlspecialchars($therapist['serviceName']); ?></div>
         </div>
 
         <button class="save-profile" type="submit">Update Profile</button>

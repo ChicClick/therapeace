@@ -136,9 +136,38 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         }
     };
+
 });
 
+logMe = () => {
+    const tableEngine = document.querySelectorAll("generic-table")[0];
+    console.log(tableEngine.data)
+}
 
+editProfileSave = async (e) => {
+    e.preventDefault();
+    const formData = document.querySelector("#edit-profile-form");
+
+    if(!formData.checkValidity()) {
+        return;
+    }
+
+    const formValues = new FormData(formData);
+    try {
+        const response = await fetch("patient_profile_functions.php", {
+            method: "POST",
+            body: formValues,
+        });
+
+        if (!response.ok) {
+            throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+
+        new MessagePopupEngine("Success!", "Profile Update Successfully!").instantiate();
+    } catch (err) {
+        console.error("Error occurred:", err);
+    }
+}
 
 fetchReport = async () => {
     const progressReportCardModalContent = document.querySelector('.progress-report-card-modal-container');
@@ -148,7 +177,7 @@ fetchReport = async () => {
         .then(res =>  res.json())
         .then(data => {
             data.reports.forEach(report => {
-                const reportCreationDate = new Date(report.created_at);
+                const reportCreationDate = new Date(report.updated_at);
                 const currentDate = new Date();
                 const interval = currentDate - reportCreationDate;
                 const isReportAvailable= report.status != 'pending' && report.pdf_path;
@@ -162,7 +191,7 @@ fetchReport = async () => {
                     <p><strong>Report ID:</strong>${report.reportID}</p>
                     <p><strong>Therapist:</strong>${report.therapistName}></p>
                     <p><strong>Status:</strong>${report.status}</p>
-                    <p><strong>Created At:</strong>${report.created_at}</p>
+                    <p><strong>Updated At:</strong>${report.updated_at}</p>
     
                     ${action}
                     <hr>
