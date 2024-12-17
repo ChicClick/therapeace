@@ -70,22 +70,20 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 document.addEventListener("DOMContentLoaded", () => {
-  const hamburgerMenu = document.getElementById("hamburgerMenu");
-  const navbar = document.querySelector(".navbar");
-
-  // Toggle navbar visibility
-  hamburgerMenu.addEventListener("click", () => {
-    navbar.classList.toggle("active");
-  });
-
-  // Optional: Hide the navbar when clicking outside
-  document.addEventListener("click", (event) => {
-    if (
-      !hamburgerMenu.contains(event.target) &&
-      !navbar.contains(event.target)
-    ) {
-      navbar.classList.remove("active");
-    }
+    const hamburgerMenu = document.getElementById('hamburgerMenu');
+    const navbar = document.querySelector('.navbar');
+    const navLinks = document.querySelectorAll('.navbar a'); // Select all navigation links inside the navbar
+  
+    // Add event listener to toggle the navbar visibility
+    hamburgerMenu.addEventListener('click', function() {
+        navbar.classList.toggle('active'); // Toggle the 'active' class on the navbar
+    });
+  
+    // Add event listener to each nav link to close the navbar when clicked
+    navLinks.forEach(link => {
+        link.addEventListener('click', function() {
+            navbar.classList.remove('active'); // Remove the 'active' class to close the navbar
+        });
   });
 });
 
