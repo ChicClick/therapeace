@@ -11,7 +11,7 @@ $messageDisplay = '';
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $therapistID = $_SESSION['therapist_id'] ?? '';  // Get patient ID from session
 
-    if (empty($patientId)) {
+    if (empty($therapistID)) {
         $messageDisplay = 'Therapsit ID is required.';
     } else {
 
