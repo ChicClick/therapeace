@@ -81,10 +81,9 @@ $therapistID = $_SESSION['therapist_id'];
     <div class="right-section">
         <div class="top-bar">
             <div class="profile-section">
-                <img src="images/about 3.jpg" alt="Profile Picture">
-                <p class="welcome-text">
+                <span class="welcome-text">
                     Welcome back, <?php echo htmlspecialchars($_SESSION['therapist_name'] ?? 'Therapist'); ?>!
-                </p>
+                </span>
             </div>
         </div>
 
