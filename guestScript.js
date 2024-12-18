@@ -389,10 +389,6 @@ document.querySelectorAll('.about-image').forEach(image => {
     observer.observe(image);
 });
 
-document.getElementById("hamburger-menu").addEventListener("click", function() {
-    document.querySelector(".nav-links").classList.toggle("active");
-});
-
 const serviceItems = document.querySelectorAll('.service-item');
 
 // Check if the device is mobile or tablet

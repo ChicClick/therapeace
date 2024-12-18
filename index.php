@@ -192,8 +192,8 @@ include 'fetch_services.php';
         </footer>    
     <button class="scroll-top">Scroll to Top</button>
     
-
-    <script src="guestScript.js"></script>
+    
+    <script src="guestScript.js" defer></script>
 </div>
 </body>
 </html>
