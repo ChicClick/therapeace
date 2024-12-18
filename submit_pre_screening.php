@@ -118,7 +118,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
 
     $conn->close();
-    header("Location: guestPreScreening.php?success=1");
+    header("Location: index.php");
     exit();
 } else {
     echo "Error inserting form response: " . $conn->error;
