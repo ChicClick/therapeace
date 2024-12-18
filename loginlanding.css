@@ -64,9 +64,10 @@ body {
 }
 .left-section p {
     width: 70%;
+    color: #aaa9a9;
 }
 .left-section a {
-    color: FDBC10;
+    color: #FDBC10;
 }
 .role-button {
     font-family: 'Poppins', sans-serif;
