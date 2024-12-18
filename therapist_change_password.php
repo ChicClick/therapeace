@@ -42,12 +42,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
                                 $newPasswordHash = password_hash($newPassword, PASSWORD_DEFAULT);
                                 
-                                $updateQuery = "UPDATE patient SET password_hash = ? WHERE patientID = ?";
+                                $updateQuery = "UPDATE therapist SET password_hash = ? WHERE therapistID = ?";
                                 $updateStmt = $conn->prepare($updateQuery);
                                  
                                 if ($updateStmt) {
     
-                                    $updateStmt->bind_param("ss", $newPasswordHash, $patientId);
+                                    $updateStmt->bind_param("ss", $newPasswordHash, $therapistID);
                                     
                                     if ($updateStmt->execute()) {
                                         $messageDisplay = 'Password updated successfully.';
@@ -68,7 +68,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     }
                 }
             } else {
-                $messageDisplay = 'Patient not found.';
+                $messageDisplay = 'Therapist not found.';
             }
 
             $stmt->close();
@@ -81,7 +81,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 if ($messageDisplay) {
     echo "<script type='text/javascript'>
             alert('" . addslashes($messageDisplay) . "');
-            window.location.href = 'patientHomePage.php'; 
+            window.location.href = 'therapist-dashboard.php'; 
           </script>";
     exit();
 }
