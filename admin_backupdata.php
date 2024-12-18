@@ -9,6 +9,15 @@ $result = $conn->query($sql);
 // Timestamp for file name
 $timestamp = date("Y-m-d_H-i-s");
 
+header('Content-Type: text/csv');
+header('Content-Disposition: attachment; filename="TheraPeace_Export_' . $timestamp . '.csv"');
+$output = fopen('php://output', 'w');
+
+// Add a title for the export
+fputcsv($output, ["TheraPeace Database Export"]);
+fputcsv($output, ["Generated on: " . $timestamp]);
+fputcsv($output, []); // Blank line for separation
+
 if ($result->num_rows > 0) {
     while ($row = $result->fetch_row()) {
         $table = $row[0]; // Table name
@@ -16,10 +25,9 @@ if ($result->num_rows > 0) {
         $data_result = $conn->query($sql_data);
 
         if ($data_result->num_rows > 0) {
-            // Create CSV file for each table with timestamped file name
-            header('Content-Type: text/csv');
-            header('Content-Disposition: attachment; filename="TheraPeace_Export_' . $table . '_' . $timestamp . '.csv"');
-            $output = fopen('php://output', 'w');
+            // Write table name as section header
+            fputcsv($output, ["Table: $table"]);
+            fputcsv($output, []); // Blank line for separation
 
             // Output column headers
             $columns = $data_result->fetch_fields();
@@ -34,10 +42,12 @@ if ($result->num_rows > 0) {
                 fputcsv($output, $row_data);
             }
 
-            fclose($output);
+            // Add a blank line after each table for better separation
+            fputcsv($output, []); 
         }
     }
 }
 
+fclose($output);
 $conn->close();
 ?>
