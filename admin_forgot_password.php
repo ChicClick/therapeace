@@ -40,7 +40,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     $stmt->close();
 
                     // updated the domain
-                    $resetLink = 'https://therapeace-d74d563df28a.herokuapp.com/adminResetPassword.php?token=' . $resetToken;
+                    $resetLink = "  /adminResetPassword.php?token=" . $resetToken;
                     try {
                         $mailer = new Mailer();
                         $toEmail = $email;
