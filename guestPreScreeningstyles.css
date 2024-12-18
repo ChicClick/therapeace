@@ -36,10 +36,12 @@ body {
     font-weight: lighter;
     font-family: 'Architects Daughter', cursive;
     text-align: center;
+    margin-bottom: 20px;
 }
 
 .pre-screening-card {
     display: flex;
+    flex-wrap: wrap;
     background-color: #fff;
     border-radius: 30px;
     padding: 20px;
@@ -57,11 +59,11 @@ body {
     left: 35%; /* Positioned based on flex ratio (1:2) */
     width: 1px;
     background-color: #432705;
+    transition: all 0.3s ease;
 }
 
 .left-section {
     flex: 1;
-    border-radius: 10px 0 0 10px;
     padding: 10px;
     display: flex;
     flex-direction: column;
@@ -130,11 +132,17 @@ body {
 .benefits {
     display: flex;
     justify-content: center;
+    flex-wrap: wrap;
+    gap: 20px;
 }
 
 .benefit {
     width: 200px;
     margin: 0 20px;
+    display: flex;
+    flex-direction: column; /* Align items vertically */
+    align-items: center;
+    text-align: center;
 }
 
 .benefit p{
@@ -166,6 +174,7 @@ body {
     align-items: center;
     gap: 10px; /* Spacing between steps */
     width: 800px;
+    margin: 0 auto; /* Ensure steps are centered */
 }
 
 .steps .step {
@@ -222,8 +231,8 @@ background-color: #ffcc00;
     border-radius: 30px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     margin: 20px auto;
-    width: 800px;
-    text-align: left;
+    width: 100%;
+    max-width: 800px;
 }
 
 /* Style the form container to be below the test intro */
@@ -262,8 +271,6 @@ select {
 
 /* General Form Styles */
 .form-container {
-    max-width: 800px;
-    margin: auto;
     padding: 20px;
     background-color: transparent;
     border-radius: 10px;
@@ -291,14 +298,14 @@ select {
 /* Container for options (checkboxes/radios) */
 .option-group {
     display: flex;
-    flex-direction: column; /* Stack items vertically */
+    flex-direction: column; /* Stack options vertically */
 }
 
 /* Layout for individual option items */
 .option-item {
-    display: flex; /* Align input and label in one row */
-    align-items: center; 
-    gap: 10px; /* Space between input and label */
+    display: flex;
+    align-items: center;
+    gap: 10px;
 }
 
 /* Reset margins for inputs and labels */
@@ -330,7 +337,7 @@ select {
 
 .question-section > div {
     flex: 1; /* Allows inputs to share the available space */
-    margin-right: 10px; /* Space between age and gender fields */
+    margin-right: 10px; 
 }
 
 .question-section > div:last-child {
@@ -385,10 +392,11 @@ button[type="button"]:hover {
     display: flex;
     justify-content: space-between; /* Space between the buttons */
     width: 100%; /* Ensure the container takes full width */
+    gap: 10px;
 }
 
 .navigation-buttons button {
-    /* Optionally add padding, margins, or other styles to your buttons */
+    flex: 1; /* Make buttons stretch equally */
     padding: 10px 20px;
 }
 
@@ -396,29 +404,29 @@ button[type="button"]:hover {
 
 /* Container for demographics section/input group */
 .demographics-section {
-    display: flex; /* Use flexbox for side-by-side layout */
-    justify-content: space-between; /* Space out the items */
-    margin-bottom: 15px; /* Spacing below the demographic section */
+    display: flex;
+    flex-wrap: wrap; /* Allow wrapping on smaller screens */
+    gap: 15px;
+    margin-bottom: 15px;
 }
 
 /* Style for input groups */
 .input-group {
     flex: 1; /* Allow inputs to share the available space */
-    margin-right: 10px; /* Add space between the inputs */
 }
 
 .input-group:last-child {
-    margin-right: 0; /* Remove margin for the last item */
+    margin-right: 0; 
 }
 
 /* General styles for input fields */
 .styled-input,
 .styled-select,
 .styled-textarea {
-    width: 100%; /* Ensure inputs take full width of their container */
-    padding: 8px; /* Add padding for better touch targets */
-    border: 1px solid #fff4ce; /* Add a border */
-    border-radius: 4px; /* Rounded corners */
+    width: 100%; 
+    padding: 8px; 
+    border: 1px solid #fff4ce; 
+    border-radius: 4px; 
     background-color: #fff4ce;
     color: #432705;
     font-family: 'Poppins', sans-serif;
@@ -426,14 +434,14 @@ button[type="button"]:hover {
 
 /* Textarea specific styles */
 .styled-textarea {
-    resize: vertical; /* Allow vertical resizing only */
+    resize: vertical; 
 }
 
 /* Adjust the border radius for the Date of Birth field */
 #dob {
     border-radius: 4px; 
     width: 100%;
-    height: 35px;
+    height: 39px;
 }
 
 .question-description {
@@ -457,15 +465,6 @@ button[type="button"]:hover {
     font-size: 0.9em;
     margin-top: 5px;
 }
-
-
-
-/* input.invalid, textarea.invalid, select.invalid {
-    border: 2px solid red;
-    background-color: #ffe6e6;
-    outline: none;
-} */
-
 
 
 /* STYLES FOR SUCCESS MODAL */
@@ -534,3 +533,189 @@ button[type="button"]:hover {
     cursor: pointer;
 }
 
+
+/* Tablet screens */
+@media (max-width: 768px) {
+    .pre-screening-card {
+        flex-direction: column; /* Stacks sections vertically */
+        padding: 15px;
+        width: 90%;
+    }
+
+    .pre-screening-card::before {
+        content: ''; 
+        position: absolute; 
+        top: 20%; 
+        left: 10%; 
+        width: 80%; 
+        height: 1px;
+        background-color: #432705; 
+    }
+
+    .left-section,
+    .right-section {
+        flex: none; 
+        width: 100%; 
+        text-align: center; 
+    }
+
+    .right-section {
+        margin-top: 30px;
+        text-align: center; /* Center-align text for better readability */
+        padding: 10px;
+        text-align: justify;
+    }
+
+    .start-test-btn {
+        float: none; /* Center-align button on smaller screens */
+        display: block;
+        margin: 20px auto;
+    }
+
+    .steps {
+        width: 100%;  /* Make steps take up full width */
+        flex-wrap: wrap;  /* Allow steps to wrap on smaller screens */
+        justify-content: center; /* Center the steps */
+    }
+
+    .steps .step {
+        margin-bottom: 10px; /* Add space between steps if they wrap */
+    }
+
+    .steps .step span {
+        width: 40px;  /* Reduce size of the steps on smaller screens */
+        height: 40px;
+        font-size: 1.2rem; /* Adjust font size inside the circle */
+    }
+
+    .steps .step p {
+        font-size: 1rem; /* Adjust the text size of the step labels */
+    }
+
+    .line {
+        width: 15%; /* Make the line thinner on smaller screens */
+    }
+
+    .steps .step.finish + .line {
+        background-color: #ffcc00;
+    }
+
+    .pre-screening-form {
+        width: 90%;
+    }
+    
+    .question-section {
+        margin-bottom: 12px;
+    }
+
+    .demographics-section {
+        flex-direction: column; /* Stack inputs vertically on smaller screens */
+    }
+
+    .input-group {
+        width: 100%; /* Allow each input to take the full width */
+        margin-bottom: 10px; /* Space out inputs vertically */
+    }
+
+    .form-container {
+        padding: 15px; /* Reduce padding on smaller screens */
+    }
+
+    button, input[type="submit"] {
+        width: 100%; /* Make buttons full width on mobile */
+        padding: 15px;
+    }
+
+
+    .navigation-buttons {
+        flex-direction: column; /* Stack the navigation buttons vertically */
+        gap: 15px; /* Space buttons apart */
+    }
+
+    .navigation-buttons button {
+        width: 100%; /* Make buttons full width */
+        padding: 15px;
+    }
+
+    .why-pre-screening h3 {
+        font-size: 18px; /* Reduce the title size on smaller screens */
+    }
+
+    .benefit {
+        width: 100%;  /* Make each benefit take up full width on smaller screens */
+        margin: 10px 0; /* Adjust margin to create space between stacked benefits */
+    }
+
+    .benefit p {
+        font-size: 0.9rem;  /* Reduce the font size of the paragraph text */
+    }
+}
+
+/* Mobile screens */
+@media (max-width: 480px) {
+    .pre-screening-section h2 {
+        font-size: 28px;
+    }
+
+    .pre-screening-card {
+        padding: 10px;
+        box-shadow: none; /* Simplify shadow for smaller devices */
+    }
+
+    .left-section h3 {
+        font-size: 24px;
+    }
+
+    .right-section ul {
+        font-size: 14px; /* Reduce text size for readability */
+    }
+
+    .start-test-btn {
+        font-size: 12px; /* Reduce button font size */
+        height: 30px; /* Adjust button height */
+        padding: 0px 20px; /* Adjust button padding */
+    }
+
+    .test-intro h2 {
+        font-size: 2rem;  /* Make the title smaller on mobile */
+    }
+
+    .steps .step span {
+        width: 35px;
+        height: 35px;
+        font-size: 1rem;  /* Make the circles smaller */
+    }
+
+    .steps .step p {
+        font-size: 0.9rem; /* Smaller font size for step labels */
+    }
+
+    .line {
+        width: 10%; /* Make the line even smaller on very small screens */
+    }
+
+    .form-container h3 {
+        font-size: 18px; /* Smaller font for headings */
+    }
+
+    .question-section label {
+        font-size: 14px; /* Adjust label font size */
+    }
+
+    .styled-input, .styled-select, .styled-textarea {
+        font-size: 14px; /* Adjust input text size */
+    }
+
+    .why-pre-screening h3 {
+        font-size: 16px; /* Make the title smaller on mobile */
+    }
+
+    .benefit {
+        width: 100%;  /* Full-width benefits to stack on mobile */
+        margin: 10px 0; /* Adjust margin for mobile layout */
+    }
+
+    .benefit p {
+        font-size: 0.85rem; /* Further reduce font size on mobile */
+    }
+}

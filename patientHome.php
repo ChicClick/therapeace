@@ -1,3 +1,8 @@
+<?php
+include 'fetch_services.php'; 
+
+?>
+
     <div class="hero-section">
         <div class="hero-text">
             <h1>Seamless Patient - Care Experience</h1>
@@ -42,60 +47,17 @@
     <section class="services-section" id="services">
         <h2>Services Offered</h2>
         <div class="services-grid">
-            <div class="service-item hexagon">
-                <div class="service-content">
-                    <h3>Behavioral Therapy</h3>
-                    <i class="service-icon fa-solid fa-hand-holding-heart"></i>
-                    <div class="service-description">
-                        <p>Therapy to address behavioral issues</p>
+            <?php foreach ($services as $service): ?>
+                <div class="service-item hexagon">
+                    <div class="service-content">
+                        <h3><?php echo htmlspecialchars($service['serviceName']); ?></h3>
+                        <i class="service-icon <?php echo htmlspecialchars($service['icon']); ?>"></i>
+                        <div class="service-description">
+                            <p><?php echo nl2br(htmlspecialchars($service['description'])); ?></p>
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div class="service-item hexagon">
-                <div class="service-content">
-                    <h3>Speech Therapy</h3>
-                    <i class="service-icon fa-solid fa-comments"></i>
-                    <div class="service-description">
-                        <p>To improve speech and communication skills</p>
-                    </div>
-                </div>
-            </div>
-            <div class="service-item hexagon">
-                <div class="service-content">
-                    <h3>Free Screening</h3>
-                    <i class="service-icon fa-solid fa-clipboard-list"></i>
-                    <div class="service-description">
-                        <p>Initial assessment of therapy needs</p>
-                    </div>
-                </div>
-            </div>
-            <div class="service-item hexagon">
-                <div class="service-content">
-                    <h3>Special Education</h3>
-                    <i class="service-icon fa-solid fa-book-open"></i>
-                    <div class="service-description">
-                        <p>Description about Special Education</p>
-                    </div>
-                </div>
-            </div>
-            <div class="service-item hexagon">
-                <div class="service-content">
-                    <h3>Physical Therapy</h3>
-                    <i class="service-icon fa-solid fa-wheelchair-move"></i>
-                    <div class="service-description">
-                        <p>Improvement of physical movement and strength</p>
-                    </div>
-                </div>
-            </div>
-            <div class="service-item hexagon">
-                <div class="service-content">
-                    <h3>Occupational Therapy</h3>
-                    <i class="service-icon fa-solid fa-hands-holding-child"></i>
-                    <div class="service-description">
-                        <p>Therapy to improve daily living skills</p>
-                    </div>
-                </div>
-            </div>
+            <?php endforeach; ?>
         </div>
     </section>
 

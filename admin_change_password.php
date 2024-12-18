@@ -9,7 +9,7 @@ error_reporting(E_ALL);
 $messageDisplay = '';
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $username = $_SESSION['username'] ?? '';  // Get patient ID from session
+    $username = $_SESSION['username'] ?? '';  // Get username from session
 
     if (empty($username)) {
         $messageDisplay = 'Username is required.';

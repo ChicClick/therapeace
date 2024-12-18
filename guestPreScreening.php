@@ -24,7 +24,6 @@ foreach ($questions as $question) {
 </head>
 <body>
     <div class="wrapper">
-        <!-- Navbar -->
         <nav>
             <div class="logo">
                 <img src="images/TheraPeace Logo.svg" alt="TheraPeace Logo">
@@ -36,8 +35,11 @@ foreach ($questions as $question) {
                     <li><a href="#about" data-nav-link>About Us</a></li>
                     <li><a href="#services" data-nav-link>Services</a></li>
                     <li><a href="#rates" data-nav-link>Rates</a></li>
+                    <!-- Add the login button as a list item -->
+                    <li>
+                        <button class="login-btn" onclick="window.location.href='loginlanding.html';">Login</button>
+                    </li>
                 </ul>
-                <button class="login-btn" onclick="window.location.href='loginlanding.html';">Login</button>
                 <!-- Hamburger menu icon for smaller devices -->
                 <div class="hamburger-menu" id="hamburger-menu">
                     <span class="bar"></span>
@@ -73,7 +75,7 @@ foreach ($questions as $question) {
 
         <!-- Pre-Screening Form (Initially Hidden) -->
         <div class="test-intro hidden">  <!-- 'hidden' class added here -->
-            <h2>TheraQuick test!</h2>
+            <h2>TheraQuick Test!</h2>
             <div class="steps">
                 <div class="step">
                     <span>1</span>
@@ -125,37 +127,37 @@ foreach ($questions as $question) {
 
                             <?php foreach ($categoryQuestions as $question): ?>
                                 <?php
-// Check if the question should be skipped based on its properties
-if (!empty($question['skip']) && $question['skip'] === true) {
-    continue; // Skip this question
-}
-?>
+                                    // Check if the question should be skipped based on its properties
+                                    if (!empty($question['skip']) && $question['skip'] === true) {
+                                        continue; // Skip this question
+                                    }
+                                    ?>
 
-                                <!-- Skip specific input types under General Input Group -->
-                                <?php
-// Define the questions to be skipped
-$questionsToSkip = [];
-if ($category === 'Personal Details') {
-    $questionsToSkip = ['Date of Birth', 'Age', 'Sex'];
-} elseif ($category === 'During Pregnancy') {
-    $questionsToSkip = ['Age of mother during pregnancy', 'Age of father'];
-} elseif ($category === 'Delivery') {
-    $questionsToSkip = ['Hours of labor'];
-} elseif ($category === 'Personal History') {
-    $questionsToSkip = ['Ilan ang kapatid?', 'Pang ilan sa magkakapatid?'];
-}
+                                    <!-- Skip specific input types under General Input Group -->
+                                    <?php
+                                        // Define the questions to be skipped
+                                        $questionsToSkip = [];
+                                        if ($category === 'Personal Details') {
+                                            $questionsToSkip = ['Date of Birth', 'Age', 'Sex'];
+                                        } elseif ($category === 'During Pregnancy') {
+                                            $questionsToSkip = ['Age of mother during pregnancy', 'Age of father'];
+                                        } elseif ($category === 'Delivery') {
+                                            $questionsToSkip = ['Hours of labor'];
+                                        } elseif ($category === 'Personal History') {
+                                            $questionsToSkip = ['Ilan ang kapatid?', 'Pang ilan sa magkakapatid?'];
+                                        }
 
-// Check if the current question should be skipped
-if (in_array($question['questionText'], $questionsToSkip)) {
-    continue;
-}
+                                        // Check if the current question should be skipped
+                                        if (in_array($question['questionText'], $questionsToSkip)) {
+                                            continue;
+                                        }
 
-$isRequired = $question['isRequired'] ? 'required' : '';
-$requiredMark = $question['isRequired'] ? '<span class="required-asterisk">*</span>' : '';
-$description = !empty($question['description']) ? $question['description'] : '';
-?>
+                                        $isRequired = $question['isRequired'] ? 'required' : '';
+                                        $requiredMark = $question['isRequired'] ? '<span class="required-asterisk">*</span>' : '';
+                                        $description = !empty($question['description']) ? $question['description'] : '';
+                                        ?>
 
-                                <div class="question-section">
+                                    <div class="question-section">
                                         <label>
                                             <?=htmlspecialchars($question['questionText'])?> <?=$requiredMark?>
                                         </label>
@@ -164,8 +166,8 @@ $description = !empty($question['description']) ? $question['description'] : '';
                                         <?php endif;?>
 
                                         <?php
-$options = !empty($question['options']) ? explode(',', $question['options']) : [];
-?>
+                                            $options = !empty($question['options']) ? explode(',', $question['options']) : [];
+                                            ?>
                                         <?php if ($question['inputType'] === 'radio'): ?>
                                             <div class="option-group">
                                                 <?php foreach ($options as $option): ?>

@@ -384,7 +384,6 @@ nav.scrolled {
     overflow: visible; /* Allow overflow from the bee trail */
     box-shadow:     inset 0 10px 30px rgba(200, 153, 0, 0.4), 
                     inset 0 -4px 30px rgba(200, 153, 0, 0.3);  
-
 }
 
 .services-section h2 {
@@ -398,12 +397,10 @@ nav.scrolled {
 }
 
 .services-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); /* Auto-fit for responsive design */
-    gap: 3px;
-    max-width: 1200px;
-    margin: 0 auto;
-    justify-items: center;
+    display: flex;
+    flex-wrap: wrap; /* Allows items to wrap to the next line */
+    justify-content: center; /* Center hexagons horizontally */
+    gap: 70px; /* Consistent spacing between items */
 }
 
 .service-item {
@@ -414,12 +411,14 @@ nav.scrolled {
 
 /* Hexagon shape styling */
 .service-item.hexagon {
-    width: calc(70% - 20px);
+    width: 250px; /* Fixed width */
+    height: 300px; /* Fixed height, maintaining the hexagon aspect ratio */
     background: #ffbb0e;
     border: none;
     clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%); /* Hexagon shape */
     transform: rotate(90deg); /* Rotate the hexagon */
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); /* Add shadow */
+    margin: 10px; /* Add consistent spacing between hexagons */
 }
 
 /* Combined content styling */
@@ -462,6 +461,7 @@ nav.scrolled {
     min-height: 100%;
     overflow-y: auto;
     margin-top: 0;
+    font-size: 14px;
 }
 
 .service-description p {
@@ -591,7 +591,6 @@ nav.scrolled {
     padding: 90px 20px;
     text-align: center;
     overflow: hidden; /* To prevent overflow from carousel movement */
-    background: #FFF4CE;
     position: relative;
 }
 
@@ -733,6 +732,12 @@ nav.scrolled {
     display: block; 
 }
 
+/* Default: Hide Appointments and Notes in the dropdown on larger screens */
+.dropdown-content a[data-target="patientAppointments.php"],
+.dropdown-content a[data-target="patientNotes.php"] {
+    display: none;
+}
+
 
 /* STYLES FOR LOG OUT MODAL */
 .modal {
@@ -866,6 +871,28 @@ nav.scrolled {
 
 /* MEDIA QUERY FOR SMALLER SCREENS (mobile and tablet) */
 @media (max-width: 768px) and (min-width: 481px) {
+    .dropdown-content a[data-target="patientAppointments.php"],
+    .dropdown-content a[data-target="patientNotes.php"] {
+        display: block;
+    }
+
+    .nav-links li:nth-child(2), /* Appointments */
+    .nav-links li:nth-child(3) { /* Notes */
+        display: none; /* Hide these links on small screens */
+    }
+
+    .dropdown-content {
+        width: 100%; /* Make dropdown take full width on small screens */
+    }
+
+    .nav-container {
+        flex-direction: column; /* Stack items vertically on small screens */
+    }
+
+    .user-greeting {
+        margin-bottom: 20px; /* Add space below the user greeting */
+    }
+    
     .hero-text {
         max-width: 100%; /* Make it take up more space on smaller screens */
         padding: 15px;
@@ -1047,6 +1074,28 @@ nav.scrolled {
 }
 
 @media (max-width: 480px) {
+    .nav-links li:nth-child(2), /* Appointments */
+    .nav-links li:nth-child(3) { /* Notes */
+        display: none; /* Hide these links on small screens */
+    }
+
+    .dropdown-content {
+        width: 100%; /* Make dropdown take full width on small screens */
+    }
+
+    .nav-container {
+        flex-direction: column; /* Stack items vertically on small screens */
+    }
+
+    .user-greeting {
+        margin-bottom: 20px; /* Add space below the user greeting */
+    }
+    
+    .dropdown-content a[data-target="patientAppointments.php"],
+    .dropdown-content a[data-target="patientNotes.php"] {
+        display: block;
+    }
+
     .hero-text {
         max-width: 100%; /* Make it take up more space on smaller screens */
         padding: 15px;
@@ -1230,3 +1279,11 @@ nav.scrolled {
         margin-bottom: 50px;
     }
 }
+
+@media (max-width: 1024px) and (min-width: 769px) {
+    .services-grid {
+        grid-template-columns: repeat(auto-fit, minmax(400px, 1fr)); /* Adjust columns to fit smaller screens */
+    }
+
+}
+
