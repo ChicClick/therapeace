@@ -39,6 +39,7 @@ session_start();
     <input type="password" name="password" placeholder="Password" required>
     <a href="adminForgotPassword.php" class="forgot-password">Forgot Password?</a>
     <button type="submit" class="proceed-button">Proceed &rarr;</button>
+    <p>By proceeding, you understood and agree to the Therapeace Online Services <a href=terms_conditions.html>Terms and Conditions</a></p>
     </form>
     </div>
     
