@@ -73,6 +73,13 @@ body {
     color: #432705;
 }
 
+.left-section p {
+    width: 40%;
+}
+.left-section a {
+    color: FDBC10;
+}
+
 form {
     display: flex;
     flex-direction: column;
