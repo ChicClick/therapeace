@@ -62,6 +62,7 @@ if (isset($_SESSION['firstname'])) {
                 <!-- Removed the manage account tab -->
                 <li><a href="#" id="changePassword" onclick="changePassword(event)"> <i class="fa fa-key"></i> Change Password</a></li>
                 <li><a href="#" data-target="edit-profile-section"><i class="fa fa-cog"></i> Edit Profile</a></li>
+                <li><a href="#" id="backupData" onclick="backupData(event)"> <i class="fa-solid fa-file"></i> Download Data</a></li>
                 <li><a href="#" id="logoutBtn"><i class="fa fa-sign-out"></i>Log Out</a></li>
             </ul>
         </nav>
