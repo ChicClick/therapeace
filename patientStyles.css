@@ -1,175 +1,216 @@
 @font-face {
-    font-family: 'Poppins';
-    src: url('fonts/Poppins-Regular.ttf') format('truetype');
-    font-weight: 400;
-    font-style: normal;
+  font-family: "Poppins";
+  src: url("fonts/Poppins-Regular.ttf") format("truetype");
+  font-weight: 400;
+  font-style: normal;
 }
 
 @font-face {
-    font-family: 'Poppins';
-    src: url('fonts/Poppins-SemiBold.ttf') format('truetype');
-    font-weight: 600; /* Semibold weight */
+  font-family: "Poppins";
+  src: url("fonts/Poppins-SemiBold.ttf") format("truetype");
+  font-weight: 600; /* Semibold weight */
 }
 
 /* General styles */
 body {
-    font-family: 'Poppins', sans-serif;
-    margin: 0;
-    padding: 0;
-    background: #fff4ce;
+  font-family: "Poppins", sans-serif;
+  margin: 0;
+  padding: 0;
+  background: #fff4ce;
 }
 
 #content {
-    z-index: 1;
+  z-index: 1;
 }
 
 /* Appointments Styles */
 #appointments {
-    margin-top: 10%;
-    padding: 20px;
-    color: #432705;
-    font-size: 14px;
+  margin-top: 10%;
+  padding: 20px;
+  color: #432705;
+  font-size: 14px;
 }
 
 #appointments h1 {
-    font-size: 30px;
-    font-family: "Architects Daughter", cursive;
-    font-weight: normal;
-    margin-left: 30px;
+  font-size: 30px;
+  font-family: "Architects Daughter", cursive;
+  font-weight: normal;
+  margin-left: 30px;
 }
 
 hr {
-    margin-bottom: 0;
-    height: 1px; /* Adjust the height to make it thin */
-    background-color: #432705; /* Set the color */
-    border: none;
+  margin-bottom: 0;
+  height: 1px; /* Adjust the height to make it thin */
+  background-color: #432705; /* Set the color */
+  border: none;
 }
 
+.profile-picture {
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  margin-right: 20px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  object-fit: cover;
+}
 
-.header-schedule, .header-therapist, .header-action {
-    flex: 1; /* Adjusts the width of the action header */
-    display: flex;
-    align-items: center; /* Center align the text */
-    padding: 10px 0; /* Horizontal padding for spacing */
-    font-weight: 600; /* Make the header bold */
-    font-size: 1.2em; /* Adjust size as needed */
+.profile-pic-container {
+  position: relative;
+  width: 120px;
+  height: 120px;
+  margin-right: 20px;
+  margin-bottom: 40px;
+}
+
+.change-picture-button {
+  position: absolute;
+  bottom: -20px;
+  right: -20px;
+  width: 40px;
+  height: 40px;
+  background: linear-gradient(90deg, #fdbc10 0%, #ffea09 100%);;
+  color: white;
+  border: none;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.change-picture-button:hover {
+  background-color: #0056b3;
+}
+
+.change-picture-button .camera-icon::before {
+  content: "\1F4F7"; /* Unicode for the camera emoji 📷 */
+  font-size: 18px;
+}
+
+.header-schedule,
+.header-therapist,
+.header-action {
+  flex: 1; /* Adjusts the width of the action header */
+  display: flex;
+  align-items: center; /* Center align the text */
+  padding: 10px 0; /* Horizontal padding for spacing */
+  font-weight: 600; /* Make the header bold */
+  font-size: 1.2em; /* Adjust size as needed */
 }
 
 .header-schedule {
-    justify-content: flex-start;
-    padding-left: 10px;
+  justify-content: flex-start;
+  padding-left: 10px;
 }
 
 .header-therapist {
-    justify-content: center;
+  justify-content: center;
 }
 
 .header-action {
-    justify-content: flex-end; /* Center align the action buttons */
-    padding-right: 40px;
+  justify-content: flex-end; /* Center align the action buttons */
+  padding-right: 40px;
 }
 
 #notes .header-therapist {
-    justify-content: flex-start;
+  justify-content: flex-start;
 }
 
-
 .reschedule {
-    color: #FFA500;
-    text-decoration: underline;
-    font-weight: 600;
+  color: #ffa500;
+  text-decoration: underline;
+  font-weight: 600;
 }
 
 /* Other styles */
 .status-dot {
-    display: inline-block;
-    width: 25px;
-    height: 25px;
-    background-color: #FFA500;
-    border-radius: 50%;
-    margin-right: 5px;
+  display: inline-block;
+  width: 25px;
+  height: 25px;
+  background-color: #ffa500;
+  border-radius: 50%;
+  margin-right: 5px;
 }
 
 .hidden {
-    display: none;
+  display: none;
 }
 
-
 #notes {
-    margin-top: 10%;
-    padding: 20px;
-    color: #432705;
-    font-size: 14px;
+  margin-top: 10%;
+  padding: 20px;
+  color: #432705;
+  font-size: 14px;
 }
 
 #notes h1 {
-    font-size: 30px;
-    font-family: "Architects Daughter", cursive;
-    font-weight: normal;
-    margin-left: 30px;
+  font-size: 30px;
+  font-family: "Architects Daughter", cursive;
+  font-weight: normal;
+  margin-left: 30px;
 }
 
-#generateReportButton, #viewReportButton {
-    background-color: #ffbb0e; /* Change to your desired background color */
-    color: #fff4ce; /* Change to your desired text color */
-    border: none; /* Remove default border */
-    border-radius: 12px; /* Adjust the value for roundness */
-    padding: 10px 20px; /* Add padding for a better appearance */
-    font-size: 14px; /* Adjust font size as needed */
-    cursor: pointer; /* Change cursor to pointer on hover */
-    transition: background-color 0.3s; /* Add transition effect on hover */
-    margin: 10px 0;
-    margin-left: 20px;
-    font-weight: bold;
-
+#generateReportButton,
+#viewReportButton {
+  background-color: #ffbb0e; /* Change to your desired background color */
+  color: #fff4ce; /* Change to your desired text color */
+  border: none; /* Remove default border */
+  border-radius: 12px; /* Adjust the value for roundness */
+  padding: 10px 20px; /* Add padding for a better appearance */
+  font-size: 14px; /* Adjust font size as needed */
+  cursor: pointer; /* Change cursor to pointer on hover */
+  transition: background-color 0.3s; /* Add transition effect on hover */
+  margin: 10px 0;
+  margin-left: 20px;
+  font-weight: bold;
 }
 
-#generateReportButton:hover, #viewReportButton:hover {
-    background-color: #eaab0c; /* Change to a darker shade on hover */
+#generateReportButton:hover,
+#viewReportButton:hover {
+  background-color: #eaab0c; /* Change to a darker shade on hover */
 }
-
-
 
 .progress-report-button:hover {
-    text-decoration: underline; /* Adds underline on hover for effect */
+  text-decoration: underline; /* Adds underline on hover for effect */
 }
 
 /* Hover effect for notes section table rows only */
 .notes-row:hover {
-    background-color: #ac9477 !important;
-    cursor: pointer !important;
-    transition: background-color 0.3s ease !important;
+  background-color: #ac9477 !important;
+  cursor: pointer !important;
+  transition: background-color 0.3s ease !important;
 }
 
 /* Notes content styling */
 #open-notes {
-    display: none; /* Initially hidden */
-    width: 100%; /* Ensure it takes full width */
-    margin: 0 auto;
-    padding: 20px;
-    background-color: transparent;
+  display: none; /* Initially hidden */
+  width: 100%; /* Ensure it takes full width */
+  margin: 0 auto;
+  padding: 20px;
+  background-color: transparent;
 }
-
 
 /* Close button styling */
 #close-notes {
-    margin-top: 20px;
+  margin-top: 20px;
 }
 
 .search-sort-container {
-    display: flex;
-    align-items: center;
-    justify-content: flex-start; /* Aligns the entire search and sort to the right */
-    width: 100%;
-    max-width: 500px; /* Adjust as needed */
-    margin-top: 10px;
-    margin-bottom: 20px;
-    margin-left: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start; /* Aligns the entire search and sort to the right */
+  width: 100%;
+  max-width: 500px; /* Adjust as needed */
+  margin-top: 10px;
+  margin-bottom: 20px;
+  margin-left: 20px;
 }
 
 /* Search Bar Container */
 .search-wrapper {
-    position: relative; /* Relative positioning for absolute child */
+  position: relative; /* Relative positioning for absolute child */
 }
 
 .search-bar {
@@ -183,12 +224,12 @@ hr {
 }
 
 .sort-button {
-    background-color: transparent;
-    border: none;
-    cursor: pointer;
-    font-size: 0.7em;
-    color: #333;
-    margin-left: 8px;
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+  font-size: 0.7em;
+  color: #333;
+  margin-left: 8px;
 }
 
 .search-icon {
@@ -201,37 +242,35 @@ hr {
 
 /* Optional: Focus state for search bar input */
 .search-bar:focus {
-    outline: none; /* Remove default outline */
-    border-color: #FFA500; /* Highlight border on focus */
-    box-shadow: 0 0 5px rgba(255, 165, 0, 0.5); /* Add shadow on focus */
+  outline: none; /* Remove default outline */
+  border-color: #ffa500; /* Highlight border on focus */
+  box-shadow: 0 0 5px rgba(255, 165, 0, 0.5); /* Add shadow on focus */
 }
-
 
 .hidden {
-    display: none;
+  display: none;
 }
 
-
 .notes-container h3 {
-    display: flex; /* Use flexbox to align items */
-    align-items: center; /* Vertically center the button and text */
+  display: flex; /* Use flexbox to align items */
+  align-items: center; /* Vertically center the button and text */
 }
 
 .download-button {
-    background-color: #4CAF50; /* Green */
-    border: none;
-    color: white;
-    padding: 10px 20px;
-    text-align: center;
-    text-decoration: none;
-    display: inline-block;
-    font-size: 16px;
-    border-radius: 5px;
-    margin-top: 10px;
+  background-color: #4caf50; /* Green */
+  border: none;
+  color: white;
+  padding: 10px 20px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  border-radius: 5px;
+  margin-top: 10px;
 }
 
 .download-button:hover {
-    background-color: #45a049;
+  background-color: #45a049;
 }
 
 
@@ -293,348 +332,352 @@ hr {
 }
 
 /* Edit Profile Styles */
-#profile-section, #edit-profile-section {
-    margin-top: 10%;
-    padding: 20px;
-    color: #432705;
-    font-size: 14px;
+#profile-section,
+#edit-profile-section {
+  margin-top: 10%;
+  padding: 20px;
+  color: #432705;
+  font-size: 14px;
 }
 
-#profile-section h1, #edit-profile-section h1 {
-    font-size: 30px;
-    font-family: "Architects Daughter", cursive;
-    font-weight: normal;
-    margin-left: 30px;
+#profile-section h1,
+#edit-profile-section h1 {
+  font-size: 30px;
+  font-family: "Architects Daughter", cursive;
+  font-weight: normal;
+  margin-left: 30px;
 }
-
 
 .profile-container {
-    max-width: 90%;
-    margin: auto;
-    padding: 20px;
-    background-color: #fef9e4;
-    border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    margin-top: 20px;
+  max-width: 90%;
+  margin: auto;
+  padding: 20px;
+  background-color: #fef9e4;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  margin-top: 20px;
 }
 
 .profile-header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between; 
-    border-bottom: 2px solid #fdd835;
-    padding-bottom: 15px;
-    margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 2px solid #fdd835;
+  padding-bottom: 15px;
+  margin-bottom: 20px;
 }
 
 .profile-pic {
-    border-radius: 50%;
-    width: 100px;
-    height: 100px;
-    object-fit: cover;
-    margin-right: 15px;
+  border-radius: 50%;
+  width: 100px;
+  height: 100px;
+  object-fit: cover;
+  margin-right: 15px;
 }
 
 .profile-info {
-    display: flex;
-    flex-direction: row; /* Aligns the profile picture and patient name side by side */
-    align-items: center; /* Vertically centers the profile picture and name */
-    margin-left: 0; /* Removes extra spacing from the left */
+  display: flex;
+  flex-direction: row; /* Aligns the profile picture and patient name side by side */
+  align-items: center; /* Vertically centers the profile picture and name */
+  margin-left: 0; /* Removes extra spacing from the left */
 }
 
 .profile-info h2 {
-    font-weight: 700;
-    margin: 0;
-    margin-left: 10px; /* Adds a small gap between the profile picture and name */
+  font-weight: 700;
+  margin: 0;
+  margin-left: 10px; /* Adds a small gap between the profile picture and name */
 }
 
 .therapy-type {
-    font-weight: 600;
-    color: #fdd835; /* Accent color */
+  font-weight: 600;
+  color: #fdd835; /* Accent color */
 }
 
 .edit-button {
-    background: linear-gradient(90deg, #FDBC10 0%, #FFEA09 100%);
-    color: #fef9e4;
-    padding: 8px 16px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 14px;
-    font-weight: bold;
+  background: linear-gradient(90deg, #fdbc10 0%, #ffea09 100%);
+  color: #fef9e4;
+  padding: 8px 16px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: bold;
 }
 
 .edit-button:hover {
-    background: linear-gradient(-45deg, #FDBC10 100%, #FFEA09 0%);
+  background: linear-gradient(-45deg, #fdbc10 100%, #ffea09 0%);
 }
 
 .profile-details {
-    padding: 20px;
+  padding: 20px;
 }
 
 .info-section {
-    display: flex;
-    justify-content: space-between;
-    margin-bottom: 15px;
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 15px;
 }
 
 .info-block {
-    width: 45%;
+  width: 45%;
 }
 
-
-
 /* Basic styling for input fields */
-input[type="text"], input[type="email"], input[type="date"], input[type="file"] {
-    width: auto;
-    padding: 10px;
-    margin-bottom: 10px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    box-sizing: border-box;
-    background-color: #fefdeb;
+input[type="text"],
+input[type="email"],
+input[type="date"],
+input[type="file"] {
+  width: auto;
+  padding: 10px;
+  margin-bottom: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+  background-color: #fefdeb;
 }
 
 /* Styling for the input-group div to make fields appear side by side */
 .input-group {
-    display: flex;
-    justify-content: flex-start;
-    gap: 20px; 
+  position: relative;
+  display: inline-block;
+  justify-content: flex-start;
+  gap: 20px;
 }
 
 /* Styling each field inside the input group */
 .input-field {
-    flex: 1 1 1 60%;  /* Each field will take up to 45% of the width, allowing two fields per row */
-    min-width: 200px; 
+  flex: 1 1 1 60%; /* Each field will take up to 45% of the width, allowing two fields per row */
+  min-width: 200px;
 }
-
 
 /* Make the labels align to the left */
 label {
-    display: block;
-    margin-bottom: 5px;
-    font-weight: bold;
+  display: block;
+  margin-bottom: 5px;
+  font-weight: bold;
 }
 
 /* Button styling */
-button[type="submit"], #patient-edit-profile-save {
-    background: linear-gradient(90deg, #FDBC10 0%, #FFEA09 100%);
-    color: #fef9e4;
-    padding: 8px 16px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 14px;
-    font-weight: bold;
+button[type="submit"],
+#patient-edit-profile-save {
+  background: linear-gradient(90deg, #fdbc10 0%, #ffea09 100%);
+  color: #fef9e4;
+  padding: 8px 16px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: bold;
 }
 
 button[type="submit"]:hover {
-    background: linear-gradient(-45deg, #FDBC10 100%, #FFEA09 0%);
+  background: linear-gradient(-45deg, #fdbc10 100%, #ffea09 0%);
 }
 
 .input-group {
-    display: flex;
-    flex-wrap: wrap;  /* Allow the fields to wrap to the next line when needed */
-    gap: 20px;  /* Adjust spacing between the fields */
+  display: flex;
+  flex-wrap: wrap; /* Allow the fields to wrap to the next line when needed */
+  gap: 20px; /* Adjust spacing between the fields */
 }
 
-
 .progress-report-modal-content {
-    position: absolute;
-    top: 50%; /* Position it 50% from the top */
-    left: 50%; /* Position it 50% from the left */
-    transform: translate(-50%, -50%); /* Offset by half its width and height to truly center it */
-    padding: 20px;
-    background-color: #F6F0DC;
-    border-radius: 8px;
-    max-width: 500px;
-    width: 100%; /* Ensure it takes up 100% of its parent width (up to 600px) */
-    box-sizing: border-box; /* Include padding in the width calculation */
-    color:#432705;
-    align-items: center;
+  position: absolute;
+  top: 50%; /* Position it 50% from the top */
+  left: 50%; /* Position it 50% from the left */
+  transform: translate(
+    -50%,
+    -50%
+  ); /* Offset by half its width and height to truly center it */
+  padding: 20px;
+  background-color: #f6f0dc;
+  border-radius: 8px;
+  max-width: 500px;
+  width: 100%; /* Ensure it takes up 100% of its parent width (up to 600px) */
+  box-sizing: border-box; /* Include padding in the width calculation */
+  color: #432705;
+  align-items: center;
 }
 
 .close-btn {
-    position: absolute;
-    top: 10px;
-    right: 10px;
-    font-size: 24px;
-    color: #000;
-    cursor: pointer;
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  font-size: 24px;
+  color: #000;
+  cursor: pointer;
 }
 
 .close-btn:hover {
-    color: #FDBC10; /* Changes the color when hovered, optional */
+  color: #fdbc10; /* Changes the color when hovered, optional */
 }
 
 /* Style the paragraph that holds the Report PDF link */
 .modal p {
-    font-size: 16px;
-    line-height: 1.5;
-    margin: 10px 0;
+  font-size: 16px;
+  line-height: 1.5;
+  margin: 10px 0;
 }
 
 /* Style the strong tag to make it bold and add some spacing */
 .modal strong {
-    font-weight: bold;
-    color: #333;  /* Dark color for better contrast */
-    margin-right: 5px;  /* Space between the label and the link */
+  font-weight: bold;
+  color: #333; /* Dark color for better contrast */
+  margin-right: 5px; /* Space between the label and the link */
 }
 
 /* Style the link to make it look like a button */
 .modal a {
-    display: inline-block;  /* Make the link behave like a block element */
-    padding: 10px 20px;  /* Add padding to make it button-like */
-    background-color: #fdd835;  /* Set a blue background for the button */
-    color: #fef9e4;  /* White text color */
-    text-align: center;  /* Center the text inside the button */
-    text-decoration: none;  /* Remove underline */
-    border-radius: 5px;  /* Rounded corners */
-    font-weight: bold;  /* Make the text bold */
-    cursor: pointer;  /* Pointer cursor on hover */
-    transition: background-color 0.3s ease, transform 0.2s ease;  /* Smooth hover transition */
+  display: inline-block; /* Make the link behave like a block element */
+  padding: 10px 20px; /* Add padding to make it button-like */
+  background-color: #fdd835; /* Set a blue background for the button */
+  color: #fef9e4; /* White text color */
+  text-align: center; /* Center the text inside the button */
+  text-decoration: none; /* Remove underline */
+  border-radius: 5px; /* Rounded corners */
+  font-weight: bold; /* Make the text bold */
+  cursor: pointer; /* Pointer cursor on hover */
+  transition: background-color 0.3s ease, transform 0.2s ease; /* Smooth hover transition */
 }
 
 /* Add hover effect to the "button" */
 .modal a:hover {
-    background-color: #FDBC10;  /* Darker blue when hovered */
-    transform: scale(1.01);  /* Slightly enlarge the button on hover */
+  background-color: #fdbc10; /* Darker blue when hovered */
+  transform: scale(1.01); /* Slightly enlarge the button on hover */
 }
 
 /* Add focus effect (optional) */
 .modal a:focus {
-    outline: none;  /* Remove the default focus outline */
-    box-shadow: 0 0 5px rgba(0, 123, 255, 0.75);  /* Blue glow effect when focused */
+  outline: none; /* Remove the default focus outline */
+  box-shadow: 0 0 5px rgba(0, 123, 255, 0.75); /* Blue glow effect when focused */
 }
 
 .leave-feedback {
-    font-family: 'Poppins', sans-serif;
-    background: linear-gradient(90deg, #FDBC10 0%, #FFEA09 100%);
-    color: #432705;
-    margin-top: 10px;
-    height: 35px;
-    padding: 8px 35px;
-    font-size: 13px;
-    border: none;
-    border-radius: 20px;
-    cursor: pointer;
-    text-decoration: none;
-    text-align: center;
+  font-family: "Poppins", sans-serif;
+  background: linear-gradient(90deg, #fdbc10 0%, #ffea09 100%);
+  color: #432705;
+  margin-top: 10px;
+  height: 35px;
+  padding: 8px 35px;
+  font-size: 13px;
+  border: none;
+  border-radius: 20px;
+  cursor: pointer;
+  text-decoration: none;
+  text-align: center;
 }
 
 .leave-feedback:hover {
-    font-family: 'Poppins', sans-serif;
-    background: linear-gradient(90deg, #FDBC10 100%, #FFEA09 0%);
-    color: #432705;
-    margin-top: 10px;
-    height: 35px;
-    padding: 8px 35px;
-    font-size: 13px;
-    border: none;
-    border-radius: 20px;
-    cursor: pointer;
-    text-decoration: none;
-    text-align: center;
+  font-family: "Poppins", sans-serif;
+  background: linear-gradient(90deg, #fdbc10 100%, #ffea09 0%);
+  color: #432705;
+  margin-top: 10px;
+  height: 35px;
+  padding: 8px 35px;
+  font-size: 13px;
+  border: none;
+  border-radius: 20px;
+  cursor: pointer;
+  text-decoration: none;
+  text-align: center;
 }
 
 .progress-report-card-modal-container {
-    border: #888 solid 1px;
-    max-height: 50%;
-    height: 500px;
-    overflow-y: scroll;
+  border: #888 solid 1px;
+  max-height: 50%;
+  height: 500px;
+  overflow-y: scroll;
 }
 
 .progress-report-card-modal-container::-webkit-scrollbar {
-    width: 8px;
-  }
-  
- .progress-report-card-modal-container::-webkit-scrollbar-track {
-    background: #f1f1f1;
-    border-radius: 4px;
-  }
-  
- .progress-report-card-modal-container::-webkit-scrollbar-thumb {
-    background-color: #fdbc10;
-    border-radius: 4px;
-    border: 2px solid #f1f1f1;
-  }
-  
- .progress-report-card-modal-container::-webkit-scrollbar-thumb:hover {
-    background-color: #555;
-  }
+  width: 8px;
+}
+
+.progress-report-card-modal-container::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 4px;
+}
+
+.progress-report-card-modal-container::-webkit-scrollbar-thumb {
+  background-color: #fdbc10;
+  border-radius: 4px;
+  border: 2px solid #f1f1f1;
+}
+
+.progress-report-card-modal-container::-webkit-scrollbar-thumb:hover {
+  background-color: #555;
+}
 
 .report-item {
-    background-color: #fff;
-    border-radius: 8px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    padding: 20px;
-    margin: 15px;
-    max-width: 400px;
-    font-family: inherit;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  margin: 15px;
+  max-width: 400px;
+  font-family: inherit;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
 .report-item:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.15);
+  transform: translateY(-5px);
+  box-shadow: 0 8px 15px rgba(0, 0, 0, 0.15);
 }
 
 .report-item p {
-    font-size: 16px;
-    margin: 10px 0;
+  font-size: 16px;
+  margin: 10px 0;
 }
 
 .report-item p strong {
-    color: #333;
+  color: #333;
 }
 
 .report-item hr {
-    margin-top: 20px;
-    border: 1px solid #f1f1f1;
+  margin-top: 20px;
+  border: 1px solid #f1f1f1;
 }
 
 .report-item .action {
-    text-align: center;
-    margin-top: 10px;
-    font-size: 14px;
+  text-align: center;
+  margin-top: 10px;
+  font-size: 14px;
 }
 
 .report-item .action a {
-    color: #007bff;
-    text-decoration: none;
-    font-weight: bold;
+  color: #007bff;
+  text-decoration: none;
+  font-weight: bold;
 }
 
 .report-item .action a:hover {
-    text-decoration: underline;
+  text-decoration: underline;
 }
 
-
 #passwordCriteria {
-    list-style-type: none;
-    padding-left: 0;
+  list-style-type: none;
+  padding-left: 0;
 }
 
 #passwordCriteria li {
-    color: red;
-    font-size: 0.8em;
+  color: red;
+  font-size: 0.8em;
 }
 
 #passwordCriteria li.valid {
-    color: green;
+  color: green;
 }
 
 #passwordCriteria li.invalid {
-    color: red;
+  color: red;
 }
 
 #newPassword {
-    border: 2px solid #ccc;
-    padding: 10px;
+  border: 2px solid #ccc;
+  padding: 10px;
 }
 
 #newPassword:focus {
-    border: 2px solid #4CAF50;
+  border: 2px solid #4caf50;
 }
 
 

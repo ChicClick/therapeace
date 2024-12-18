@@ -11,13 +11,14 @@ include 'patient_profile_functions.php';
             <div class="profile-container">
                 <div class="profile-header">
                     <div class="profile-info">
+                        <img class="profile-picture" src="<?php echo htmlspecialchars($patientImage); ?>">
                         <h2><?php echo htmlspecialchars($patientName); ?></h2>
                     </div>
                     <button id="edit-button" class="edit-button" onclick="toggleEditProfile()">Edit Profile</button>
                 </div>
 
                 <div class="profile-details">
-                    <h3>Contact Information</h3>    
+                    <h3>Contact Information</h3>
                     <div class="info-section">
                         <div class="info-block">
                             <p><strong>Phone:</strong> <?php echo htmlspecialchars($patientPhone); ?></p>
@@ -30,7 +31,7 @@ include 'patient_profile_functions.php';
                         </div>
                     </div>
 
-                    <h3>Basic Information</h3>  
+                    <h3>Basic Information</h3>
                     <div class="info-section">
                         <div class="info-block">
                             <p><strong>Birthday:</strong> <?php echo htmlspecialchars($patientBirthday); ?></p>
@@ -47,7 +48,7 @@ include 'patient_profile_functions.php';
                         <p><strong>Therapy Type:</strong> <?php echo htmlspecialchars($serviceName); ?></p>
                         </div>
                         <div class="info-block">
-                        <p><strong>Schedule:</strong> <?php echo htmlspecialchars($formattedSchedule); ?></p>
+                        <p><strong>Schedule:</strong> <?php echo htmlspecialchars($patientSchedule ?? "No schedule yet"); ?></p>
                         </div>
                     </div>
                 </div>
@@ -59,8 +60,26 @@ include 'patient_profile_functions.php';
             <hr>
             <div class="profile-container">
                 <h3>BASIC INFORMATION</h3>
+
                 <form id="edit-profile-form">
                     <div class="input-group">
+                        <div class="profile-pic-container">
+                            <img id="edit-pic" class="profile-picture" src="<?php echo htmlspecialchars($patientImage); ?>" alt="Profile Picture">
+                            <label for="profilePictureInput" class="change-picture-button">
+                                <i class="camera-icon"></i> 
+                            </label>
+                        </div>
+                        <input 
+                            type="file" 
+                            id="profilePictureInput" 
+                            name="image" 
+                            accept="image/*" 
+                            onchange="previewProfilePicture(event)"
+                            hidden
+                        >
+                    </div>
+                    <div class="input-group">
+
                     <div class="input-field">
                         <label for="patientName">Patient Name:</label>
                         <input type="text" name="patientName" id="patientName" value="<?php echo htmlspecialchars($patientName); ?>" required>

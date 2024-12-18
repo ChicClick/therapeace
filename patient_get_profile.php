@@ -22,6 +22,7 @@ $sql = "
         p.birthday, 
         p.gender, 
         p.schedule,
+        p.image,
         p.relationship,
         parent.parentName, 
         therapist.therapistName,
@@ -57,6 +58,7 @@ if ($result->num_rows > 0) {
     $parentName = $patient['parentName'];
     $therapistName = $patient['therapistName'];
     $serviceName = $patient['serviceName'];
+    $patientImage = $patient['image'];
 } else {
     // Handle case where no patient data is found
     echo "No patient data found.";

@@ -38,7 +38,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         $s3 = new AwsS3("image");
 
-        $imagePath = null;
+        $imagePath = "https://therapeace-images-bucket-patient.s3.ap-southeast-2.amazonaws.com/default.jpg";
         if (isset($_FILES['image']) && is_uploaded_file($_FILES['image']['tmp_name'])) {
             $imageTmpPath = $_FILES['image']['tmp_name'];
             $imageExt = pathinfo($_FILES['image']['name'], PATHINFO_EXTENSION);
