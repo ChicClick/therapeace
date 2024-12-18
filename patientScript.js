@@ -4,6 +4,18 @@ document.addEventListener('DOMContentLoaded', function() {
     const dropbtn = document.querySelector('.dropbtn');
     const dropdown = document.querySelector('.dropdown');
 
+    previewProfilePicture = (event) => {
+        const file = event.target.files[0];
+        if (file) {
+          const reader = new FileReader();
+          reader.onload = function (e) {
+            const profilePreview = document.getElementById('edit-pic');
+            profilePreview.src = e.target.result;
+          };
+          reader.readAsDataURL(file);
+        }
+      }
+
     openFeedbackForm = () => {
   
         const feedbackFormContent = `
@@ -153,6 +165,11 @@ editProfileSave = async (e) => {
     }
 
     const formValues = new FormData(formData);
+
+    formValues.forEach((value, key) => {
+        console.log(`${key}: ${value}`);
+    });
+    
     try {
         const response = await fetch("patient_profile_functions.php", {
             method: "POST",

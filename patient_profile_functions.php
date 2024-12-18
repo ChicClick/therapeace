@@ -1,6 +1,7 @@
 <?php
 include 'config.php';
 include 'db_conn.php';
+include 'generic_aws.php';
 
 // Retrieve patient ID from session (assuming patientID is stored in session after login)
 if (isset($_SESSION['patientID'])) {
@@ -28,6 +29,7 @@ $parentID = $patientData['parentID'];
 $patientRelationship = $patientData['relationship'];
 
 // Fetch parent name if available
+$parentName = '';
 if ($parentID) {
     $sql = "SELECT parentName FROM parent WHERE parentID = ?";
     $stmt = $conn->prepare($sql);
@@ -36,8 +38,6 @@ if ($parentID) {
     $stmt->bind_result($parentName);
     $stmt->fetch();
     $stmt->close();
-} else {
-    $parentName = '';
 }
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
@@ -48,27 +48,22 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $updatedParentName = $_POST['parentName'];
     $updatedRelationship = $_POST['relationship'];
 
+    $s3 = new AwsS3("image");
 
-    if (isset($_FILES['profileImage']) && $_FILES['profileImage']['error'] == UPLOAD_ERR_OK) {
-    $targetDir = "uploads/";
-    $imageFileType = strtolower(pathinfo($_FILES['profileImage']['name'], PATHINFO_EXTENSION));
-    $targetFile = $targetDir . "profile_" . $patientID . "." . $imageFileType;
+    if (isset($_FILES['image']) && is_uploaded_file($_FILES['image']['tmp_name'])) {
+        $imageTmpPath = $_FILES['image']['tmp_name'];
+        $imageExt = pathinfo($_FILES['image']['name'], PATHINFO_EXTENSION);
+        $imageName = uniqid('img_', true) . '.' . $imageExt;
+        $s3Key = 'images/' . $imageName;
 
-    if (move_uploaded_file($_FILES['profileImage']['tmp_name'], $targetFile)) {
-        $profileImagePath = $targetFile; // Set the new image path
+        $profileImagePath = $s3->uploadFile($imageTmpPath, $s3Key);
     } else {
-        die("Error uploading profile image.");
+        $profileImagePath = $profileImage;
     }
-} else {
-    $profileImagePath = $profileImage; // Keep the old image if no new image uploaded
-}
 
-
-    // Update patient profile, including the image path if uploaded
     updatePatientProfile($patientID, $updatedName, $updatedEmail, $updatedPhone, $updatedAddress, $updatedParentName, $updatedRelationship, $profileImagePath);
 
-
-     echo json_encode([
+    echo json_encode([
         'success' => true,
         'message' => 'Profile Updated Successfully.'
     ]);
@@ -76,7 +71,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 }
 
 // Function to update patient profile and parent name
-function updatePatientProfile($patientID, $name, $email, $phone, $address, $parentName, $relationship, $profileImagePath = null) {
+function updatePatientProfile($patientID, $name, $email, $phone, $address, $parentName, $relationship, $profileImagePath) {
     global $conn;
 
     $conn->begin_transaction();
@@ -132,17 +127,4 @@ function updatePatientProfile($patientID, $name, $email, $phone, $address, $pare
         die('Error: ' . $e->getMessage());
     }
 }
-
-
-// Assuming $patientSchedule is already defined
-$scheduleDate = $patientSchedule;
-
-// Function to format the schedule date
-function formatSchedule($scheduleDate) {
-    $timestamp = strtotime($scheduleDate ?? "");
-    $dayOfWeek = date("l", $timestamp);
-    return "Every " . $dayOfWeek;
-}
-
-$formattedSchedule = formatSchedule($scheduleDate);
 ?>
