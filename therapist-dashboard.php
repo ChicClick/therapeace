@@ -46,6 +46,7 @@ $therapistID = $_SESSION['therapist_id'];
                 <li><a href="#" data-target="checklist-section"><i class="fas fa-clipboard-list"></i> Pre-Screening Response</a></li>
     
                 <p>OTHERS</p>
+                <li><a href="#" id="changePassword" onclick="changePassword(event)"> <i class="fa fa-key"></i> Change Password</a></li>
                 <li><a href="#" data-target="Edit-section"><i class="fa fa-cog"></i> Edit Profile</a></li>
                 <li><a href="#" id="logoutBtn"><i class="fa fa-sign-out"></i> Sign Out</a></li>
             </ul>
