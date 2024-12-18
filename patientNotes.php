@@ -38,7 +38,7 @@ if (isset($_SESSION['patientName'])) {
             <div class="search-sort-container">
                 <div class="search-wrapper">
                     <i class="fas fa-search search-icon"></i>
-                    <input type="text" placeholder="Search..." id="notesSearch" class="search-bar" onkeyup="searchNotes()">
+                    <input type="text" placeholder="Search" id="notesSearch" class="search-bar" onkeyup="searchNotes()">
                 </div>
             </div>
 

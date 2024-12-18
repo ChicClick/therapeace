@@ -357,7 +357,7 @@ document
                         element.removeAttribute("disabled");
                       });
                     } else {
-                      window.location.href = "http://localhost/therapeace/admindashboard.php?active=patients-information-section";
+                      window.location.href = "admindashboard.php?active=patients-information-section";
                     }
                   } catch (error) {
                     console.error("An error occurred:", error);

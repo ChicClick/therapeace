@@ -155,6 +155,7 @@ foreach ($questions as $question) {
                                         $isRequired = $question['isRequired'] ? 'required' : '';
                                         $requiredMark = $question['isRequired'] ? '<span class="required-asterisk">*</span>' : '';
                                         $description = !empty($question['description']) ? $question['description'] : '';
+                                        $maxLength = !empty($question['maxChars']) ? 'maxlength="' . intval($question['maxChars']) . '"' : '';
                                         ?>
 
                                     <div class="question-section">
@@ -196,7 +197,7 @@ foreach ($questions as $question) {
                                                 <?php endforeach;?>
                                             </div>
                                         <?php elseif (in_array($question['inputType'], ['text', 'number', 'date'])): ?>
-                                            <input type="<?=$question['inputType']?>" name="question_<?=$question['questionID']?>" class="styled-input" <?=$isRequired?>><br>
+                                            <input type="<?=$question['inputType']?>" name="question_<?=$question['questionID']?>" class="styled-input" <?=$isRequired?> <?=$maxLength?>><br>
                                         <?php elseif ($question['inputType'] === 'select'): ?>
                                             <select name="question_<?=$question['questionID']?>" class="styled-select" <?=$isRequired?>>
                                                 <?php foreach ($options as $option): ?>
@@ -204,7 +205,7 @@ foreach ($questions as $question) {
                                                 <?php endforeach;?>
                                             </select><br>
                                         <?php elseif ($question['inputType'] === 'textarea'): ?>
-                                            <textarea name="question_<?=$question['questionID']?>" class="styled-textarea" <?=$isRequired?>></textarea><br>
+                                            <textarea name="question_<?=$question['questionID']?>" class="styled-textarea" <?=$isRequired?> <?=$maxLength?>></textarea><br>
                                         <?php endif;?>
                                     </div>
                                 <?php endforeach;?>
@@ -230,11 +231,11 @@ foreach ($questions as $question) {
                                 <div class="demographics-section" style="display: flex; justify-content: space-between; margin-bottom: 15px;">
                                     <div class="input-group">
                                         <label class="required" for="mother_age">Age of mother during pregnancy</label>
-                                        <input type="number" name="mother_age" id="mother_age" class="styled-input" required>
+                                        <input type="number" name="mother_age" id="mother_age" class="styled-input" required maxlength="3">
                                     </div>
                                     <div class="input-group">
                                         <label for="father_age">Age of father:</label>
-                                        <input type="number" name="father_age" id="father_age" class="styled-input">
+                                        <input type="number" name="father_age" id="father_age" class="styled-input" maxlength="3">
                                     </div>
                                 </div>
                             <?php endif;?>
@@ -243,7 +244,7 @@ foreach ($questions as $question) {
                                 <div class="demographics-section" style="display: flex; justify-content: space-between; margin-bottom: 15px;">
                                     <div class="input-group">
                                         <label for="labor_hours">Hours of labor</label>
-                                        <input type="number" name="labor_hours" id="labor_hours" class="styled-input">
+                                        <input type="number" name="labor_hours" id="labor_hours" class="styled-input" maxlength="3">
                                     </div>
                                 </div>
                             <?php endif;?>
@@ -252,11 +253,11 @@ foreach ($questions as $question) {
                                 <div class="demographics-section" style="display: flex; justify-content: space-between; margin-bottom: 15px;">
                                     <div class="input-group">
                                         <label for="siblings">Ilan ang kapatid?</label>
-                                        <input type="number" name="siblings" id="siblings" class="styled-input">
+                                        <input type="number" name="siblings" id="siblings" class="styled-input" maxlength="2">
                                     </div>
                                     <div class="input-group">
                                         <label for="sibling_position">Pang-ilan sa magkakapatid?</label>
-                                        <input type="number" name="sibling_position" id="sibling_position" class="styled-input">
+                                        <input type="number" name="sibling_position" id="sibling_position" class="styled-input" maxlength="2">
                                     </div>
                                 </div>
                             <?php endif;?>
@@ -266,17 +267,17 @@ foreach ($questions as $question) {
                                 <div class="question-section" style="display: flex; justify-content: space-between; margin-bottom: 15px;">
                                     <div class="input-group">
                                         <label class="required" for="email">Email</label>
-                                        <input type="email" name="email" id="email" class="styled-input" required>
+                                        <input type="email" name="email" id="email" class="styled-input" required maxlength="100">
                                     </div>
                                     <div class="input-group">
                                         <label class="required" for="phone">Phone Number</label>
-                                        <input type="tel" name="phone" id="phone" class="styled-input" required>
+                                        <input type="tel" name="phone" id="phone" class="styled-input" required maxlength="11">
                                     </div>
                                 </div>
                                 <div class="question-section" style="display: flex;">
                                     <div class="input-group">
                                         <label class="required" for="guestName">Parent's Name</label>
-                                        <input type="text" name="guestName" id="guestName" class="styled-input" required>
+                                        <input type="text" name="guestName" id="guestName" class="styled-input" required maxlength="100">
                                     </div>
                                 </div>
                             <?php endif;?>
@@ -353,15 +354,6 @@ foreach ($questions as $question) {
                     <img src="images/TheraPeace Logo.svg" alt="TheraPeace Logo">
                     <h2>TheraPeace</h2>
                     <p>Your Partner in Patient Care</p>
-                </div>
-                <div class="footer-links">
-                    <h3>Quick Links</h3>
-                    <ul>
-                        <li><a href="#">Home</a></li>
-                        <li><a href="#about">About Us</a></li>
-                        <li><a href="#services">Services</a></li>
-                        <li><a href="#rates">Rates</a></li>
-                    </ul>
                 </div>
                 <div class="footer-contact">
                     <h3>Contact Us</h3>

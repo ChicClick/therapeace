@@ -7,7 +7,6 @@ include 'fetch_services.php';
         <div class="hero-text">
             <h1>Seamless Patient - Care Experience</h1>
             <p>Optimize business processes and services management all in one comprehensive system.</p>
-            <button class="enroll-btn" onclick="window.location.href='guestPreScreening.php';">Enroll Now</button>
         </div>
     </div>
 
