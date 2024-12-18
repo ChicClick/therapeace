@@ -392,7 +392,7 @@ foreach ($questions as $question) {
             </script>
         <?php endif;?>
 
-        <script src="guestScript.js"></script>
+        <script src="guestScript.js" defer></script>
 </div>
 </body>
 </html>

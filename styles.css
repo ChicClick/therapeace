@@ -732,6 +732,12 @@ nav.scrolled {
     display: block; 
 }
 
+/* Default: Hide Appointments and Notes in the dropdown on larger screens */
+.dropdown-content a[data-target="patientAppointments.php"],
+.dropdown-content a[data-target="patientNotes.php"] {
+    display: none;
+}
+
 
 /* STYLES FOR LOG OUT MODAL */
 .modal {
@@ -865,6 +871,28 @@ nav.scrolled {
 
 /* MEDIA QUERY FOR SMALLER SCREENS (mobile and tablet) */
 @media (max-width: 768px) and (min-width: 481px) {
+    .dropdown-content a[data-target="patientAppointments.php"],
+    .dropdown-content a[data-target="patientNotes.php"] {
+        display: block;
+    }
+
+    .nav-links li:nth-child(2), /* Appointments */
+    .nav-links li:nth-child(3) { /* Notes */
+        display: none; /* Hide these links on small screens */
+    }
+
+    .dropdown-content {
+        width: 100%; /* Make dropdown take full width on small screens */
+    }
+
+    .nav-container {
+        flex-direction: column; /* Stack items vertically on small screens */
+    }
+
+    .user-greeting {
+        margin-bottom: 20px; /* Add space below the user greeting */
+    }
+    
     .hero-text {
         max-width: 100%; /* Make it take up more space on smaller screens */
         padding: 15px;
@@ -1046,6 +1074,28 @@ nav.scrolled {
 }
 
 @media (max-width: 480px) {
+    .nav-links li:nth-child(2), /* Appointments */
+    .nav-links li:nth-child(3) { /* Notes */
+        display: none; /* Hide these links on small screens */
+    }
+
+    .dropdown-content {
+        width: 100%; /* Make dropdown take full width on small screens */
+    }
+
+    .nav-container {
+        flex-direction: column; /* Stack items vertically on small screens */
+    }
+
+    .user-greeting {
+        margin-bottom: 20px; /* Add space below the user greeting */
+    }
+    
+    .dropdown-content a[data-target="patientAppointments.php"],
+    .dropdown-content a[data-target="patientNotes.php"] {
+        display: block;
+    }
+
     .hero-text {
         max-width: 100%; /* Make it take up more space on smaller screens */
         padding: 15px;

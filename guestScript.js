@@ -3,6 +3,10 @@ document.addEventListener('DOMContentLoaded', function () {
     const totalCategories = categories.length; 
     let currentCategoryIndex = 0;
 
+    document.getElementById("hamburger-menu").addEventListener("click", function() {
+        document.querySelector(".nav-links").classList.toggle("active");
+    });
+
     // Initially display the first category and hide others
     categories.forEach((category, index) => {
         category.style.display = (index === 0) ? 'block' : 'none';
