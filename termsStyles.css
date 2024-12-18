@@ -1,0 +1,180 @@
+/* Set a custom background for the entire page */
+body {
+    font-family: 'Poppins', sans-serif;
+    background-image: url('images/passbg2.jpg');
+    background-size: cover;
+    background-position: center;
+    color: #fffefd;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    flex-direction: column;
+}
+
+/* Overlay on background image */
+.background-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(64, 55, 9, 0.619); /* Dark overlay to improve text visibility */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: -1; /* Keep it behind the content */
+}
+
+/* Terms and Conditions Section */
+.terms-container {
+    background: rgba(237, 222, 93, 0.25);
+    -webkit-backdrop-filter: blur(14px);
+    backdrop-filter: blur(14px);
+    border: 1px solid rgba(237, 222, 93, 0.125);
+    padding: 40px;
+    border-radius: 12px;
+    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.1);
+    width: 90%;
+    max-width: 800px;
+    height: 80vh;
+    overflow-y: auto;
+    color: #fffefd;
+    position: relative;
+    z-index: 2;
+}
+
+.terms-container h1 {
+    font-size: 30px;
+    margin-bottom: 20px;
+    color: #edde5d;
+    text-align: center;
+}
+
+.terms-container h2 {
+    font-size: 24px;
+    margin-top: 20px;
+    margin-bottom: 10px;
+    color: #edde5d;
+}
+
+.terms-container p, .terms-container ul li {
+    font-size: 16px;
+    line-height: 1.6;
+    margin-bottom: 15px;
+    color: #fffefd;
+}
+
+.terms-container ul {
+    padding-left: 20px;
+    list-style-type: disc;
+}
+
+/* Footer Style */
+.footer {
+    background-color: rgba(0, 0, 0, 0.6);
+    color: white;
+    text-align: center;
+    padding: 10px;
+    width: 100%;
+}
+
+/* Default link color */
+a {
+    color: #fffefd;
+}
+
+/* Link color when visited */
+a:visited {
+    color: #fffefd;
+}
+
+/* Link color when hovered */
+a:hover {
+    color: #ffcd28;  
+}
+
+/* Link color when active (clicked) */
+a:active {
+    color: #ff7f50; 
+}
+
+/* Style the scrollbar */
+::-webkit-scrollbar {
+    width: 10px; 
+    height: 10px; 
+}
+
+/* Style the track (background) of the scrollbar */
+::-webkit-scrollbar-track {
+    background-color: #ffcd28;
+}
+
+/* Style the thumb (the draggable part of the scrollbar) */
+::-webkit-scrollbar-thumb {
+    background-color: rgba(0, 0, 0, 0.3); 
+    border-radius: 10px; 
+}
+
+/* Optional: On hover, change the thumb color */
+::-webkit-scrollbar-thumb:hover {
+    background-color: rgba(0, 0, 0, 0.5); 
+}
+
+
+/* For tablets and smaller screens (max width: 768px) */
+@media only screen and (max-width: 768px) {
+    body {
+        padding: 20px; /* Add padding for smaller screens */
+    }
+
+    .terms-container {
+        width: 100%; /* Full width on smaller screens */
+        padding: 20px; /* Adjust padding */
+        height: auto; /* Let the height adjust based on content */
+    }
+
+    .terms-container h1 {
+        font-size: 24px; /* Smaller font size for headings */
+    }
+
+    .terms-container h2 {
+        font-size: 20px; /* Smaller font size for subheadings */
+    }
+
+    .terms-container p, .terms-container ul li {
+        font-size: 14px; /* Slightly smaller text for readability */
+    }
+}
+
+/* For mobile screens (max width: 480px) */
+@media only screen and (max-width: 480px) {
+    body {
+        padding: 15px; /* Add more padding for very small screens */
+    }
+
+    .terms-container {
+        width: 100%; /* Full width on mobile */
+        padding: 15px; /* Adjust padding */
+    }
+
+    .terms-container h1 {
+        font-size: 20px; /* Even smaller font size for headings */
+    }
+
+    .terms-container h2 {
+        font-size: 18px; /* Smaller font size for subheadings */
+    }
+
+    .terms-container p, .terms-container ul li {
+        font-size: 12px; /* Make text smaller for mobile screens */
+    }
+
+    /* Optional: Adjust the footer text size on mobile */
+    .footer {
+        font-size: 12px; /* Smaller footer text */
+        padding: 5px; /* Adjust footer padding */
+    }
+}
