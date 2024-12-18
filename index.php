@@ -159,15 +159,6 @@ include 'fetch_services.php';
                     <h2>TheraPeace</h2>
                     <p>Your Partner in Patient Care</p>
                 </div>
-                <div class="footer-links">
-                    <h3>Quick Links</h3>
-                    <ul>
-                        <li><a href="#">Home</a></li>
-                        <li><a href="#about">About Us</a></li>
-                        <li><a href="#services">Services</a></li>
-                        <li><a href="#rates">Rates</a></li>
-                    </ul>
-                </div>
                 <div class="footer-contact">
                     <h3>Contact Us</h3>
                     <ul>

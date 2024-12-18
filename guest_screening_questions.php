@@ -2,7 +2,9 @@
 include 'db_conn.php';
 
 // Fetch all questi ons from the prescreening_questions table
-$query = "SELECT questionID, questionText, inputType, options, category, description, isRequired FROM prescreening_questions ORDER BY questionID";
+$query = "SELECT questionID, questionText, inputType, options, category, description, isRequired, maxChars 
+          FROM prescreening_questions 
+          ORDER BY questionID";
 $result = mysqli_query($conn, $query);
 
 // Fetching the questions into an array

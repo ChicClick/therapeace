@@ -180,14 +180,36 @@ document.addEventListener('DOMContentLoaded', function () {
             message.remove();
         });
     }
-    
+
 
     /* USE THIS FOR TESTING TO BYPASS REQUIRED FIELDS */
     // function validateForm() {
     //     return true; // Always allows form submission
     // }
     
-    
+    // Disable future dates on calendar
+    var today = new Date();
+        var formattedDate = today.toISOString().split('T')[0];  // Format: YYYY-MM-DD
+        
+        // Get all date inputs
+        var dateInputs = document.querySelectorAll('input[type="date"]');
+        
+        // Loop through each date input and set the max date to today's date
+        dateInputs.forEach(function(input) {
+            input.setAttribute('max', formattedDate);
+        });
+        
+    // Limit length for fields that require numerical input
+    const numberInputs = document.querySelectorAll('input[type="number"]');
+
+        // Iterate through each input and apply the length limit
+        numberInputs.forEach(function(input) {
+            input.addEventListener('input', function() {
+                if (this.value.length > 3) {
+                    this.value = this.value.slice(0, 3); // Limit to 3 digits
+                }
+            });
+        });
 
     function fixStepIndicator(n) {
         var steps = document.getElementsByClassName("step");

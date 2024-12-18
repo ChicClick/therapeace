@@ -51,8 +51,9 @@ if ($checkResult->num_rows > 0) {
 }
 
 // Fetch session feedback notes for the patient and selected therapist
-$sql = "SELECT `feedback` FROM sessionfeedbacknotes
-        WHERE patientID = ? AND therapistID = ?";
+$sql = "SELECT feedback FROM sessionfeedbacknotes n
+        JOIN sessions s ON n.sessionID = s.sessionID
+        WHERE s.patientID = ? AND s.therapistID = ?";
 $stmt = $conn->prepare($sql); // Use the existing $conn
 $stmt->bind_param("ss", $patientID, $therapistID);
 $stmt->execute();
@@ -75,6 +76,8 @@ $categories = [
 foreach ($categories as $category => &$content) {
     if (preg_match("/{$category}:(.*?)(?=\n\n|$)/is", $feedbackText, $matches)) {
         $content = trim($matches[1]);
+    } else {
+        $content = "This category was not addressed during the session.";
     }
 }
 
@@ -87,9 +90,20 @@ $headers = [
     "Content-Type: application/json"
 ];
 
+// Summarization API parameters for each category
+$parameters = [
+    "General Considerations" => ["max_length" => 200, "min_length" => 30],
+    "Management Given" => ["max_length" => 250, "min_length" => 50],
+    "Observations and Improvements" => ["max_length" => 250, "min_length" => 50],
+    "Recommendations" => ["max_length" => 150, "min_length" => 50]
+];
+
 $summaryText = "";
 foreach ($categories as $category => $content) {
-    $data = json_encode(["inputs" => $content]);
+    $data = json_encode([
+        "inputs" => $content,
+        "parameters" => $parameters[$category]
+    ]);
     
     $ch = curl_init($url);
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
@@ -107,7 +121,7 @@ foreach ($categories as $category => $content) {
         $summary = $responseData[0]['summary_text'];
         $summaryText .= "{$category}:\n{$summary}\n\n";
     } else {
-        $summaryText .= "{$category}:\nError summarizing this section.\n\n";
+        $summaryText .= "{$category}:\nNo summarization available for this section.\n\n";
     }
 }
 
