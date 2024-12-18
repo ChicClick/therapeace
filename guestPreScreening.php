@@ -390,7 +390,7 @@ $options = !empty($question['options']) ? explode(',', $question['options']) : [
             </script>
         <?php endif;?>
 
-        <script src="guestScript.js"></script>
+        <script src="guestScript.js" defer></script>
 </div>
 </body>
 </html>
