@@ -62,7 +62,14 @@ body {
     color: #432705;
     text-align: center;
 }
-
+.left-section p {
+    text-align: center;
+    width: 80%;
+    color: #aaa9a9;
+}
+.left-section a {
+    color: #FDBC10;
+}
 .role-button {
     font-family: 'Poppins', sans-serif;
     font-weight: 500;
