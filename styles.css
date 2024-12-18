@@ -801,11 +801,16 @@ nav.scrolled {
 
 .footer-container {
     display: flex;
-    justify-content: space-between;
+    justify-content:center;
     align-items: flex-start;
     max-width: 1200px;
     margin: 0 auto;
     flex-wrap: wrap;
+    margin-bottom: 50px;
+}
+
+.footer-logo {
+    margin-right: 200px;
 }
 
 .footer-logo img {
@@ -817,23 +822,27 @@ nav.scrolled {
     margin: 0;
 }
 
-.footer-links, .footer-contact, .footer-social {
-    flex: 1;
-    margin: 10px;
+.footer-contact {
+    margin-right: 200px;
 }
 
-.footer-links ul, .footer-contact ul, .footer-social ul {
+.footer-contact ul, .footer-social ul {
     list-style: none;
     padding: 0;
 }
 
-.footer-links ul li, .footer-contact ul li {
+.footer-contact ul li {
     margin-bottom: 10px;
 }
 
-.footer-links a, .footer-contact i {
+.footer-contact i {
     color: #fff;
     text-decoration: none;
+}
+
+.footer-social {
+    flex: 1;
+    margin: 10px;
 }
 
 .footer-social ul {
@@ -858,6 +867,17 @@ nav.scrolled {
 .footer-bottom p {
     margin: 0;
     font-size: 14px;
+}
+
+.footer-bottom a {
+    color: #fff; /* Default link color */
+    text-decoration: none; /* Remove underline */
+    transition: color 0.3s; /* Smooth transition on hover */
+}
+
+/* Hover effect for the link */
+.footer-bottom a:hover {
+    color: #FDBC10; /* Change color on hover */
 }
 
 
@@ -1058,7 +1078,7 @@ nav.scrolled {
         align-items: center;
     }
 
-    .footer-logo, .footer-links, .footer-contact, .footer-social {
+    .footer-logo, .footer-contact, .footer-social {
         text-align: center;
         margin: 10px 0;
     }
@@ -1248,7 +1268,7 @@ nav.scrolled {
         align-items: center;
     }
 
-    .footer-logo, .footer-links, .footer-contact, .footer-social {
+    .footer-logo, .footer-contact, .footer-social {
         text-align: center;
         margin: 10px 0;
     }
@@ -1265,6 +1285,12 @@ nav.scrolled {
 @media (max-width: 1024px) and (min-width: 769px) {
     .services-grid {
         grid-template-columns: repeat(auto-fit, minmax(400px, 1fr)); /* Adjust columns to fit smaller screens */
+    }
+
+    .footer-logo, .footer-contact, .footer-social {
+        text-align: start;
+        margin: 30px;
+        align-items: center;
     }
 
 }

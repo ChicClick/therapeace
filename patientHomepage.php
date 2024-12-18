@@ -97,24 +97,14 @@ if (isset($_SESSION['patientName'])) {
             <div class="footer-container">
                 <div class="footer-logo">
                     <img src="images/TheraPeace Logo.svg" alt="TheraPeace Logo">
-                    <h2>TheraPeace</h2>
                     <p>Your Partner in Patient Care</p>
-                </div>
-                <div class="footer-links">
-                    <h3>Quick Links</h3>
-                    <ul>
-                        <li><a href="#">Home</a></li>
-                        <li><a href="#about">About Us</a></li>
-                        <li><a href="#services">Services</a></li>
-                        <li><a href="#rates">Rates</a></li>
-                    </ul>
                 </div>
                 <div class="footer-contact">
                     <h3>Contact Us</h3>
                     <ul>
                         <li><i class="fas fa-map-marker-alt"></i> Polytechnic University of the Philippines</li>
                         <li><i class="fas fa-phone-alt"></i> +63 123 456 7890</li>
-                        <li><i class="fas fa-envelope"></i> contact@therapeace.com</li>
+                        <li><i class="fas fa-envelope"></i> therapeacemanagement@gmail.com</li>
                     </ul>
                 </div>
                 <div class="footer-social">
@@ -123,12 +113,11 @@ if (isset($_SESSION['patientName'])) {
                         <li><a href="#"><i class="fab fa-facebook-f"></i></a></li>
                         <li><a href="#"><i class="fab fa-instagram"></i></a></li>
                         <li><a href="#"><i class="fab fa-twitter"></i></a></li>
-                        <li><a href="#"><i class="fab fa-linkedin"></i></a></li>
                     </ul>
                 </div>
             </div>
             <div class="footer-bottom">
-                <p>&copy; 2024 TheraPeace. All Rights Reserved.</p>
+                <p>&copy; 2024 TheraPeace. All Rights Reserved. <a href=terms_conditions.html>Terms and Conditions</a></p>
             </div>
         </footer>  
     <button class="scroll-top">Scroll to Top</button>
