@@ -281,7 +281,7 @@ body {
 .top-bar {
   display: flex;
   justify-content: space-between; /* Space between search bar and profile section */
-  align-items: center;
+  align-items: right;
   padding: 6px 20px;
   background-color: #f9f9f900;
   border-bottom: 1px solid #ddd;
@@ -710,4 +710,26 @@ input[type="radio"]:checked + label::after {
   margin-bottom: 15px;
   margin-right: 15px;
   box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+#passwordCriteria {
+  list-style-type: none;
+  padding-left: 0;
+}
+#passwordCriteria li {
+  color: red;
+  font-size: 0.8em;
+}
+#passwordCriteria li.valid {
+  color: green;
+}
+#passwordCriteria li.invalid {
+  color: red;
+}
+#newPassword {
+  border: 2px solid #ccc;
+  padding: 10px;
+}
+#newPassword:focus {
+  border: 2px solid #4CAF50;
 }

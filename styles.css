@@ -876,17 +876,8 @@ nav.scrolled {
         display: block;
     }
 
-    .nav-links li:nth-child(2), /* Appointments */
-    .nav-links li:nth-child(3) { /* Notes */
-        display: none; /* Hide these links on small screens */
-    }
-
     .dropdown-content {
         width: 100%; /* Make dropdown take full width on small screens */
-    }
-
-    .nav-container {
-        flex-direction: column; /* Stack items vertically on small screens */
     }
 
     .user-greeting {
@@ -1074,17 +1065,8 @@ nav.scrolled {
 }
 
 @media (max-width: 480px) {
-    .nav-links li:nth-child(2), /* Appointments */
-    .nav-links li:nth-child(3) { /* Notes */
-        display: none; /* Hide these links on small screens */
-    }
-
     .dropdown-content {
         width: 100%; /* Make dropdown take full width on small screens */
-    }
-
-    .nav-container {
-        flex-direction: column; /* Stack items vertically on small screens */
     }
 
     .user-greeting {
