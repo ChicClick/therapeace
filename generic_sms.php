@@ -25,7 +25,7 @@ class SmsSender
     {
         // Prepare the POST data
         $data = [
-            'to' => "+639053455886",   
+            'to' => "+639951940987",   
             'text' => $message      
         ];
 
