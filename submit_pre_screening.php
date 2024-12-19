@@ -118,7 +118,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
 
     $conn->close();
-    header("Location: guestPreScreening.php?sucess=1"); 
+    header("Location: guestPreScreening.php?success=1"); 
     
     exit();
 } else {
