@@ -92,11 +92,11 @@ $therapistID = $_SESSION['therapist_id'];
         <div id="appointments-section" class="content active">
             <h4>UPCOMING APPOINTMENTS</h4>
             <div class="search-bar-content">
-                <input type="text" placeholder="Search" id="searchInput" onkeyup="filterSearch()">
+                <input type="text" placeholder="Search" id="searchInputAppointment" onkeyup="filterSearchAppointment()">
                 <button><i class="fas fa-search"></i></button>
             </div>
             <div class="dashboard-table">
-                <generic-table data="therapist_upcoming_appointments" reschedule="true"></generic-table>
+                <generic-table id="table-appointments-therapist" data="therapist_upcoming_appointments" reschedule="true"></generic-table>
             </div>
            
             <!-- Reschedule Popup -->
@@ -106,11 +106,11 @@ $therapistID = $_SESSION['therapist_id'];
         <div id="patients-profile-section" class="content">
             <h4>PATIENT'S PROFILE</h4>
             <div class="search-bar-content">
-                <input type="text" placeholder="Search">
+                <input type="text" placeholder="Search" id="searchInputPatient" onkeyup="filterSearchPatient()">
                 <button><i class="fas fa-search"></i></button>
             </div>
             <div class="dashboard-table">
-                <generic-table data="therapist_patients" avatar="true"></generic-table>
+                <generic-table id="table-patients-therapist" data="therapist_patients" avatar="true"></generic-table>
             </div>
             
         </div>
@@ -155,14 +155,14 @@ $therapistID = $_SESSION['therapist_id'];
         <div id="report-section" class="content">
             <h4>PROGRESS REPORT</h4>
             <div class="search-bar-content">
-                <input type="text" placeholder="Search">
+                <input type="text" placeholder="Search" id="searchInputProgressReport" onkeyup="filterSearchProgressReport()">
                 <button><i class="fas fa-search"></i></button>
             </div>
 
             <!-- data before for future references 'progress.php'; ?> -->
             
             <div class="dashboard-table">
-                <generic-table data="therapist_progress" avatar="true"></generic-table>
+                <generic-table id="table-progress-therapist" data="therapist_progress" avatar="true"></generic-table>
             </div>
             
         </div>

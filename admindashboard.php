@@ -315,13 +315,13 @@ if (isset($_SESSION['firstname'])) {
                     <generic-widget></generic-widget>
                 </div>
             <div class="search-bar-content">
-                <input type="text" placeholder="Search by patient or therapist">
+                <input type="text" placeholder="Search by patient or therapist" id="adminSearchAppointments" onkeyup="filterSearchAdminAppointment()">
                 <button><i class="fas fa-search"></i></button>
             </div>
 
                     <!-- FOR REFERENCE DO NOT REMOVE 'a_appointment.php';?> -->
             <div class="dashboard-table">
-                <generic-table data="admin_appointments" avatar="true"></generic-table>
+                <generic-table id="table-appointments-admin" data="admin_appointments" avatar="true"></generic-table>
             </div>
 
         </div>
@@ -336,7 +336,7 @@ if (isset($_SESSION['firstname'])) {
                 </div>
             </button>
             <div class="search-bar-content">
-                <input type="text" placeholder="Search">
+                <input type="text" placeholder="Search Table" id="adminSearchPatients" onkeyup="filterSearchAdminPatient()">
                 <button><i class="fas fa-search"></i></button>
             </div>
 
@@ -346,10 +346,10 @@ if (isset($_SESSION['firstname'])) {
             </div>
 
                 <div id="content-patients" class="content-container active">
-                    <generic-table data="admin_patients" avatar="true" edit="true"></generic-table>
+                    <generic-table id="table-admin-patients" data="admin_patients" avatar="true" edit="true"></generic-table>
                 </div>                                    
                 <div id="content-parents" class="content-container">
-                    <generic-table data="admin_parents"></generic-table>     
+                    <generic-table id="table-admin-parents" data="admin_parents"></generic-table>     
                 </div>
 
                 <script>

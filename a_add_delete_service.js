@@ -237,3 +237,59 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 });
+
+function filterSearchAdminAppointment() {
+    const input = document.getElementById("adminSearchAppointments").value.toLowerCase();
+  
+    const tableEngine = document.querySelector("#table-appointments-admin");
+    let tableData = tableEngine.data; 
+    let tableKeys = Object.keys(tableEngine.data[0]); 
+  
+    let filteredData = tableData.filter((row) => {
+        return tableKeys.some(key => {
+          return String(row[key]).toLowerCase().includes(input.toLowerCase());
+        });
+      });
+    
+    tableEngine.filter = filteredData;
+  
+    if(!input) {
+        tableEngine.filter = [];
+    }
+    
+    tableEngine.render();
+  }
+
+  function filterSearchAdminPatient() {
+    const input = document.getElementById("adminSearchPatients").value.toLowerCase();
+  
+    const tableEnginePatients = document.querySelector("#table-admin-patients");
+    const tableEngineParents = document.querySelector("#table-admin-parents");
+
+    let tableDataPatients = tableEnginePatients.data; 
+    let tableDataParents = tableEngineParents.data; 
+
+    let filteredPatientsData = filterTableData(tableDataPatients, input);
+    let filteredParentsData = filterTableData(tableDataParents, input);
+
+    tableEnginePatients.filter = filteredPatientsData;
+    tableEngineParents.filter = filteredParentsData;
+  
+    if(!input) {
+        tableEnginePatients.filter = [];
+        tableEngineParents.filter = [];
+    }
+
+    tableEnginePatients.render();
+    tableEngineParents.render();
+}
+
+function filterTableData(tableData, input) {
+    let tableKeys = Object.keys(tableData[0]);
+  
+    return tableData.filter((row) => {
+        return tableKeys.some(key => {
+            return String(row[key]).toLowerCase().includes(input);
+        });
+    });
+}
