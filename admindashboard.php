@@ -25,6 +25,7 @@ if (isset($_SESSION['firstname'])) {
     <title>TheraPeace</title>
     <link rel="icon" type="image/svg+xml" href="images/TheraPeace Logo.svg">
     <link rel="stylesheet" href="adash.css">
+    <link rel="stylesheet" href="dashboard-table.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.10.2/fullcalendar.min.css" />
@@ -319,7 +320,9 @@ if (isset($_SESSION['firstname'])) {
             </div>
 
                     <!-- FOR REFERENCE DO NOT REMOVE 'a_appointment.php';?> -->
-            <generic-table data="admin_appointments" avatar="true"></generic-table>
+            <div class="dashboard-table">
+                <generic-table data="admin_appointments" avatar="true"></generic-table>
+            </div>
 
         </div>
         <!-- Patient Information Section -->
@@ -333,8 +336,10 @@ if (isset($_SESSION['firstname'])) {
                 <button><i class="fas fa-search"></i></button>
             </div>
 
-            <generic-table data="admin_patients" avatar="true" edit="true"></generic-table>
             
+            <div class="dashboard-table">
+                <generic-table data="admin_patients" avatar="true" edit="true"></generic-table>
+            </div>
                     <!--'a_patients.php'; -->
         </div>
         <!-- Staff Section -->
@@ -582,7 +587,6 @@ if (isset($_SESSION['firstname'])) {
             </div>
 
                 <div id="content-staff" class="content-container active">
-                    
                         <generic-table data="admin_staffs" edit="true"></generic-table>
                                         <!-- include 'a_staff.php' -->
                 </div>                                    
@@ -663,8 +667,10 @@ if (isset($_SESSION['firstname'])) {
                                 </form>
                             </div>
                         </div>
-
-                        <generic-table data="admin_services" edit="true" delete="true"></generic-table>
+                        <div class="dashboard-table">
+                            <generic-table data="admin_services" edit="true" delete="true"></generic-table>
+                        </div>
+                        
                             <!-- 'a_services.php' -->
                  
 
@@ -744,7 +750,10 @@ if (isset($_SESSION['firstname'])) {
             <div id="table-actions" class="table-actions">
                
             </div>
-            <generic-table data="admin_feedbacks"></generic-table>
+            <div class="dashboard-table">
+                <generic-table data="admin_feedbacks"></generic-table>
+            </div>
+            
         </div>
 
         <div id="checklist-section" class="content">

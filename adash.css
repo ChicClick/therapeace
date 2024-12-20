@@ -414,10 +414,6 @@ body {
   height: max-content;
 }
 
-.dashboard-table {
-  padding: 20px;
-}
-
 .data-section canvas {
   max-height: 300px;
 }
