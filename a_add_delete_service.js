@@ -75,6 +75,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const existingDropdown = addStaffButton.querySelector('.dropdown-menu');
         if (existingDropdown) {
             existingDropdown.classList.toggle('show');
+            return;
         }
         
         const dropdownMenu = document.createElement('div');
@@ -186,4 +187,53 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
     
+});
+
+document.addEventListener('DOMContentLoaded', () => {
+    const addPatientButton = document.getElementById('add-patients');
+
+    addPatientButton.addEventListener('click', (e) => {
+        
+        const existingDropdown = addPatientButton.querySelector('.dropdown-menu-patient');
+        if (existingDropdown) {
+            existingDropdown.classList.toggle('show');
+            return;
+        }
+        
+        const dropdownMenu = document.createElement('div');
+        dropdownMenu.classList.add('dropdown-menu-patient');
+        
+        const patientOption = document.createElement('div');
+        patientOption.classList.add('dropdown-item-patient');
+        patientOption.textContent = "Patient";
+        patientOption.addEventListener('click', () => {
+
+            type = "patient";
+            addStaffButton.removeChild(dropdownMenu);
+        });
+    
+        const parentOption = document.createElement('div');
+        parentOption.classList.add('dropdown-item-patient');
+        parentOption.textContent = "Parent";
+        parentOption.addEventListener('click', () => {
+
+            type = "parent";
+            addStaffButton.removeChild(dropdownMenu);
+        });
+        
+        dropdownMenu.appendChild(patientOption);
+        dropdownMenu.appendChild(parentOption);
+
+        dropdownMenu.classList.toggle(".show");
+
+        addPatientButton.appendChild(dropdownMenu);
+
+        document.addEventListener('click', function(event) {
+            if (!addPatientButton.contains(event.target)) {
+                if (dropdownMenu.classList.contains('show')) {
+                    dropdownMenu.classList.remove('show');
+                }
+            }
+        });
+    });
 });
