@@ -151,6 +151,7 @@ class TableEngine extends HTMLElement {
             [18, "6:00 PM"],
         ]);
 
+        this.filter = [];
     }
 
     static get observedAttributes() {
@@ -305,8 +306,9 @@ class TableEngine extends HTMLElement {
             }
     
             table.appendChild(headerRow);
-    
-            this.data.forEach((row) => {
+            
+            const dataTable = this.filter.length > 0 ? this.filter : this.data;
+            dataTable.forEach((row) => {
                 const tr = document.createElement('tr');
        
                 tr.addEventListener("click", (e) => {

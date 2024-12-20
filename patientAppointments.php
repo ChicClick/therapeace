@@ -10,7 +10,7 @@
                     <input type="text" placeholder="Search..." id="appointmentsSearch" class="search-bar" onkeyup="searchAppointments()">
                 </div>
             </div>
-            <generic-table data='patient_upcoming_appointments' reschedule="true" admin="false"></generic-table>
+            <generic-table id="table-patient-appointments" data='patient_upcoming_appointments' reschedule="true" admin="false"></generic-table>
 
         </section>
             <!-- Reschedule Popup -->

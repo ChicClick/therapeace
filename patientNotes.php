@@ -42,7 +42,7 @@ if (isset($_SESSION['patientName'])) {
                 </div>
             </div>
 
-            <generic-table admin="false" data="patient_sessions"></generic-table>
+            <generic-table id="table-patient-notes" admin="false" data="patient_sessions"></generic-table>
         </div>
         </section>
 
