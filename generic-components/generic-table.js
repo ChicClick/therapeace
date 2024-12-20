@@ -71,7 +71,7 @@ const excludedKeyMapper = [
     "FEEDBACK_ID", "FEEDBACK-ID", "FEEDBACKID",
     "SESSION_ID", "SESSION-ID", "SESSIONID",
     "GUEST-STATUS", "GUEST_STATUS", "GUESTSTATUS",
-    "AVAILABILITY", "ABOUT"
+    "AVAILABILITY", "ABOUT", "CHILD_AGE"
 ];
 
 const dateKey = ["schedule","sessionDate","feedbackdate", "date_submitted"];
@@ -1313,6 +1313,11 @@ class TableEngine extends HTMLElement {
                 containerForm.classList.add("checklist-right-section");
                 
                 let therapiesHTML = `
+                    <div id="send-notification-email-pre-screening-div" title="Send an email to the patient informing no suitable therapist is available to handle his/her concern">
+                        <button type="button" id="send-notification-email-pre-screening">
+                            <i class="fas fa-envelope"></i>   SEND EMAIL
+                        </button>
+                    </div>
                     <div class="form-container-right">
                         <form class="asses" action="save_form.php" method="post">
                             <input type="hidden" name="guestId" id="guestId" value="${guestID}">
@@ -1423,6 +1428,25 @@ class TableEngine extends HTMLElement {
                             this.addPatient(guestID, childName, email, phone);
                         } else {
                             new MessagePopupEngine("ALERT", "Please accept the terms and conditions to proceed").instantiate()
+                        }
+                    });
+                    
+                    document.querySelector("#send-notification-email-pre-screening")?.addEventListener("click",async ()=> {
+                       
+                        try {
+                            await fetch('a_send_notification_email_pre_screening.php', {
+                                method: "POST",
+                                headers: {
+                                    "Content-Type": "application/json"
+                                },
+                                body: JSON.stringify([email, guestName])
+                            });
+
+                            new MessagePopupEngine("INFORMATION", "Email notification was sent to the patient").instantiate();
+                        } catch (error) {
+                            new MessagePopupEngine("ERROR", "Error sending email").instantiate();
+                        } finally {
+                            document.querySelector(".side-view-bar-close-btn")?.click();
                         }
                     });
                 }, 1000); 
