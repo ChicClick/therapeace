@@ -189,10 +189,25 @@ foreach ($categories as $category => $content) {
         $pdf->SetXY(24, 205);
         $pdf->SetFont('Arial', '', 10);
         $pdf->Cell(100, 7, $therapistName);
-    }
+
+        // Define text based on the serviceName
+        $serviceText = '';
+        if ($serviceName === 'Occupational Therapy') {
+            $serviceText = 'Occupational Therapist';
+        } elseif ($serviceName === 'Speech Therapy') {
+            $serviceText = 'Speech Therapist';
+        } elseif ($serviceName === 'Physical Therapy') {
+            $serviceText = 'Physical Therapist';
+        }
+
+        // Add the service-specific text below the therapistName
+        $pdf->SetXY(24, 210);
+        $pdf->SetFont('Arial', '', 10);
+        $pdf->Cell(100, 7, $serviceText);
+        }
 }
 
-// Comment out the code below for testing of position. This will display the PDF in the browser.
+// Comment out the code below and other var dump for testing of position. This will display the PDF in the browser.
 // $pdf->Output(); 
 
 // Output PDF as string
