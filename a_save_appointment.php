@@ -127,57 +127,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         exit();
     }
 
+    $smsSender = new SmsSender();
+    $smsMessage = 'Appointment has been scheduled. Please check your email for further details';
+
     try {
-        $phoneSql = "SELECT
-                        p.phone AS patient_phone,
-                        t.phone AS therapist_phone
-                     FROM
-                        patient p
-                     JOIN
-                        therapist t
-                     WHERE
-                        p.patientID = ? AND t.therapistID = ?";
+        $smsSender->sendSMS("", $smsMessage);
 
-        $stmt = $conn->prepare($phoneSql);
-        if ($stmt === false) {
-            throw new Exception("Failed to prepare SQL statement.");
-        }
-
-        $stmt->bind_param("ss", $patientID, $therapistID);
-        $stmt->execute();
-        $result = $stmt->get_result();
-
-        if ($row = $result->fetch_assoc()) {
-            $patientPhone = $row['patient_phone'];
-            $therapistPhone = $row['therapist_phone'];
-
-            $smsSender = new SmsSender();
-            $smsMessage = 'Appointment has been scheduled. Please check your email for further details';
-
-            try {
-                $smsSender->sendSMS($patientPhone, $smsMessage);
-            } catch (Exception $e) {
-                echo json_encode(["error" => "An error occurred while sending SMS to the patient."]);
-                exit();
-            }
-
-            try {
-                $smsSender->sendSMS($therapistPhone, $smsMessage);
-            } catch (Exception $e) {
-                echo json_encode(["error" => "An error occurred while sending SMS to the therapist."]);
-                exit();
-            }
-
-        } else {
-            echo json_encode(["error" => "No records found for the specified patient and therapist."]);
-            exit();
-        }
+        echo json_encode(["success" => "Appointments has been scheduled. Please inform the parent about the email and sms notification as their confirmation"]);
+        exit();
     } catch (Exception $e) {
-        echo json_encode(["error" => "There was an error with the appointment scheduling process."]);
+        echo json_encode(["error" => "An error occurred while sending SMS to the patient."]);
         exit();
     }
-
-    echo json_encode(["success" => "Appointments has been scheduled. Please inform the parent about the email and sms notification as their confirmation"]);
 
     $stmt->close();
     $conn->close();

@@ -23,8 +23,8 @@ if (!DateTime::createFromFormat('Y-m-d H:i:s', $selectedDatetime)) {
 }
 
 // Prepare and execute the SQL query to update the appointment schedule
-$sql = "UPDATE appointment 
-        SET schedule = ? 
+$sql = "UPDATE appointment
+        SET schedule = ?
         WHERE appointmentID = ?";
 
 $stmt = $conn->prepare($sql);
@@ -35,7 +35,6 @@ if ($stmt === false) {
 }
 
 $stmt->bind_param('si', $selectedDatetime, $appointmentID);
-
 
 if ($stmt->execute()) {
     try {
@@ -65,7 +64,7 @@ if ($stmt->execute()) {
         $therapistID = $row['therapistID'];
 
         $emailInfoSql = "
-            SELECT 
+            SELECT
                 p.patientName AS patient_name,
                 p.email AS patient_email,
                 t.therapistName AS therapist_name,
@@ -102,14 +101,26 @@ if ($stmt->execute()) {
             exit();
         }
 
-    }  catch (Exception $e) {
+    } catch (Exception $e) {
         echo json_encode(["error" => "The appointment has been scheduled. However, an email cannot be sent. Error: " . $e->getMessage()]);
         exit();
     }
 
-    echo json_encode(['success' => true, 'message' => 'Appointment rescheduled successfully.']);
+    $smsSender = new SmsSender();
+    $smsMessage = 'Appointment has been scheduled. Please check your email for further details';
+
+    try {
+        $smsSender->sendSMS("", $smsMessage);
+
+        echo json_encode(['success' => true, 'message' => 'Appointment rescheduled successfully.']);
+        exit();
+    } catch (Exception $e) {
+        echo json_encode(["error" => "An error occurred while sending SMS to the patient."]);
+        exit();
+    }
 } else {
     echo json_encode(['success' => false, 'message' => 'Error updating appointment: ' . $stmt->error]);
+    exit();
 }
 
 // Debugging: Log the result of the update
@@ -149,7 +160,7 @@ function emailTemplate($name, $selectedDatetime, $url)
                     <p style="font-size: 16px; line-height: 1.5;">
                         If you have any questions or need to make further changes, please contact our support team.
                     </p>
-                    <a href="'. htmlspecialchars($url).'" style="display: block; width: fit-content; margin: 20px auto; padding: 10px 20px; background-color: #FBC22A; color: #432705; text-decoration: none; border-radius: 5px; font-size: 16px; font-weight: bold;">View Your Appointment</a>
+                    <a href="' . htmlspecialchars($url) . '" style="display: block; width: fit-content; margin: 20px auto; padding: 10px 20px; background-color: #FBC22A; color: #432705; text-decoration: none; border-radius: 5px; font-size: 16px; font-weight: bold;">View Your Appointment</a>
                 </td>
             </tr>
 
@@ -163,4 +174,3 @@ function emailTemplate($name, $selectedDatetime, $url)
 
     return $template;
 }
-
