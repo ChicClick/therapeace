@@ -2,7 +2,6 @@
 include 'config.php'; 
 include 'db_conn.php';
 
-include 'generic_sms.php';
 require_once 'generic_mailer.php';
 
 ini_set('display_errors', 1);
@@ -51,20 +50,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                         $messageDisplay = 'An email with password reset instructions has been sent.';
                     } catch (Exception $e) {
                         $messageDisplay = 'Failed to send reset email. Mailer Error: ' . $e->getMessage();
-                    }
-    
-                    try {
-                        $smsSender = new SmsSender();
-                        $smsMessage = 'Your password reset request on Therapeace was successful.';
-                        $smsResponse = $smsSender->sendSMS($phone, $smsMessage);
-    
-                        if ($smsResponse) {
-                            $messageDisplay .= ' A confirmation SMS has also been sent to your registered phone number.';
-                        } else {
-                            $messageDisplay .= ' However, we could not send an SMS.';
-                        }
-                    } catch (Exception $e) {
-                        $messageDisplay .= ' Failed to send SMS. Error: ' . $e->getMessage();
                     }
                 } else {
                     $messageDisplay = 'Failed to prepare statement for updating reset token.';
