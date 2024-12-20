@@ -8,6 +8,8 @@ ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
+date_default_timezone_set('Asia/Singapore');
+
 $messageDisplay = '';
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
@@ -38,13 +40,25 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     $stmt->execute();
                     $stmt->close();
     
-                    $resetLink = "  /patientResetPassword.php?token=" . $resetToken;
+                    $resetLink = "https://therapeace-d74d563df28a.herokuapp.com/patientResetPassword.php?token=" . $resetToken;
 
                     try {
                         $mailer = new Mailer();
                         $toEmail = $email;
                         $subject = 'Password Reset Request';
-                        $body = 'A request was received to reset the password for your Therapeace account.<br><br>Click the link below to reset your password:<br><a href=' . $resetLink . '>Reset Password</a>';
+                        $body = '
+                        <div style="font-family: Arial, sans-serif; line-height: 1.6; padding: 20px; background-color: #FFF4CE; border: 1px solid #FDBC10; border-radius: 8px; max-width: 600px; margin: auto; color: #432705;">
+                          <h2 style="color: #D57201; text-align: center;">Password Reset Request</h2>
+                          <p>A request was received to reset the password for your <strong>Therapeace</strong> account.</p>
+                          <p>Click the link below to reset your password:</p>
+                          <p style="text-align: center;">
+                            <a href="' . $resetLink . '" style="display: inline-block; padding: 12px 20px; background-color: #FBC22A; color: #432705; text-decoration: none; font-weight: bold; border-radius: 5px; border: 1px solid #FDBC10;">Reset Password</a>
+                          </p>
+                          <p style="margin-top: 20px;">If you did not request a password reset, please ignore this email.</p>
+                          <p style="text-align: center; font-size: 12px; margin-top: 20px; color: #D57201;">
+                            &copy; 2024 Therapeace, All rights reserved.
+                          </p>
+                        </div>';
     
                         $mailer->sendEmail($toEmail, $subject, $body);
                         $messageDisplay = 'An email with password reset instructions has been sent.';
