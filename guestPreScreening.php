@@ -31,10 +31,10 @@ foreach ($questions as $question) {
             </div>
             <div class="nav-container">
                 <ul class="nav-links">
-                    <li><a href="#">Home</a></li>
-                    <li><a href="#about" data-nav-link>About Us</a></li>
-                    <li><a href="#services" data-nav-link>Services</a></li>
-                    <li><a href="#rates" data-nav-link>Rates</a></li>
+                    <li><a href="index.php">Home</a></li>
+                    <li><a href="index.php#about" data-nav-link>About Us</a></li>
+                    <li><a href="index.php#services" data-nav-link>Services</a></li>
+                    <li><a href="index.php#rates" data-nav-link>Rates</a></li>
                     <!-- Add the login button as a list item -->
                     <li>
                         <button class="login-btn" onclick="window.location.href='loginlanding.html';">Login</button>
@@ -118,7 +118,7 @@ foreach ($questions as $question) {
         <!-- Pre-Screening Form Section -->
         <section id="pre-screening-form" class="pre-screening-form hidden">
             <div class="form-container">
-                <form action="submit_pre_screening.php" method="POST">
+                <form id="guest-prescreening-form">
 
                     <?php $categoryIndex = 0;?>
                     <?php foreach ($groupedQuestions as $category => $categoryQuestions): ?>
@@ -299,7 +299,7 @@ foreach ($questions as $question) {
                         <?php $categoryIndex++;?>
                     <?php endforeach;?>
 
-                    <button type="submit" style="display:none; margin-right: auto; margin-left: auto;" id="submit-button">Submit</button>
+                    <button type="button" style="display:none; margin-right: auto; margin-left: auto;" id="submit-button">Submit</button>
                 </form>
             </div>
         </section>
