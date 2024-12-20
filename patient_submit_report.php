@@ -72,16 +72,46 @@ $categories = [
     'Recommendations' => ''
 ];
 
-// Regular expression to extract feedback for each category
+// Regular expression to extract feedback for each category and combine them
 foreach ($categories as $category => &$content) {
-    if (preg_match("/{$category}:(.*?)(?=\n\n|$)/is", $feedbackText, $matches)) {
+    // Match feedback for each category using regex
+    if (preg_match("/{$category}:(.*?)(?=(?:\n\n[^\n]+:|$))/is", $feedbackText, $matches)) {
         $content = trim($matches[1]);
     } else {
-        $content = "This category was not addressed during the session.";
+        $content = "No specific feedback was provided for this category.";
     }
+
+    // Split the content by feedback and add each feedback to the category
+    $feedbackLines = array_filter(explode("\n", $content), function ($line) {
+        return strlen($line) > 10 && !preg_match('/confidential support|samaritans|suicide prevention/i', $line);
+    });
+
+    // Combine the feedback lines for each category
+    $categories[$category] = implode("\n", array_unique($feedbackLines));
 }
 
-// Summarize each category using the Hugging Face API
+// Now, combine all feedback for each category
+$combinedFeedback = "";
+foreach ($categories as $category => $content) {
+    $combinedFeedback .= "{$category}:\n";
+    $combinedFeedback .= $content . "\n\n";
+}
+
+// Define potential starting lines for the Recommendations category
+$recommendationStartLines = [
+    "Based on recent progress, it is recommended that the child continues to work on articulation using visual aids.",
+    "To further improve speech clarity, it is suggested to focus on interactive exercises with flashcards.",
+    "As the child has made significant progress in articulation, incorporating more structured speech activities is advised.",
+    "It would be beneficial for the child to engage in additional speech exercises that emphasize breath control.",
+    "Considering the improvement in the child’s attention span, it is recommended to introduce more complex verbal tasks."
+];
+
+// Function to generate random starting line for Recommendations
+function getRandomRecommendationStart() {
+    global $recommendationStartLines;
+    return $recommendationStartLines[array_rand($recommendationStartLines)];
+}
+
 $apiKey = "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";
 $url = "https://api-inference.huggingface.co/models/facebook/bart-large-cnn";
 
@@ -90,42 +120,89 @@ $headers = [
     "Content-Type: application/json"
 ];
 
-// Summarization API parameters for each category
+// Define parameters for summarization (max and min lengths for different categories)
 $parameters = [
-    "General Considerations" => ["max_length" => 200, "min_length" => 30],
-    "Management Given" => ["max_length" => 250, "min_length" => 50],
-    "Observations and Improvements" => ["max_length" => 250, "min_length" => 50],
-    "Recommendations" => ["max_length" => 150, "min_length" => 50]
+    "General Considerations" => ["max_length" => 150, "min_length" => 30],
+    "Management Given" => ["max_length" => 250, "min_length" => 40],
+    "Observations and Improvements" => ["max_length" => 200, "min_length" => 40],
+    "Recommendations" => ["max_length" => 120, "min_length" => 25]
 ];
 
 $summaryText = "";
 foreach ($categories as $category => $content) {
-    $data = json_encode([
-        "inputs" => $content,
-        "parameters" => $parameters[$category]
-    ]);
-    
-    $ch = curl_init($url);
-    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-    curl_setopt($ch, CURLOPT_POST, true);
-    curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
-    curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
-    
-    curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-    
-    $response = curl_exec($ch);
-    curl_close($ch);
+    // Log content for debugging purposes
+    error_log("Category: $category, Content: $content");  // Log the content being sent
 
-    $responseData = json_decode($response, true);
-    if (isset($responseData[0]['summary_text'])) {
-        $summary = $responseData[0]['summary_text'];
-        $summaryText .= "{$category}:\n{$summary}\n\n";
+    // Ensure there's enough content for summarization, otherwise skip
+    if (strlen(trim($content)) < 50 && $category !== "Recommendations") {
+        $summaryText .= "{$category}:\nNo sufficient feedback to summarize.\n\n";
+        continue;
+    }
+
+    if ($category == "Recommendations") {
+        // For Recommendations, add a random starting sentence and append the feedback content
+        $randomStart = getRandomRecommendationStart();
+        
+        // Summarize the feedback content for Recommendations if available
+        $data = json_encode([
+            "inputs" => $content,
+            "parameters" => $parameters[$category]
+        ]);
+
+        $ch = curl_init($url);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_POST, true);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+
+        $response = curl_exec($ch);
+        curl_close($ch);
+
+        $responseData = json_decode($response, true);
+        $summary = "";
+
+        if (isset($responseData[0]['summary_text'])) {
+            $summary = $responseData[0]['summary_text'];
+            // Clean up the text (optional, if needed)
+            $summary = str_replace("throughout the session", "throughout the sessions", $summary);
+            $summary = str_replace("during the session", "during the sessions", $summary);
+            $summary = str_replace("in the session", "in the sessions", $summary);
+        }
+
+        // Combine the random start and summarized content for Recommendations
+        $summaryText .= "Recommendations:\n" . $randomStart . " " . $summary . "\n\n";
     } else {
-        $summaryText .= "{$category}:\nNo summarization available for this section.\n\n";
+        // Normal summarization process for other categories
+        $data = json_encode([
+            "inputs" => $content,
+            "parameters" => $parameters[$category]
+        ]);
+
+        $ch = curl_init($url);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_POST, true);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+
+        $response = curl_exec($ch);
+        curl_close($ch);
+
+        $responseData = json_decode($response, true);
+        if (isset($responseData[0]['summary_text'])) {
+            $summary = $responseData[0]['summary_text'];
+            $summary = str_replace("throughout the session", "throughout the sessions", $summary);
+            $summary = str_replace("during the session", "during the sessions", $summary);
+            $summary = str_replace("in the session", "in the sessions", $summary);
+            $summaryText .= "{$category}:\n{$summary}\n\n";
+        } else {
+            $summaryText .= "{$category}:\nNo summarization available for this section.\n\n";
+        }
     }
 }
 
-// Prepare the SQL statement to insert the report
+// Insert the summary into the database
 $insertSQL = "INSERT INTO reports (patientID, therapistID, summary, status, created_at, updated_at, pdf_path)
               VALUES (?, ?, ?, 'Pending', NOW(), NOW(), '')
               ON DUPLICATE KEY UPDATE 
