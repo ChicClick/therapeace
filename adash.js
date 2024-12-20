@@ -373,6 +373,76 @@ document
     } catch {}
   });
 
+  document
+  .getElementById("add-parent-button")
+  .addEventListener("click", function () {
+    const parentForm = `
+            <form id="register-form" action="parentRegister.php" method="POST" enctype="multipart/form-data">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="parentName">Parent Name: <span style="color: red;">*</span></label>
+                        <input type="text" id="parentName" name="parentName" placeholder="Enter Parent Name" required>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                      <label for="phone">Phone: <span style="color: red;">*</span></label>
+                      <input type="tel" id="phone" name="contactno" placeholder="09xxxxxxxxx" required minlength="11" maxlength="11" pattern="^[0-9]{11}$" title="Please enter an 11-digit contact number" oninput="this.value=this.value.replace(/[^0-9]/g,'')">
+                    </div>
+                </div>
+                <div class="btn-container">
+                    <button id="admin-register-parent" type="button" class="submit-btn">Register</button>
+                </div>
+            </form>
+                `;
+          
+            new SideViewBarEngine(
+              "NEW PARENT REGISTRATION",
+              parentForm
+            ).render();
+            
+          setTimeout(() => {
+            document
+              .querySelector("#admin-register-parent")
+              .addEventListener("click", async () => {
+                const regForm = document.querySelector("#register-form");
+
+                if (regForm.checkValidity()) {
+                  const formData = new FormData(regForm);
+                  document
+                    .querySelector("#admin-register-parent")
+                    .setAttribute("disabled", true);
+
+                  try {
+                    const response = await fetch(regForm.action, {
+                      method: "POST",
+                      body: formData,
+                    });
+
+                    if (!response.ok) {
+                      const errorMsg = await response.text();
+                      document.querySelector("#form-error").textContent =
+                        errorMsg;
+                      document.querySelector("#form-error").style.display =
+                        "block";
+
+                      Array.from(regForm.elements).forEach((element) => {
+                        element.removeAttribute("disabled");
+                      });
+                    } else {
+                      window.location.href = "admindashboard.php?active=patients-information-section";
+                    }
+                  } catch (error) {
+                    console.error("An error occurred:", error);
+                    alert("Unexpected error occurred.");
+                  }
+                } else {
+                  regForm.reportValidity();
+                }
+              });
+          });
+  });
+
 $(document).ready(function () {
   $("#patient-ID").change(function () {
     var patientId = $(this).val();

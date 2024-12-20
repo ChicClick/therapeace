@@ -93,6 +93,7 @@ class TableEngine extends HTMLElement {
         ['admin_dashboard', 'admin_get_dashboard.php'],
         ['admin_feedbacks', 'admin_get_feedbacks.php'],
         ['admin_patients', 'admin_get_patients.php'],
+        ['admin_parents', 'admin_get_parents.php'],
         ['admin_admins', 'admin_get_admins.php'],
         ['admin_therapists', 'admin_get_therapists.php'],
         ['admin_services', 'admin_get_services.php'],

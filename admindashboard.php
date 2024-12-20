@@ -328,18 +328,47 @@ if (isset($_SESSION['firstname'])) {
         <!-- Patient Information Section -->
         <div id="patients-information-section" class="content">
             <h4>PATIENT INFORMATION</h4>
-            <button id="add-patient-button" class="add-appointment-button">
-                    <i class="fas fa-plus"></i> Add Patient
-                </button>
+
+            <button id="add-patients" class="add-staff">&nbsp;&nbsp;&nbsp;&nbsp;<i class="fas fa-plus"></i> Add &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                <div class="dropdown-menu-patient .show">
+                    <div id="add-patient-button"  class="dropdown-item">Patient</div>
+                    <div id="add-parent-button" class="dropdown-item">Parent</div>
+                </div>
+            </button>
             <div class="search-bar-content">
                 <input type="text" placeholder="Search">
                 <button><i class="fas fa-search"></i></button>
             </div>
 
-            
-            <div class="dashboard-table">
-                <generic-table data="admin_patients" avatar="true" edit="true"></generic-table>
+            <div class="tabs-container">
+                <div class="tab tab-staff active" data-target="content-patients">Patients</div>
+                <div class="tab tab-clients" data-target="content-parents">Parents</div>
             </div>
+
+                <div id="content-patients" class="content-container active">
+                    <generic-table data="admin_patients" avatar="true" edit="true"></generic-table>
+                </div>                                    
+                <div id="content-parents" class="content-container">
+                    <generic-table data="admin_parents"></generic-table>     
+                </div>
+
+                <script>
+                const tabsPatient = document.querySelectorAll('.tab');
+                const contentsPatient = document.querySelectorAll('.content-container');
+
+                tabsPatient.forEach(tab => {
+                    tab.addEventListener('click', () => {
+                   
+                    tabsPatient.forEach(t => t.classList.remove('active'));
+                    contentsPatient.forEach(c => c.classList.remove('active'));
+
+                   
+                    tab.classList.add('active');
+                    document.getElementById(tab.dataset.target).classList.add('active');
+                    });
+                });
+                </script>
+
                     <!--'a_patients.php'; -->
         </div>
         <!-- Staff Section -->
@@ -588,7 +617,7 @@ if (isset($_SESSION['firstname'])) {
 
                 <div id="content-staff" class="content-container active">
                         <generic-table data="admin_staffs" edit="true"></generic-table>
-                                        <!-- include 'a_staff.php' -->
+                        <!-- include 'a_staff.php' -->
                 </div>                                    
                 <div id="content-admins" class="content-container">
                     <generic-table data="admin_admins"></generic-table>
