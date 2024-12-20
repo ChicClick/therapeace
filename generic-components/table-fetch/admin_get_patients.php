@@ -24,6 +24,7 @@ $mysqli = $conn;
 // Fetch appointments
 $appointments = [];
 $sqlAppointments = "SELECT
+        patient.guestID,
         patient.patientID,
         patient.patientName AS patient_name,
         parent.parentName AS parent_name,

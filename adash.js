@@ -258,6 +258,7 @@ document
 
           const patientForm = `
             <form id="register-form" action="pRegister.php" method="POST" enctype="multipart/form-data">
+                <input type="hidden" id="guestID" name="guestID" value="0" />
                 <div class="form-row">
                     <div class="form-group">
                         <label for="patientName">Patient Name: <span style="color: red;">*</span></label>
