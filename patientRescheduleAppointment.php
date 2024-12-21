@@ -4,6 +4,8 @@ include 'db_conn.php';
 include 'generic_sms.php';
 require_once 'generic_mailer.php';
 
+header("Content-Type: application/json");
+
 $appointmentID = isset($_POST['appointmentID']) ? $_POST['appointmentID'] : null;
 $selectedDatetime = isset($_POST['selectedDatetime']) ? $_POST['selectedDatetime'] : null;
 
