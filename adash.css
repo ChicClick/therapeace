@@ -414,10 +414,6 @@ body {
   height: max-content;
 }
 
-.dashboard-table {
-  padding: 20px;
-}
-
 .data-section canvas {
   max-height: 300px;
 }
@@ -2458,6 +2454,32 @@ input[type="checkbox"] {
   background-color: #f1f1f1;
 }
 
+.dropdown-menu-patient {
+  display: none;
+  position: absolute;
+  background-color: #fff;
+  box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2);
+  z-index: 0;
+  width: 150px;
+  border: 1px solid #ccc;
+  margin-left: -15px;
+  margin-top: 100px;
+  max-width: 103px;
+}
+
+.dropdown-menu-patient.show {
+  display: block;
+}
+
+.dropdown-item-patient {
+  padding: 8px;
+  cursor: pointer;
+}
+
+.dropdown-item-patient:hover {
+  background-color: #f1f1f1;
+}
+
 [data-title]:hover:after {
   opacity: 1;
   transition: all 0.1s ease 0.5s;
@@ -2536,9 +2558,9 @@ input[type="checkbox"] {
 }
 
 .content-container::-webkit-scrollbar-thumb {
-  background-color: #ccc;
-  border-radius: 4px;
-  border: 2px solid #f1f1f1;
+  background-color: #fdbc10;
+    border-radius: 4px;
+    border: 2px solid #f1f1f1;
 }
 
 .content-container::-webkit-scrollbar-thumb:hover {

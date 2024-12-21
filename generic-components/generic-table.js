@@ -93,6 +93,7 @@ class TableEngine extends HTMLElement {
         ['admin_dashboard', 'admin_get_dashboard.php'],
         ['admin_feedbacks', 'admin_get_feedbacks.php'],
         ['admin_patients', 'admin_get_patients.php'],
+        ['admin_parents', 'admin_get_parents.php'],
         ['admin_admins', 'admin_get_admins.php'],
         ['admin_therapists', 'admin_get_therapists.php'],
         ['admin_services', 'admin_get_services.php'],
@@ -150,6 +151,7 @@ class TableEngine extends HTMLElement {
             [18, "6:00 PM"],
         ]);
 
+        this.filter = [];
     }
 
     static get observedAttributes() {
@@ -304,8 +306,9 @@ class TableEngine extends HTMLElement {
             }
     
             table.appendChild(headerRow);
-    
-            this.data.forEach((row) => {
+            
+            const dataTable = this.filter.length > 0 ? this.filter : this.data;
+            dataTable.forEach((row) => {
                 const tr = document.createElement('tr');
        
                 tr.addEventListener("click", (e) => {
@@ -582,7 +585,7 @@ class TableEngine extends HTMLElement {
         }
 
         if(this.tableType == "therapist_patients" || this.tableType == "admin_patients") {
-            this.patientsInfo(row.patientID, row.image);
+            this.patientsInfo(row.patientID, row.image, row.guestID, row.patient_name, row.parent_name);
         }
 
         if(this.tableType == "therapist_progress") {
@@ -659,6 +662,7 @@ class TableEngine extends HTMLElement {
             document.querySelector('#patientName').value = childName;
             document.querySelector('#phone').value = phone;
             document.querySelector('#email').value = email;
+            document.querySelector('#guestID').value =guestID;
         }, 500);
     }
 
@@ -1422,7 +1426,6 @@ class TableEngine extends HTMLElement {
                 setTimeout(()=> {
           
                     document.querySelector("#save-button")?.addEventListener("click",async ()=> {
-                       
                         const formStatus = document.querySelector('.form-container-right > form')?.checkValidity();
                         if(formStatus) {
                             this.addPatient(guestID, childName, email, phone);
@@ -1515,7 +1518,7 @@ class TableEngine extends HTMLElement {
         });
     }
 
-    async patientsInfo(patientID, imageUrl) {
+    async patientsInfo(patientID, imageUrl, guestID, patient_name, parent_name) {
         await fetch(`therapist_patient_info.php?id=${patientID}`, {
             method: 'GET'
         })
@@ -1526,6 +1529,11 @@ class TableEngine extends HTMLElement {
                 
                 let image = imageUrl;
                 
+                const viewButton = TableEngine.globalType == "therapist" ? `<div class="view-notes-btn" style="display:flex; align-content: center">
+                            <button type="button">VIEW REPORT</button>
+                        </div>` : "";
+
+                const prescreeningViewButton = guestID ? `<h3><button id="view-prescreening" type="button">View Pre-screening</button></h3>` : `<h3>No Pre-screening Record Available</h3>`;
                 const notesHTML = data.notes.length > 0 
                     ? data.notes.map(note => `
                         <div class="note-item">
@@ -1544,6 +1552,7 @@ class TableEngine extends HTMLElement {
                             <div class="profile-details">
                                 <h2>${patient.patientName}</h2>
                                 <h3>${patient.service || 'N/A'}</h3>
+                                ${prescreeningViewButton}
                             </div>
                         </div>
                         <div class="profile-info">
@@ -1562,9 +1571,7 @@ class TableEngine extends HTMLElement {
                         </div>
                         </div>
 
-                        <div class="view-notes-btn" style="display:flex; align-content: center">
-                            <button type="button">VIEW REPORT</button>
-                        </div>
+                        ${viewButton}
                         
                        
                     </div>
@@ -1578,6 +1585,133 @@ class TableEngine extends HTMLElement {
                         sideViewBar.close();
                         notesSection.click();
                         document.querySelectorAll("#patient-feedback > div > div > div.therapist-feedback-info > span.therapist-feedback").forEach(data => data.textContent.split(" ")[1] == patientID ? data.click() : null);
+                    });
+                }
+
+                const prescreeningButton = document.querySelector('#view-prescreening');
+
+                if (prescreeningButton) {
+                    prescreeningButton.addEventListener('click', async ()=> {
+                        await fetch(`therapist_checklist.php?id=${guestID}`, {
+                            method: 'GET'
+                        })
+                        .then(response => response.text())
+                        .then(async questions => {
+                            questions = JSON.parse(questions);
+                            const mainContent = document.createElement("div");
+                            mainContent.classList.add("checklist-container");
+                            mainContent.innerHTML = "";
+                            const personalDetails = document.createElement("div");
+                            personalDetails.innerHTML = `
+                               <div class="checkbox-group">
+                            
+                                <div class="section-title">Personal Details</div>
+                
+                                    <div class="question">
+                                        <div class="question-row">
+                                            <span class="question-text">Parent's Name:</span>
+                                            <div class="answer-section">
+                                                <div class="answer-text" style="margin-top: 5px; font-size: 14px; color: #432705;">${parent_name}</div> <!-- Replace with dynamic content -->
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="question">
+                                        <div class="question-row">
+                                            <span class="question-text">Name of Child:</span>
+                                            <div class="answer-section">
+                                                <div class="answer-text" style="margin-top: 5px; font-size: 14px; color: #432705;">${patient_name}</div> <!-- Replace with dynamic content -->
+                                            </div>
+                                        </div>
+                                    </div>
+                            </div>
+                            `;
+                            
+                            // Append personal details to the container
+                            mainContent.appendChild(personalDetails);
+                            for (const [category, questionList] of Object.entries(questions.data)) {
+                
+                                const categoryDiv = document.createElement("div");
+                                categoryDiv.classList.add("checkbox-group");
+                            
+                                // Category Title
+                                const sectionTitle = document.createElement("div");
+                                sectionTitle.classList.add("section-title");
+                                sectionTitle.textContent = category;
+                                categoryDiv.appendChild(sectionTitle);
+                            
+                                // Create a form container for each question
+                                const formContainer = document.createElement("div");
+                                formContainer.classList.add("form-container");
+                
+                
+                            
+                                // Questions
+                                questionList.forEach((item) => {
+                                    // Create a container for each question
+                                    const questionDiv = document.createElement("div");
+                                    questionDiv.classList.add("question");
+                            
+                                    // Question text on the left
+                                    const questionTextDiv = document.createElement("div");
+                                    questionTextDiv.classList.add("question-text");
+                                    questionTextDiv.style.cssText = "font-weight: 600; font-size: 14px;";
+                                    questionTextDiv.textContent = item.questionText;
+                                    questionDiv.appendChild(questionTextDiv);
+                            
+                                    // Answer options on the right
+                                    const answerDiv = document.createElement("div");
+                                    answerDiv.classList.add("answer");
+                            
+                                    // Render options based on the input type
+                                    if (item.inputType === "checkbox" || item.inputType === "radio") {
+                                        (item.options || []).forEach((option) => {
+                                            // Create label element
+                                            const label = document.createElement("label");
+                                            label.classList.add(item.inputType === "checkbox" ? "styled-checkbox" : "styled-radio");
+                
+                                            const input = document.createElement("input");
+                                            input.type = item.inputType;
+                                            input.name = `question-${item.questionID}`;
+                                            input.value = option;
+                                            input.disabled = true;
+                                    
+                                            if (item.selectedAnswer.trim() === option.trim()) {
+                                                input.checked = true;
+                                                input.setAttribute("checked", "checked");
+                                            }
+                
+                                            label.appendChild(input);
+                                            label.appendChild(document.createTextNode(option));
+                
+                                            answerDiv.appendChild(label);
+                                        });
+                                    } else {
+                                        // For non-checkbox/radio types, render the selected answer
+                                        const answerText = document.createElement("div");
+                                        answerText.classList.add("answer-text");
+                                        answerText.style.cssText = "font-size: 14px; color: #432705;";
+                                        answerText.textContent = item.selectedAnswer || "No answer provided";
+                                        answerDiv.appendChild(answerText);
+                                    }
+                            
+                                    questionDiv.appendChild(answerDiv);
+                            
+                                    // Append question div to the form container
+                                    formContainer.appendChild(questionDiv);
+                                });
+                            
+                                // Append the form container to the category div
+                                categoryDiv.appendChild(formContainer);
+                            
+                                // Append the category to the main container
+                                mainContent.appendChild(categoryDiv);
+                            }
+                            
+
+                            new SideViewBarEngine("PRE-SCREENING RECORD", mainContent.innerHTML).render();
+                        })
+                        .catch(err => console.log(err));
                     });
                 }
             } else {

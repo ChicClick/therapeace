@@ -359,37 +359,70 @@ fetchAccordionNotes = () => {
 
 /** NOTES CALL BACK FUNCTION END */
 
-function filterSearch() {
-  Object.entries(groupedByPatientName).forEach(([key, value]) => {
-    const accordionTitle = `${key} (${value[0]["service_name"]})`;
+function filterSearchAppointment() {
+  const input = document.getElementById("searchInputAppointment").value.toLowerCase();
 
-    const accordion = new AccordionEngine(accordionTitle, "", value).render();
-    accordionContainer.appendChild(accordion);
-  });
-  // Get the search input value
-  const input = document.getElementById("searchInput").value.toLowerCase();
+  const tableEngine = document.querySelector("#table-appointments-therapist");
+  let tableData = tableEngine.data; 
+  let tableKeys = Object.keys(tableEngine.data[0]); 
 
-  // Get the table and its rows
-  const table = document.getElementById("appointmentsTable");
-  const rows = table.getElementsByTagName("tr");
+  let filteredData = tableData.filter((row) => {
+      return tableKeys.some(key => {
+        return String(row[key]).toLowerCase().includes(input.toLowerCase());
+      });
+    });
+  
+  tableEngine.filter = filteredData;
 
-  // Loop through table rows
-  for (let i = 1; i < rows.length; i++) {
-    // Start from 1 to skip the header row
-    const cells = rows[i].getElementsByTagName("td");
-    let found = false;
-
-    // Loop through each cell in the row
-    for (let j = 0; j < cells.length; j++) {
-      if (cells[j].innerText.toLowerCase().includes(input)) {
-        found = true;
-        break;
-      }
-    }
-
-    // Show or hide the row based on the search input
-    rows[i].style.display = found ? "" : "none";
+  if(!input) {
+      tableEngine.filter = [];
   }
+  
+  tableEngine.render();
+}
+
+function filterSearchPatient() {
+  const input = document.getElementById("searchInputPatient").value.toLowerCase();
+
+  const tableEngine = document.querySelector("#table-patients-therapist");
+  let tableData = tableEngine.data; 
+  let tableKeys = Object.keys(tableEngine.data[0]); 
+
+  let filteredData = tableData.filter((row) => {
+      return tableKeys.some(key => {
+        return String(row[key]).toLowerCase().includes(input.toLowerCase());
+      });
+    });
+  
+  tableEngine.filter = filteredData;
+
+  if(!input) {
+      tableEngine.filter = [];
+  }
+  
+  tableEngine.render();
+}
+
+function filterSearchProgressReport() {
+  const input = document.getElementById("searchInputProgressReport").value.toLowerCase();
+
+  const tableEngine = document.querySelector("#table-progress-therapist");
+  let tableData = tableEngine.data; 
+  let tableKeys = Object.keys(tableEngine.data[0]); 
+
+  let filteredData = tableData.filter((row) => {
+      return tableKeys.some(key => {
+        return String(row[key]).toLowerCase().includes(input.toLowerCase());
+      });
+    });
+  
+  tableEngine.filter = filteredData;
+
+  if(!input) {
+      tableEngine.filter = [];
+  }
+  
+  tableEngine.render();
 }
 
 // update therapist change password

@@ -30,8 +30,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $patientID = "P" . str_pad(substr($lastID, 1) + 1, 3, '0', STR_PAD_LEFT);
 
 
-        $stmt = $conn->prepare("INSERT INTO patient (patientID, patientName, phone, email, address, birthday, gender, parentID, relationship, serviceID, status, image, password_hash) 
-                                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+        $stmt = $conn->prepare("INSERT INTO patient (patientID, patientName, phone, email, address, birthday, gender, parentID, relationship, serviceID, status, image, password_hash, guestID) 
+                                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?)");
         if (!$stmt) {
             die("Error in SQL preparation: " . $conn->error);
         }
@@ -55,9 +55,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $randomPassword = generateRandomPassword();
 
         $hashed_password = password_hash($randomPassword, PASSWORD_DEFAULT);
-
+        $guestID = intval($_POST['guestID']);
         $stmt->bind_param(
-            "sssssssssssss", 
+            "sssssssssssssi", 
             $patientID, 
             $_POST['patientName'], 
             $_POST['phone'], 
@@ -70,7 +70,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $_POST['serviceID'], 
             $_POST['status'], 
             $imagePath,
-            $hashed_password
+            $hashed_password,
+            $guestID
         );
 
         // Execute the SQL query
@@ -107,6 +108,33 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
                 $mailer->sendEmail($toEmail, $subject, $body);
                 echo " A confirmation email has been sent.";
+
+                if (isset($_POST['guestID'])) {
+  
+                    if ($guestID > 0) {
+                        try {
+                            $sqlUpdateStatus = "UPDATE guest SET status = 2 WHERE GuestID = ?";
+                            $stmt = $conn->prepare($sqlUpdateStatus);
+
+                            if ($stmt->execute([$guestID])) {
+                                if ($stmt->rowCount() > 0) {
+                                    echo "Status updated successfully.";
+                                } else {
+                                    echo "No rows updated. Status may already be 2 or GuestID does not exist.";
+                                }
+                            } else {
+                                echo "Query execution failed.";
+                            }
+                        } catch (PDOException $e) {
+                            echo "Error: " . $e->getMessage();
+                        }
+                    } else {
+                        echo "guestID is 0 or invalid. Skipping update.";
+                    }
+                } else {
+                    echo "guestID is not set.";
+                }
+
             } catch (Exception $e) {
                 echo " However, the email could not be sent: {$mail->ErrorInfo}";
             }

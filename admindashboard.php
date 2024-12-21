@@ -25,6 +25,7 @@ if (isset($_SESSION['firstname'])) {
     <title>TheraPeace</title>
     <link rel="icon" type="image/svg+xml" href="images/TheraPeace Logo.svg">
     <link rel="stylesheet" href="adash.css">
+    <link rel="stylesheet" href="dashboard-table.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.10.2/fullcalendar.min.css" />
@@ -314,27 +315,60 @@ if (isset($_SESSION['firstname'])) {
                     <generic-widget></generic-widget>
                 </div>
             <div class="search-bar-content">
-                <input type="text" placeholder="Search by patient or therapist">
+                <input type="text" placeholder="Search by patient or therapist" id="adminSearchAppointments" onkeyup="filterSearchAdminAppointment()">
                 <button><i class="fas fa-search"></i></button>
             </div>
 
                     <!-- FOR REFERENCE DO NOT REMOVE 'a_appointment.php';?> -->
-            <generic-table data="admin_appointments" avatar="true"></generic-table>
+            <div class="dashboard-table">
+                <generic-table id="table-appointments-admin" data="admin_appointments" avatar="true"></generic-table>
+            </div>
 
         </div>
         <!-- Patient Information Section -->
         <div id="patients-information-section" class="content">
             <h4>PATIENT INFORMATION</h4>
-            <button id="add-patient-button" class="add-appointment-button">
-                    <i class="fas fa-plus"></i> Add Patient
-                </button>
+
+            <button id="add-patients" class="add-staff">&nbsp;&nbsp;&nbsp;&nbsp;<i class="fas fa-plus"></i> Add &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                <div class="dropdown-menu-patient .show">
+                    <div id="add-patient-button"  class="dropdown-item">Patient</div>
+                    <div id="add-parent-button" class="dropdown-item">Parent</div>
+                </div>
+            </button>
             <div class="search-bar-content">
-                <input type="text" placeholder="Search">
+                <input type="text" placeholder="Search Table" id="adminSearchPatients" onkeyup="filterSearchAdminPatient()">
                 <button><i class="fas fa-search"></i></button>
             </div>
 
-            <generic-table data="admin_patients" avatar="true" edit="true"></generic-table>
-            
+            <div class="tabs-container">
+                <div class="tab tab-staff active" data-target="content-patients">Patients</div>
+                <div class="tab tab-clients" data-target="content-parents">Parents</div>
+            </div>
+
+                <div id="content-patients" class="content-container active">
+                    <generic-table id="table-admin-patients" data="admin_patients" avatar="true" edit="true"></generic-table>
+                </div>                                    
+                <div id="content-parents" class="content-container">
+                    <generic-table id="table-admin-parents" data="admin_parents"></generic-table>     
+                </div>
+
+                <script>
+                const tabsPatient = document.querySelectorAll('.tab');
+                const contentsPatient = document.querySelectorAll('.content-container');
+
+                tabsPatient.forEach(tab => {
+                    tab.addEventListener('click', () => {
+                   
+                    tabsPatient.forEach(t => t.classList.remove('active'));
+                    contentsPatient.forEach(c => c.classList.remove('active'));
+
+                   
+                    tab.classList.add('active');
+                    document.getElementById(tab.dataset.target).classList.add('active');
+                    });
+                });
+                </script>
+
                     <!--'a_patients.php'; -->
         </div>
         <!-- Staff Section -->
@@ -582,9 +616,8 @@ if (isset($_SESSION['firstname'])) {
             </div>
 
                 <div id="content-staff" class="content-container active">
-                    
                         <generic-table data="admin_staffs" edit="true"></generic-table>
-                                        <!-- include 'a_staff.php' -->
+                        <!-- include 'a_staff.php' -->
                 </div>                                    
                 <div id="content-admins" class="content-container">
                     <generic-table data="admin_admins"></generic-table>
@@ -663,8 +696,10 @@ if (isset($_SESSION['firstname'])) {
                                 </form>
                             </div>
                         </div>
-
-                        <generic-table data="admin_services" edit="true" delete="true"></generic-table>
+                        <div class="dashboard-table">
+                            <generic-table data="admin_services" edit="true" delete="true"></generic-table>
+                        </div>
+                        
                             <!-- 'a_services.php' -->
                  
 
@@ -744,7 +779,10 @@ if (isset($_SESSION['firstname'])) {
             <div id="table-actions" class="table-actions">
                
             </div>
-            <generic-table data="admin_feedbacks"></generic-table>
+            <div class="dashboard-table">
+                <generic-table data="admin_feedbacks"></generic-table>
+            </div>
+            
         </div>
 
         <div id="checklist-section" class="content">

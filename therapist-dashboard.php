@@ -22,6 +22,7 @@ $therapistID = $_SESSION['therapist_id'];
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
     <link rel="icon" type="image/svg+xml" href="images/TheraPeace Logo.svg">
     <link rel="stylesheet" href="styles-therapist.css">
+    <link rel="stylesheet" href="dashboard-table.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link rel="stylesheet" href="therapist-dashboard-feedback-notes.css">
     <script src="https://cdn.jsdelivr.net/npm/tesseract.js@4.0.2/dist/tesseract.min.js"></script>
@@ -91,10 +92,13 @@ $therapistID = $_SESSION['therapist_id'];
         <div id="appointments-section" class="content active">
             <h4>UPCOMING APPOINTMENTS</h4>
             <div class="search-bar-content">
-                <input type="text" placeholder="Search" id="searchInput" onkeyup="filterSearch()">
+                <input type="text" placeholder="Search" id="searchInputAppointment" onkeyup="filterSearchAppointment()">
                 <button><i class="fas fa-search"></i></button>
             </div>
-            <generic-table data="therapist_upcoming_appointments" reschedule="true"></generic-table>
+            <div class="dashboard-table">
+                <generic-table id="table-appointments-therapist" data="therapist_upcoming_appointments" reschedule="true"></generic-table>
+            </div>
+           
             <!-- Reschedule Popup -->
             <generic-calendar></generic-calendar>
         </div>
@@ -102,13 +106,12 @@ $therapistID = $_SESSION['therapist_id'];
         <div id="patients-profile-section" class="content">
             <h4>PATIENT'S PROFILE</h4>
             <div class="search-bar-content">
-                <input type="text" placeholder="Search">
+                <input type="text" placeholder="Search" id="searchInputPatient" onkeyup="filterSearchPatient()">
                 <button><i class="fas fa-search"></i></button>
             </div>
-            <div class="main-content-container">
-                <generic-table data="therapist_patients" avatar="true"></generic-table>
+            <div class="dashboard-table">
+                <generic-table id="table-patients-therapist" data="therapist_patients" avatar="true"></generic-table>
             </div>
-
             
         </div>
 
@@ -152,12 +155,15 @@ $therapistID = $_SESSION['therapist_id'];
         <div id="report-section" class="content">
             <h4>PROGRESS REPORT</h4>
             <div class="search-bar-content">
-                <input type="text" placeholder="Search">
+                <input type="text" placeholder="Search" id="searchInputProgressReport" onkeyup="filterSearchProgressReport()">
                 <button><i class="fas fa-search"></i></button>
             </div>
 
             <!-- data before for future references 'progress.php'; ?> -->
-            <generic-table data="therapist_progress" avatar="true"></generic-table>
+            
+            <div class="dashboard-table">
+                <generic-table id="table-progress-therapist" data="therapist_progress" avatar="true"></generic-table>
+            </div>
             
         </div>
 

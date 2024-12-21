@@ -151,10 +151,6 @@ document.addEventListener('DOMContentLoaded', function() {
 
 });
 
-logMe = () => {
-    const tableEngine = document.querySelectorAll("generic-table")[0];
-    console.log(tableEngine.data)
-}
 
 editProfileSave = async (e) => {
     e.preventDefault();
@@ -383,37 +379,48 @@ function closeReportRequestModal() {
     });
 
     function searchAppointments() {
-        // Get the value from the search input, converting it to lowercase for case-insensitive comparison
+
         const input = document.getElementById("appointmentsSearch").value.toLowerCase();
-        // Select all rows in the appointments table
-        const rows = document.querySelectorAll(".appointment-row");
+
+        const tableEngine = document.querySelector("#table-patient-appointments");
+        let tableData = tableEngine.data; 
+        let tableKeys = Object.keys(tableEngine.data[0]); 
+    
+        let filteredData = tableData.filter((row) => {
+            return tableKeys.some(key => {
+              return String(row[key]).toLowerCase().includes(input.toLowerCase());
+            });
+          });
         
-        // Loop through each appointment row
-        rows.forEach(row => {
-            // Get the therapist name from the data attribute, converting it to lowercase
-            const therapistName = row.getAttribute("data-therapist").toLowerCase();
-            
-            // Check if the therapist name includes the input string
-            if (therapistName.includes(input)) {
-                row.style.display = ""; // Show the row if it matches
-            } else {
-                row.style.display = "none"; // Hide the row if it doesn't match
-            }
-        });
+        tableEngine.filter = filteredData;
+
+        if(!input) {
+            tableEngine.filter = [];
+        }
+        
+        tableEngine.render();
     }
     
     function searchNotes() {
         const input = document.getElementById("notesSearch").value.toLowerCase();
-        const rows = document.querySelectorAll(".notes-row");
+
+        const tableEngine = document.querySelector("#table-patient-notes");
+        let tableData = tableEngine.data; 
+        let tableKeys = Object.keys(tableEngine.data[0]); 
     
-        rows.forEach(row => {
-            const therapistName = row.getAttribute("data-therapist").toLowerCase();
-            if (therapistName.includes(input)) {
-                row.style.display = ""; // Show row
-            } else {
-                row.style.display = "none"; // Hide row
-            }
-        });
+        let filteredData = tableData.filter((row) => {
+            return tableKeys.some(key => {
+              return String(row[key]).toLowerCase().includes(input.toLowerCase());
+            });
+          });
+        
+        tableEngine.filter = filteredData;
+
+        if(!input) {
+            tableEngine.filter = [];
+        }
+        
+        tableEngine.render();
     }
     
 

@@ -23,17 +23,8 @@ $mysqli = $conn;
 
 // Fetch appointments
 $appointments = [];
-$sqlAppointments = "SELECT
-        patient.guestID,
-        patient.patientID,
-        patient.patientName AS patient_name,
-        parent.parentName AS parent_name,
-        COALESCE(services.serviceName, '') AS service_name,
-        patient.image AS image,
-        patient.status AS patient_status
-    FROM patient
-    JOIN parent ON patient.parentID = parent.parentID
-    LEFT JOIN services ON patient.serviceID = services.serviceID";
+$sqlAppointments = "SELECT * FROM parent";
+   
 
 $stmt = $mysqli->prepare($sqlAppointments);
 

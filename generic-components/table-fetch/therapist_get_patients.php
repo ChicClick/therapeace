@@ -20,6 +20,7 @@ $therapistID = $_SESSION['therapist_id'];
 
 $sql = "
         SELECT 
+            patient.guestID,
             patient.patientID, 
             patient.patientName AS patient_name, 
             parent.parentName AS parent_name,

@@ -4,6 +4,7 @@ include 'db_conn.php'; // Database connection script
 
 $messageDisplay = ''; // Initialize a variable to hold the message for redirection
 
+date_default_timezone_set('Asia/Singapore');
 // Check if there's a token in the URL
 if (isset($_GET['token'])) {
     $token = $_GET['token'];
@@ -17,7 +18,7 @@ if (isset($_GET['token'])) {
     $stmt->fetch();
     $stmt->close();
 
-    if ($patientId) {
+    if ($therapistId) {
         $currentTime = date('Y-m-d H:i:s');
 
         // Check if the token has expired
@@ -58,7 +59,7 @@ if (isset($_GET['token'])) {
         exit();
     }
 } else {
-    $messageDisplay = 'No reset token found.';
+    $messageDisplay = $token;
     header("Location: therapistResetPassword.php?message=" . urlencode($messageDisplay));
     exit();
 }
