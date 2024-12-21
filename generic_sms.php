@@ -35,7 +35,7 @@ class SmsSender
         if (curl_errno($ch)) {
             $error_msg = curl_error($ch);
             curl_close($ch);
-            return null;
+            throw new Exception("SMS sending failed: $error_msg");
         }
 
         curl_close($ch);
