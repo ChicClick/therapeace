@@ -118,7 +118,7 @@ foreach ($questions as $question) {
         <!-- Pre-Screening Form Section -->
         <section id="pre-screening-form" class="pre-screening-form hidden">
             <div class="form-container">
-                <form id="guest-prescreening-form">
+                <form action="submit_pre_screening.php" method="POST" id="guest-prescreening-form">
 
                     <?php $categoryIndex = 0;?>
                     <?php foreach ($groupedQuestions as $category => $categoryQuestions): ?>
@@ -299,7 +299,7 @@ foreach ($questions as $question) {
                         <?php $categoryIndex++;?>
                     <?php endforeach;?>
 
-                    <button type="button" style="display:none; margin-right: auto; margin-left: auto;" id="submit-button">Submit</button>
+                    <button type="submit" style="display:none; margin-right: auto; margin-left: auto;" id="submit-button">Submit</button>
                 </form>
             </div>
         </section>
