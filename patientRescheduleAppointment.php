@@ -96,11 +96,7 @@ if ($stmt->execute()) {
             $mailer = new Mailer();
             $mailer->sendEmail($patientEmail, $subject, $patientBody);
             $mailer->sendEmail($therapistEmail, $subject, $therapistBody);
-        } else {
-            echo json_encode(["error" => "Failed to retrieve patient or therapist details."]);
-            exit();
         }
-
     } catch (Exception $e) {
         echo json_encode(["error" => "The appointment has been scheduled. However, an email cannot be sent. Error: " . $e->getMessage()]);
         exit();
@@ -110,10 +106,12 @@ if ($stmt->execute()) {
     $smsMessage = 'Appointment has been scheduled. Please check your email for further details';
 
     try {
-        $smsSender->sendSMS("", $smsMessage);
+        $res = $smsSender->sendSMS("", $smsMessage);
 
-        echo json_encode(['success' => true, 'message' => 'Appointment rescheduled successfully.']);
-        exit();
+        if($res) {
+            echo json_encode(['success' => true, 'message' => 'Appointment rescheduled successfully.']);
+            exit();
+        }
     } catch (Exception $e) {
         echo json_encode(["error" => "An error occurred while sending SMS to the patient."]);
         exit();
